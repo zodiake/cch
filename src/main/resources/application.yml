@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: dev
+  view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: ""
+  http:
+    encoding:
+      charset: UTF-8
+
+security:
+  basic:
+    enabled: false
+
+server:
+  tomcat:
+    uri-encoding: UTF-8
+
+logging:
+  level.org.springframework.web: INFO
+  level.org.springframework.security: INFO
+  level.org.hibernate.type: INFO
+
+---
+spring:
+  profiles: dev
+  datasource:
+    schema: classpath:sql/schema.sql
+    data: classpath:sql/data.sql
