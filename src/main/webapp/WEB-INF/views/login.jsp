@@ -6,13 +6,13 @@
 <html>
 
 <body>
-	<form:form modelAttribute="user" action="/signin">
+	<form action="/member" method="post">
 		<label for="name">name:</label>
-		<form:input path="name"/>
+		<input id="name" name="name"/>
 		<label for="password">password:</label>
-		<form:input path="password"/>
+		<input id="password" name="password"/>
 		<input type="submit"/>
-	</form:form>
+	</form>
 </body>
 
 </html>

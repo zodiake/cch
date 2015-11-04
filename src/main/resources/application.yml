@@ -17,6 +17,7 @@ spring:
       charset: UTF-8
 
 security:
+  enable-csrf: false
   basic:
     enabled: false
 

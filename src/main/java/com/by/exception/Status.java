@@ -1,14 +1,7 @@
 package com.by.exception;
 
 public class Status {
-	private String status;
-	private String message;
-
-	public Status(String status, String message) {
-		super();
-		this.status = status;
-		this.message = message;
-	}
+	protected String status;
 
 	public String getStatus() {
 		return status;
@@ -16,14 +9,6 @@ public class Status {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 }
