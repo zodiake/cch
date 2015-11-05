@@ -23,10 +23,12 @@ public class ExceptionController {
 		return new ResponseEntity<Fail>(new Fail("not found"), HttpStatus.NOT_FOUND);
 	}
 
+	/*
 	@ExceptionHandler(value = { Exception.class, RuntimeException.class })
 	@ResponseBody
 	public ResponseEntity<Fail> defaultErrorHandler(HttpServletRequest request, Exception e) {
 		log.error(null, request.getParameterMap());
 		return new ResponseEntity<Fail>(new Fail("system fail"), HttpStatus.NOT_FOUND);
 	}
+	*/
 }

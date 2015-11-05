@@ -25,6 +25,13 @@ public class User {
 	@ManyToMany
 	@JoinTable(name = "by_user_auth", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "auth_id"))
 	private Set<Authority> authorites;
+	
+	public User(){}
+
+	public User(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
 	public Long getId() {
 		return id;

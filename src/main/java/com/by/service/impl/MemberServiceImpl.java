@@ -33,4 +33,10 @@ public class MemberServiceImpl implements MemberService {
 		return repository.save(member);
 	}
 
+	@Override
+	public Optional<Member> countByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
