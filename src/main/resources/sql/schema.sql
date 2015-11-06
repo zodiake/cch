@@ -24,3 +24,29 @@ create table by_category(
 	primary key(id),
 	foreign key(parent_id) references by_category(id)
 );
+
+
+create table by_card(
+	id bigint not null AUTO_INCREMENT,
+	name varchar(50),
+	primary key(id)
+);
+
+create table by_rule(
+	id bigint not null AUTO_INCREMENT,
+	rate double,
+	card_id bigint,
+	summary varchar(50),
+	foreign key(card_id) references by_card(id),
+	primary key(id)
+);
+
+create table by_member(
+	id bigint not null AUTO_INCREMENT,
+	name char(11),
+	password varchar(20),
+	card_id bigint,
+	score int,
+	foreign key(card_id) references by_card(id),
+	primary key(id),
+);

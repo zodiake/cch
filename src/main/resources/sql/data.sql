@@ -14,3 +14,12 @@ insert into by_category(id,parent_id) values(1,null);
 insert into by_category(id,parent_id) values(2,1);
 insert into by_category(id,parent_id) values(3,1);
 insert into by_category(id,parent_id) values(4,1);
+
+-- test card
+insert into by_card(id,name) values(1,'low');
+
+-- test member
+insert into by_member(id,name,card_id) values(1,'tom',1);
+
+-- test rule
+insert into by_rule(id,rate,card_id) values(1,2.0,1);

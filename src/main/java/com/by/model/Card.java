@@ -1,32 +1,36 @@
 package com.by.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "by_member")
-public class Member {
+@Table(name = "by_card")
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+public class Card {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	private String name;
 
-	@NotNull
-	private String password;
+	@OneToMany(mappedBy = "card", cascade = { CascadeType.PERSIST })
+	private List<Rule> rules;
 
-	@OneToOne
-	@JoinColumn(name = "card_id")
-	private Card card;
-
-	private Integer score;
+	@OneToOne(mappedBy = "card")
+	private Member member;
+	
+	public Card(){}
 
 	public Long getId() {
 		return id;
@@ -44,28 +48,20 @@ public class Member {
 		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
+	public List<Rule> getRules() {
+		return rules;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setRules(List<Rule> rules) {
+		this.rules = rules;
 	}
 
-	public Card getCard() {
-		return card;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setCard(Card card) {
-		this.card = card;
-	}
-
-	public Integer getScore() {
-		return score;
-	}
-
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 	@Override
@@ -84,7 +80,7 @@ public class Member {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Member other = (Member) obj;
+		Card other = (Card) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -92,4 +88,5 @@ public class Member {
 			return false;
 		return true;
 	}
+
 }

@@ -5,28 +5,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "by_member")
-public class Member {
+@Table(name = "by_rule")
+public class Rule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	private String name;
+	private double rate;
 
-	@NotNull
-	private String password;
-
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "card_id")
 	private Card card;
 
-	private Integer score;
+	private String summary;
 
 	public Long getId() {
 		return id;
@@ -36,20 +31,12 @@ public class Member {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public double getRate() {
+		return rate;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setRate(double rate) {
+		this.rate = rate;
 	}
 
 	public Card getCard() {
@@ -60,12 +47,12 @@ public class Member {
 		this.card = card;
 	}
 
-	public Integer getScore() {
-		return score;
+	public String getSummary() {
+		return summary;
 	}
 
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	@Override
@@ -84,7 +71,7 @@ public class Member {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Member other = (Member) obj;
+		Rule other = (Rule) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -92,4 +79,5 @@ public class Member {
 			return false;
 		return true;
 	}
+
 }
