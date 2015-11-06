@@ -1,16 +1,27 @@
 package com.by.model;
 
+import java.util.Calendar;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "by_member")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +31,21 @@ public class Member {
 	private String name;
 
 	@NotNull
+	@Min(value = 4)
 	private String password;
 
-	@OneToOne
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar signupTime;
+
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "card_id")
+	@JsonManagedReference
 	private Card card;
 
 	private Integer score;
+
+	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+	private MemberDetail memberDetail;
 
 	public Long getId() {
 		return id;
@@ -66,6 +85,22 @@ public class Member {
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	public Calendar getSignupTime() {
+		return signupTime;
+	}
+
+	public void setSignupTime(Calendar signupTime) {
+		this.signupTime = signupTime;
+	}
+
+	public MemberDetail getMemberDetail() {
+		return memberDetail;
+	}
+
+	public void setMemberDetail(MemberDetail memberDetail) {
+		this.memberDetail = memberDetail;
 	}
 
 	@Override

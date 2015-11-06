@@ -12,4 +12,6 @@ public interface MemberService {
 	public Optional<Member> countByName(String name);
 	
 	public Member save(Member member);
+	
+	public Optional<Member> update(Member member);
 }

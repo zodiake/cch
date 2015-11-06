@@ -43,10 +43,16 @@ create table by_rule(
 
 create table by_member(
 	id bigint not null AUTO_INCREMENT,
-	name char(11),
+	name char(11) unique,
 	password varchar(20),
 	card_id bigint,
 	score int,
+	signupTime timestamp,
 	foreign key(card_id) references by_card(id),
+	primary key(id),
+);
+
+create table activtity(
+	id bigint not null AUTO_INCREMENT,
 	primary key(id),
 );

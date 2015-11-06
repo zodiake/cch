@@ -39,4 +39,12 @@ public class MemberServiceImpl implements MemberService {
 		return null;
 	}
 
+	@Override
+	public Optional<Member> update(Member member) {
+		return repository.findById(member.getId()).map(i->{
+			i.setPassword(member.getPassword());
+			return i;
+		});
+	}
+
 }

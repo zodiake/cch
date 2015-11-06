@@ -17,5 +17,4 @@ public class UntilController<T> {
 	protected T lift(Supplier<Optional<T>> supplier) {
 		return supplier.get().orElseThrow(() -> new NotFoundException());
 	}
-
 }

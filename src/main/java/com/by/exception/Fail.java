@@ -14,13 +14,13 @@ public class Fail extends Status {
 	private String message;
 
 	public Fail(String message) {
+		super(message);
 		this.status = "fail";
-		this.message = message;
 		this.errors = null;
 	}
 
 	public Fail(List<ObjectError> errors) {
-		this.status = "fail";
+		super("fail");
 		errors.stream().map(i->i.getDefaultMessage());
 		this.errors = errors;
 	}
