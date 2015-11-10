@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,8 @@ public class Coupon {
 
 	private String code;
 
+	@ManyToOne()
+	@JoinColumn(name="activityty_id")
 	private Activtity activtity;
 
 	@Override

@@ -7,7 +7,7 @@ import org.springframework.validation.ObjectError;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-
+//失败，附带失败信息
 @JsonInclude(Include.NON_NULL)
 public class Fail extends Status {
 	private List<ObjectError> errors;

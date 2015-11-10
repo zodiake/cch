@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.auth0.jwt.internal.com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "by_memberDetail")
 public class MemberDetail {
@@ -15,9 +17,46 @@ public class MemberDetail {
 	@GeneratedValue
 	private Long id;
 
+	private String name;
+
+	private String address;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
+	@JsonBackReference
 	private Member member;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
 
 	@Override
 	public int hashCode() {

@@ -34,11 +34,16 @@ public class CardServiceImpl implements CardService {
 
 	@Override
 	@CacheEvict(value = "card", key = "#card.id")
-	public Optional<Card> save(Card card) {
+	public Optional<Card> update(Card card) {
 		return repository.findById(card.getId()).map(i -> {
 			i.setName(card.getName());
 			return repository.save(i);
 		});
+	}
+
+	@Override
+	public Card save(Card card) {
+		return repository.save(card);
 	}
 
 }

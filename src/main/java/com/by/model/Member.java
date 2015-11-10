@@ -46,6 +46,12 @@ public class Member {
 
 	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
 	private MemberDetail memberDetail;
+	
+	public Member(){}
+	
+	public Member(Long id){
+		this.id=id;
+	}
 
 	public Long getId() {
 		return id;

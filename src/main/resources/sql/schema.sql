@@ -56,3 +56,8 @@ create table activtity(
 	id bigint not null AUTO_INCREMENT,
 	primary key(id),
 );
+
+create table by_coupon(
+	id bigint not null AUTO_INCREMENT,
+	primary key(id),
+);

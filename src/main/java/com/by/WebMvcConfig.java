@@ -13,7 +13,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new JWTInterceptor()).addPathPatterns("/category/*").addPathPatterns("/category");
+		registry.addInterceptor(new JWTInterceptor()).addPathPatterns("/api/*");
 	}
 	
 }

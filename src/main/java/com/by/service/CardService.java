@@ -9,8 +9,10 @@ import com.by.model.Card;
 
 public interface CardService {
 	public Optional<Card> findOne(Long id);
-	
+
 	public Page<Card> findAll(Pageable pageable);
-	
-	public Optional<Card> save(Card card);
+
+	public Card save(Card card);
+
+	Optional<Card> update(Card card);
 }

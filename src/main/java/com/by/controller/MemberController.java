@@ -18,6 +18,7 @@ import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.model.Member;
+import com.by.service.MemberDetailService;
 import com.by.service.MemberService;
 
 @Controller
@@ -25,41 +26,53 @@ import com.by.service.MemberService;
 public class MemberController extends UntilController<Member> {
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	private MemberDetailService detailService;
 
 	@Autowired
 	private ShaPasswordEncoder encoder;
 
-	//用户注册
-	@RequestMapping(method = RequestMethod.POST)
+	// 用户注册
+	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	@ResponseBody
-	public Status save(@Valid Member member, BindingResult result) {
+	public Status signIn(@Valid Member member, BindingResult result) {
 		if (result.hasErrors()) {
 			Fail fail = new Fail(result.getAllErrors());
 			return fail;
 		}
 		member.setPassword(encoder.encodePassword(member.getPassword(), null));
-		service.save(member);
-		return new Success();
+		Member m = service.save(member);
+		return new Success<Member>(m);
 	}
 
-	//用户是否存在 存在返回status fail 不存在返回success
+	// 用户登入
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	@ResponseBody
+	public Status signUp(@Valid Member member, BindingResult result) {
+		member.setPassword(encoder.encodePassword(member.getPassword(), null));
+		return service.findByNameAndPassword(member).map(i -> new Status("success"))
+				.orElseThrow(() -> new NotFoundException());
+	}
+
+	// 用户是否存在 存在返回status fail 不存在返回success
 	@RequestMapping(value = "/exist", method = RequestMethod.GET)
 	@ResponseBody
 	public Status count(@RequestParam("mobile") String mobile) {
-		return service.findByName(mobile).map(i -> new Status("fail")).orElseGet(() -> new Success());
+		return service.findByName(mobile).map(i -> new Status("fail")).orElseGet(() -> new Status("success"));
 	}
 
-	//修改用户密码
+	// 修改用户密码
 	@RequestMapping(value = "/password", method = RequestMethod.PUT)
 	@ResponseBody
 	public Status changePassword(@RequestBody Member member) {
 		return service.update(member).map(i -> new Status("success")).orElseThrow(() -> new NotFoundException());
 	}
 
-	//用户详情
+	// 用户详情
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Member get(@PathVariable("id") Long id) {
-		return service.findById(id).orElseThrow(() -> new NotFoundException());
+	public Success<Member> get(@PathVariable("id") Long id) {
+		return service.findById(id).map(i -> new Success<Member>(i)).orElseThrow(() -> new NotFoundException());
 	}
 }

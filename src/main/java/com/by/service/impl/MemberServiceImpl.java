@@ -41,10 +41,15 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Optional<Member> update(Member member) {
-		return repository.findById(member.getId()).map(i->{
+		return repository.findById(member.getId()).map(i -> {
 			i.setPassword(member.getPassword());
 			return i;
 		});
+	}
+
+	@Override
+	public Optional<Member> findByNameAndPassword(Member member) {
+		return repository.findByNameAndPassword(member.getName(), member.getPassword());
 	}
 
 }

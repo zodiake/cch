@@ -22,13 +22,6 @@ public class SigninController {
 	@Autowired
 	private UserService service;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginIn(Model uiModel) {
-		User u = new User();
-		uiModel.addAttribute("user", u);
-		return "login";
-	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public String signin(@Valid User user,BindingResult result) {

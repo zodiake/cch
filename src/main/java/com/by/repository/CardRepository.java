@@ -11,4 +11,6 @@ public interface CardRepository extends PagingAndSortingRepository<Card, Long> {
 	public Card findByMember(Member member);
 	
 	public Optional<Card> findById(Long id);
+	
+	public Long countByName(String name);
 }

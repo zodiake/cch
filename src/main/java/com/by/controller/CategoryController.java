@@ -13,7 +13,7 @@ import com.by.model.User;
 import com.by.service.CategoryService;
 
 @RestController
-@RequestMapping(value = "/category")
+@RequestMapping(value = "/api/category")
 public class CategoryController {
 	@Autowired
 	private CategoryService service;
@@ -21,7 +21,6 @@ public class CategoryController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public Category findByName(HttpServletRequest request) {
 		User u = (User) request.getAttribute("user");
-		System.out.println(u.getName());
 		return service.findOne(6l).orElseThrow(() -> new NotFoundException());
 	}
 }
