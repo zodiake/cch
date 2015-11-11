@@ -18,23 +18,19 @@ import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.model.Member;
-import com.by.service.MemberDetailService;
 import com.by.service.MemberService;
 
 @Controller
 @RequestMapping(value = "/member")
-public class MemberController extends UntilController<Member> {
+public class MemberController {
 	@Autowired
 	private MemberService service;
 	
 	@Autowired
-	private MemberDetailService detailService;
-
-	@Autowired
 	private ShaPasswordEncoder encoder;
 
 	// 用户注册
-	@RequestMapping(value = "/signin", method = RequestMethod.POST)
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	@ResponseBody
 	public Status signIn(@Valid Member member, BindingResult result) {
 		if (result.hasErrors()) {
@@ -47,7 +43,7 @@ public class MemberController extends UntilController<Member> {
 	}
 
 	// 用户登入
-	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	@ResponseBody
 	public Status signUp(@Valid Member member, BindingResult result) {
 		member.setPassword(encoder.encodePassword(member.getPassword(), null));

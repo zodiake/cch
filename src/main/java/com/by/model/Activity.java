@@ -1,60 +1,36 @@
 package com.by.model;
 
+import java.util.Calendar;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "by_rule")
-public class Rule {
+@Table(name = "by_activtity")
+public class Activity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private double rate;
+	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "card_id")
-	private Card card;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar startTime;
 
-	private String summary;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar endTime;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public double getRate() {
-		return rate;
-	}
-
-	public void setRate(double rate) {
-		this.rate = rate;
-	}
-
-	public Card getCard() {
-		return card;
-	}
-
-	public void setCard(Card card) {
-		this.card = card;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+	@OneToMany(mappedBy = "activtity", cascade = { CascadeType.PERSIST },fetch=FetchType.LAZY)
+	private List<Coupon> coupons;
 
 	@Override
 	public int hashCode() {
@@ -72,7 +48,7 @@ public class Rule {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Rule other = (Rule) obj;
+		Activity other = (Activity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

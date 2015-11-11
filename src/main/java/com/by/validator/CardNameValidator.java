@@ -5,10 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.by.model.Card;
 import com.by.repository.CardRepository;
 
-public class CardNameValidator implements ConstraintValidator<CardNameUnique, Card> {
+public class CardNameValidator implements ConstraintValidator<CardNameUnique, String> {
 	@Autowired
 	private CardRepository repository;
 
@@ -19,8 +18,8 @@ public class CardNameValidator implements ConstraintValidator<CardNameUnique, Ca
 	}
 
 	@Override
-	public boolean isValid(Card value, ConstraintValidatorContext context) {
-		Long count = repository.countByName(value.getName());
+	public boolean isValid(String value, ConstraintValidatorContext context) {
+		Long count = repository.countByName(value);
 		if (count > 0)
 			return false;
 		return true;

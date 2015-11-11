@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.by.model.Member;
 import com.by.model.MemberDetail;
 import com.by.repository.MemberDetailRepository;
 import com.by.service.MemberDetailService;
@@ -24,4 +25,15 @@ public class MemberDetailServiceImpl implements MemberDetailService {
 			return i;
 		});
 	}
+
+	@Override
+	public Optional<MemberDetail> findByMember(Member m) {
+		return repository.findByMember(m);
+	}
+
+	@Override
+	public MemberDetail save(MemberDetail detail) {
+		return repository.save(detail);
+	}
+
 }

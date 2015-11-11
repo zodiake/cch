@@ -22,7 +22,7 @@ public class SigninController {
 	@Autowired
 	private UserService service;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	@ResponseBody
 	public String signin(@Valid User user,BindingResult result) {
 		JWTSigner signer = new JWTSigner("crm");

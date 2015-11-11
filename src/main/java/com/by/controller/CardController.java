@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.by.exception.Fail;
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
@@ -18,7 +19,7 @@ import com.by.service.CardService;
 
 @Controller
 @RequestMapping(value = "/card")
-public class CardController extends UntilController<Card> {
+public class CardController {
 	@Autowired
 	private CardService service;
 
@@ -42,7 +43,7 @@ public class CardController extends UntilController<Card> {
 	@ResponseBody
 	public Status save(@Valid Card card,BindingResult result) {
 		if(result.hasErrors()){
-			return new Status("fail");
+			return new Fail(result.getAllErrors());
 		}
 		Card c = new Card();
 		c.setName("low");

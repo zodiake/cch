@@ -20,8 +20,8 @@ public class Coupon {
 	private String code;
 
 	@ManyToOne()
-	@JoinColumn(name="activityty_id")
-	private Activtity activtity;
+	@JoinColumn(name="activity_id")
+	private Activity activity;
 
 	@Override
 	public int hashCode() {
