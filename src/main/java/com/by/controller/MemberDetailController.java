@@ -19,19 +19,19 @@ import com.by.model.MemberDetail;
 import com.by.service.MemberDetailService;
 
 @Controller
-@RequestMapping(value = "/member")
+@RequestMapping(value = "/api/member")
 public class MemberDetailController {
 	@Autowired
 	private MemberDetailService service;
 
-	@RequestMapping(value = "/{id}/details", method = RequestMethod.PUT)
+	@RequestMapping(value = "/details", method = RequestMethod.PUT)
 	@ResponseBody
 	public Status update(MemberDetail detail, @PathVariable("id") Long id) {
 		detail.setMember(new Member(id));
 		return service.update(detail).map(i -> new Status("success")).orElseThrow(() -> new NotFoundException());
 	}
 
-	@RequestMapping(value = "/{id}/details", method = RequestMethod.GET)
+	@RequestMapping(value = "/details", method = RequestMethod.GET)
 	@ResponseBody
 	public Success<MemberDetail> get(@PathVariable("id") Long id) {
 		Member m = new Member(id);
@@ -39,7 +39,7 @@ public class MemberDetailController {
 				.orElseThrow(() -> new NotFoundException());
 	}
 
-	@RequestMapping(value = "/{id}/details", method = RequestMethod.POST)
+	@RequestMapping(value = "/details", method = RequestMethod.POST)
 	@ResponseBody
 	public Status save(@Valid MemberDetail detail, BindingResult result) {
 		if (result.hasErrors()) {

@@ -16,8 +16,10 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository repository;
 
-	public Optional<User> findByName(String name){
-		return repository.findByName(name);
+	public User findByName(String name) {
+		User u = repository.findByName(name);
+		u.getAuthorites().size();
+		return u;
 	}
 
 	@Override

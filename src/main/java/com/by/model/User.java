@@ -3,6 +3,7 @@ package com.by.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.by.typeEnum.ValidEnum;
 
 @Table(name = "by_user")
 @Entity
@@ -22,11 +25,14 @@ public class User {
 
 	private String password;
 
-	@ManyToMany
-	@JoinTable(name = "by_user_auth", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "auth_id"))
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name = "by_user_auth", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "auth_id") )
 	private Set<Authority> authorites;
-	
-	public User(){}
+
+	private ValidEnum valid;
+
+	public User() {
+	}
 
 	public User(Long id, String name) {
 		this.id = id;
@@ -63,6 +69,14 @@ public class User {
 
 	public void setAuthorites(Set<Authority> authorites) {
 		this.authorites = authorites;
+	}
+	
+	public ValidEnum getValid() {
+		return valid;
+	}
+
+	public void setValid(ValidEnum valid) {
+		this.valid = valid;
 	}
 
 	@Override

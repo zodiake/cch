@@ -1,9 +1,9 @@
 -- test user
-insert into by_user(id,name) values(1,'tom');
+insert into by_user(id,name,password) values(1,'tom','1');
 
 -- test authority
-insert into by_authority(id,name) values(1,'role_admin');
-insert into by_authority(id,name) values(2,'role_user');
+insert into by_authority(id,name) values(1,'ROLE_ADMIN');
+insert into by_authority(id,name) values(2,'ROLE_USER');
 
 -- test user_authority
 insert into by_user_auth values(1,1);

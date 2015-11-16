@@ -1,6 +1,8 @@
 create table by_user(
 	id bigint not null AUTO_INCREMENT,
 	name varchar(20),
+	password varchar(20),
+	valid smallint default 1,
 	primary key(id)
 );
 
@@ -29,6 +31,7 @@ create table by_category(
 create table by_card(
 	id bigint not null AUTO_INCREMENT,
 	name varchar(50),
+	valid smallint,
 	primary key(id)
 );
 
@@ -37,6 +40,10 @@ create table by_rule(
 	rate double,
 	card_id bigint,
 	summary varchar(50),
+	valid smallint,
+	beginTime timestamp,
+	endTime timestamp,
+	permanent smallint,
 	foreign key(card_id) references by_card(id),
 	primary key(id)
 );
@@ -46,7 +53,6 @@ create table by_member(
 	name char(11) unique,
 	password varchar(20),
 	card_id bigint,
-	score int,
 	signupTime timestamp,
 	foreign key(card_id) references by_card(id),
 	primary key(id),

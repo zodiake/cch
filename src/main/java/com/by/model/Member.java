@@ -42,8 +42,6 @@ public class Member {
 	@JsonManagedReference
 	private Card card;
 
-	private Integer score;
-
 	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
 	private MemberDetail memberDetail;
 	
@@ -83,14 +81,6 @@ public class Member {
 
 	public void setCard(Card card) {
 		this.card = card;
-	}
-
-	public Integer getScore() {
-		return score;
-	}
-
-	public void setScore(Integer score) {
-		this.score = score;
 	}
 
 	public Calendar getSignupTime() {

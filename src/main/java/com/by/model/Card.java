@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.by.typeEnum.ValidEnum;
 import com.by.validator.CardNameUnique;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -34,8 +36,15 @@ public class Card {
 	@OneToOne(mappedBy = "card", fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Member member;
+	
+	@Enumerated
+	private ValidEnum valid;
 
 	public Card() {
+	}
+	
+	public Card(Long id){
+		this.id=id;
 	}
 
 	public Long getId() {
@@ -68,6 +77,14 @@ public class Card {
 
 	public void setMember(Member member) {
 		this.member = member;
+	}
+	
+	public ValidEnum getValid() {
+		return valid;
+	}
+
+	public void setValid(ValidEnum valid) {
+		this.valid = valid;
 	}
 
 	@Override

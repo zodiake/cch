@@ -6,4 +6,6 @@ import com.by.model.User;
 
 public interface UserService {
 	Optional<User> findId(Long id);
+	
+	User findByName(String name);
 }

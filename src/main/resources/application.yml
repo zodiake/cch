@@ -1,9 +1,6 @@
 spring:
   profiles:
     active: dev
-  view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp
   data:
     jpa:
       repositories:
@@ -24,15 +21,17 @@ security:
 server:
   tomcat:
     uri-encoding: UTF-8
-
-logging:
-  level.org.springframework.web: INFO
-  level.org.springframework.security: INFO
-  level.org.hibernate.type: INFO
-
+    
 ---
 spring:
   profiles: dev
+  thymeleaf:
+    cache: false
   datasource:
     schema: classpath:sql/schema.sql
     data: classpath:sql/data.sql
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO

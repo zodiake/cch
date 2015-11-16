@@ -1,6 +1,9 @@
 package com.by.model;
 
+import java.util.Calendar;
+
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.by.typeEnum.PermanentEnum;
+import com.by.typeEnum.ValidEnum;
 
 @Entity
 @Table(name = "by_rule")
@@ -23,6 +31,18 @@ public class Rule {
 	private Card card;
 
 	private String summary;
+	
+	@Enumerated
+	private ValidEnum valid;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar beginTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar endTime;
+	
+	@Enumerated
+	private PermanentEnum permanent;
 
 	public Long getId() {
 		return id;
@@ -54,6 +74,38 @@ public class Rule {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+	
+	public ValidEnum getValid() {
+		return valid;
+	}
+
+	public void setValid(ValidEnum valid) {
+		this.valid = valid;
+	}
+
+	public Calendar getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Calendar beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Calendar getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Calendar endTime) {
+		this.endTime = endTime;
+	}
+
+	public PermanentEnum getPermanent() {
+		return permanent;
+	}
+
+	public void setPermanent(PermanentEnum permanent) {
+		this.permanent = permanent;
 	}
 
 	@Override
