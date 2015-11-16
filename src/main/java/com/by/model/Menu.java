@@ -1,29 +1,20 @@
 package com.by.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-@Table(name = "by_authority")
 @Entity
-public class Authority {
+@Table(name = "by_menu")
+public class Menu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String name;
-
-	@ManyToMany
-	@JoinTable(name = "by_auth_menu", joinColumns = @JoinColumn(name = "auth_id") , inverseJoinColumns = @JoinColumn(name = "menu_id") )
-	private List<Menu> menus;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -56,7 +47,7 @@ public class Authority {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Authority other = (Authority) obj;
+		Menu other = (Menu) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

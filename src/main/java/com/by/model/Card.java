@@ -39,6 +39,8 @@ public class Card {
 	
 	@Enumerated
 	private ValidEnum valid;
+	
+	private Integer level;
 
 	public Card() {
 	}
@@ -85,6 +87,14 @@ public class Card {
 
 	public void setValid(ValidEnum valid) {
 		this.valid = valid;
+	}
+	
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 
 	@Override

@@ -1,28 +1,33 @@
 package com.by.model;
 
-import java.util.List;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-@Table(name = "by_authority")
 @Entity
-public class Authority {
+@Table(name = "score_history")
+public class ScoreHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String name;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private Member member;
 
-	@ManyToMany
-	@JoinTable(name = "by_auth_menu", joinColumns = @JoinColumn(name = "auth_id") , inverseJoinColumns = @JoinColumn(name = "menu_id") )
-	private List<Menu> menus;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar createdTime;
+
+	private int deposit;
 
 	public Long getId() {
 		return id;
@@ -32,12 +37,28 @@ public class Authority {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public Calendar getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Calendar createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public int getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(int deposit) {
+		this.deposit = deposit;
 	}
 
 	@Override
@@ -56,7 +77,7 @@ public class Authority {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Authority other = (Authority) obj;
+		ScoreHistory other = (ScoreHistory) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -64,4 +85,5 @@ public class Authority {
 			return false;
 		return true;
 	}
+
 }

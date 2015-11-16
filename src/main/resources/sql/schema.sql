@@ -1,3 +1,10 @@
+create table by_menu(
+	id bigint not null AUTO_INCREMENT,
+	name varchar(20),
+	href varchar(50),
+	primary key(id)
+);
+
 create table by_user(
 	id bigint not null AUTO_INCREMENT,
 	name varchar(20),
@@ -20,6 +27,12 @@ create table by_user_auth(
 	foreign key(auth_id) references by_authority(id)
 );
 
+create table by_auth_menu(
+	auth_id bigint,
+	menu_id bigint,
+	primary key(auth_id,menu_id)
+);
+
 create table by_category(
 	id bigint not null AUTO_INCREMENT,
 	parent_id bigint,
@@ -32,6 +45,7 @@ create table by_card(
 	id bigint not null AUTO_INCREMENT,
 	name varchar(50),
 	valid smallint,
+	level smallint default 0,
 	primary key(id)
 );
 
