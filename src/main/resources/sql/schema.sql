@@ -30,6 +30,8 @@ create table by_user_auth(
 create table by_auth_menu(
 	auth_id bigint,
 	menu_id bigint,
+	foreign key(auth_id) references by_authority(id),
+	foreign key(menu_id) references by_menu(id),
 	primary key(auth_id,menu_id)
 );
 
@@ -45,7 +47,7 @@ create table by_card(
 	id bigint not null AUTO_INCREMENT,
 	name varchar(50),
 	valid smallint,
-	level smallint default 0,
+	initscore int,
 	primary key(id)
 );
 
@@ -80,4 +82,12 @@ create table activtity(
 create table by_coupon(
 	id bigint not null AUTO_INCREMENT,
 	primary key(id),
+);
+
+create table by_exchange(
+	member_id bigint,
+	card_id bigint,
+	primary key(member_id,card_id),
+	foreign key(member_id) references by_member(id),
+	foreign key(card_id) references by_card(id)
 );

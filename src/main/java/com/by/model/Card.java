@@ -36,17 +36,17 @@ public class Card {
 	@OneToOne(mappedBy = "card", fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Member member;
-	
+
 	@Enumerated
 	private ValidEnum valid;
-	
-	private Integer level;
+
+	private int initScore;
 
 	public Card() {
 	}
-	
-	public Card(Long id){
-		this.id=id;
+
+	public Card(Long id) {
+		this.id = id;
 	}
 
 	public Long getId() {
@@ -80,7 +80,7 @@ public class Card {
 	public void setMember(Member member) {
 		this.member = member;
 	}
-	
+
 	public ValidEnum getValid() {
 		return valid;
 	}
@@ -88,13 +88,13 @@ public class Card {
 	public void setValid(ValidEnum valid) {
 		this.valid = valid;
 	}
-	
-	public Integer getLevel() {
-		return level;
+
+	public int getInitScore() {
+		return initScore;
 	}
 
-	public void setLevel(Integer level) {
-		this.level = level;
+	public void setInitScore(int initScore) {
+		this.initScore = initScore;
 	}
 
 	@Override

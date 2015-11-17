@@ -1,5 +1,7 @@
 package com.by.model;
 
+import java.util.Calendar;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "by_coupon")
@@ -18,11 +22,19 @@ public class Coupon {
 	private String name;
 
 	private String code;
-
-	@ManyToOne()
-	@JoinColumn(name="activity_id")
-	private Activity activity;
 	
+	private String category;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar beginTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar endTime;
+
+	@ManyToOne
+	@JoinColumn(name="member_id")
+	private Member member;
+
 	public Long getId() {
 		return id;
 	}
@@ -47,12 +59,36 @@ public class Coupon {
 		this.code = code;
 	}
 
-	public Activity getActivity() {
-		return activity;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setActivity(Activity activity) {
-		this.activity = activity;
+	public void setMember(Member member) {
+		this.member = member;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public Calendar getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Calendar beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Calendar getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Calendar endTime) {
+		this.endTime = endTime;
 	}
 
 	@Override

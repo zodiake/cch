@@ -1,15 +1,11 @@
 package com.by.model;
 
 import java.util.Calendar;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,9 +25,18 @@ public class Activity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar endTime;
 
-	@OneToMany(mappedBy = "activity", cascade = { CascadeType.PERSIST },fetch=FetchType.LAZY)
-	private List<Coupon> coupons;
-	
+	private String summary;
+
+	private Integer score;
+
+	public Activity() {
+
+	}
+
+	public Activity(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -64,12 +69,20 @@ public class Activity {
 		this.endTime = endTime;
 	}
 
-	public List<Coupon> getCoupons() {
-		return coupons;
+	public String getSummary() {
+		return summary;
 	}
 
-	public void setCoupons(List<Coupon> coupons) {
-		this.coupons = coupons;
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
 	@Override

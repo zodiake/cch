@@ -7,13 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.auth0.jwt.JWTVerifier;
 import com.by.model.User;
+import com.by.utils.JWTUtils;
 
 public class JWTInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String authorization = request.getHeader("Authorization");
@@ -22,8 +21,7 @@ public class JWTInterceptor extends HandlerInterceptorAdapter {
 		String[] tokens = authorization.split(" ");
 		if (tokens.length != 2 && !tokens[0].equals("Bearer"))
 			return false;
-		Map<String, Object> decodedPayload = new JWTVerifier("crm").verify(tokens[1]);
-		Map<Object, Object> map = (Map<Object, Object>) decodedPayload.get("user");
+		Map<Object, Object> map = JWTUtils.decode(tokens[1]);
 		String name = (String) map.get("name");
 		Integer id = (Integer) map.get("id");
 		request.setAttribute("user", new User(id.longValue(), name));

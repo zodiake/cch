@@ -19,13 +19,14 @@ import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.model.Member;
 import com.by.service.MemberService;
+import com.by.utils.JWTUtils;
 
 @Controller
 @RequestMapping(value = "/member")
 public class MemberController {
 	@Autowired
 	private MemberService service;
-	
+
 	@Autowired
 	private ShaPasswordEncoder encoder;
 
@@ -45,9 +46,10 @@ public class MemberController {
 	// 用户登入
 	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	@ResponseBody
-	public Status signUp(@Valid Member member, BindingResult result) {
+	public Status signUp(@Valid @RequestBody Member member, BindingResult result) {
+		System.out.println(encoder.encodePassword(member.getPassword(), null));
 		member.setPassword(encoder.encodePassword(member.getPassword(), null));
-		return service.findByNameAndPassword(member).map(i -> new Status("success"))
+		return service.findByNameAndPassword(member).map(i -> new Success<String>(JWTUtils.encode(i)))
 				.orElseThrow(() -> new NotFoundException());
 	}
 

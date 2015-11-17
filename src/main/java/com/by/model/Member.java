@@ -1,6 +1,7 @@
 package com.by.model;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,8 +36,9 @@ public class Member {
 	@Min(value = 4)
 	private String password;
 
+	// 注册时间
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar signupTime;
+	private Calendar createdTime;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "card_id")
@@ -44,11 +47,16 @@ public class Member {
 
 	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
 	private MemberDetail memberDetail;
-	
-	public Member(){}
-	
-	public Member(Long id){
-		this.id=id;
+
+	// 兑换记录
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+	private List<Coupon> coupons;
+
+	public Member() {
+	}
+
+	public Member(Long id) {
+		this.id = id;
 	}
 
 	public Long getId() {
@@ -83,12 +91,20 @@ public class Member {
 		this.card = card;
 	}
 
-	public Calendar getSignupTime() {
-		return signupTime;
+	public Calendar getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setSignupTime(Calendar signupTime) {
-		this.signupTime = signupTime;
+	public void setCreatedTime(Calendar createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public List<Coupon> getCoupons() {
+		return coupons;
+	}
+
+	public void setCoupons(List<Coupon> coupons) {
+		this.coupons = coupons;
 	}
 
 	public MemberDetail getMemberDetail() {
