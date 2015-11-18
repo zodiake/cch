@@ -79,9 +79,30 @@ create table activtity(
 	primary key(id),
 );
 
+create table by_coupon_summary(
+	id bigint not null AUTO_INCREMENT,
+	name varchar(30),
+	total smallint,
+	score smallint,
+	valid smallint default 1,
+	created_Time timestamp,
+	created_By varchar(10),
+	updated_Time timestamp,
+	updated_By varchar(10),
+	begin_Time timestamp,
+	end_Time timestamp,
+	primary key(id)
+);
+
 create table by_coupon(
 	id bigint not null AUTO_INCREMENT,
-	primary key(id),
+	code char(64),
+	member_id bigint,
+	summary_id bigint,
+	exchange_Time timestamp,
+	foreign key(summary_id) references by_coupon_summary(id),
+	foreign key(member_id) references by_member(id),
+	primary key(id)
 );
 
 create table by_exchange(
@@ -90,4 +111,19 @@ create table by_exchange(
 	primary key(member_id,card_id),
 	foreign key(member_id) references by_member(id),
 	foreign key(card_id) references by_card(id)
+);
+
+create by_parking_template(
+	id bigint not null AUTO_INCREMENT,
+	name varchar(50),
+	amount smallint,
+	valid smallint,
+	created_time timestamp,
+	created_by varchar(20),
+	updated_time timestamp,
+	updated_by varchar(20),
+	primary key(id)
+);
+
+create by_parking_coupon_exchange_history(
 );

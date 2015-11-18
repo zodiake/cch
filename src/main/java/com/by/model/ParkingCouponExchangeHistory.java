@@ -1,8 +1,8 @@
 package com.by.model;
 
-import java.io.Serializable;
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,30 +13,24 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
-@Table(name = "by_coupon")
-public class Coupon implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+@Table(name = "by_parking_coupon_exchange_history")
+public class ParkingCouponExchangeHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String code;
-
-	@ManyToOne
-	@JoinColumn(name = "member_id")
-	private Member member;
-
-	@ManyToOne
-	@JoinColumn(name = "summary_id")
-	@JsonBackReference
-	private CouponSummary summary;
+	private String mobile;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar exchangeTime;
+
+	@ManyToOne
+	@JoinColumn(name = "coupon_id")
+	private ParkingCoupon coupon;
+
+	@Column(name = "created_by")
+	private String createdBy;
 
 	public Long getId() {
 		return id;
@@ -46,28 +40,12 @@ public class Coupon implements Serializable {
 		this.id = id;
 	}
 
-	public String getCode() {
-		return code;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
-	}
-
-	public CouponSummary getSummary() {
-		return summary;
-	}
-
-	public void setSummary(CouponSummary summary) {
-		this.summary = summary;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	public Calendar getExchangeTime() {
@@ -76,6 +54,22 @@ public class Coupon implements Serializable {
 
 	public void setExchangeTime(Calendar exchangeTime) {
 		this.exchangeTime = exchangeTime;
+	}
+
+	public ParkingCoupon getCoupon() {
+		return coupon;
+	}
+
+	public void setCoupon(ParkingCoupon coupon) {
+		this.coupon = coupon;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	@Override
@@ -94,7 +88,7 @@ public class Coupon implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Coupon other = (Coupon) obj;
+		ParkingCouponExchangeHistory other = (ParkingCouponExchangeHistory) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
