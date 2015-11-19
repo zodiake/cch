@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,23 +15,25 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "by_parking_coupon_exchange_history")
-public class ParkingCouponExchangeHistory {
+@Table(name = "by_parking_coupon_member_history")
+public class ParkingCouponMemberHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String mobile;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private Member member;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "exchange_time")
 	private Calendar exchangeTime;
 
-	@ManyToOne
-	@JoinColumn(name = "coupon_id")
-	private ParkingCoupon coupon;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "license_id")
+	private License license;
 
-	@Column(name = "created_by")
-	private String createdBy;
+	private Integer total;
 
 	public Long getId() {
 		return id;
@@ -40,12 +43,12 @@ public class ParkingCouponExchangeHistory {
 		this.id = id;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 	public Calendar getExchangeTime() {
@@ -56,20 +59,12 @@ public class ParkingCouponExchangeHistory {
 		this.exchangeTime = exchangeTime;
 	}
 
-	public ParkingCoupon getCoupon() {
-		return coupon;
+	public Integer getTotal() {
+		return total;
 	}
 
-	public void setCoupon(ParkingCoupon coupon) {
-		this.coupon = coupon;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setTotal(Integer total) {
+		this.total = total;
 	}
 
 	@Override
@@ -88,7 +83,7 @@ public class ParkingCouponExchangeHistory {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ParkingCouponExchangeHistory other = (ParkingCouponExchangeHistory) obj;
+		ParkingCouponMemberHistory other = (ParkingCouponMemberHistory) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -38,6 +40,7 @@ public class Member {
 
 	// 注册时间
 	@Temporal(TemporalType.TIMESTAMP)
+	@JoinColumn(name="created_time")
 	private Calendar createdTime;
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -48,9 +51,16 @@ public class Member {
 	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
 	private MemberDetail memberDetail;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+	private List<ParkingCouponMember> parkingCoupons;
+
 	// 兑换记录
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
 	private List<Coupon> coupons;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "by_member_license", joinColumns = @JoinColumn(name = "member_id") , inverseJoinColumns = @JoinColumn(name = "license_id") )
+	private List<License> licenses;
 
 	public Member() {
 	}
@@ -113,6 +123,14 @@ public class Member {
 
 	public void setMemberDetail(MemberDetail memberDetail) {
 		this.memberDetail = memberDetail;
+	}
+
+	public List<ParkingCouponMember> getParkingCoupons() {
+		return parkingCoupons;
+	}
+
+	public void setParkingCoupons(List<ParkingCouponMember> parkingCoupons) {
+		this.parkingCoupons = parkingCoupons;
 	}
 
 	@Override

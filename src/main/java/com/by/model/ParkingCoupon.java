@@ -1,12 +1,15 @@
 package com.by.model;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -16,7 +19,8 @@ import javax.persistence.TemporalType;
 import com.by.typeEnum.ValidEnum;
 
 @Entity
-@Table(name = "by_parking_template")
+@Table(name = "by_parking_coupon")
+// 停车券模板
 public class ParkingCoupon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +29,11 @@ public class ParkingCoupon {
 	private String name;
 
 	private int amount;
+
+	private int score;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "coupon")
+	private List<ParkingCouponMember> members;
 
 	private ValidEnum valid;
 
@@ -41,6 +50,13 @@ public class ParkingCoupon {
 
 	@Column(name = "updated_by")
 	private String updatedBy;
+
+	public ParkingCoupon() {
+	}
+
+	public ParkingCoupon(Long id) {
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;
@@ -72,6 +88,14 @@ public class ParkingCoupon {
 
 	public void setValid(ValidEnum valid) {
 		this.valid = valid;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public Calendar getCreatedTime() {
@@ -114,6 +138,14 @@ public class ParkingCoupon {
 	@PreUpdate
 	private void preUpdate() {
 		this.updatedTime = Calendar.getInstance();
+	}
+
+	public List<ParkingCouponMember> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<ParkingCouponMember> members) {
+		this.members = members;
 	}
 
 	@Override
