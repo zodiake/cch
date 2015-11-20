@@ -11,4 +11,6 @@ public interface ParkingCouponService {
 	public Optional<ParkingCoupon> update(ParkingCoupon coupon);
 	
 	public List<ParkingCoupon> findAll();
+	
+	public Optional<ParkingCoupon> findById(Long id);
 }

@@ -80,6 +80,15 @@ create table by_member(
 	primary key(id),
 );
 
+create table by_member_detail(
+	id bigint not null AUTO_INCREMENT,
+	real_name varchar(10),
+	address varchar(225),
+	member_id bigint,
+	foreign key(member_id) references by_member(id),
+	primary key(id),
+);
+
 create table by_member_license(
 	member_id bigint not null,
 	license_id bigint not null,
@@ -119,20 +128,11 @@ create table by_coupon(
 	primary key(id)
 );
 
-create table by_parking_coupon_member(
-	member_id bigint,
-	card_id bigint,
-	created_time timestamp,
-	total int,
-	primary key(member_id,card_id),
-	foreign key(member_id) references by_member(id),
-	foreign key(card_id) references by_card(id)
-);
-
 create table by_parking_coupon(
 	id bigint not null AUTO_INCREMENT,
 	name varchar(50),
 	amount smallint,
+	score int,
 	valid smallint,
 	created_time timestamp,
 	created_by varchar(20),
@@ -141,10 +141,21 @@ create table by_parking_coupon(
 	primary key(id)
 );
 
+create table by_parking_coupon_member(
+	member_id bigint,
+	parking_coupon_id bigint,
+	created_time timestamp,
+	total int,
+	primary key(member_id,parking_coupon_id),
+	foreign key(member_id) references by_member(id),
+	foreign key(parking_coupon_id) references by_parking_coupon(id)
+);
+
 create table by_parking_coupon_member_history(
 	id bigint not null AUTO_INCREMENT,
 	member_id bigint,
 	parking_coupon_id bigint,
+	license varchar(20),
 	exchange_time timestamp,
 	created_by varchar(20),
 	total int,

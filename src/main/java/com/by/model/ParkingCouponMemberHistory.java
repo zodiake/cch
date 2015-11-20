@@ -29,11 +29,18 @@ public class ParkingCouponMemberHistory {
 	@Column(name = "exchange_time")
 	private Calendar exchangeTime;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "license_id")
-	private License license;
+	private String license;
 
 	private Integer total;
+
+	public ParkingCouponMemberHistory() {
+	}
+
+	public ParkingCouponMemberHistory(Member member, String license, int total) {
+		this.member = member;
+		this.license = license;
+		this.total = total;
+	}
 
 	public Long getId() {
 		return id;
@@ -65,6 +72,14 @@ public class ParkingCouponMemberHistory {
 
 	public void setTotal(Integer total) {
 		this.total = total;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package com.by.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.by.exception.Fail;
+import com.by.exception.NotEnoughCouponException;
 import com.by.exception.NotFoundException;
 
 @ControllerAdvice
@@ -23,12 +22,18 @@ public class ExceptionController {
 		return new ResponseEntity<Fail>(new Fail("not found"), HttpStatus.NOT_FOUND);
 	}
 
-	/*
-	@ExceptionHandler(value = { Exception.class, RuntimeException.class })
+	@ExceptionHandler(NotEnoughCouponException.class)
 	@ResponseBody
-	public ResponseEntity<Fail> defaultErrorHandler(HttpServletRequest request, Exception e) {
-		log.error(null, request.getParameterMap());
-		return new ResponseEntity<Fail>(new Fail("system fail"), HttpStatus.NOT_FOUND);
+	public ResponseEntity<Fail> notEnouthCouponException() {
+		return new ResponseEntity<Fail>(new Fail("not enough coupon"), HttpStatus.BAD_REQUEST);
 	}
-	*/
+
+	/*
+	 * @ExceptionHandler(value = { Exception.class, RuntimeException.class })
+	 * 
+	 * @ResponseBody public ResponseEntity<Fail>
+	 * defaultErrorHandler(HttpServletRequest request, Exception e) {
+	 * log.error(null, request.getParameterMap()); return new
+	 * ResponseEntity<Fail>(new Fail("system fail"), HttpStatus.NOT_FOUND); }
+	 */
 }

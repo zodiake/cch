@@ -40,4 +40,10 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 		return Lists.newArrayList(repository.findAll());
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<ParkingCoupon> findById(Long id) {
+		return repository.findById(id);
+	}
+
 }

@@ -41,4 +41,5 @@ dependencies {
     compile("com.google.guava:guava:18.0")
     runtime("com.h2database:h2")
     compile("org.scala-lang:scala-library:2.11.7")
+    testCompile("org.springframework:spring-test")
 }

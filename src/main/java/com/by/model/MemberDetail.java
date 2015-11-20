@@ -1,5 +1,6 @@
 package com.by.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,8 @@ public class MemberDetail {
 	@GeneratedValue
 	private Long id;
 
-	private String name;
+	@Column(name = "real_name")
+	private String realName;
 
 	private String address;
 
@@ -25,7 +27,7 @@ public class MemberDetail {
 	@JoinColumn(name = "member_id")
 	@JsonBackReference
 	private Member member;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -34,12 +36,12 @@ public class MemberDetail {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getRealName() {
+		return realName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 
 	public String getAddress() {

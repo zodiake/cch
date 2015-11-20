@@ -132,6 +132,14 @@ public class Member {
 	public void setParkingCoupons(List<ParkingCouponMember> parkingCoupons) {
 		this.parkingCoupons = parkingCoupons;
 	}
+	
+	public List<License> getLicenses() {
+		return licenses;
+	}
+
+	public void setLicenses(List<License> licenses) {
+		this.licenses = licenses;
+	}
 
 	@Override
 	public int hashCode() {
