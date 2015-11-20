@@ -7,4 +7,6 @@ public interface CouponService {
 	public Coupon bindMember(Coupon coupon, Member member);
 
 	public Coupon save(Coupon coupon);
+	
+	public Long count();
 }

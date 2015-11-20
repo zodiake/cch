@@ -19,8 +19,8 @@ insert into by_category(id,parent_id) values(4,1);
 insert into by_card(id,name) values(1,'low');
 
 -- test member
-insert into by_member(id,name,card_id) values(1,'tom',1);
-insert into by_member(id,name,card_id) values(2,'mary',1);
+insert into by_member(id,name,card_id,score) values(1,'tom',1,100);
+insert into by_member(id,name,card_id,score) values(2,'mary',1,200);
 
 -- test rule
 insert into by_rule(id,rate,card_id) values(1,2.0,1);

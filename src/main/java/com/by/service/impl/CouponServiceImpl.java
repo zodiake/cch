@@ -1,7 +1,5 @@
 package com.by.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +25,9 @@ public class CouponServiceImpl implements CouponService {
 		return repository.save(coupon);
 	}
 	
-	public void save(){
-		
+	@Override
+	public Long count() {
+		return repository.count();
 	}
 
 }

@@ -75,6 +75,7 @@ create table by_member(
 	name char(11) unique,
 	password varchar(20),
 	card_id bigint,
+	score int,
 	created_time timestamp,
 	foreign key(card_id) references by_card(id),
 	primary key(id),
@@ -162,4 +163,13 @@ create table by_parking_coupon_member_history(
 	primary key(id),
 	foreign key(member_id) references by_member(id),
 	foreign key(parking_coupon_id) references by_parking_coupon(id)
+);
+
+create table by_score_history(
+	id bigint not null AUTO_INCREMENT,
+	member_id bigint,
+	created_time timestamp,
+	deposit int,
+	primary key(id),
+	foreign key(member_id) references by_member(id)
 );

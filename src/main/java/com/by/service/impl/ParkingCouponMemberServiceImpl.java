@@ -10,6 +10,7 @@ import com.by.exception.LicenseCannotBeNull;
 import com.by.exception.MemberNotFoundException;
 import com.by.exception.NoCouponException;
 import com.by.exception.NotEnoughCouponException;
+import com.by.exception.NotEnoughScore;
 import com.by.exception.NotFoundException;
 import com.by.form.AdminCouponForm;
 import com.by.model.Member;
@@ -21,6 +22,7 @@ import com.by.service.MemberService;
 import com.by.service.ParkingCouponMemberHistroyService;
 import com.by.service.ParkingCouponMemberService;
 import com.by.service.ParkingCouponService;
+import com.by.service.ScoreHistoryService;
 
 @Service
 @Transactional
@@ -35,6 +37,8 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 	private LicenseService licenseService;
 	@Autowired
 	private ParkingCouponService parkingCouponService;
+	@Autowired
+	private ScoreHistoryService scoreHistoryService;
 
 	@Override
 	public ParkingCouponMember save(ParkingCoupon coupon, Member m, int total) {
@@ -72,10 +76,10 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 	@Override
 	public ParkingCouponMember useCoupon(Member member, int total, String license) {
 		Optional<ParkingCouponMember> pcm = repository.findByMember(member);
-		//如果该用户无停车券
+		// 如果该用户无停车券
 		if (!pcm.isPresent())
 			throw new NoCouponException();
-		//该用户的停车券数量为0，或者希望使用的停车券数量大于该用户现有数量
+		// 该用户的停车券数量为0，或者希望使用的停车券数量大于该用户现有数量
 		if (total > pcm.get().getTotal() || pcm.get().getTotal() == 0)
 			throw new NotEnoughCouponException();
 		int source = pcm.get().getTotal();
@@ -92,5 +96,30 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 	@Override
 	public Optional<ParkingCouponMember> findByMember(Member member) {
 		return repository.findByMember(member);
+	}
+
+	@Override
+	public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int count) {
+		Optional<Member> mem = memberService.findById(member.getId());
+		if (!mem.isPresent())
+			throw new MemberNotFoundException();
+		Optional<ParkingCoupon> pc = parkingCouponService.findById(coupon.getId());
+		if (!pc.isPresent())
+			throw new NoCouponException();
+		Member m = mem.get();
+		if (m.getScore() < coupon.getScore() * count) {
+			throw new NotEnoughScore();
+		}
+		int score = m.getScore();
+		scoreHistoryService.save(mem.get(), coupon.getScore());
+		m.setScore(score - coupon.getScore() * count);
+		Optional<ParkingCouponMember> pcm = repository.findByMember(member);
+		if (pcm.isPresent()) {
+			int sourceTotal = pcm.get().getTotal();
+			pcm.get().setTotal(count + sourceTotal);
+			return pcm.get();
+		} else {
+			return save(coupon, m, count);
+		}
 	}
 }

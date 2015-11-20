@@ -9,9 +9,20 @@ import com.by.model.ParkingCouponMember;
 
 public interface ParkingCouponMemberService {
 	/*
-	 * 用户获得停车券
+	 * 用户获得停车券,由商铺发放
 	 */
 	public ParkingCouponMember getCoupon(AdminCouponForm form);
+
+	/*
+	 * 用户通过积分兑换
+	 * 
+	 * @param member 用户
+	 * 
+	 * @param coupon 兑换的停车券
+	 * 
+	 * @param count 兑换的数量
+	 */
+	public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int count);
 
 	/*
 	 * 用户使用停车券

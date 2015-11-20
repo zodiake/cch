@@ -2,6 +2,7 @@ package com.by.model;
 
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,12 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "score_history")
+@Table(name = "by_score_history")
 public class ScoreHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,7 @@ public class ScoreHistory {
 	private Member member;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_time")
 	private Calendar createdTime;
 
 	private int deposit;
@@ -59,6 +62,11 @@ public class ScoreHistory {
 
 	public void setDeposit(int deposit) {
 		this.deposit = deposit;
+	}
+
+	@PrePersist
+	private void prePersist() {
+		this.createdTime = Calendar.getInstance();
 	}
 
 	@Override

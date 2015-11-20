@@ -18,6 +18,7 @@ import com.by.Application;
 import com.by.exception.MemberNotFoundException;
 import com.by.form.AdminCouponForm;
 import com.by.model.Member;
+import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
 import com.by.model.ParkingCouponMemberHistory;
 import com.by.service.MemberService;
@@ -56,6 +57,15 @@ public class CouponMemberTest {
 		Page<ParkingCouponMemberHistory> histories = historyService.findByMember(new Member(1l),
 				new PageRequest(1, 10));
 		assertEquals(histories.getTotalElements(), 1);
+	}
+
+	@Test
+	public void exchangeCoupon() {
+		Member member = new Member(2l);
+		ParkingCoupon coupon = new ParkingCoupon(1l);
+		int count = 2;
+		Optional<ParkingCouponMember> pcm = service.findByMember(member);
+		assertEquals(new Integer(2), pcm.get().getTotal());
 	}
 
 	@Test

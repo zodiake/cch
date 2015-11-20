@@ -40,7 +40,7 @@ public class Member {
 
 	// 注册时间
 	@Temporal(TemporalType.TIMESTAMP)
-	@JoinColumn(name="created_time")
+	@JoinColumn(name = "created_time")
 	private Calendar createdTime;
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -61,6 +61,8 @@ public class Member {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "by_member_license", joinColumns = @JoinColumn(name = "member_id") , inverseJoinColumns = @JoinColumn(name = "license_id") )
 	private List<License> licenses;
+
+	private int score;
 
 	public Member() {
 	}
@@ -132,13 +134,21 @@ public class Member {
 	public void setParkingCoupons(List<ParkingCouponMember> parkingCoupons) {
 		this.parkingCoupons = parkingCoupons;
 	}
-	
+
 	public List<License> getLicenses() {
 		return licenses;
 	}
 
 	public void setLicenses(List<License> licenses) {
 		this.licenses = licenses;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	@Override
