@@ -3,7 +3,9 @@ package com.by.model;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.by.typeEnum.ExchangeState;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -36,7 +39,16 @@ public class Coupon implements Serializable {
 	private CouponSummary summary;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "exchange_time")
 	private Calendar exchangeTime;
+	
+	@Enumerated
+	@Column(name="exchange_state")
+	private ExchangeState state;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "use_time")
+	private Calendar useTime;
 
 	public Long getId() {
 		return id;
@@ -76,6 +88,22 @@ public class Coupon implements Serializable {
 
 	public void setExchangeTime(Calendar exchangeTime) {
 		this.exchangeTime = exchangeTime;
+	}
+	
+	public ExchangeState getState() {
+		return state;
+	}
+
+	public void setState(ExchangeState state) {
+		this.state = state;
+	}
+
+	public Calendar getUseTime() {
+		return useTime;
+	}
+
+	public void setUseTime(Calendar useTime) {
+		this.useTime = useTime;
 	}
 
 	@Override

@@ -1,32 +1,40 @@
 -- test user
-insert into by_user(id,name,password) values(1,'tom','1');
+INSERT INTO by_user (id, name, password) VALUES (1, 'tom', '1');
 
 -- test authority
-insert into by_authority(id,name) values(1,'ROLE_ADMIN');
-insert into by_authority(id,name) values(2,'ROLE_USER');
+INSERT INTO by_authority (id, name) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO by_authority (id, name) VALUES (2, 'ROLE_USER');
 
--- test user_authority
-insert into by_user_auth values(1,1);
-insert into by_user_auth values(1,2);
+-- test user_auth
+INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 1);
+INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 2);
 
--- test category
-insert into by_category(id,parent_id) values(1,null);
-insert into by_category(id,parent_id) values(2,1);
-insert into by_category(id,parent_id) values(3,1);
-insert into by_category(id,parent_id) values(4,1);
+-- test menu
+INSERT INTO by_menu (id, name, href) VALUES (1, 'menu1', 'haha');
+INSERT INTO by_menu (id, name, href) VALUES (2, 'menu2', 'haha');
+INSERT INTO by_menu (id, name, href) VALUES (3, 'menu3', 'haha');
+
+-- test auth_menu
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 1);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 1);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 2);
 
 -- test card
-insert into by_card(id,name) values(1,'low');
+INSERT INTO by_card (id, name) VALUES (1, 'low');
 
 -- test member
-insert into by_member(id,name,card_id,score) values(1,'tom',1,100);
-insert into by_member(id,name,card_id,score) values(2,'mary',1,200);
+INSERT INTO by_member (id, name, card_id, score) VALUES (1, 'tom', 1, 100);
+INSERT INTO by_member (id, name, card_id, score) VALUES (2, 'mary', 1, 200);
 
 -- test rule
-insert into by_rule(id,rate,card_id) values(1,2.0,1);
+INSERT INTO by_rule (id, rate, card_id) VALUES (1, 2.0, 1);
 
 -- test parking_coupon
-insert into by_parking_coupon(id,name,amount,score,valid) values(1,'haha',100,100,1);
+INSERT INTO by_parking_coupon (id, name, amount, score, valid) VALUES (1, 'haha', 100, 100, 1);
 
 -- test parking_coupon_member
-insert into by_parking_coupon_member(member_id,parking_coupon_id,total) values(2,1,10);
+INSERT INTO by_parking_coupon_member (member_id, parking_coupon_id, total) VALUES (2, 1, 10);
+
+-- test shop
+INSERT INTO by_shop(id,name) VALUES (1,'shop1');
+

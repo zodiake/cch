@@ -32,6 +32,8 @@ public class ScoreHistory {
 
 	private int deposit;
 
+	private String summary;
+
 	public Long getId() {
 		return id;
 	}
@@ -67,6 +69,14 @@ public class ScoreHistory {
 	@PrePersist
 	private void prePersist() {
 		this.createdTime = Calendar.getInstance();
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	@Override

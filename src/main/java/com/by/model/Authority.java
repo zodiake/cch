@@ -40,6 +40,14 @@ public class Authority {
 		this.name = name;
 	}
 
+	public List<Menu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

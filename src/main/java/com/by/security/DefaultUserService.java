@@ -1,8 +1,11 @@
 package com.by.security;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.by.model.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,7 +69,6 @@ public class DefaultUserService implements UserDetailsService {
 		public boolean isEnabled() {
 			return true;
 		}
-
 	}
 
 }

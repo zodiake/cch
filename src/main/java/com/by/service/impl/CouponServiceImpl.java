@@ -17,6 +17,13 @@ public class CouponServiceImpl implements CouponService {
 
 	@Override
 	public Coupon bindMember(Coupon coupon, Member member) {
+		Coupon source = repository.findOne(coupon.getId());
+		assert source.getMember() == null;
+		source.setMember(member);
+		return source;
+	}
+	
+	public Coupon useCoupon(Coupon coupon){
 		return null;
 	}
 
@@ -24,7 +31,7 @@ public class CouponServiceImpl implements CouponService {
 	public Coupon save(Coupon coupon) {
 		return repository.save(coupon);
 	}
-	
+
 	@Override
 	public Long count() {
 		return repository.count();

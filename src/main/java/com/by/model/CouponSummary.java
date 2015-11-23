@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -41,20 +42,27 @@ public class CouponSummary {
 	private ValidEnum valid;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="created_time")
 	private Calendar createdTime;
 
+	@Column(name="created_by")
 	private String createdBy;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="updated_time")
 	private Calendar updatedTime;
 
+	@Column(name="updated_by")
 	private String updatedBy;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	// 有效期开始
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="begin_time")
 	private Calendar beginTime;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	// 有效期结束
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="end_time")
 	private Calendar endTime;
 
 	public Long getId() {

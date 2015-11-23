@@ -2,15 +2,7 @@ package com.by.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.by.typeEnum.ValidEnum;
 
@@ -28,6 +20,9 @@ public class User {
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name = "by_user_auth", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "auth_id") )
 	private Set<Authority> authorites;
+
+	@OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    private Shop shop;
 
 	private ValidEnum valid;
 
@@ -79,7 +74,15 @@ public class User {
 		this.valid = valid;
 	}
 
-	@Override
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

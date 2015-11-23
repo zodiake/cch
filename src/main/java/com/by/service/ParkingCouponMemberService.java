@@ -6,12 +6,13 @@ import com.by.form.AdminCouponForm;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
+import com.by.model.Shop;
 
 public interface ParkingCouponMemberService {
 	/*
 	 * 用户获得停车券,由商铺发放
 	 */
-	public ParkingCouponMember getCoupon(AdminCouponForm form);
+	public ParkingCouponMember getCoupon(AdminCouponForm form,Shop shop);
 
 	/*
 	 * 用户通过积分兑换

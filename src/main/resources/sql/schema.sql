@@ -1,175 +1,194 @@
-create table by_menu(
-	id bigint not null AUTO_INCREMENT,
-	name varchar(20),
-	href varchar(50),
-	primary key(id)
+CREATE TABLE by_menu (
+  id   BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(20),
+  href VARCHAR(50),
+  PRIMARY KEY (id)
 );
 
-create table by_license(
-	id bigint not null AUTO_INCREMENT,
-	name varchar(20),
-	primary key(id)
+CREATE TABLE by_license (
+  id   BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(20),
+  PRIMARY KEY (id)
 );
 
-create table by_user(
-	id bigint not null AUTO_INCREMENT,
-	name varchar(20),
-	password varchar(20),
-	valid smallint default 1,
-	primary key(id)
+CREATE TABLE by_user (
+  id       BIGINT NOT NULL AUTO_INCREMENT,
+  name     VARCHAR(20),
+  password VARCHAR(20),
+  valid    SMALLINT        DEFAULT 1,
+  PRIMARY KEY (id)
 );
 
-create table by_authority(
-	id bigint not null AUTO_INCREMENT,
-	name varchar(30),
-	primary key(id)
+CREATE TABLE by_shop (
+  id      BIGINT NOT NULL AUTO_INCREMENT,
+  name    VARCHAR(225),
+  user_id BIGINT,
+  FOREIGN KEY (user_id) REFERENCES by_user (id),
+  PRIMARY KEY (id)
 );
 
-create table by_user_auth(
-	user_id bigint not null,
-	auth_id bigint not null,
-	primary key(user_id,auth_id),
-	foreign key(user_id) references by_user(id),
-	foreign key(auth_id) references by_authority(id)
+CREATE TABLE by_authority (
+  id   BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30),
+  PRIMARY KEY (id)
 );
 
-create table by_auth_menu(
-	auth_id bigint,
-	menu_id bigint,
-	foreign key(auth_id) references by_authority(id),
-	foreign key(menu_id) references by_menu(id),
-	primary key(auth_id,menu_id)
+CREATE TABLE by_user_auth (
+  user_id BIGINT NOT NULL,
+  auth_id BIGINT NOT NULL,
+  PRIMARY KEY (user_id, auth_id),
+  FOREIGN KEY (user_id) REFERENCES by_user (id),
+  FOREIGN KEY (auth_id) REFERENCES by_authority (id)
 );
 
-create table by_category(
-	id bigint not null AUTO_INCREMENT,
-	parent_id bigint,
-	primary key(id),
-	foreign key(parent_id) references by_category(id)
+CREATE TABLE by_auth_menu (
+  auth_id BIGINT,
+  menu_id BIGINT,
+  FOREIGN KEY (auth_id) REFERENCES by_authority (id),
+  FOREIGN KEY (menu_id) REFERENCES by_menu (id),
+  PRIMARY KEY (auth_id, menu_id)
+);
+
+CREATE TABLE by_category (
+  id        BIGINT NOT NULL AUTO_INCREMENT,
+  parent_id BIGINT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (parent_id) REFERENCES by_category (id)
 );
 
 
-create table by_card(
-	id bigint not null AUTO_INCREMENT,
-	name varchar(50),
-	valid smallint,
-	initscore int,
-	primary key(id)
+CREATE TABLE by_card (
+  id        BIGINT NOT NULL AUTO_INCREMENT,
+  name      VARCHAR(50),
+  valid     SMALLINT,
+  initscore INT,
+  PRIMARY KEY (id)
 );
 
-create table by_rule(
-	id bigint not null AUTO_INCREMENT,
-	rate double,
-	card_id bigint,
-	summary varchar(50),
-	valid smallint,
-	beginTime timestamp,
-	endTime timestamp,
-	permanent smallint,
-	foreign key(card_id) references by_card(id),
-	primary key(id)
+CREATE TABLE by_rule (
+  id        BIGINT NOT NULL AUTO_INCREMENT,
+  rate      DOUBLE,
+  card_id   BIGINT,
+  summary   VARCHAR(50),
+  valid     SMALLINT,
+  beginTime TIMESTAMP,
+  endTime   TIMESTAMP,
+  permanent SMALLINT,
+  FOREIGN KEY (card_id) REFERENCES by_card (id),
+  PRIMARY KEY (id)
 );
 
-create table by_member(
-	id bigint not null AUTO_INCREMENT,
-	name char(11) unique,
-	password varchar(20),
-	card_id bigint,
-	score int,
-	created_time timestamp,
-	foreign key(card_id) references by_card(id),
-	primary key(id),
+CREATE TABLE by_member (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  name         CHAR(11) UNIQUE,
+  password     VARCHAR(20),
+  card_id      BIGINT,
+  score        INT,
+  created_time TIMESTAMP,
+  FOREIGN KEY (card_id) REFERENCES by_card (id),
+  PRIMARY KEY (id),
 );
 
-create table by_member_detail(
-	id bigint not null AUTO_INCREMENT,
-	real_name varchar(10),
-	address varchar(225),
-	member_id bigint,
-	foreign key(member_id) references by_member(id),
-	primary key(id),
+CREATE TABLE by_member_detail (
+  id        BIGINT NOT NULL AUTO_INCREMENT,
+  real_name VARCHAR(10),
+  address   VARCHAR(225),
+  member_id BIGINT,
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  PRIMARY KEY (id),
 );
 
-create table by_member_license(
-	member_id bigint not null,
-	license_id bigint not null,
-	primary key(member_id,license_id),
-	foreign key(member_id) references by_member(id),
-	foreign key(license_id) references by_license(id)
+CREATE TABLE by_member_license (
+  member_id  BIGINT NOT NULL,
+  license_id BIGINT NOT NULL,
+  PRIMARY KEY (member_id, license_id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  FOREIGN KEY (license_id) REFERENCES by_license (id)
 );
 
-create table activtity(
-	id bigint not null AUTO_INCREMENT,
-	primary key(id),
+CREATE TABLE by_coupon_summary (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  name         VARCHAR(30),
+  total        SMALLINT,
+  score        SMALLINT,
+  valid        SMALLINT        DEFAULT 1,
+  created_Time TIMESTAMP,
+  created_By   VARCHAR(10),
+  updated_Time TIMESTAMP,
+  updated_By   VARCHAR(10),
+  begin_Time   TIMESTAMP,
+  end_Time     TIMESTAMP,
+  PRIMARY KEY (id)
 );
 
-create table by_coupon_summary(
-	id bigint not null AUTO_INCREMENT,
-	name varchar(30),
-	total smallint,
-	score smallint,
-	valid smallint default 1,
-	created_Time timestamp,
-	created_By varchar(10),
-	updated_Time timestamp,
-	updated_By varchar(10),
-	begin_Time timestamp,
-	end_Time timestamp,
-	primary key(id)
+CREATE TABLE by_coupon (
+  id             BIGINT NOT NULL AUTO_INCREMENT,
+  code           CHAR(64),
+  member_id      BIGINT,
+  summary_id     BIGINT,
+  exchange_Time  TIMESTAMP,
+  exchange_state SMALLINT,
+  FOREIGN KEY (summary_id) REFERENCES by_coupon_summary (id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  PRIMARY KEY (id)
 );
 
-create table by_coupon(
-	id bigint not null AUTO_INCREMENT,
-	code char(64),
-	member_id bigint,
-	summary_id bigint,
-	exchange_Time timestamp,
-	foreign key(summary_id) references by_coupon_summary(id),
-	foreign key(member_id) references by_member(id),
-	primary key(id)
+CREATE TABLE by_parking_coupon (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  name         VARCHAR(50),
+  amount       SMALLINT,
+  score        INT,
+  valid        SMALLINT,
+  created_time TIMESTAMP,
+  created_by   VARCHAR(20),
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  PRIMARY KEY (id)
 );
 
-create table by_parking_coupon(
-	id bigint not null AUTO_INCREMENT,
-	name varchar(50),
-	amount smallint,
-	score int,
-	valid smallint,
-	created_time timestamp,
-	created_by varchar(20),
-	updated_time timestamp,
-	updated_by varchar(20),
-	primary key(id)
+CREATE TABLE by_parking_coupon_member (
+  member_id         BIGINT,
+  parking_coupon_id BIGINT,
+  created_time      TIMESTAMP,
+  total             INT,
+  PRIMARY KEY (member_id, parking_coupon_id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  FOREIGN KEY (parking_coupon_id) REFERENCES by_parking_coupon (id)
 );
 
-create table by_parking_coupon_member(
-	member_id bigint,
-	parking_coupon_id bigint,
-	created_time timestamp,
-	total int,
-	primary key(member_id,parking_coupon_id),
-	foreign key(member_id) references by_member(id),
-	foreign key(parking_coupon_id) references by_parking_coupon(id)
+CREATE TABLE by_parking_coupon_exchange_history (
+  id                BIGINT NOT NULL AUTO_INCREMENT,
+  member_id         BIGINT,
+  parking_coupon_id BIGINT,
+  created_time      TIMESTAMP,
+  created_by        VARCHAR(20),
+  shop_id           BIGINT,
+  total             INT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  FOREIGN KEY (parking_coupon_id) REFERENCES by_parking_coupon (id),
+  FOREIGN KEY (shop_id) REFERENCES by_shop (id)
 );
 
-create table by_parking_coupon_member_history(
-	id bigint not null AUTO_INCREMENT,
-	member_id bigint,
-	parking_coupon_id bigint,
-	license varchar(20),
-	exchange_time timestamp,
-	created_by varchar(20),
-	total int,
-	primary key(id),
-	foreign key(member_id) references by_member(id),
-	foreign key(parking_coupon_id) references by_parking_coupon(id)
+CREATE TABLE by_parking_coupon_use_history (
+  id                BIGINT NOT NULL AUTO_INCREMENT,
+  member_id         BIGINT,
+  parking_coupon_id BIGINT,
+  created_time      TIMESTAMP,
+  total             INT,
+  license           VARCHAR(10),
+  PRIMARY KEY (id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  FOREIGN KEY (parking_coupon_id) REFERENCES by_parking_coupon (id),
 );
 
-create table by_score_history(
-	id bigint not null AUTO_INCREMENT,
-	member_id bigint,
-	created_time timestamp,
-	deposit int,
-	primary key(id),
-	foreign key(member_id) references by_member(id)
+CREATE TABLE by_score_history (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  member_id    BIGINT,
+  created_time TIMESTAMP,
+  deposit      INT,
+  summary      VARCHAR(225),
+  PRIMARY KEY (id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id)
 );
+
