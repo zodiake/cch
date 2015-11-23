@@ -43,4 +43,6 @@ public interface ParkingCouponMemberService {
 	public Optional<ParkingCouponMember> findByMember(Member member);
 
 	public ParkingCouponMember save(ParkingCoupon coupon, Member m, int total);
+
+	public ParkingCouponMember update(ParkingCouponMember coupon);
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Optional;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.by.Application;
 import com.by.exception.MemberNotFoundException;
+import com.by.exception.NotEnoughScore;
 import com.by.form.AdminCouponForm;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
@@ -36,6 +38,15 @@ public class CouponMemberTest {
 	private ParkingCouponMemberHistroyService historyService;
 	@Autowired
 	private MemberService memberService;
+
+	@After
+	public void reset() {
+		ParkingCouponMember pcm = new ParkingCouponMember();
+		pcm.setCoupon(new ParkingCoupon(1l));
+		pcm.setMember(new Member(2l));
+		pcm.setTotal(10);
+		service.update(pcm);
+	}
 
 	@Test(expected = MemberNotFoundException.class)
 	public void getCouponMemberNotExist() {
@@ -63,9 +74,20 @@ public class CouponMemberTest {
 	public void exchangeCoupon() {
 		Member member = new Member(2l);
 		ParkingCoupon coupon = new ParkingCoupon(1l);
-		int count = 2;
 		Optional<ParkingCouponMember> pcm = service.findByMember(member);
-		assertEquals(new Integer(2), pcm.get().getTotal());
+		assertEquals(new Integer(10), pcm.get().getTotal());
+		ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
+		assertEquals(new Integer(12), p.getTotal());
+	}
+
+	@Test(expected = NotEnoughScore.class)
+	public void exchangeCouponNotEnoughScore() {
+		Member member = new Member(2l);
+		ParkingCoupon coupon = new ParkingCoupon(1l);
+		Optional<ParkingCouponMember> pcm = service.findByMember(member);
+		assertEquals(new Integer(10), pcm.get().getTotal());
+		service.exchangeCoupon(member, coupon, 10);
+		assertEquals(new Integer(12), pcm.get().getTotal());
 	}
 
 	@Test

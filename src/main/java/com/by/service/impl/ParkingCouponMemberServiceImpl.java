@@ -107,12 +107,13 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 		if (!pc.isPresent())
 			throw new NoCouponException();
 		Member m = mem.get();
-		if (m.getScore() < coupon.getScore() * count) {
+		ParkingCoupon spc = pc.get();
+		int score = m.getScore();
+		if (m.getScore() < spc.getScore() * count) {
 			throw new NotEnoughScore();
 		}
-		int score = m.getScore();
-		scoreHistoryService.save(mem.get(), coupon.getScore());
-		m.setScore(score - coupon.getScore() * count);
+		scoreHistoryService.save(mem.get(), spc.getScore());
+		m.setScore(score - spc.getScore() * count);
 		Optional<ParkingCouponMember> pcm = repository.findByMember(member);
 		if (pcm.isPresent()) {
 			int sourceTotal = pcm.get().getTotal();
@@ -121,5 +122,12 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 		} else {
 			return save(coupon, m, count);
 		}
+	}
+
+	@Override
+	public ParkingCouponMember update(ParkingCouponMember coupon) {
+		ParkingCouponMember pcm = repository.findByMemberAndCoupon(coupon.getMember(), coupon.getCoupon());
+		pcm.setTotal(coupon.getTotal());
+		return pcm;
 	}
 }

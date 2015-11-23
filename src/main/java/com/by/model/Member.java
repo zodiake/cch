@@ -34,8 +34,6 @@ public class Member {
 	@NotNull
 	private String name;
 
-	@NotNull
-	@Min(value = 4)
 	private String password;
 
 	// 注册时间
