@@ -27,6 +27,7 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Card> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;

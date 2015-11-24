@@ -27,6 +27,7 @@ public class MemberDetailServiceImpl implements MemberDetailService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Optional<MemberDetail> findByMember(Member m) {
 		return repository.findByMember(m);
 	}

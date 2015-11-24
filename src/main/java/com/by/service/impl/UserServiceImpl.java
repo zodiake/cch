@@ -8,6 +8,7 @@ import com.by.model.Authority;
 import com.by.model.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.by.model.User;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
 
+    @Transactional(readOnly = true)
     public User findByName(String name) {
         User u = repository.findByName(name);
         for (Authority a : u.getAuthorites()) {
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NEVER)
     public Set<Menu> getMenus(User user) {
         Set<Menu> menus = new HashSet<>();
         user.getAuthorites().stream().forEach(i -> {
@@ -39,6 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> findId(Long id) {
         return repository.findById(id);
     }

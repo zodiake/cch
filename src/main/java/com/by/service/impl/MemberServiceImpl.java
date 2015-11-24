@@ -48,6 +48,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Optional<Member> findByNameAndPassword(Member member) {
 		return repository.findByNameAndPassword(member.getName(), member.getPassword());
 	}

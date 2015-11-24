@@ -10,8 +10,10 @@ import com.by.model.Member;
 import com.by.model.ParkingCouponExchangeHistory;
 import com.by.repository.ParkingCouponExchangeHistoryRepository;
 import com.by.service.ParkingCouponExchangeHistroyService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ParkingCouponExchangeHistoryServiceImpl implements ParkingCouponExchangeHistroyService {
     @Autowired
     private ParkingCouponExchangeHistoryRepository repository;
@@ -27,6 +29,7 @@ public class ParkingCouponExchangeHistoryServiceImpl implements ParkingCouponExc
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ParkingCouponExchangeHistory> findByMember(Member member, Pageable pageable) {
         return repository.findByMember(member, pageable);
     }

@@ -16,6 +16,8 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private CategoryRepository repository;
 
+	@Override
+	@Transactional(readOnly = true)
 	public Optional<Category> findOne(Long id) {
 		return repository.findById(id);
 	}

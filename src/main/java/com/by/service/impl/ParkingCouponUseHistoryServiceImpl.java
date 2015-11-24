@@ -31,6 +31,7 @@ public class ParkingCouponUseHistoryServiceImpl implements ParkingCouponUseHisto
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ParkingCouponUseHistory> findByMember(Member member, Pageable pageable) {
         return repository.findByMember(member,pageable);
     }

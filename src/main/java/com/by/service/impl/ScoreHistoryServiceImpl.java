@@ -31,6 +31,7 @@ public class ScoreHistoryServiceImpl implements ScoreHistoryService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<ScoreHistory> findByMember(Member member, Pageable pageable) {
 		return repository.findByMember(member, pageable);
 	}
