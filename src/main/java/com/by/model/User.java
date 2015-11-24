@@ -19,7 +19,7 @@ public class User {
 
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name = "by_user_auth", joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "auth_id") )
-	private Set<Authority> authorites;
+	private Set<Authority> userAuthorities;
 
 	@OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
     private Shop shop;
@@ -58,14 +58,14 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<Authority> getAuthorites() {
-		return authorites;
+	public Set<Authority> getUserAuthorities() {
+		return userAuthorities;
 	}
 
-	public void setAuthorites(Set<Authority> authorites) {
-		this.authorites = authorites;
+	public void setUserAuthorities(Set<Authority> userAuthorities) {
+		this.userAuthorities = userAuthorities;
 	}
-	
+
 	public ValidEnum getValid() {
 		return valid;
 	}

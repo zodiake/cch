@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import com.by.typeEnum.ValidEnum;
 import com.by.validator.CardNameUnique;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -32,10 +31,6 @@ public class Card {
 
 	@OneToMany(mappedBy = "card", cascade = { CascadeType.PERSIST })
 	private List<Rule> rules;
-
-	@OneToOne(mappedBy = "card", fetch = FetchType.LAZY)
-	@JsonBackReference
-	private Member member;
 
 	@Enumerated
 	private ValidEnum valid;
@@ -71,14 +66,6 @@ public class Card {
 
 	public void setRules(List<Rule> rules) {
 		this.rules = rules;
-	}
-
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
 	}
 
 	public ValidEnum getValid() {

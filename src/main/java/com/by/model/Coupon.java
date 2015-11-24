@@ -2,132 +2,130 @@ package com.by.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.by.typeEnum.ExchangeState;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+// 礼品兑换券
 @Entity
 @Table(name = "by_coupon")
 public class Coupon implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String code;
+    private String code;
 
-	@ManyToOne
-	@JoinColumn(name = "member_id")
-	private Member member;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-	@ManyToOne
-	@JoinColumn(name = "summary_id")
-	@JsonBackReference
-	private CouponSummary summary;
+    @ManyToOne
+    @JoinColumn(name = "summary_id")
+    @JsonBackReference
+    private CouponSummary summary;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "exchange_time")
-	private Calendar exchangeTime;
-	
-	@Enumerated
-	@Column(name="exchange_state")
-	private ExchangeState state;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "exchange_time")
+    private Calendar exchangeTime;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "use_time")
-	private Calendar useTime;
+    @Enumerated
+    @Column(name = "exchange_state")
+    private ExchangeState state;
 
-	public Long getId() {
-		return id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "use_time")
+    private Calendar useTime;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public Member getMember() {
-		return member;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setMember(Member member) {
-		this.member = member;
-	}
+    public Member getMember() {
+        return member;
+    }
 
-	public CouponSummary getSummary() {
-		return summary;
-	}
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
-	public void setSummary(CouponSummary summary) {
-		this.summary = summary;
-	}
+    public CouponSummary getSummary() {
+        return summary;
+    }
 
-	public Calendar getExchangeTime() {
-		return exchangeTime;
-	}
+    public void setSummary(CouponSummary summary) {
+        this.summary = summary;
+    }
 
-	public void setExchangeTime(Calendar exchangeTime) {
-		this.exchangeTime = exchangeTime;
-	}
-	
-	public ExchangeState getState() {
-		return state;
-	}
+    public Calendar getExchangeTime() {
+        return exchangeTime;
+    }
 
-	public void setState(ExchangeState state) {
-		this.state = state;
-	}
+    public void setExchangeTime(Calendar exchangeTime) {
+        this.exchangeTime = exchangeTime;
+    }
 
-	public Calendar getUseTime() {
-		return useTime;
-	}
+    public ExchangeState getState() {
+        return state;
+    }
 
-	public void setUseTime(Calendar useTime) {
-		this.useTime = useTime;
-	}
+    public void setState(ExchangeState state) {
+        this.state = state;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public Calendar getUseTime() {
+        return useTime;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Coupon other = (Coupon) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    public void setUseTime(Calendar useTime) {
+        this.useTime = useTime;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.code = UUID.randomUUID().toString().replace("-", "");
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Coupon other = (Coupon) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 }

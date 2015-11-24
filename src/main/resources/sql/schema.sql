@@ -98,6 +98,17 @@ CREATE TABLE by_member_detail (
   PRIMARY KEY (id),
 );
 
+CREATE TABLE by_member_detail_aud (
+  id        BIGINT  NOT NULL AUTO_INCREMENT,
+  real_name VARCHAR(10),
+  address   VARCHAR(225),
+  member_id BIGINT,
+  REV       INTEGER NOT NULL,
+  REVTYPE   TINYINT,
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  PRIMARY KEY (id),
+);
+
 CREATE TABLE by_member_license (
   member_id  BIGINT NOT NULL,
   license_id BIGINT NOT NULL,
@@ -192,3 +203,8 @@ CREATE TABLE by_score_history (
   FOREIGN KEY (member_id) REFERENCES by_member (id)
 );
 
+CREATE TABLE REVINFO (
+  REV      BIGINT NOT NULL AUTO_INCREMENT,
+  REVTSTMP BIGINT,
+  PRIMARY KEY (REV)
+);

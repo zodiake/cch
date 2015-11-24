@@ -66,17 +66,17 @@ public class ScoreHistory {
 		this.deposit = deposit;
 	}
 
-	@PrePersist
-	private void prePersist() {
-		this.createdTime = Calendar.getInstance();
-	}
-
 	public String getSummary() {
 		return summary;
 	}
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+	@PrePersist
+	private void prePersist() {
+		this.createdTime = Calendar.getInstance();
 	}
 
 	@Override

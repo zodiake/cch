@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findByName(String name) {
         User u = repository.findByName(name);
-        for (Authority a : u.getAuthorites()) {
+        for (Authority a : u.getUserAuthorities()) {
             a.getMenus().size();
         }
         u.getShop();
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.NEVER)
     public Set<Menu> getMenus(User user) {
         Set<Menu> menus = new HashSet<>();
-        user.getAuthorites().stream().forEach(i -> {
+        user.getUserAuthorities().stream().forEach(i -> {
             menus.addAll(i.getMenus());
         });
         return menus;
