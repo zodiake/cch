@@ -1,6 +1,7 @@
 package com.by.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by yagamai on 15-11-23.
@@ -17,6 +18,10 @@ public class Shop {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany
+    @JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private List<Menu> menus;
 
     public Shop() {
     }
@@ -47,6 +52,14 @@ public class Shop {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
     }
 
     @Override

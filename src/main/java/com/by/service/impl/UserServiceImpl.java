@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         for (Authority a : u.getUserAuthorities()) {
             a.getMenus().size();
         }
-        u.getShop();
+        u.getShop().getMenus().size();
         return u;
     }
 
@@ -35,9 +35,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.NEVER)
     public Set<Menu> getMenus(User user) {
         Set<Menu> menus = new HashSet<>();
-        user.getUserAuthorities().stream().forEach(i -> {
-            menus.addAll(i.getMenus());
-        });
+        if (user.getUserAuthorities().contains(new Authority(3l))) {
+            menus.addAll(user.getShop().getMenus());
+        } else {
+            user.getUserAuthorities().stream().forEach(i -> {
+                menus.addAll(i.getMenus());
+            });
+        }
         return menus;
     }
 

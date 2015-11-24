@@ -28,9 +28,16 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void menuCountTest() {
+    public void adminMenuCountTest() {
         User u = userService.findByName("tom");
         Set<Menu> menus = userService.getMenus(u);
         assertEquals(menus.size(), 2);
+    }
+
+    @Test
+    public void shopUserMenuCountTest(){
+        User u = userService.findByName("mary");
+        Set<Menu> menus = userService.getMenus(u);
+        assertEquals(menus.size(),3);
     }
 }

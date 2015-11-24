@@ -208,3 +208,11 @@ CREATE TABLE REVINFO (
   REVTSTMP BIGINT,
   PRIMARY KEY (REV)
 );
+
+CREATE TABLE by_shop_menu (
+  shop_id BIGINT,
+  menu_id BIGINT,
+  FOREIGN KEY (shop_id) REFERENCES by_shop (id),
+  FOREIGN KEY (menu_id) REFERENCES by_menu (id),
+  PRIMARY KEY (shop_id, menu_id)
+);
