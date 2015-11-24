@@ -2,6 +2,7 @@ package com.by.model;
 
 import java.io.Serializable;
 
+// hibernate composite id class
 public class MemberCouponId implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long member;

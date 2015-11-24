@@ -90,21 +90,29 @@ CREATE TABLE by_member (
 );
 
 CREATE TABLE by_member_detail (
-  id        BIGINT NOT NULL AUTO_INCREMENT,
-  real_name VARCHAR(10),
-  address   VARCHAR(225),
-  member_id BIGINT,
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  real_name    VARCHAR(10),
+  address      VARCHAR(225),
+  member_id    BIGINT,
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id),
 );
 
 CREATE TABLE by_member_detail_aud (
-  id        BIGINT  NOT NULL AUTO_INCREMENT,
-  real_name VARCHAR(10),
-  address   VARCHAR(225),
-  member_id BIGINT,
-  REV       INTEGER NOT NULL,
-  REVTYPE   TINYINT,
+  id           BIGINT  NOT NULL AUTO_INCREMENT,
+  real_name    VARCHAR(10),
+  address      VARCHAR(225),
+  member_id    BIGINT,
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
+  REV          INTEGER NOT NULL,
+  REVTYPE      TINYINT,
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id),
 );
@@ -215,4 +223,31 @@ CREATE TABLE by_shop_menu (
   FOREIGN KEY (shop_id) REFERENCES by_shop (id),
   FOREIGN KEY (menu_id) REFERENCES by_menu (id),
   PRIMARY KEY (shop_id, menu_id)
+);
+
+CREATE TABLE by_score_add_history (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  member_id    BIGINT,
+  created_time TIMESTAMP,
+  total        INT,
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE by_parking_history (
+  id         BIGINT NOT NULL AUTO_INCREMENT,
+  license    VARCHAR(20),
+  member_id  BIGINT,
+  start_time TIMESTAMP,
+  end_time   TIMESTAMP,
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE by_parking_withnomember_history (
+  id         BIGINT NOT NULL AUTO_INCREMENT,
+  license    VARCHAR(20),
+  start_time TIMESTAMP,
+  end_time   TIMESTAMP,
+  PRIMARY KEY (id)
 );

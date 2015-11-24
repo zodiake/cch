@@ -40,4 +40,5 @@ public class UserServiceTest {
         Set<Menu> menus = userService.getMenus(u);
         assertEquals(menus.size(),3);
     }
+
 }

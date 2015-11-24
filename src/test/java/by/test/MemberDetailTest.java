@@ -12,6 +12,8 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -32,6 +34,15 @@ public class MemberDetailTest {
         detail.setMember(new Member(1l));
         detail.setRealName("tom");
         service.save(detail);
-        assertEquals(service.findAuditByRevision(1l, 1).getRealName(), "tom");
+        assertEquals("tom", service.findAuditByRevision(1l, 1).getRealName());
+    }
+
+    @Test
+    public void auditUpdateTest() {
+        Optional<MemberDetail> d = service.findByMember(new Member(1l));
+        MemberDetail detail = d.get();
+        detail.setUpdatedBy("asd");
+        service.update(detail);
+        assertEquals("asd", service.findAuditByRevision(1l, 1).getUpdatedBy());
     }
 }

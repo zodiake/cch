@@ -30,6 +30,9 @@ INSERT INTO by_card (id, name) VALUES (1, 'low');
 INSERT INTO by_member (id, name, card_id, score) VALUES (1, 'tom', 1, 100);
 INSERT INTO by_member (id, name, card_id, score) VALUES (2, 'mary', 1, 200);
 
+-- test member_detail
+INSERT INTO by_member_detail (id, member_id) VALUES (1,1);
+
 -- test rule
 INSERT INTO by_rule (id, rate, card_id) VALUES (1, 2.0, 1);
 
@@ -40,9 +43,9 @@ INSERT INTO by_parking_coupon (id, name, amount, score, valid) VALUES (1, 'haha'
 INSERT INTO by_parking_coupon_member (member_id, parking_coupon_id, total) VALUES (2, 1, 10);
 
 -- test shop
-INSERT INTO by_shop(id,name,user_id) VALUES (1,'shop1',2);
+INSERT INTO by_shop (id, name, user_id) VALUES (1, 'shop1', 2);
 
 -- test shop_menu
-INSERT INTO by_shop_menu(shop_id, menu_id) VALUES (1,1);
-INSERT INTO by_shop_menu(shop_id, menu_id) VALUES (1,2);
-INSERT INTO by_shop_menu(shop_id, menu_id) VALUES (1,3);
+INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
+INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 2);
+INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 3);

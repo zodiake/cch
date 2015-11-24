@@ -6,6 +6,8 @@ import com.auth0.jwt.internal.com.fasterxml.jackson.annotation.JsonBackReference
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
+import java.util.Calendar;
+
 @Entity
 @Table(name = "by_member_detail")
 @Audited
@@ -18,6 +20,20 @@ public class MemberDetail {
     private String realName;
 
     private String address;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Calendar createdTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Calendar updatedTime;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "created_by")
+    private String createdBy;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -55,6 +71,48 @@ public class MemberDetail {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public Calendar getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Calendar createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Calendar getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Calendar updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.createdTime = Calendar.getInstance();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.updatedTime = Calendar.getInstance();
     }
 
     @Override

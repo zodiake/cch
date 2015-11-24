@@ -29,6 +29,7 @@ public class MemberDetailServiceImpl implements MemberDetailService {
         return repository.findByMember(detail.getMember()).map(i -> {
             i.setAddress(detail.getAddress());
             i.setRealName(detail.getRealName());
+            i.setUpdatedBy(detail.getUpdatedBy());
             return i;
         });
     }
