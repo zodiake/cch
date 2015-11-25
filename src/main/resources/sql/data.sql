@@ -23,6 +23,9 @@ INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 1);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 1);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 2);
 
+-- test license
+INSERT INTO by_license(id, name) VALUES (1,'沪A54321');
+
 -- test card
 INSERT INTO by_card (id, name) VALUES (1, 'low');
 
@@ -30,8 +33,12 @@ INSERT INTO by_card (id, name) VALUES (1, 'low');
 INSERT INTO by_member (id, name, card_id, score) VALUES (1, 'tom', 1, 100);
 INSERT INTO by_member (id, name, card_id, score) VALUES (2, 'mary', 1, 200);
 
+-- test pay
+INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)
+VALUES (1, 1, '2015-11-25 13:14:22', 'p', '沪A54321', 15, 0);
+
 -- test member_detail
-INSERT INTO by_member_detail (id, member_id) VALUES (1,1);
+INSERT INTO by_member_detail (id, member_id) VALUES (1, 1);
 
 -- test rule
 INSERT INTO by_rule (id, rate, card_id) VALUES (1, 2.0, 1);
@@ -49,3 +56,11 @@ INSERT INTO by_shop (id, name, user_id) VALUES (1, 'shop1', 2);
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 2);
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 3);
+
+
+-- test parking_coupon_use_history
+INSERT INTO by_parking_coupon_use_history (id, member_id, parking_coupon_id, created_time, total, license)
+VALUES (1, 1, 1, '2015-11-25 13:15:22', 1, 'abc');
+
+INSERT INTO by_parking_coupon_use_history (id, member_id, parking_coupon_id, created_time, total, license)
+VALUES (2, 1, 1, '2015-11-25 14:15:23', 1, 'abc');

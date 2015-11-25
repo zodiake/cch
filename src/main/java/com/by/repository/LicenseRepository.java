@@ -1,11 +1,10 @@
 package com.by.repository;
 
-import java.util.Optional;
-
+import com.by.model.License;
 import org.springframework.data.repository.CrudRepository;
 
-import com.by.model.License;
+import java.util.Optional;
 
 public interface LicenseRepository extends CrudRepository<License, Long> {
-	Optional<License> findByName(String name);
+    License findByName(String name);
 }

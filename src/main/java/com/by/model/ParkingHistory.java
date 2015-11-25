@@ -1,5 +1,7 @@
 package com.by.model;
 
+import com.by.form.ParkingForm;
+
 import javax.persistence.*;
 import java.util.Calendar;
 
@@ -7,25 +9,34 @@ import java.util.Calendar;
  * Created by yagamai on 15-11-24.
  */
 @Entity
-@Table(name="by_parking_history")
+@Table(name = "by_parking_history")
 public class ParkingHistory {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String license;
 
     @ManyToOne
-    @JoinColumn(name="member_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="start_time")
+    @Column(name = "start_time")
     private Calendar startTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="end_time")
+    @Column(name = "end_time")
     private Calendar endTIme;
+
+    public ParkingHistory() {
+    }
+
+    public ParkingHistory(ParkingForm form) {
+        this.license = form.getLicense();
+        this.startTime = form.getStartTime();
+        this.endTIme = form.getEndTime();
+    }
 
     public Long getId() {
         return id;

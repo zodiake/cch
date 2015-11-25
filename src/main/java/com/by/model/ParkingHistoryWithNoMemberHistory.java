@@ -23,6 +23,15 @@ public class ParkingHistoryWithNoMemberHistory {
     @Column(name = "end_time")
     private Calendar endTime;
 
+    public ParkingHistoryWithNoMemberHistory() {
+    }
+
+    public ParkingHistoryWithNoMemberHistory(ParkingHistory history) {
+        this.license = history.getLicense();
+        this.startTime = history.getStartTime();
+        this.endTime = history.getEndTIme();
+    }
+
     public Long getId() {
         return id;
     }

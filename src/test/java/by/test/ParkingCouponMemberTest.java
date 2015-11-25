@@ -29,7 +29,7 @@ import com.by.service.ParkingCouponMemberService;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebIntegrationTest
 @ActiveProfiles("dev")
-public class CouponMemberTest {
+public class ParkingCouponMemberTest {
     @Autowired
     private ParkingCouponMemberService service;
     @Autowired

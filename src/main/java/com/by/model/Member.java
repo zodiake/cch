@@ -26,7 +26,7 @@ public class Member {
 
 	// 注册时间
 	@Temporal(TemporalType.TIMESTAMP)
-	@JoinColumn(name = "created_time")
+	@Column(name="created_time")
 	private Calendar createdTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)

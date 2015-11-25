@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * Created by yagamai on 15-11-24.
@@ -31,9 +33,14 @@ public class ParkingWithNoMemberHistoryServiceImpl implements ParkingWithNoMembe
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ParkingHistoryWithNoMemberHistory findOne(Long id) {
         return repository.findOne(id);
     }
 
-
+    @Override
+    @Transactional(readOnly = true)
+    public List<ParkingHistoryWithNoMemberHistory> findByLicense(String license) {
+        return repository.findByLicense(license);
+    }
 }

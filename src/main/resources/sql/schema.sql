@@ -168,7 +168,6 @@ CREATE TABLE by_parking_coupon (
 CREATE TABLE by_parking_coupon_member (
   member_id         BIGINT,
   parking_coupon_id BIGINT,
-  created_time      TIMESTAMP,
   total             INT,
   PRIMARY KEY (member_id, parking_coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
@@ -251,3 +250,16 @@ CREATE TABLE by_parking_withnomember_history (
   end_time   TIMESTAMP,
   PRIMARY KEY (id)
 );
+
+CREATE TABLE by_pay (
+  id             BIGINT NOT NULL AUTO_INCREMENT,
+  member_id      BIGINT,
+  created_time   TIMESTAMP,
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  type           CHAR(1),
+  license        VARCHAR(20),
+  amount         INT,
+  parkingPayType SMALLINT        DEFAULT 0,
+  PRIMARY KEY (id)
+);
+

@@ -11,6 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+
 /**
  * Created by yagamai on 15-11-23.
  */
@@ -33,7 +39,28 @@ public class ParkingCouponUseHistoryServiceImpl implements ParkingCouponUseHisto
     @Override
     @Transactional(readOnly = true)
     public Page<ParkingCouponUseHistory> findByMember(Member member, Pageable pageable) {
-        return repository.findByMember(member,pageable);
+        return repository.findByMember(member, pageable);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<ParkingCouponUseHistory> findByLicenseAndCreatedTimeBetween(String license, Calendar startTime, Calendar endTime) {
+        return repository.findByLicenseAndCreatedTimeBetween(license, startTime, endTime);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ParkingCouponUseHistory> findByLicenseAndCreatedTimeBetween(String license, String startTime, String endTime) throws ParseException {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar cStartTime = Calendar.getInstance();
+        Calendar cEndTime = Calendar.getInstance();
+        cStartTime.setTime(format.parse(startTime));
+        cEndTime.setTime(format.parse(endTime));
+        return findByLicenseAndCreatedTimeBetween(license, cStartTime, cEndTime);
+    }
+
+    @Override
+    public List<ParkingCouponUseHistory> findByLicense(String license) {
+        return repository.findByLicense(license);
+    }
 }
