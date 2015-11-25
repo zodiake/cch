@@ -27,6 +27,7 @@ public class ScoreAddHistory {
     @Min(value = 0)
     private int total;
 
+    @NotNull
     private String summary;
 
     public Long getId() {
