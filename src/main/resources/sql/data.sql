@@ -24,13 +24,13 @@ INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 1);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 2);
 
 -- test license
-INSERT INTO by_license(id, name) VALUES (1,'沪A54321');
+INSERT INTO by_license (id, name) VALUES (1, '沪A54321');
 
 -- test card
 INSERT INTO by_card (id, name) VALUES (1, 'low');
 
 -- test member
-INSERT INTO by_member (id, name, card_id, score) VALUES (1, 'tom', 1, 100);
+INSERT INTO by_member (id, name, card_id, score) VALUES (1, 'tom', 1, 110);
 INSERT INTO by_member (id, name, card_id, score) VALUES (2, 'mary', 1, 200);
 
 -- test pay
@@ -64,3 +64,15 @@ VALUES (1, 1, 1, '2015-11-25 13:15:22', 1, 'abc');
 
 INSERT INTO by_parking_coupon_use_history (id, member_id, parking_coupon_id, created_time, total, license)
 VALUES (2, 1, 1, '2015-11-25 14:15:23', 1, 'abc');
+
+-- test score add
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (1, 1, 1);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (2, 1, 2);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (3, 1, 3);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (4, 1, 4);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (5, 1, 4);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (6, 1, 6);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (7, 1, 7);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (8, 1, 8);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (9, 1, 9);
+INSERT INTO by_score_add_history (id, member_id, total) VALUES (10, 1, 10);

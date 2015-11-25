@@ -1,7 +1,7 @@
 package com.by.model;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
 
@@ -19,10 +19,15 @@ public class ScoreAddHistory {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
     private Calendar createdTime;
 
     @NotNull
+    @Min(value = 0)
     private int total;
+
+    private String summary;
 
     public Long getId() {
         return id;
@@ -54,6 +59,14 @@ public class ScoreAddHistory {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     @PrePersist

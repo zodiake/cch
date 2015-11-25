@@ -229,6 +229,7 @@ CREATE TABLE by_score_add_history (
   member_id    BIGINT,
   created_time TIMESTAMP,
   total        INT,
+  summary      VARCHAR(20),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)
 );
