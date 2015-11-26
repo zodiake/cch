@@ -1,5 +1,7 @@
 package com.by.model;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

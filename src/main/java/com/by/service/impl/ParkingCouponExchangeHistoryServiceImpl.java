@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import com.by.model.Member;
 import com.by.model.ParkingCouponExchangeHistory;
 import com.by.repository.ParkingCouponExchangeHistoryRepository;
-import com.by.service.ParkingCouponExchangeHistroyService;
+import com.by.service.ParkingCouponExchangeHistoryService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ParkingCouponExchangeHistoryServiceImpl implements ParkingCouponExchangeHistroyService {
+public class ParkingCouponExchangeHistoryServiceImpl implements ParkingCouponExchangeHistoryService {
     @Autowired
     private ParkingCouponExchangeHistoryRepository repository;
 

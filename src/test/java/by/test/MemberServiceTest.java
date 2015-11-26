@@ -56,9 +56,10 @@ public class MemberServiceTest {
 
     @Test
     public void useHistory() {
-        service.usingScore(new Member(1l), 5);
+        service.useScore(new Member(1l), 5);
         List<ScoreAddHistory> histories = scoreAddHistoryService.findByMember(new Member(1l));
         assertEquals(8, histories.size());
+        assertEquals(1, histories.get(0).getTotal());
         Member m = service.findById(1l).get();
         assertEquals(105, m.getScore());
     }

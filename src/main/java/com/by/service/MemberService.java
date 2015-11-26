@@ -19,7 +19,7 @@ public interface MemberService {
 
     public Optional<Member> findByNameAndPassword(Member member);
 
-    public Member usingScore(Member member, int total);
+    public Member useScore(Member member, int total);
 
     public Member getScore(Member member, int total);
 

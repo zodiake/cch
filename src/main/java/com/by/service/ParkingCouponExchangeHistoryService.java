@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import com.by.model.Member;
 import com.by.model.ParkingCouponExchangeHistory;
 
-public interface ParkingCouponExchangeHistroyService {
+public interface ParkingCouponExchangeHistoryService {
     public ParkingCouponExchangeHistory save(ParkingCouponExchangeHistory pceh);
 
     public ParkingCouponExchangeHistory save(Member member, int total, Shop shop);

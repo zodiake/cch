@@ -1,16 +1,16 @@
 package com.by.repository;
 
-import java.util.Optional;
-
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 import com.by.model.Member;
 import com.by.model.MemberCouponId;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface ParkingCouponMemberRepository extends PagingAndSortingRepository<ParkingCouponMember, MemberCouponId> {
-	Optional<ParkingCouponMember> findByMember(Member member);
+    List<ParkingCouponMember> findByMember(Member member);
 
-	ParkingCouponMember findByMemberAndCoupon(Member member,ParkingCoupon coupon);
+    Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon coupon);
 }

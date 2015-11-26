@@ -1,11 +1,13 @@
 package com.by.service.impl;
 
+import com.by.exception.MemberNotFoundException;
 import com.by.exception.NotEnoughScore;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
 import com.by.repository.MemberRepository;
 import com.by.service.MemberService;
 import com.by.service.ScoreAddHistoryService;
+import com.by.service.ScoreHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository repository;
     @Autowired
     private ScoreAddHistoryService scoreAddHistoryService;
+    @Autowired
+    private ScoreHistoryService scoreHistoryService;
 
     @Override
     @Transactional(readOnly = true)
@@ -60,8 +64,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member usingScore(Member member, int total) {
+    public Member useScore(Member member, int total) {
         Member source = repository.findOne(member.getId());
+        if (source == null)
+            throw new MemberNotFoundException();
         if (source.getScore() < total)
             throw new NotEnoughScore();
         List<ScoreAddHistory> historyList = scoreAddHistoryService.findByMember(member);
@@ -80,6 +86,7 @@ public class MemberServiceImpl implements MemberService {
             }
         }
         source.setScore(source.getScore() - total);
+        scoreHistoryService.save(member, -total);
         return source;
     }
 

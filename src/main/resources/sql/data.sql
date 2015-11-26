@@ -47,6 +47,7 @@ INSERT INTO by_rule (id, rate, card_id) VALUES (1, 2.0, 1);
 INSERT INTO by_parking_coupon (id, name, amount, score, valid) VALUES (1, 'haha', 100, 100, 1);
 
 -- test parking_coupon_member
+INSERT INTO by_parking_coupon_member (member_id, parking_coupon_id, total) VALUES (1, 1, 10);
 INSERT INTO by_parking_coupon_member (member_id, parking_coupon_id, total) VALUES (2, 1, 10);
 
 -- test shop
@@ -66,13 +67,11 @@ INSERT INTO by_parking_coupon_use_history (id, member_id, parking_coupon_id, cre
 VALUES (2, 1, 1, '2015-11-25 14:15:23', 1, 'abc');
 
 -- test score add
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (1, 1, 1);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (2, 1, 2);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (3, 1, 3);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (4, 1, 4);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (5, 1, 4);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (6, 1, 6);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (7, 1, 7);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (8, 1, 8);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (9, 1, 9);
-INSERT INTO by_score_add_history (id, member_id, total) VALUES (10, 1, 10);
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (1, 1, 1, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (2, 1, 2, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (3, 1, 3, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (4, 1, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (5, 2, 1, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (6, 2, 2, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (7, 2, 3, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (8, 2, 4, 'h');
