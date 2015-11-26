@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.by.model.Category;
+import com.by.model.RuleCategory;
 
-public interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
-	Optional<Category> findById(Long id);
+public interface CategoryRepository extends PagingAndSortingRepository<RuleCategory, Long> {
+	Optional<RuleCategory> findById(Long id);
 }

@@ -75,3 +75,6 @@ INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (5, 2, 1
 INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (6, 2, 2, 'h');
 INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (7, 2, 3, 'h');
 INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (8, 2, 4, 'h');
+
+-- test category
+INSERT INTO by_rule_category(id, name) VALUES (1,'signin');

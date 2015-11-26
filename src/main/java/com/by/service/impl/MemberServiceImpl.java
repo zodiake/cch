@@ -2,12 +2,11 @@ package com.by.service.impl;
 
 import com.by.exception.MemberNotFoundException;
 import com.by.exception.NotEnoughScore;
-import com.by.model.Member;
-import com.by.model.ScoreAddHistory;
+import com.by.exception.NotValidException;
+import com.by.model.*;
 import com.by.repository.MemberRepository;
-import com.by.service.MemberService;
-import com.by.service.ScoreAddHistoryService;
-import com.by.service.ScoreHistoryService;
+import com.by.service.*;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +24,10 @@ public class MemberServiceImpl implements MemberService {
     private ScoreAddHistoryService scoreAddHistoryService;
     @Autowired
     private ScoreHistoryService scoreHistoryService;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private RuleService ruleService;
 
     @Override
     @Transactional(readOnly = true)
@@ -40,6 +43,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member save(Member member) {
+        Card card = cardService.findByIdAndValid(member.getCard().getId(), ValidEnum.VALID);
+        if (card == null)
+            throw new NotValidException();
+        List<Rule> rules = ruleService.findByRuleCategory(new RuleCategory(1l));
+        if (rules.size() > 0) {
+            //todo
+        }
+        member.setScore(member.getCard().getInitScore());
         return repository.save(member);
     }
 

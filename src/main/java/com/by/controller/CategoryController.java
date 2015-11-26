@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.by.exception.NotFoundException;
-import com.by.model.Category;
+import com.by.model.RuleCategory;
 import com.by.model.User;
 import com.by.service.CategoryService;
 
@@ -19,7 +19,7 @@ public class CategoryController {
 	private CategoryService service;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public Category findByName(HttpServletRequest request) {
+	public RuleCategory findByName(HttpServletRequest request) {
 		User u = (User) request.getAttribute("user");
 		return service.findOne(6l).orElseThrow(() -> new NotFoundException());
 	}

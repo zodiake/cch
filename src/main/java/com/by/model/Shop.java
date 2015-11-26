@@ -23,6 +23,8 @@ public class Shop {
     @JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private List<Menu> menus;
 
+    private String key;
+
     public Shop() {
     }
 

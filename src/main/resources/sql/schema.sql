@@ -23,15 +23,16 @@ CREATE TABLE by_shop (
   id      BIGINT NOT NULL AUTO_INCREMENT,
   name    VARCHAR(225),
   user_id BIGINT,
+  key     VARCHAR(225),
   FOREIGN KEY (user_id) REFERENCES by_user (id),
   PRIMARY KEY (id)
 );
 
 CREATE TABLE by_authority (
-  id   BIGINT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(30),
-  created_by varchar(20),
-  updated_by varchar(20),
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  name         VARCHAR(30),
+  created_by   VARCHAR(20),
+  updated_by   VARCHAR(20),
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   PRIMARY KEY (id)
@@ -53,11 +54,10 @@ CREATE TABLE by_auth_menu (
   PRIMARY KEY (auth_id, menu_id)
 );
 
-CREATE TABLE by_category (
-  id        BIGINT NOT NULL AUTO_INCREMENT,
-  parent_id BIGINT,
+CREATE TABLE by_rule_category (
+  id   BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(20),
   PRIMARY KEY (id),
-  FOREIGN KEY (parent_id) REFERENCES by_category (id)
 );
 
 
@@ -70,15 +70,17 @@ CREATE TABLE by_card (
 );
 
 CREATE TABLE by_rule (
-  id        BIGINT NOT NULL AUTO_INCREMENT,
-  rate      DOUBLE,
-  card_id   BIGINT,
-  summary   VARCHAR(50),
-  valid     SMALLINT,
-  beginTime TIMESTAMP,
-  endTime   TIMESTAMP,
-  permanent SMALLINT,
+  id          BIGINT NOT NULL AUTO_INCREMENT,
+  rate        DOUBLE,
+  card_id     BIGINT,
+  summary     VARCHAR(50),
+  valid       SMALLINT,
+  beginTime   TIMESTAMP,
+  endTime     TIMESTAMP,
+  permanent   SMALLINT,
+  category_id BIGINT,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
+  FOREIGN KEY (category_id) REFERENCES by_rule_category (id),
   PRIMARY KEY (id)
 );
 
@@ -261,11 +263,20 @@ CREATE TABLE by_pay (
   id             BIGINT NOT NULL AUTO_INCREMENT,
   member_id      BIGINT,
   created_time   TIMESTAMP,
-  FOREIGN KEY (member_id) REFERENCES by_member (id),
   type           CHAR(1),
   license        VARCHAR(20),
   amount         INT,
   parkingPayType SMALLINT        DEFAULT 0,
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)
 );
 
+CREATE TABLE by_consumption_history (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  member_id    BIGINT,
+  created_time TIMESTAMP,
+  amount       DOUBLE,
+  shop         VARCHAR(100),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  PRIMARY KEY (id)
+);

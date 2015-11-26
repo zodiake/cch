@@ -14,22 +14,22 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 @EnableCaching
 public class Application extends SpringBootServletInitializer {
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(Application.class);
-	}
-	
-	@Bean
-    public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("card");
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 
-	@Bean
-	public ShaPasswordEncoder encoder() {
-		return new ShaPasswordEncoder();
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("card", "validCard", "rule", "ruleList");
+    }
+
+    @Bean
+    public ShaPasswordEncoder encoder() {
+        return new ShaPasswordEncoder();
+    }
 }

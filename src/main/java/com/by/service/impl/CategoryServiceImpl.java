@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.by.model.Category;
+import com.by.model.RuleCategory;
 import com.by.repository.CategoryRepository;
 import com.by.service.CategoryService;
 
@@ -18,7 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<Category> findOne(Long id) {
+	public Optional<RuleCategory> findOne(Long id) {
 		return repository.findById(id);
 	}
 
