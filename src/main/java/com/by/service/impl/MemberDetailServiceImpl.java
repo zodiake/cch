@@ -1,20 +1,20 @@
 package com.by.service.impl;
 
-import java.util.Optional;
-
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.by.model.Member;
 import com.by.model.MemberDetail;
 import com.by.repository.MemberDetailRepository;
 import com.by.service.MemberDetailService;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -45,9 +45,19 @@ public class MemberDetailServiceImpl implements MemberDetailService {
         return repository.save(detail);
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public MemberDetail findAuditByRevision(Long id, int revision) {
         AuditReader auditReader = AuditReaderFactory.get(em);
         return auditReader.find(MemberDetail.class, id, revision);
     }
 
+    public List<MemberDetail> findAllAuditRevision(Long id) {
+        AuditReader auditReader = AuditReaderFactory.get(em);
+        return auditReader.createQuery()
+                .forRevisionsOfEntity(MemberDetail.class, true, true)
+                .add(AuditEntity.id().eq(id))
+                .addOrder(AuditEntity.revisionNumber().asc())
+                .getResultList();
+    }
 }

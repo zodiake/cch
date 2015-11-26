@@ -45,8 +45,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Optional<Member> countByName(String name) {
-        // TODO Auto-generated method stub
-        return null;
+        return repository.countByName(name);
     }
 
     @Override
@@ -64,6 +63,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member getScore(Member member, int total) {
+        Member source = repository.findOne(member.getId());
+        source.setScore(source.getScore() + total);
+        scoreAddHistoryService.save(member, total);
+        return source;
+    }
+
+    @Override
     public Member useScore(Member member, int total) {
         Member source = repository.findOne(member.getId());
         if (source == null)
@@ -72,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
             throw new NotEnoughScore();
         List<ScoreAddHistory> historyList = scoreAddHistoryService.findByMember(member);
         List<ScoreAddHistory> results = extractScoreHistory(historyList, total);
-        int sum = results.stream().map(i -> i.getTotal()).reduce((i, s) -> i + s).get();
+        int sum = results.stream().map(ScoreAddHistory::getTotal).reduce((i, s) -> i + s).get();
         if (sum > total) {
             ScoreAddHistory last = results.get(results.size() - 1);
             last.setTotal(sum - total);
@@ -104,10 +111,4 @@ public class MemberServiceImpl implements MemberService {
         }
         return results;
     }
-
-    @Override
-    public Member getScore(Member member, int total) {
-        return null;
-    }
-
 }

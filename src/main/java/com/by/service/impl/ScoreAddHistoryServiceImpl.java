@@ -26,6 +26,14 @@ public class ScoreAddHistoryServiceImpl implements ScoreAddHistoryService {
     }
 
     @Override
+    public ScoreAddHistory save(Member member, int total) {
+        ScoreAddHistory sah = new ScoreAddHistory();
+        sah.setMember(member);
+        sah.setTotal(total);
+        return save(sah);
+    }
+
+    @Override
     public void delete(Long id) {
         repository.delete(id);
     }
@@ -38,6 +46,7 @@ public class ScoreAddHistoryServiceImpl implements ScoreAddHistoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ScoreAddHistory> findByMember(Member member) {
         Sort sort = new Sort(Sort.Direction.ASC, "createdTime");
         return repository.findByMember(member, sort);

@@ -1,19 +1,18 @@
 package com.by.service.impl;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
 import com.by.model.Authority;
 import com.by.model.Menu;
+import com.by.model.User;
+import com.by.repository.UserRepository;
+import com.by.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.by.model.User;
-import com.by.repository.UserRepository;
-import com.by.service.UserService;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -27,7 +26,8 @@ public class UserServiceImpl implements UserService {
         for (Authority a : u.getUserAuthorities()) {
             a.getMenus().size();
         }
-        u.getShop().getMenus().size();
+        if (u.getShop() != null && u.getShop().getMenus() != null)
+            u.getShop().getMenus().size();
         return u;
     }
 

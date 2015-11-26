@@ -2,21 +2,21 @@
 INSERT INTO by_user (id, name, password) VALUES (1, 'tom', '1');
 INSERT INTO by_user (id, name, password) VALUES (2, 'mary', '1');
 
+-- test menu
+INSERT INTO by_menu (id, name, href) VALUES (1, 'menu1', 'haha');
+INSERT INTO by_menu (id, name, href) VALUES (2, 'menu2', 'haha');
+INSERT INTO by_menu (id, name, href) VALUES (3, 'menu3', 'haha');
+
 -- test authority
 INSERT INTO by_authority (id, name) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO by_authority (id, name) VALUES (2, 'ROLE_USER');
 INSERT INTO by_authority (id, name) VALUES (3, 'ROLE_SHOP');
 
 -- test user_auth
-INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 1);
-INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 2);
+INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 1); --tom role_admin
+INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 2); --tom role_user
 
-INSERT INTO by_user_auth (user_id, auth_id) VALUES (2, 3);
-
--- test menu
-INSERT INTO by_menu (id, name, href) VALUES (1, 'menu1', 'haha');
-INSERT INTO by_menu (id, name, href) VALUES (2, 'menu2', 'haha');
-INSERT INTO by_menu (id, name, href) VALUES (3, 'menu3', 'haha');
+INSERT INTO by_user_auth (user_id, auth_id) VALUES (2, 3);-- mary role_shop
 
 -- test auth_menu
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 1);

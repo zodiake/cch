@@ -11,6 +11,8 @@ import java.util.List;
 public interface ScoreAddHistoryService {
     ScoreAddHistory save(ScoreAddHistory history);
 
+    ScoreAddHistory save(Member member, int total);
+
     void delete(Long id);
 
     ScoreAddHistory update(ScoreAddHistory history, int total);

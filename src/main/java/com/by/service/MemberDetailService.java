@@ -1,16 +1,19 @@
 package com.by.service;
 
-import java.util.Optional;
-
 import com.by.model.Member;
 import com.by.model.MemberDetail;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface MemberDetailService {
-    public Optional<MemberDetail> update(MemberDetail detail);
+    Optional<MemberDetail> update(MemberDetail detail);
 
-    public Optional<MemberDetail> findByMember(Member m);
+    Optional<MemberDetail> findByMember(Member m);
 
-    public MemberDetail save(MemberDetail detail);
+    MemberDetail save(MemberDetail detail);
 
-    public MemberDetail findAuditByRevision(Long id, int revision);
+    MemberDetail findAuditByRevision(Long id, int revision);
+
+    List<MemberDetail> findAllAuditRevision(Long id);
 }

@@ -30,6 +30,10 @@ CREATE TABLE by_shop (
 CREATE TABLE by_authority (
   id   BIGINT NOT NULL AUTO_INCREMENT,
   name VARCHAR(30),
+  created_by varchar(20),
+  updated_by varchar(20),
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
   PRIMARY KEY (id)
 );
 
@@ -147,6 +151,7 @@ CREATE TABLE by_coupon (
   summary_id     BIGINT,
   exchange_Time  TIMESTAMP,
   exchange_state SMALLINT,
+  use_time       TIMESTAMP,
   FOREIGN KEY (summary_id) REFERENCES by_coupon_summary (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)

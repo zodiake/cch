@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by yagamai on 15-11-23.
@@ -30,8 +31,9 @@ public class UserServiceTest {
     @Test
     public void adminMenuCountTest() {
         User u = userService.findByName("tom");
+        assertNotNull(u);
         Set<Menu> menus = userService.getMenus(u);
-        assertEquals(menus.size(), 2);
+        assertEquals(2,menus.size());
     }
 
     @Test
