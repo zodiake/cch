@@ -34,6 +34,8 @@ public class Rule {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar endTime;
 
+    private int Score;
+
     @Enumerated
     private PermanentEnum permanent;
 
@@ -99,6 +101,22 @@ public class Rule {
 
     public void setPermanent(PermanentEnum permanent) {
         this.permanent = permanent;
+    }
+
+    public RuleCategory getRuleCategory() {
+        return ruleCategory;
+    }
+
+    public void setRuleCategory(RuleCategory ruleCategory) {
+        this.ruleCategory = ruleCategory;
+    }
+
+    public int getScore() {
+        return Score;
+    }
+
+    public void setScore(int score) {
+        Score = score;
     }
 
     @Override

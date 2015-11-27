@@ -1,11 +1,7 @@
 package com.by.security;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.by.model.Menu;
+import com.by.model.User;
+import com.by.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.by.model.User;
-import com.by.service.UserService;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultUserService implements UserDetailsService {

@@ -26,4 +26,8 @@ public interface RuleService {
     Page<Rule> findByRuleCategory(RuleCategory category, Pageable pageable);
 
     List<Rule> findByRuleCategory(RuleCategory category);
+
+    List<Rule> findByRuleCategoryAndValid(RuleCategory category, ValidEnum valid);
+
+    int getMaxScore(List<Rule> rules);
 }

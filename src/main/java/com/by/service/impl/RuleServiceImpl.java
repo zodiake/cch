@@ -15,7 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yagamai on 15-11-26.
@@ -26,7 +29,6 @@ public class RuleServiceImpl implements RuleService {
     @Autowired
     private RuleRepository repository;
 
-
     @Override
     @Transactional(readOnly = true)
     public Page<Rule> findByCard(Card card, Pageable pageable) {
@@ -34,27 +36,26 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    @Cacheable(value = "ruleList", key = "#card.id")
+    @Cacheable(value = "ruleCard", key = "#card.id")
     @Transactional(readOnly = true)
     public List<Rule> findByCard(Card card) {
         return repository.findByCard(card);
     }
 
     @Override
-    @Cacheable("rule")
     @Transactional(readOnly = true)
     public Rule findByIdAndValid(Long id, ValidEnum valid) {
         return repository.findByIdAndValid(id, valid);
     }
 
     @Override
-    @CachePut({"rule", "ruleList"})
+    @CachePut({"ruleCategory", "ruleCard"})
     public Rule save(Rule rule) {
         return repository.save(rule);
     }
 
     @Override
-    @CacheEvict({"rule", "ruleList"})
+    @CacheEvict({"ruleCategory", "ruleCard"})
     public Rule update(Rule rule) {
         Rule source = repository.findOne(rule.getId());
         source.setBeginTime(rule.getBeginTime());
@@ -73,4 +74,24 @@ public class RuleServiceImpl implements RuleService {
         return repository.findByRuleCategory(category);
     }
 
+    @Override
+    @Cacheable({"ruleCategory"})
+    public List<Rule> findByRuleCategoryAndValid(RuleCategory category, ValidEnum valid) {
+        return repository.findByRuleCategoryAndValid(category, valid);
+    }
+
+    @Override
+    public int getMaxScore(List<Rule> rules) {
+        Calendar today = Calendar.getInstance();
+        List<Integer> scoreList = rules.stream()
+                .filter(i -> i.getValid() == ValidEnum.VALID)
+                .filter(i -> {
+                    if (i.getBeginTime() != null && i.getEndTime() != null)
+                        return i.getBeginTime().before(today) && i.getEndTime().after(today);
+                    return true;
+                })
+                .map(Rule::getScore)
+                .collect(Collectors.toList());
+        return Collections.max(scoreList);
+    }
 }

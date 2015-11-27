@@ -46,13 +46,15 @@ public class MemberServiceImpl implements MemberService {
         Card card = cardService.findByIdAndValid(member.getCard().getId(), ValidEnum.VALID);
         if (card == null)
             throw new NotValidException();
-        List<Rule> rules = ruleService.findByRuleCategory(new RuleCategory(1l));
+        List<Rule> rules = ruleService.findByRuleCategoryAndValid(new RuleCategory(1L), ValidEnum.VALID);
         if (rules.size() > 0) {
-            //todo
+            member.setScore(member.getCard().getInitScore() + ruleService.getMaxScore(rules));
+        } else {
+            member.setScore(member.getCard().getInitScore());
         }
-        member.setScore(member.getCard().getInitScore());
         return repository.save(member);
     }
+
 
     @Override
     public Optional<Member> countByName(String name) {
