@@ -45,10 +45,15 @@ INSERT INTO by_member_detail (id, member_id) VALUES (1, 1);
 
 -- test category
 INSERT INTO by_rule_category (id, name) VALUES (1, 'asdf');
+INSERT INTO by_rule_category (id, name) VALUES (2, 'asdf');
 
 -- test rule
+-- 注册用规则
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (1, 2.0, 1, 1, 1, 100);
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (2, 2.0, 1, 1, 1, 100);
+-- 交易用规则
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (3, 2.0, 1, 2, 1, 100);
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (4, 2.0, 1, 2, 1, 100);
 
 -- test parking_coupon
 INSERT INTO by_parking_coupon (id, name, amount, score, valid) VALUES (1, 'haha', 100, 100, 1);

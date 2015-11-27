@@ -22,7 +22,7 @@ public interface MemberService {
 
     Member useScore(Member member, int total);
 
-    Member getScore(Member member, int total);
+    Member updateScore(Member member, int total);
 
     List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
 

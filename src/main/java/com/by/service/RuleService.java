@@ -30,4 +30,6 @@ public interface RuleService {
     List<Rule> findByRuleCategoryAndValid(RuleCategory category, ValidEnum valid);
 
     int getMaxScore(List<Rule> rules);
+
+    double getMaxRate(List<Rule> rules);
 }

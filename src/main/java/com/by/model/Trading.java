@@ -4,26 +4,26 @@ import javax.persistence.*;
 import java.util.Calendar;
 
 /**
- * Created by yagamai on 15-11-25.
+ * Created by yagamai on 15-11-27.
  */
 @Entity
-@Table(name = "by_pay")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Pay {
+@Table(name = "by_trading")
+public class Trading {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_time")
     private Calendar createdTime;
 
-    private int amount;
+    private Double amount;
 
     public Long getId() {
         return id;
@@ -31,6 +31,14 @@ public abstract class Pay {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 
     public Member getMember() {
@@ -49,11 +57,11 @@ public abstract class Pay {
         this.createdTime = createdTime;
     }
 
-    public int getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -62,9 +70,9 @@ public abstract class Pay {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Pay pay = (Pay) o;
+        Trading trading = (Trading) o;
 
-        return !(id != null ? !id.equals(pay.id) : pay.id != null);
+        return !(id != null ? !id.equals(trading.id) : trading.id != null);
 
     }
 

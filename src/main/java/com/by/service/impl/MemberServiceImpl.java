@@ -52,7 +52,7 @@ public class MemberServiceImpl implements MemberService {
             score += ruleService.getMaxScore(rules);
         }
         member.setScore(score);
-        scoreAddHistoryService.save(member, score,"sign in score");
+        scoreAddHistoryService.save(member, score, "sign in score");
         scoreHistoryService.save(member, score);
         return repository.save(member);
     }
@@ -77,10 +77,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member getScore(Member member, int total) {
+    public Member updateScore(Member member, int total) {
         Member source = repository.findOne(member.getId());
         source.setScore(source.getScore() + total);
-        scoreAddHistoryService.save(member, total,"");
+        scoreAddHistoryService.save(member, total, "");
+        scoreHistoryService.save(member, total);
         return source;
     }
 

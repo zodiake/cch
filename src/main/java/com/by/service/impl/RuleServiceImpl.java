@@ -94,4 +94,19 @@ public class RuleServiceImpl implements RuleService {
                 .collect(Collectors.toList());
         return Collections.max(scoreList);
     }
+
+    @Override
+    public double getMaxRate(List<Rule> rules) {
+        Calendar today = Calendar.getInstance();
+        List<Double> scoreList = rules.stream()
+                .filter(i -> i.getValid() == ValidEnum.VALID)
+                .filter(i -> {
+                    if (i.getBeginTime() != null && i.getEndTime() != null)
+                        return i.getBeginTime().before(today) && i.getEndTime().after(today);
+                    return true;
+                })
+                .map(Rule::getRate)
+                .collect(Collectors.toList());
+        return Collections.max(scoreList);
+    }
 }

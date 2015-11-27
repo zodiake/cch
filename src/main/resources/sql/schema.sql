@@ -281,3 +281,14 @@ CREATE TABLE by_consumption_history (
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)
 );
+
+CREATE TABLE by_trading (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  shop_id      BIGINT,
+  member_id    BIGINT,
+  created_time TIMESTAMP,
+  amount       DOUBLE,
+  FOREIGN KEY (shop_id) REFERENCES by_shop (id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  PRIMARY KEY (id)
+);
