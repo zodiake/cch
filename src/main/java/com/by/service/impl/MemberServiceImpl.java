@@ -44,17 +44,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member save(Member member) {
         Card card = cardService.findByIdAndValid(member.getCard().getId(), ValidEnum.VALID);
-        if (card == null)
+        if (card != null)
             throw new NotValidException();
-        List<Rule> rules = ruleService.findByRuleCategoryAndValid(new RuleCategory(1L), ValidEnum.VALID);
+        List<Rule> rules = ruleService.findByRuleCategoryAndCardAndValid(new RuleCategory(1L), card, ValidEnum.VALID);
+        int score = member.getCard().getInitScore();
         if (rules.size() > 0) {
-            member.setScore(member.getCard().getInitScore() + ruleService.getMaxScore(rules));
-        } else {
-            member.setScore(member.getCard().getInitScore());
+            score += ruleService.getMaxScore(rules);
         }
+        member.setScore(score);
+        scoreAddHistoryService.save(member, score,"sign in score");
+        scoreHistoryService.save(member, score);
         return repository.save(member);
     }
-
 
     @Override
     public Optional<Member> countByName(String name) {
@@ -79,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
     public Member getScore(Member member, int total) {
         Member source = repository.findOne(member.getId());
         source.setScore(source.getScore() + total);
-        scoreAddHistoryService.save(member, total);
+        scoreAddHistoryService.save(member, total,"");
         return source;
     }
 

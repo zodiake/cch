@@ -36,7 +36,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    @Cacheable(value = "ruleCard", key = "#card.id")
+    @Cacheable(value = "rule", key = "#card.id")
     @Transactional(readOnly = true)
     public List<Rule> findByCard(Card card) {
         return repository.findByCard(card);
@@ -49,13 +49,13 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    @CachePut({"ruleCategory", "ruleCard"})
+    @CachePut({"ruleCard"})
     public Rule save(Rule rule) {
         return repository.save(rule);
     }
 
     @Override
-    @CacheEvict({"ruleCategory", "ruleCard"})
+    @CacheEvict({"ruleCard"})
     public Rule update(Rule rule) {
         Rule source = repository.findOne(rule.getId());
         source.setBeginTime(rule.getBeginTime());
@@ -70,8 +70,8 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Rule> findByRuleCategory(RuleCategory category) {
-        return repository.findByRuleCategory(category);
+    public List<Rule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid) {
+        return repository.findByRuleCategoryAndCardAndValid(category, card, valid);
     }
 
     @Override

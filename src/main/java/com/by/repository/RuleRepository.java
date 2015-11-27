@@ -22,4 +22,6 @@ public interface RuleRepository extends PagingAndSortingRepository<Rule, Long> {
     List<Rule> findByRuleCategory(RuleCategory category);
 
     List<Rule> findByRuleCategoryAndValid(RuleCategory category, ValidEnum valid);
+
+    List<Rule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid);
 }

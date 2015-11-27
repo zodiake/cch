@@ -1,15 +1,18 @@
 package com.by.service;
 
+import com.by.model.Member;
+import com.by.model.ScoreHistory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.by.model.Member;
-import com.by.model.ScoreHistory;
+import java.util.List;
 
 public interface ScoreHistoryService {
-	public ScoreHistory save(ScoreHistory history);
+    ScoreHistory save(ScoreHistory history);
 
-	public ScoreHistory save(Member member, int score);
+    ScoreHistory save(Member member, int score);
 
-	public Page<ScoreHistory> findByMember(Member member,Pageable pageable);
+    Page<ScoreHistory> findByMember(Member member, Pageable pageable);
+
+    List<ScoreHistory> findByMember(Member member);
 }

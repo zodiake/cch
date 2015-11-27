@@ -22,14 +22,15 @@ public class ScoreAddHistoryServiceImpl implements ScoreAddHistoryService {
 
     @Override
     public ScoreAddHistory save(ScoreAddHistory history) {
-        return null;
+        return repository.save(history);
     }
 
     @Override
-    public ScoreAddHistory save(Member member, int total) {
+    public ScoreAddHistory save(Member member, int total, String summary) {
         ScoreAddHistory sah = new ScoreAddHistory();
         sah.setMember(member);
         sah.setTotal(total);
+        sah.setSummary(summary);
         return save(sah);
     }
 

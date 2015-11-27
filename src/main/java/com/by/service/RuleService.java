@@ -25,7 +25,7 @@ public interface RuleService {
 
     Page<Rule> findByRuleCategory(RuleCategory category, Pageable pageable);
 
-    List<Rule> findByRuleCategory(RuleCategory category);
+    List<Rule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid);
 
     List<Rule> findByRuleCategoryAndValid(RuleCategory category, ValidEnum valid);
 

@@ -72,6 +72,7 @@ CREATE TABLE by_card (
 CREATE TABLE by_rule (
   id          BIGINT NOT NULL AUTO_INCREMENT,
   rate        DOUBLE,
+  score       INT             DEFAULT 0,
   card_id     BIGINT,
   summary     VARCHAR(50),
   valid       SMALLINT,

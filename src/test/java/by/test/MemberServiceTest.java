@@ -1,10 +1,13 @@
 package by.test;
 
 import com.by.Application;
+import com.by.model.Card;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
+import com.by.model.ScoreHistory;
 import com.by.service.MemberService;
 import com.by.service.ScoreAddHistoryService;
+import com.by.service.ScoreHistoryService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 
 /**
@@ -32,6 +36,8 @@ public class MemberServiceTest {
     private MemberService service;
     @Autowired
     private ScoreAddHistoryService scoreAddHistoryService;
+    @Autowired
+    private ScoreHistoryService scoreHistoryService;
 
     private List<ScoreAddHistory> results = new ArrayList<>();
 
@@ -56,11 +62,25 @@ public class MemberServiceTest {
 
     @Test
     public void useHistory() {
-        service.useScore(new Member(1l), 5);
-        List<ScoreAddHistory> histories = scoreAddHistoryService.findByMember(new Member(1l));
+        service.useScore(new Member(1L), 5);
+        List<ScoreAddHistory> histories = scoreAddHistoryService.findByMember(new Member(1L));
         assertEquals(2, histories.size());
         assertEquals(1, histories.get(0).getTotal());
-        Member m = service.findById(1l).get();
+        Member m = service.findById(1L).get();
         assertEquals(105, m.getScore());
+    }
+
+    @Test
+    public void signin() {
+        Member member = new Member();
+        member.setCard(new Card(1L));
+        member.setName("aha");
+        Member m = service.save(member);
+        List<ScoreAddHistory> addHistories = scoreAddHistoryService.findByMember(m);
+        List<ScoreHistory> scoreHistories = scoreHistoryService.findByMember(m);
+        assertNotNull(addHistories);
+        assertNotNull(scoreHistories);
+        assertEquals(1, addHistories.size());
+        assertEquals(1, scoreHistories.size());
     }
 }
