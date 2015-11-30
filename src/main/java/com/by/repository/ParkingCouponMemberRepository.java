@@ -18,4 +18,6 @@ public interface ParkingCouponMemberRepository extends PagingAndSortingRepositor
 
     @Query("select sum(p.total) from ParkingCouponMember p where p.coupon=:coupon")
     Long sumTotalGroupByCoupon(@Param("coupon") ParkingCoupon coupon);
+
+    Long countByCouponAndMember(ParkingCoupon parkingCoupon, Member member);
 }

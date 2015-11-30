@@ -144,4 +144,9 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     public Long sumTotalGroupByCoupon(ParkingCoupon coupon) {
         return repository.sumTotalGroupByCoupon(coupon);
     }
+
+    @Override
+    public Long countByCouponAndMember(ParkingCoupon parkingCoupon, Member member) {
+        return repository.countByCouponAndMember(parkingCoupon, member);
+    }
 }
