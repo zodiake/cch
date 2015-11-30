@@ -40,8 +40,8 @@ public class ParkingHistoryServiceTest {
 
     @Before
     public void init() {
-        startTime.set(2015, 10, 25, 13, 0, 22);
-        endTime.set(2015, 10, 25, 15, 0, 22);
+        startTime.set(2015, startTime.get(Calendar.MONTH), 25, 13, 0, 22);
+        endTime.set(2015, endTime.get(Calendar.MONTH), 25, 15, 0, 22);
     }
 
     @Test
@@ -75,6 +75,7 @@ public class ParkingHistoryServiceTest {
         form.setStartTime(startTime);
         form.setEndTime(endTime);
         service.bindLicenseWithMember(form);
+        assertEquals(1, parkingPayService.findByLicense("沪A54321").size());
         assertEquals(1, parkingPayService.findByLicenseAndCreatedTimeBetween("沪A54321", startTime, endTime).size());
         assertEquals(1, service.findByLicense("沪A54321").size());
     }
