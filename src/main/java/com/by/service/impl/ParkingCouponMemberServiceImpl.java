@@ -1,9 +1,6 @@
 package com.by.service.impl;
 
-import com.by.exception.MemberNotFoundException;
-import com.by.exception.NoCouponException;
-import com.by.exception.NotEnoughCouponException;
-import com.by.exception.NotFoundException;
+import com.by.exception.*;
 import com.by.form.AdminCouponForm;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +24,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     @Autowired
     private MemberService memberService;
     @Autowired
-    private ParkingCouponExchangeHistoryService exchangeHistroyService;
+    private ParkingCouponExchangeHistoryService exchangeHistoryService;
     @Autowired
     private ParkingCouponUseHistoryService useHistoryService;
     @Autowired
@@ -60,11 +58,11 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
             ParkingCouponMember p = pcm.get();
             int sourceTotal = p.getTotal();
             p.setTotal(sourceTotal + form.getTotal());
-            exchangeHistroyService.save(m, form.getTotal(), shop);
+            exchangeHistoryService.save(m, form.getTotal(), shop);
             return p;
         }
         // 否则新增一条该用户的停车券记录
-        exchangeHistroyService.save(m, form.getTotal(), shop);
+        exchangeHistoryService.save(m, form.getTotal(), shop);
         return save(pc.get(), m, form.getTotal());
     }
 
@@ -78,6 +76,8 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         // 该用户的停车券数量为0，或者希望使用的停车券数量大于该用户现有数量
         if (total > pcm.get().getTotal() || pcm.get().getTotal() == 0)
             throw new NotEnoughCouponException();
+        if (couponMember.getCoupon().getCouponEndTime() != null && couponMember.getCoupon().getCouponEndTime().after(Calendar.getInstance()))
+            throw new CouponOutOfDateException();
         int source = couponMember.getTotal();
         couponMember.setTotal(source - total);
         // 记录该用户对应的车牌
@@ -106,8 +106,26 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
             return parkingCouponMember;
         }
         //如果没有，新增一条兑换记录
-        exchangeHistroyService.save(m, count, null);
+        exchangeHistoryService.save(m, count, null);
         return save(pc.get(), m, count);
+    }
+
+    private boolean isGenericParkingCoupon(ParkingCoupon parkingCoupon) {
+        return parkingCoupon.getBeginTime() != null && parkingCoupon.getEndTime() != null && parkingCoupon.getCouponEndTime() != null;
+    }
+
+    private ParkingCouponMember genericExchangeCoupon(Member member, ParkingCoupon coupon, int count) {
+        Member m = memberService.useScore(member, coupon.getScore() * count);
+        Optional<ParkingCouponMember> pcm = repository.findByMemberAndCoupon(member, coupon);
+        //若果该用户已经兑换过停车券，更新数量
+        if (pcm.isPresent()) {
+            ParkingCouponMember parkingCouponMember = pcm.get();
+            parkingCouponMember.setTotal(parkingCouponMember.getTotal() + count);
+            return parkingCouponMember;
+        }
+        //如果没有，新增一条兑换记录
+        exchangeHistoryService.save(m, count, null);
+        return save(coupon, m, count);
     }
 
     @Override
@@ -120,5 +138,10 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     @Override
     public Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon) {
         return repository.findByMemberAndCoupon(member, parkingCoupon);
+    }
+
+    @Override
+    public Long sumTotalGroupByCoupon(ParkingCoupon coupon) {
+        return repository.sumTotalGroupByCoupon(coupon);
     }
 }

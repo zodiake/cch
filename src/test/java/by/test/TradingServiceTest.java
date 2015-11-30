@@ -7,10 +7,13 @@ import com.by.service.TradingService;
 import org.hibernate.envers.Audited;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by yagamai on 15-11-27.
@@ -20,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @WebIntegrationTest
 @ActiveProfiles("dev")
 public class TradingServiceTest {
-    @Audited
+    @Autowired
     private TradingService tradingService;
 
     @Test

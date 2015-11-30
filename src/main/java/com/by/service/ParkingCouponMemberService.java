@@ -49,4 +49,6 @@ public interface ParkingCouponMemberService {
     public ParkingCouponMember update(ParkingCouponMember coupon);
 
     public Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon);
+
+    Long sumTotalGroupByCoupon(ParkingCoupon coupon);
 }

@@ -1,176 +1,227 @@
 package com.by.model;
 
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
+
+import javax.persistence.*;
 import java.util.Calendar;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.by.typeEnum.ValidEnum;
 
 @Entity
 @Table(name = "by_parking_coupon")
 // 停车券模板
 public class ParkingCoupon {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private int amount;
+    private int amount;
 
-	private int score;
+    private int score;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "coupon")
-	private List<ParkingCouponMember> members;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "coupon")
+    private List<ParkingCouponMember> members;
 
-	private ValidEnum valid;
+    private ValidEnum valid;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_time")
-	private Calendar createdTime;
+    //生效日期
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "begin_time")
+    private Calendar beginTime;
 
-	@Column(name = "created_by")
-	private String createdBy;
+    //无效日期
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_time")
+    private Calendar endTime;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_time")
-	private Calendar updatedTime;
+    //生成的券的截止日期
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "coupon_end_time")
+    private Calendar couponEndTime;
 
-	@Column(name = "updated_by")
-	private String updatedBy;
+    //数量
+    private Integer total;
 
-	public ParkingCoupon() {
-	}
+    //用户是否只能兑换一次
+    @Enumerated
+    private DuplicateEnum duplicate;
 
-	public ParkingCoupon(Long id) {
-		this.id = id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Calendar createdTime;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(name = "created_by")
+    private String createdBy;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Calendar updatedTime;
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "updated_by")
+    private String updatedBy;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public ParkingCoupon() {
+    }
 
-	public int getAmount() {
-		return amount;
-	}
+    public ParkingCoupon(Long id) {
+        this.id = id;
+    }
 
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public ValidEnum getValid() {
-		return valid;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setValid(ValidEnum valid) {
-		this.valid = valid;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getScore() {
-		return score;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setScore(int score) {
-		this.score = score;
-	}
+    public int getAmount() {
+        return amount;
+    }
 
-	public Calendar getCreatedTime() {
-		return createdTime;
-	}
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 
-	public void setCreatedTime(Calendar createdTime) {
-		this.createdTime = createdTime;
-	}
+    public ValidEnum getValid() {
+        return valid;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public void setValid(ValidEnum valid) {
+        this.valid = valid;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public int getScore() {
+        return score;
+    }
 
-	public Calendar getUpdatedTime() {
-		return updatedTime;
-	}
+    public void setScore(int score) {
+        this.score = score;
+    }
 
-	public void setUpdatedTime(Calendar updatedTime) {
-		this.updatedTime = updatedTime;
-	}
+    public Calendar getCreatedTime() {
+        return createdTime;
+    }
 
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
+    public void setCreatedTime(Calendar createdTime) {
+        this.createdTime = createdTime;
+    }
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	@PrePersist
-	private void prePersist() {
-		this.createdTime = Calendar.getInstance();
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	@PreUpdate
-	private void preUpdate() {
-		this.updatedTime = Calendar.getInstance();
-	}
+    public Calendar getUpdatedTime() {
+        return updatedTime;
+    }
 
-	public List<ParkingCouponMember> getMembers() {
-		return members;
-	}
+    public void setUpdatedTime(Calendar updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 
-	public void setMembers(List<ParkingCouponMember> members) {
-		this.members = members;
-	}
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ParkingCoupon other = (ParkingCoupon) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    public Calendar getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Calendar beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Calendar getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Calendar endTime) {
+        this.endTime = endTime;
+    }
+
+    public Calendar getCouponEndTime() {
+        return couponEndTime;
+    }
+
+    public void setCouponEndTime(Calendar couponEndTime) {
+        this.couponEndTime = couponEndTime;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public DuplicateEnum getDuplicate() {
+        return duplicate;
+    }
+
+    public void setDuplicate(DuplicateEnum duplicate) {
+        this.duplicate = duplicate;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.createdTime = Calendar.getInstance();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.updatedTime = Calendar.getInstance();
+    }
+
+    public List<ParkingCouponMember> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<ParkingCouponMember> members) {
+        this.members = members;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ParkingCoupon other = (ParkingCoupon) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 }

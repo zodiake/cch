@@ -161,15 +161,20 @@ CREATE TABLE by_coupon (
 );
 
 CREATE TABLE by_parking_coupon (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
-  name         VARCHAR(50),
-  amount       SMALLINT,
-  score        INT,
-  valid        SMALLINT,
-  created_time TIMESTAMP,
-  created_by   VARCHAR(20),
-  updated_time TIMESTAMP,
-  updated_by   VARCHAR(20),
+  id              BIGINT NOT NULL AUTO_INCREMENT,
+  name            VARCHAR(50),
+  amount          SMALLINT,
+  score           INT,
+  valid           SMALLINT,
+  created_time    TIMESTAMP,
+  created_by      VARCHAR(20),
+  updated_time    TIMESTAMP,
+  updated_by      VARCHAR(20),
+  begin_time      TIMESTAMP,
+  end_time        TIMESTAMP,
+  coupon_end_time TIMESTAMP,
+  total           INT,
+  duplicate       SMALLINT,
   PRIMARY KEY (id)
 );
 

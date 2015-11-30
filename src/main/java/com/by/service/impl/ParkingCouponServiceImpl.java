@@ -45,4 +45,9 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 		return repository.findById(id);
 	}
 
+	@Override
+	public ParkingCoupon findOne(Long id) {
+		return repository.findOne(id);
+	}
+
 }

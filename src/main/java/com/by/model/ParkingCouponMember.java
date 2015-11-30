@@ -63,4 +63,12 @@ public class ParkingCouponMember {
         return member.hashCode() + coupon.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "ParkingCouponMember{" +
+                "member=" + member.getId() +
+                ", coupon=" + coupon.getId() +
+                ", total=" + total +
+                '}';
+    }
 }

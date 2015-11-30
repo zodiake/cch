@@ -13,4 +13,6 @@ public interface ParkingCouponService {
 	public List<ParkingCoupon> findAll();
 	
 	public Optional<ParkingCoupon> findById(Long id);
+
+	ParkingCoupon findOne(Long id);
 }
