@@ -14,6 +14,7 @@ import com.by.exception.NotEnoughScore;
 import com.by.exception.NotValidException;
 import com.by.model.Card;
 import com.by.model.Member;
+import com.by.model.MemberDetail;
 import com.by.model.Rule;
 import com.by.model.RuleCategory;
 import com.by.model.ScoreAddHistory;
@@ -55,6 +56,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member save(Member member) {
 		Long i = repository.countByName(member.getName());
+		member.setMemberDetail(new MemberDetail());
 		if (i > 0)
 			throw new MemberAlreadyExistException();
 		Card card = cardService.findByIdAndValid(member.getCard().getId(), ValidEnum.VALID);

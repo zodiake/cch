@@ -3,6 +3,8 @@ package com.by.model;
 import javax.persistence.*;
 
 import com.auth0.jwt.internal.com.fasterxml.jackson.annotation.JsonBackReference;
+import com.auth0.jwt.internal.com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
@@ -38,7 +40,7 @@ public class MemberDetail {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-    @JsonBackReference
+    @JsonIgnore
     private Member member;
 
     public Long getId() {

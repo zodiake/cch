@@ -65,7 +65,7 @@ CREATE TABLE by_card (
   id        BIGINT NOT NULL AUTO_INCREMENT,
   name      VARCHAR(50),
   valid     SMALLINT,
-  initscore INT,
+  initscore INT Default 0,
   PRIMARY KEY (id)
 );
 

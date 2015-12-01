@@ -1,17 +1,14 @@
 package com.by.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.by.typeEnum.ValidEnum;
@@ -22,7 +19,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "by_card")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-public class Card implements Serializable{
+public class Card {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -36,7 +33,7 @@ public class Card implements Serializable{
 	@Enumerated
 	private ValidEnum valid;
 
-	private int initScore;
+	private Integer initScore;
 
 	public Card() {
 	}
@@ -77,11 +74,11 @@ public class Card implements Serializable{
 		this.valid = valid;
 	}
 
-	public int getInitScore() {
+	public Integer getInitScore() {
 		return initScore;
 	}
 
-	public void setInitScore(int initScore) {
+	public void setInitScore(Integer initScore) {
 		this.initScore = initScore;
 	}
 

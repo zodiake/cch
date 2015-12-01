@@ -3,6 +3,7 @@ package com.by.model;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,7 +52,7 @@ public class Member {
 	@JsonManagedReference
 	private Card card;
 
-	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private MemberDetail memberDetail;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
@@ -67,17 +68,22 @@ public class Member {
 
 	private int score;
 
+	public Member() {
+	}
+
+	public Member(Long id) {
+		this.id = id;
+	}
+
 	public Member(MemberRequestJson json) {
 		this.name = json.getName();
 		this.password = json.getPassword();
 		this.card = new Card(json.getCard());
 	}
 
-	public Member() {
-	}
-
-	public Member(Long id) {
+	public Member(Long id, String name) {
 		this.id = id;
+		this.name = name;
 	}
 
 	public Long getId() {

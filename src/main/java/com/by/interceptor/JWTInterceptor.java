@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.by.model.User;
+import com.by.model.Member;
 import com.by.utils.JWTUtils;
 
 public class JWTInterceptor extends HandlerInterceptorAdapter {
@@ -15,6 +15,7 @@ public class JWTInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		System.out.println("---------");
 		String authorization = request.getHeader("Authorization");
 		if (authorization == null)
 			return false;
@@ -24,7 +25,7 @@ public class JWTInterceptor extends HandlerInterceptorAdapter {
 		Map<Object, Object> map = JWTUtils.decode(tokens[1]);
 		String name = (String) map.get("name");
 		Integer id = (Integer) map.get("id");
-		request.setAttribute("user", new User(id.longValue(), name));
+		request.setAttribute("member", new Member(id.longValue(), name));
 		return true;
 	}
 }

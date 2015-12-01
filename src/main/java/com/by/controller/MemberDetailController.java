@@ -1,5 +1,8 @@
 package com.by.controller;
 
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.by.exception.Fail;
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
-import com.by.exception.Success;
 import com.by.model.Member;
 import com.by.model.MemberDetail;
 import com.by.service.MemberDetailService;
@@ -33,10 +34,10 @@ public class MemberDetailController {
 
 	@RequestMapping(value = "/details", method = RequestMethod.GET)
 	@ResponseBody
-	public Success<MemberDetail> get(@PathVariable("id") Long id) {
-		Member m = new Member(id);
-		return service.findByMember(m).map(i -> new Success<MemberDetail>(i))
-				.orElseThrow(() -> new NotFoundException());
+	public MemberDetail get(HttpServletRequest request) {
+		Member m = (Member) request.getAttribute("member");
+		Optional<MemberDetail> details = service.findByMember(m);
+		return details.get();
 	}
 
 	@RequestMapping(value = "/details", method = RequestMethod.POST)

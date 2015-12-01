@@ -1,10 +1,8 @@
 package by.test;
 
 import com.by.Application;
-import com.by.model.Card;
-import com.by.model.Member;
-import com.by.model.ScoreAddHistory;
-import com.by.model.ScoreHistory;
+import com.by.model.*;
+import com.by.service.MemberDetailService;
 import com.by.service.MemberService;
 import com.by.service.ScoreAddHistoryService;
 import com.by.service.ScoreHistoryService;
@@ -35,6 +33,8 @@ public class MemberServiceTest {
     @Autowired
     private MemberService service;
     @Autowired
+    private MemberDetailService detailService;
+    @Autowired
     private ScoreAddHistoryService scoreAddHistoryService;
     @Autowired
     private ScoreHistoryService scoreHistoryService;
@@ -50,6 +50,16 @@ public class MemberServiceTest {
             h.setTotal(i);
             results.add(h);
         }
+    }
+
+    @Test
+    public void memberSave() {
+        Member member = new Member();
+        member.setName("11112222223");
+        member.setMemberDetail(new MemberDetail());
+        member.setCard(new Card(1l));
+        Member source = service.save(member);
+        assertNotNull(source.getMemberDetail());
     }
 
     @Test

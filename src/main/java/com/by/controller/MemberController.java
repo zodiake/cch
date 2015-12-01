@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,20 +45,10 @@ public class MemberController {
 					.map(i -> new ReturnErrors(i.getField(), i.getDefaultMessage())).collect(Collectors.toList());
 			return new Fail(errors);
 		}
-		if (member.getPassword() != null)
+		if (!StringUtils.isEmpty(member.getPassword()))
 			member.setPassword(encoder.encodePassword(member.getPassword(), null));
 		Member m = service.save(new Member(member));
 		return new Success<String>(JWTUtils.encode(m));
-	}
-
-	// 用户登入
-	@RequestMapping(value = "/signin", method = RequestMethod.POST)
-	@ResponseBody
-	public Status signUp(@Valid @RequestBody Member member, BindingResult result) {
-		System.out.println(encoder.encodePassword(member.getPassword(), null));
-		member.setPassword(encoder.encodePassword(member.getPassword(), null));
-		return service.findByNameAndPassword(member).map(i -> new Success<String>(JWTUtils.encode(i)))
-				.orElseThrow(() -> new NotFoundException());
 	}
 
 	// 用户是否存在 存在返回status fail 不存在返回success
@@ -75,9 +66,12 @@ public class MemberController {
 	}
 
 	// 用户详情
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "jwt", method = RequestMethod.GET)
 	@ResponseBody
-	public Success<Member> get(@PathVariable("id") Long id) {
-		return service.findById(id).map(i -> new Success<Member>(i)).orElseThrow(() -> new NotFoundException());
+	public String get() {
+		Member m = new Member();
+		m.setId(1L);
+		m.setName("tom");
+		return JWTUtils.encode(m);
 	}
 }
