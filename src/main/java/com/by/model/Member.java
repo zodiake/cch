@@ -3,10 +3,26 @@ package com.by.model;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.*;
-import javax.validation.constraints.Min;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.by.json.MemberRequestJson;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -20,13 +36,14 @@ public class Member {
 	private Long id;
 
 	@NotNull
+	@Length(max = 11, min = 11)
 	private String name;
 
 	private String password;
 
 	// 注册时间
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_time")
+	@Column(name = "created_time")
 	private Calendar createdTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -49,6 +66,12 @@ public class Member {
 	private List<License> licenses;
 
 	private int score;
+
+	public Member(MemberRequestJson json) {
+		this.name = json.getName();
+		this.password = json.getPassword();
+		this.card = new Card(json.getCard());
+	}
 
 	public Member() {
 	}
@@ -128,7 +151,7 @@ public class Member {
 	public void setLicenses(List<License> licenses) {
 		this.licenses = licenses;
 	}
-	
+
 	public int getScore() {
 		return score;
 	}

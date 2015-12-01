@@ -39,20 +39,24 @@ public class ParkingCouponActor extends UntypedActor {
             ParkingCouponMember pcm = (ParkingCouponMember) message;
             ParkingCoupon pc = parkingCouponService.findOne(pcm.getCoupon().getId());
             if (pc.getValid().equals(ValidEnum.VALID)) {
-                if (pc.getBeginTime() != null && pc.getEndTime() != null && pc.getBeginTime().before(calendar) && pc.getEndTime().after(calendar)) {
-                    if (pc.getDuplicate().equals(DuplicateEnum.NOTDUPLICATE)) {
-                        Long count = parkingCouponMemberService.countByCouponAndMember(pcm.getCoupon(), pcm.getMember());
-                        if (count > 0) {
-                            sender().tell("duplicate", null);
+                if (pc.getBeginTime() != null && pc.getEndTime() != null) {
+                    if (pc.getBeginTime().before(calendar) && pc.getEndTime().after(calendar)) {
+                        if (pc.getDuplicate().equals(DuplicateEnum.NOTDUPLICATE)) {
+                            Long count = parkingCouponMemberService.countByCouponAndMember(pcm.getCoupon(), pcm.getMember());
+                            if (count > 0) {
+                                sender().tell("duplicate", null);
+                            }
                         }
-                    }
-                    Long total = parkingCouponMemberService.sumTotalGroupByCoupon(pc);
-                    if (total >= pc.getTotal()) {
-                        //全部兑换
-                        sender().tell("out of storage", null);
+                        Long total = parkingCouponMemberService.sumTotalGroupByCoupon(pc);
+                        if (total >= pc.getTotal()) {
+                            //全部兑换
+                            sender().tell("out of storage", null);
+                        } else {
+                            parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), 1);
+                            sender().tell("success", null);
+                        }
                     } else {
-                        parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), 1);
-                        sender().tell("success", null);
+                        sender().tell("out of date", null);
                     }
                 } else {
                     parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), pcm.getTotal());

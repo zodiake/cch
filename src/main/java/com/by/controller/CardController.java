@@ -43,7 +43,6 @@ public class CardController {
 	@ResponseBody
 	public Status save(@Valid Card card,BindingResult result) {
 		if(result.hasErrors()){
-			return new Fail(result.getAllErrors());
 		}
 		Card c = new Card();
 		c.setName("low");

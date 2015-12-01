@@ -11,7 +11,7 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Lon
 
 	Optional<Member> findByName(String name);
 
-	Optional<Member> countByName(String name);
+	Long countByName(String name);
 
 	Optional<Member> findByNameAndPassword(String name, String password);
 }

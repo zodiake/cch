@@ -78,7 +78,6 @@ CREATE TABLE by_rule (
   valid       SMALLINT,
   beginTime   TIMESTAMP,
   endTime     TIMESTAMP,
-  permanent   SMALLINT,
   category_id BIGINT,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   FOREIGN KEY (category_id) REFERENCES by_rule_category (id),

@@ -1,10 +1,12 @@
 package com.by.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,16 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.by.exception.Fail;
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
+import com.by.json.MemberRequestJson;
 import com.by.model.Member;
+import com.by.model.ReturnErrors;
 import com.by.service.MemberService;
 import com.by.utils.JWTUtils;
 
-@Controller
+@RestController
 @RequestMapping(value = "/member")
 public class MemberController {
 	@Autowired
@@ -33,14 +38,16 @@ public class MemberController {
 	// 用户注册
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	@ResponseBody
-	public Status signIn(@Valid Member member, BindingResult result) {
+	public Status signIn(@Valid @RequestBody MemberRequestJson member, BindingResult result) {
 		if (result.hasErrors()) {
-			Fail fail = new Fail(result.getAllErrors());
-			return fail;
+			List<ReturnErrors> errors = result.getFieldErrors().stream()
+					.map(i -> new ReturnErrors(i.getField(), i.getDefaultMessage())).collect(Collectors.toList());
+			return new Fail(errors);
 		}
-		member.setPassword(encoder.encodePassword(member.getPassword(), null));
-		Member m = service.save(member);
-		return new Success<Member>(m);
+		if (member.getPassword() != null)
+			member.setPassword(encoder.encodePassword(member.getPassword(), null));
+		Member m = service.save(new Member(member));
+		return new Success<String>(JWTUtils.encode(m));
 	}
 
 	// 用户登入

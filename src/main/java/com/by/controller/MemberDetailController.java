@@ -43,7 +43,6 @@ public class MemberDetailController {
 	@ResponseBody
 	public Status save(@Valid MemberDetail detail, BindingResult result) {
 		if (result.hasErrors()) {
-			return new Fail(result.getAllErrors());
 		}
 		service.save(detail);
 		return new Status("success");

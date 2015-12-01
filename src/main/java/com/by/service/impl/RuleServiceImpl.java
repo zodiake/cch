@@ -84,7 +84,6 @@ public class RuleServiceImpl implements RuleService {
     public int getMaxScore(List<Rule> rules) {
         Calendar today = Calendar.getInstance();
         List<Integer> scoreList = rules.stream()
-                .filter(i -> i.getValid() == ValidEnum.VALID)
                 .filter(i -> {
                     if (i.getBeginTime() != null && i.getEndTime() != null)
                         return i.getBeginTime().before(today) && i.getEndTime().after(today);
@@ -99,7 +98,6 @@ public class RuleServiceImpl implements RuleService {
     public double getMaxRate(List<Rule> rules) {
         Calendar today = Calendar.getInstance();
         List<Double> scoreList = rules.stream()
-                .filter(i -> i.getValid() == ValidEnum.VALID)
                 .filter(i -> {
                     if (i.getBeginTime() != null && i.getEndTime() != null)
                         return i.getBeginTime().before(today) && i.getEndTime().after(today);

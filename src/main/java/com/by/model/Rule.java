@@ -36,9 +36,6 @@ public class Rule {
 
     private int Score;
 
-    @Enumerated
-    private PermanentEnum permanent;
-
     public Long getId() {
         return id;
     }
@@ -93,14 +90,6 @@ public class Rule {
 
     public void setEndTime(Calendar endTime) {
         this.endTime = endTime;
-    }
-
-    public PermanentEnum getPermanent() {
-        return permanent;
-    }
-
-    public void setPermanent(PermanentEnum permanent) {
-        this.permanent = permanent;
     }
 
     public RuleCategory getRuleCategory() {
