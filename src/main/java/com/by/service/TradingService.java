@@ -16,4 +16,6 @@ public interface TradingService {
     Trading save(Trading trading);
 
     int tradeToScore(Trading trading);
+
+    Trading bindMember(Trading trading, String mobile);
 }

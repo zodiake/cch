@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Calendar;
-import java.util.function.Function;
 
 /**
  * Created by yagamai on 15-11-30.
@@ -52,15 +49,17 @@ public class ParkingCouponActor extends UntypedActor {
                     Long total = parkingCouponMemberService.sumTotalGroupByCoupon(pc);
                     if (total >= pc.getTotal()) {
                         //全部兑换
-                        sender().tell("hello", null);
+                        sender().tell("out of storage", null);
                     } else {
                         parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), 1);
+                        sender().tell("success", null);
                     }
                 } else {
-                    parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), pc.getTotal());
+                    parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), pcm.getTotal());
+                    sender().tell("success", null);
                 }
             } else {
-                sender().tell("outofdate", null);
+                sender().tell("invalid parkingCoupon", null);
             }
         } else {
             unhandled(message);

@@ -6,6 +6,7 @@ import com.by.typeEnum.ValidEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -17,9 +18,7 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Created by zodiake on 2015/11/30.
  */
-
 public class ReflectionTest {
-    @Test
     public <T> void reflection(Function<T, Void> notPermanent, Function<T, Void> permanent, Function<T, Void> notValid, T t) {
         Class c = t.getClass();
         try {

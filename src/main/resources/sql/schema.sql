@@ -293,7 +293,13 @@ CREATE TABLE by_trading (
   member_id    BIGINT,
   created_time TIMESTAMP,
   amount       DOUBLE,
+  code         CHAR(10),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)
 );
+
+CREATE UNIQUE INDEX ON by_trading (code);
+CREATE UNIQUE INDEX ON by_member (name);
+CREATE UNIQUE INDEX ON by_shop (key);
+CREATE INDEX ON by_trading (created_time);

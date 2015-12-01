@@ -1,6 +1,8 @@
 package com.by.service.impl;
 
 import com.by.exception.MemberNotFoundException;
+import com.by.exception.TradingAlreadyBindException;
+import com.by.exception.TradingNotExistException;
 import com.by.model.*;
 import com.by.repository.TradingRepository;
 import com.by.service.MemberService;
@@ -29,6 +31,7 @@ public class TradingServiceImpl implements TradingService {
     private MemberService memberService;
     @Autowired
     private RuleService ruleService;
+    private RuleCategory tradingRuleCategory = new RuleCategory(2l);
 
     @Override
     @Transactional(readOnly = true)
@@ -38,8 +41,15 @@ public class TradingServiceImpl implements TradingService {
 
     @Override
     public Trading save(Trading trading) {
-        Member member = trading.getMember();
-        memberService.updateScore(member, tradeToScore(trading));
+        if (trading.getMember() != null) {
+            Optional<Member> memberOptional = memberService.findByName(trading.getMember().getName());
+            if (!memberOptional.isPresent())
+                throw new MemberNotFoundException();
+            Member member = memberOptional.get();
+            //如果该笔交易已绑定了用户
+            trading.setMember(member);
+            memberService.updateScore(member, tradeToScore(trading), "trading");
+        }
         return repository.save(trading);
     }
 
@@ -48,9 +58,23 @@ public class TradingServiceImpl implements TradingService {
         Optional<Member> m = memberService.findById(trading.getMember().getId());
         if (!m.isPresent())
             throw new MemberNotFoundException();
-        List<Rule> rules = ruleService.findByRuleCategoryAndCardAndValid(new RuleCategory(2l), m.get().getCard(), ValidEnum.VALID);
+        List<Rule> rules = ruleService.findByRuleCategoryAndCardAndValid(tradingRuleCategory, m.get().getCard(), ValidEnum.VALID);
         double maxRate = ruleService.getMaxRate(rules);
         double maxScore = ruleService.getMaxScore(rules);
         return Long.valueOf(Math.round(trading.getAmount() * maxRate + maxScore)).intValue();
+    }
+
+    @Override
+    public Trading bindMember(Trading trading, String mobile) {
+        Optional<Member> member = memberService.findByName(mobile);
+        if (!member.isPresent())
+            throw new MemberNotFoundException();
+        Trading t = repository.findByCode(trading.getCode());
+        if (t == null)
+            throw new TradingNotExistException();
+        if (t.getMember() != null)
+            throw new TradingAlreadyBindException();
+        t.setMember(member.get());
+        return save(t);
     }
 }

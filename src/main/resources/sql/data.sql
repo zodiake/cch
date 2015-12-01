@@ -87,3 +87,7 @@ INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (5, 2, 1
 INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (6, 2, 2, 'h');
 INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (7, 2, 3, 'h');
 INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (8, 2, 4, 'h');
+
+-- test by_trading
+INSERT INTO by_trading (id, member_id, code, amount) VALUES (1, 1, '321', 100);
+INSERT INTO by_trading (id, member_id, code, amount) VALUES (2, NULL, '123', 100);

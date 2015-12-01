@@ -40,8 +40,8 @@ public class ParkingHistoryServiceTest {
 
     @Before
     public void init() {
-        startTime.set(2015, startTime.get(Calendar.MONTH), 25, 13, 0, 22);
-        endTime.set(2015, endTime.get(Calendar.MONTH), 25, 15, 0, 22);
+        startTime.set(2015, 10, 25, 13, 0, 22);
+        endTime.set(2015, 10, 25, 15, 0, 22);
     }
 
     @Test

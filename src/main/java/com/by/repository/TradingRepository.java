@@ -13,4 +13,6 @@ import java.util.Calendar;
  */
 public interface TradingRepository extends PagingAndSortingRepository<Trading, Long> {
     Page<Trading> findByShopAndCreatedTimeBetween(Shop shop, Calendar startTime, Calendar endTime, Pageable pageable);
+
+    Trading findByCode(String code);
 }

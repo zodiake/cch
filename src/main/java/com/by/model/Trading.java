@@ -21,9 +21,21 @@ public class Trading {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
     private Calendar createdTime;
 
     private Double amount;
+
+    //交易流水号
+    private String code;
+
+    public Trading() {
+    }
+
+    public Trading(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
@@ -63,6 +75,14 @@ public class Trading {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override

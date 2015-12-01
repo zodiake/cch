@@ -77,10 +77,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member updateScore(Member member, int total) {
+    public Member updateScore(Member member, int total, String reason) {
         Member source = repository.findOne(member.getId());
         source.setScore(source.getScore() + total);
-        scoreAddHistoryService.save(member, total, "");
+        scoreAddHistoryService.save(member, total, reason);
         scoreHistoryService.save(member, total);
         return source;
     }

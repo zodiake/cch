@@ -33,6 +33,7 @@ public class AkkaController {
         ParkingCouponMember pcm = new ParkingCouponMember();
         pcm.setMember(new Member(json.getMember()));
         pcm.setCoupon(new ParkingCoupon(json.getCoupon()));
+        pcm.setTotal(1);
         ActorSystem system = ctx.getBean(ActorSystem.class);
         ActorRef counter = system.actorOf(
                 SpringExtProvider.get(system).props("ParkingCouponActor"), "counter");
