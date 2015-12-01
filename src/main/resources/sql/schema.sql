@@ -302,4 +302,5 @@ CREATE TABLE by_trading (
 CREATE UNIQUE INDEX ON by_trading (code);
 CREATE UNIQUE INDEX ON by_member (name);
 CREATE UNIQUE INDEX ON by_shop (key);
+CREATE UNIQUE INDEX ON by_coupon (code);
 CREATE INDEX ON by_trading (created_time);

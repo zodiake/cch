@@ -112,6 +112,10 @@ public class MemberServiceImpl implements MemberService {
         return source;
     }
 
+    /*
+       find which scoreAddHistory should deleted from history
+       @param allList member all scoreAddedHistory list
+     */
     @Override
     public List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total) {
         List<ScoreAddHistory> results = new ArrayList<>();
