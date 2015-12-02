@@ -2,7 +2,6 @@ package by.test;
 
 import com.by.Application;
 import com.by.model.*;
-import com.by.service.MemberDetailService;
 import com.by.service.MemberService;
 import com.by.service.ScoreAddHistoryService;
 import com.by.service.ScoreHistoryService;
@@ -90,5 +89,15 @@ public class MemberServiceTest {
         assertNotNull(scoreHistories);
         assertEquals(1, addHistories.size());
         assertEquals(1, scoreHistories.size());
+    }
+
+    @Test
+    public void useZeroScore() {
+        Member member = new Member(1l);
+        service.useScore(member, 0);
+        List<ScoreHistory> histories = scoreHistoryService.findByMember(member);
+        assertEquals(1, histories.size());
+        assertEquals(0, histories.get(0).getDeposit());
+        assertEquals(4, scoreAddHistoryService.findByMember(member).size());
     }
 }

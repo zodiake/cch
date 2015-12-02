@@ -1,6 +1,7 @@
 package com.by.json;
 
-import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import com.by.model.CouponSummary;
 
@@ -9,23 +10,27 @@ public class CouponSummaryJson {
 
 	private int score;
 
-	private Calendar beginTime;
+	private String beginTime;
 
-	private Calendar endTime;
+	private String endTime;
 
 	private String summary;
 
-	private Calendar couponEndTime;
+	private String couponEndTime;
 
 	public CouponSummaryJson() {
 	}
 
 	public CouponSummaryJson(CouponSummary summary) {
-		this.id=summary.getId();
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		this.id = summary.getId();
 		this.score = summary.getScore();
-		this.beginTime = summary.getBeginTime();
-		this.endTime = summary.getEndTime();
-		this.couponEndTime = summary.getCouponEndTime();
+		if (summary.getBeginTime() != null)
+			this.beginTime = format.format(summary.getBeginTime().getTime());
+		if (summary.getEndTime() != null)
+			this.endTime = format.format(summary.getEndTime().getTime());
+		if (summary.getCouponEndTime() != null)
+			this.couponEndTime = format.format(summary.getCouponEndTime().getTime());
 	}
 
 	public Long getId() {
@@ -44,19 +49,19 @@ public class CouponSummaryJson {
 		this.score = score;
 	}
 
-	public Calendar getBeginTime() {
+	public String getBeginTime() {
 		return beginTime;
 	}
 
-	public void setBeginTime(Calendar beginTime) {
+	public void setBeginTime(String beginTime) {
 		this.beginTime = beginTime;
 	}
 
-	public Calendar getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Calendar endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 
@@ -68,11 +73,11 @@ public class CouponSummaryJson {
 		this.summary = summary;
 	}
 
-	public Calendar getCouponEndTime() {
+	public String getCouponEndTime() {
 		return couponEndTime;
 	}
 
-	public void setCouponEndTime(Calendar couponEndTime) {
+	public void setCouponEndTime(String couponEndTime) {
 		this.couponEndTime = couponEndTime;
 	}
 }
