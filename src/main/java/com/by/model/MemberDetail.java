@@ -1,14 +1,23 @@
 package com.by.model;
 
-import javax.persistence.*;
+import java.util.Calendar;
 
-import com.auth0.jwt.internal.com.fasterxml.jackson.annotation.JsonBackReference;
-import com.auth0.jwt.internal.com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
-
-import java.util.Calendar;
 
 @Entity
 @Table(name = "by_member_detail")
@@ -40,7 +49,6 @@ public class MemberDetail {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-    @JsonIgnore
     private Member member;
 
     public Long getId() {

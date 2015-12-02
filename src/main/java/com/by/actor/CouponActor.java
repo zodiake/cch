@@ -1,11 +1,11 @@
 package com.by.actor;
 
 import akka.actor.UntypedActor;
-import com.by.model.Coupon;
+import com.by.message.CouponMessage;
 import com.by.model.CouponSummary;
-import com.by.model.Member;
 import com.by.service.CouponService;
 import com.by.service.MemberService;
+import com.by.typeEnum.DuplicateEnum;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,31 +19,49 @@ import java.util.Calendar;
 @Component("CouponActor")
 @Scope("prototype")
 public class CouponActor extends UntypedActor {
-    @Autowired
-    private CouponService couponService;
-    @Autowired
-    private MemberService memberService;
+	@Autowired
+	private CouponService couponService;
 
-    @Override
-    public void onReceive(Object message) throws Exception {
-        if (message instanceof Coupon) {
-            Coupon coupon = (Coupon) message;
-            CouponSummary couponSummary = coupon.getSummary();
-            if (couponSummary.getValid().equals(ValidEnum.VALID)) {
-                Calendar today = Calendar.getInstance();
-                Member member = coupon.getMember();
-                if (couponSummary.getBeginTime() != null && couponSummary.getEndTime() != null) {
-                    if (couponSummary.getBeginTime().after(today) && couponSummary.getEndTime().before(today)) {
-                        sender().tell("out of date", null);
-                    }
-                }
-                memberService.useScore(member, couponSummary.getScore());
-                couponService.bindMember(coupon, member);
-            } else {
-                sender().tell("not valid", null);
-            }
-        } else {
-            unhandled(message);
-        }
-    }
+	@Override
+	public void onReceive(Object message) throws Exception {
+		if (message instanceof CouponMessage) {
+			CouponMessage coupon = (CouponMessage) message;
+			CouponSummary couponSummary = coupon.getSummary();
+			// 卡券无效，不能兑换
+			if (couponSummary.getValid().equals(ValidEnum.VALID)) {
+				// 如果开始截止日期都非空，则判断是否有效期内
+				if (couponSummary.getBeginTime() != null && couponSummary.getEndTime() != null) {
+					Calendar today = Calendar.getInstance();
+					// 如果在有效期内
+					if (couponSummary.getBeginTime().before(today) && couponSummary.getEndTime().after(today)) {
+						// 判断是否可以重复兑换
+						if (couponSummary.getDuplicate().equals(DuplicateEnum.NOTDUPLICATE)) {
+							Long count = couponService.countBySummaryAndMember(couponSummary, coupon.getMember());
+							if (count > 0) {
+								sender().tell("duplicate", null);
+							}
+						}
+						Long total = couponService.countBySummaryWhereMemberIsNull(couponSummary);
+						// 是否有剩余
+						if (total == 0) {
+							// 全部兑换
+							sender().tell("out of storage", null);
+						} else {
+							couponService.bindMember(couponSummary, coupon.getMember());
+							sender().tell("success", null);
+						}
+					} else {
+						sender().tell("out of date", null);
+					}
+				} else {
+					couponService.bindMember(couponSummary, coupon.getMember());
+					sender().tell("success", null);
+				}
+			} else {
+				sender().tell("not valid", null);
+			}
+		} else {
+			unhandled(message);
+		}
+	}
 }

@@ -30,7 +30,7 @@ public class UserServiceTest {
 
     @Test
     public void adminMenuCountTest() {
-        User u = userService.findByName("tom");
+        User u = userService.findByName("tom22222222");
         assertNotNull(u);
         Set<Menu> menus = userService.getMenus(u);
         assertEquals(2,menus.size());
@@ -38,7 +38,7 @@ public class UserServiceTest {
 
     @Test
     public void shopUserMenuCountTest(){
-        User u = userService.findByName("mary");
+        User u = userService.findByName("mary4444444");
         Set<Menu> menus = userService.getMenus(u);
         assertEquals(menus.size(),3);
     }

@@ -33,8 +33,6 @@ public class MemberServiceTest {
     @Autowired
     private MemberService service;
     @Autowired
-    private MemberDetailService detailService;
-    @Autowired
     private ScoreAddHistoryService scoreAddHistoryService;
     @Autowired
     private ScoreHistoryService scoreHistoryService;
@@ -84,7 +82,7 @@ public class MemberServiceTest {
     public void signin() {
         Member member = new Member();
         member.setCard(new Card(1L));
-        member.setName("aha");
+        member.setName("1111111111a");
         Member m = service.save(member);
         List<ScoreAddHistory> addHistories = scoreAddHistoryService.findByMember(m);
         List<ScoreHistory> scoreHistories = scoreHistoryService.findByMember(m);

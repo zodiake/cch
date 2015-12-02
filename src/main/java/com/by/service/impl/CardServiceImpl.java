@@ -41,7 +41,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card findByIdAndValid(Long id, ValidEnum valid) {
-        return null;
+        return repository.findByIdAndValid(id, valid);
     }
 
     @Override

@@ -39,12 +39,4 @@ public class MemberDetailTest {
         assertEquals(1, audits.size());
     }
 
-    @Test
-    public void auditUpdateTest() {
-        Optional<MemberDetail> d = service.findByMember(new Member(1l));
-        MemberDetail detail = d.get();
-        detail.setUpdatedBy("asd");
-        service.update(detail);
-        assertEquals("asd", service.findAuditByRevision(detail.getId(), 2).getUpdatedBy());
-    }
 }

@@ -65,7 +65,7 @@ CREATE TABLE by_card (
   id        BIGINT NOT NULL AUTO_INCREMENT,
   name      VARCHAR(50),
   valid     SMALLINT,
-  initscore INT Default 0,
+  init_score INT             DEFAULT 0,
   PRIMARY KEY (id)
 );
 
@@ -91,6 +91,7 @@ CREATE TABLE by_member (
   card_id      BIGINT,
   score        INT,
   created_time TIMESTAMP,
+  valid        SMALLINT        DEFAULT 1,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   PRIMARY KEY (id),
 );
@@ -120,7 +121,7 @@ CREATE TABLE by_member_detail_aud (
   REV          INTEGER NOT NULL,
   REVTYPE      TINYINT,
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  PRIMARY KEY (id),
+  PRIMARY KEY (id, REV),
 );
 
 CREATE TABLE by_member_license (
@@ -132,17 +133,20 @@ CREATE TABLE by_member_license (
 );
 
 CREATE TABLE by_coupon_summary (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
-  name         VARCHAR(30),
-  total        SMALLINT,
-  score        SMALLINT,
-  valid        SMALLINT        DEFAULT 1,
-  created_Time TIMESTAMP,
-  created_By   VARCHAR(10),
-  updated_Time TIMESTAMP,
-  updated_By   VARCHAR(10),
-  begin_Time   TIMESTAMP,
-  end_Time     TIMESTAMP,
+  id              BIGINT NOT NULL AUTO_INCREMENT,
+  name            VARCHAR(30),
+  total           SMALLINT        DEFAULT 0,
+  score           SMALLINT        DEFAULT 0,
+  valid           SMALLINT        DEFAULT 1,
+  created_Time    TIMESTAMP,
+  created_By      VARCHAR(10),
+  updated_Time    TIMESTAMP,
+  updated_By      VARCHAR(10),
+  begin_Time      TIMESTAMP,
+  end_Time        TIMESTAMP,
+  coupon_end_time TIMESTAMP,
+  duplicate       SMALLINT        DEFAULT 1,
+  summary         VARCHAR(225),
   PRIMARY KEY (id)
 );
 

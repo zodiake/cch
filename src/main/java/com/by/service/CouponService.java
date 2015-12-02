@@ -5,7 +5,7 @@ import com.by.model.CouponSummary;
 import com.by.model.Member;
 
 public interface CouponService {
-    Coupon bindMember(Coupon coupon, Member member);
+    Coupon bindMember(CouponSummary summary, Member member);
 
     Coupon save(Coupon coupon);
 
@@ -16,4 +16,6 @@ public interface CouponService {
     Long countBySummaryWhereMemberIsNull(CouponSummary summary);
 
     Long countBySummary(CouponSummary summary);
+
+    Long countBySummaryAndMember(CouponSummary summary, Member member);
 }

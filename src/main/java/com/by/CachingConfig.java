@@ -17,21 +17,28 @@ import org.springframework.context.annotation.Configuration;
 public class CachingConfig {
     @Bean(destroyMethod = "shutdown")
     public net.sf.ehcache.CacheManager ehCacheManager() {
+        //card cache config
         CacheConfiguration cardCacheConfig = new CacheConfiguration();
-        cardCacheConfig.setName("myCacheName");
         cardCacheConfig.setMemoryStoreEvictionPolicy("LRU");
         cardCacheConfig.setMaxEntriesLocalHeap(1000);
         cardCacheConfig.setName("card");
 
+        //rule cache config
         CacheConfiguration ruleCacheConfig = new CacheConfiguration();
-        ruleCacheConfig.setName("myCacheName");
         ruleCacheConfig.setMemoryStoreEvictionPolicy("LRU");
         ruleCacheConfig.setMaxEntriesLocalHeap(1000);
         ruleCacheConfig.setName("rule");
 
+        //couponSummary cache config
+        CacheConfiguration couponSummaryCacheConfig = new CacheConfiguration();
+        couponSummaryCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        couponSummaryCacheConfig.setMaxEntriesLocalHeap(1000);
+        couponSummaryCacheConfig.setName("couponSummary");
+
         net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
         config.addCache(cardCacheConfig);
         config.addCache(ruleCacheConfig);
+        config.addCache(couponSummaryCacheConfig);
 
         return net.sf.ehcache.CacheManager.newInstance(config);
     }

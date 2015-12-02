@@ -61,7 +61,7 @@ public class ParkingCouponMemberTest {
     public void getCouponMemberExist() {
         AdminCouponForm form = new AdminCouponForm();
         form.setCouponTemplateId(1L);
-        form.setMobile("tom");
+        form.setMobile("13611738422");
         form.setTotal(2);
         service.getCouponFromShop(form, new Shop(1L));
         Optional<ParkingCouponMember> pcm = service.findByMemberAndCoupon(new Member(1L), new ParkingCoupon(1L));
@@ -75,6 +75,7 @@ public class ParkingCouponMemberTest {
     @Test
     public void exchangeCoupon() {
         Member member = new Member(2L);
+        member.setName("aaaaaaaaaaa");
         ParkingCoupon coupon = new ParkingCoupon(1L);
         Optional<ParkingCouponMember> pcm = service.findByMemberAndCoupon(member, new ParkingCoupon(1L));
         assertEquals(new Integer(10), pcm.get().getTotal());

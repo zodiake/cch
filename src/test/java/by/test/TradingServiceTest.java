@@ -39,7 +39,7 @@ public class TradingServiceTest {
     @Before
     public void init() {
         Member m = new Member(1l);
-        m.setScore(100);
+        m.setScore(110);
         memberService.update(m);
     }
 
@@ -57,7 +57,7 @@ public class TradingServiceTest {
         Trading t = new Trading();
         t.setId(1l);
         t.setCode("321");
-        tradingService.bindMember(t, "tom");
+        tradingService.bindMember(t, "13611738422");
     }
 
     @Test
@@ -66,8 +66,8 @@ public class TradingServiceTest {
         t.setId(1l);
         t.setCode("123");
         t.setAmount(100.0);
-        tradingService.bindMember(t, "tom");
-        Optional<Member> member = memberService.findByName("tom");
+        tradingService.bindMember(t, "13611738422");
+        Optional<Member> member = memberService.findByName("13611738422");
         assertEquals(110 + 100 * 2 + 100, member.get().getScore());
         assertEquals(5, scoreAddHistoryService.findByMember(new Member(1l)).size());
     }
@@ -84,13 +84,13 @@ public class TradingServiceTest {
     @Test
     public void tradeSaveWithMember() {
         Member m = new Member();
-        m.setName("tom");
+        m.setName("13611738422");
         Trading t = new Trading();
         t.setCode("123333");
         t.setAmount(100.0);
         t.setMember(m);
         tradingService.save(t);
-        Optional<Member> member = memberService.findByName("tom");
+        Optional<Member> member = memberService.findByName("13611738422");
         assertEquals(110 + 100 * 2 + 100, member.get().getScore());
         assertEquals(5, scoreAddHistoryService.findByMember(new Member(1l)).size());
     }

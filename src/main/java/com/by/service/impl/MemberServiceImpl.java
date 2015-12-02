@@ -1,30 +1,17 @@
 package com.by.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.by.exception.*;
+import com.by.model.*;
+import com.by.repository.MemberRepository;
+import com.by.service.*;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.by.exception.MemberAlreadyExistException;
-import com.by.exception.MemberNotFoundException;
-import com.by.exception.NotEnoughScore;
-import com.by.exception.NotValidException;
-import com.by.model.Card;
-import com.by.model.Member;
-import com.by.model.MemberDetail;
-import com.by.model.Rule;
-import com.by.model.RuleCategory;
-import com.by.model.ScoreAddHistory;
-import com.by.repository.MemberRepository;
-import com.by.service.CardService;
-import com.by.service.MemberService;
-import com.by.service.RuleService;
-import com.by.service.ScoreAddHistoryService;
-import com.by.service.ScoreHistoryService;
-import com.by.typeEnum.ValidEnum;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -60,10 +47,10 @@ public class MemberServiceImpl implements MemberService {
 		if (i > 0)
 			throw new MemberAlreadyExistException();
 		Card card = cardService.findByIdAndValid(member.getCard().getId(), ValidEnum.VALID);
-		if (card != null)
+		if (card == null)
 			throw new NotValidException();
 		List<Rule> rules = ruleService.findByRuleCategoryAndCardAndValid(registerCategory, card, ValidEnum.VALID);
-		int score = member.getCard().getInitScore();
+		int score = card.getInitScore();
 		if (rules.size() > 0) {
 			score += ruleService.getMaxScore(rules);
 		}
@@ -95,6 +82,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member updateScore(Member member, int total, String reason) {
 		Member source = repository.findOne(member.getId());
+		validMember(source);
 		source.setScore(source.getScore() + total);
 		scoreAddHistoryService.save(member, total, reason);
 		scoreHistoryService.save(member, total);
@@ -104,33 +92,33 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member useScore(Member member, int total) {
 		Member source = repository.findOne(member.getId());
-		if (source == null)
-			throw new MemberNotFoundException();
 		if (source.getScore() < total)
 			throw new NotEnoughScore();
 		List<ScoreAddHistory> historyList = scoreAddHistoryService.findByMember(member);
 		List<ScoreAddHistory> results = extractScoreHistory(historyList, total);
-		int sum = results.stream().map(ScoreAddHistory::getTotal).reduce((i, s) -> i + s).get();
-		if (sum > total) {
-			ScoreAddHistory last = results.get(results.size() - 1);
-			last.setTotal(sum - total);
-			results.remove(last);
-			for (ScoreAddHistory h : results) {
-				scoreAddHistoryService.delete(h.getId());
+		if (total > 0) {
+			int sum = results.stream().map(ScoreAddHistory::getTotal).reduce((i, s) -> i + s).get();
+			if (sum > total) {
+				ScoreAddHistory last = results.get(results.size() - 1);
+				last.setTotal(sum - total);
+				results.remove(last);
+				for (ScoreAddHistory h : results) {
+					scoreAddHistoryService.delete(h.getId());
+				}
+			} else if (sum == total) {
+				for (ScoreAddHistory h : results) {
+					scoreAddHistoryService.delete(h.getId());
+				}
 			}
-		} else if (sum == total) {
-			for (ScoreAddHistory h : results) {
-				scoreAddHistoryService.delete(h.getId());
-			}
+			source.setScore(source.getScore() - total);
 		}
-		source.setScore(source.getScore() - total);
 		scoreHistoryService.save(member, -total);
 		return source;
 	}
 
 	/*
 	 * find which scoreAddHistory should deleted from history
-	 * 
+	 *
 	 * @param allList member all scoreAddedHistory list
 	 */
 	@Override
@@ -146,5 +134,12 @@ public class MemberServiceImpl implements MemberService {
 			}
 		}
 		return results;
+	}
+
+	private void validMember(Member member) {
+		if (member == null)
+			throw new MemberNotFoundException();
+		if (member.getValid().equals(ValidEnum.INVALID))
+			throw new MemberNotValidException();
 	}
 }
