@@ -9,4 +9,11 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("c")
 public class PreferentialCoupon extends Coupon {
+    public PreferentialCoupon() {
+        super();
+    }
+
+    public PreferentialCoupon(Long id) {
+        setId(id);
+    }
 }

@@ -43,7 +43,7 @@ public class ParkingCouponController {
         this.ctx = ctx;
         this.parkingCouponMemberService = parkingCouponMemberService;
         system = ctx.getBean(ActorSystem.class);
-        ref = system.actorOf(SpringExtProvider.get(system).props("CouponActor"), "parkingCouponActor");
+        ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "parkingCouponActor");
 
     }
 

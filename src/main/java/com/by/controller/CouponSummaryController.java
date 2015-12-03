@@ -30,7 +30,7 @@ public class CouponSummaryController {
     public CouponSummaryController(ApplicationContext ctx) {
         this.ctx = ctx;
         system = ctx.getBean(ActorSystem.class);
-        ref = system.actorOf(SpringExtProvider.get(system).props("CouponActor"), "couponActor");
+        ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "couponActor");
 
     }
 
@@ -53,7 +53,7 @@ public class CouponSummaryController {
         if (!StringUtils.isEmpty(json.getPassword()))
             member.setPassword(json.getPassword());
         CouponSummary summary = service.findOne(json.getId());
-        CouponMessage message = new CouponMessage(member, summary);
+        PreferentialCouponMessage message = new PreferentialCouponMessage(member, summary);
         final Inbox inbox = Inbox.create(system);
         inbox.send(ref, message);
         try {

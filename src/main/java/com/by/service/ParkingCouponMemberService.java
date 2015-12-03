@@ -13,7 +13,7 @@ public interface ParkingCouponMemberService {
     /*
      * 用户获得停车券,由商铺发放
      */
-    public ParkingCouponMember getCouponFromShop(AdminCouponForm form, Shop shop);
+    ParkingCouponMember getCouponFromShop(AdminCouponForm form, Shop shop);
 
     /*
      * 用户通过积分兑换
@@ -24,7 +24,7 @@ public interface ParkingCouponMemberService {
      *
      * @param count 兑换的数量
      */
-    public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int count);
+    ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int count);
 
     /*
      * 用户使用停车券
@@ -35,20 +35,20 @@ public interface ParkingCouponMemberService {
      *
      * @param license 充值的车牌
      */
-    public ParkingCouponMember useCoupon(Member member, ParkingCoupon parkingCoupon, int total, String license);
+    ParkingCouponMember useCoupon(Member member, ParkingCoupon parkingCoupon, int total, String license);
 
     /*
      * 根据用户查找
      *
      * @param member
      */
-    public List<ParkingCouponMember> findByMember(Member member);
+    List<ParkingCouponMember> findByMember(Member member);
 
-    public ParkingCouponMember save(ParkingCoupon coupon, Member m, int total);
+    ParkingCouponMember save(ParkingCoupon coupon, Member m, int total);
 
-    public ParkingCouponMember update(ParkingCouponMember coupon);
+    ParkingCouponMember update(ParkingCouponMember coupon);
 
-    public Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon);
+    Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon);
 
     Long sumTotalGroupByCoupon(ParkingCoupon coupon);
 
