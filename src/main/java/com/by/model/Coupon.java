@@ -1,130 +1,177 @@
 package com.by.model;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.UUID;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.by.typeEnum.ExchangeState;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 
-// 礼品兑换券
 @Entity
 @Table(name = "by_coupon")
-public class Coupon implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Coupon {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	private String code;
 
-    private String code;
+	@ManyToOne
+	@JoinColumn(name = "member_id")
+	private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "begin_time")
+	private Calendar beginTime;
 
-    @ManyToOne
-    @JoinColumn(name = "summary_id")
-    private CouponSummary summary;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "end_time")
+	private Calendar endTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "exchange_time")
-    private Calendar exchangeTime;
+	private Integer score;
 
-    @Enumerated
-    @Column(name = "exchange_state")
-    private ExchangeState state;
+	private Calendar couponEndTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "use_time")
-    private Calendar useTime;
+	private Double amount;
 
-    public Long getId() {
-        return id;
-    }
+	private String name;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	private ValidEnum valid;
 
-    public String getCode() {
-        return code;
-    }
+	private DuplicateEnum duplicate;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Member getMember() {
-        return member;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public CouponSummary getSummary() {
-        return summary;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setSummary(CouponSummary summary) {
-        this.summary = summary;
-    }
+	public Member getMember() {
+		return member;
+	}
 
-    public Calendar getExchangeTime() {
-        return exchangeTime;
-    }
+	public void setMember(Member member) {
+		this.member = member;
+	}
 
-    public void setExchangeTime(Calendar exchangeTime) {
-        this.exchangeTime = exchangeTime;
-    }
+	@PrePersist
+	private void prePersist() {
+		this.code = UUID.randomUUID().toString().replace("-", "");
+	}
 
-    public ExchangeState getState() {
-        return state;
-    }
+	public Calendar getBeginTime() {
+		return beginTime;
+	}
 
-    public void setState(ExchangeState state) {
-        this.state = state;
-    }
+	public void setBeginTime(Calendar beginTime) {
+		this.beginTime = beginTime;
+	}
 
-    public Calendar getUseTime() {
-        return useTime;
-    }
+	public Calendar getEndTime() {
+		return endTime;
+	}
 
-    public void setUseTime(Calendar useTime) {
-        this.useTime = useTime;
-    }
+	public void setEndTime(Calendar endTime) {
+		this.endTime = endTime;
+	}
 
-    @PrePersist
-    private void prePersist() {
-        this.code = UUID.randomUUID().toString().replace("-", "");
-    }
+	public Integer getScore() {
+		return score;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
+	public void setScore(Integer score) {
+		this.score = score;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Coupon other = (Coupon) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
-    }
+	public Calendar getCouponEndTime() {
+		return couponEndTime;
+	}
+
+	public void setCouponEndTime(Calendar couponEndTime) {
+		this.couponEndTime = couponEndTime;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ValidEnum getValid() {
+		return valid;
+	}
+
+	public void setValid(ValidEnum valid) {
+		this.valid = valid;
+	}
+
+	public DuplicateEnum getDuplicate() {
+		return duplicate;
+	}
+
+	public void setDuplicate(DuplicateEnum duplicate) {
+		this.duplicate = duplicate;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Coupon other = (Coupon) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 }

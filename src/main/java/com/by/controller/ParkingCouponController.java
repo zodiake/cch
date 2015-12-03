@@ -50,6 +50,7 @@ public class ParkingCouponController {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public Status exchangeParkingCoupon(HttpServletRequest request, @Valid @RequestBody ParkingCouponMessage message, BindingResult result) {
+        //todo
         return null;
     }
 
@@ -58,5 +59,7 @@ public class ParkingCouponController {
     public Success<List<ParkingCoupon>> list(HttpServletRequest request) {
         Member member = (Member) request.getAttribute("member");
         parkingCouponMemberService.findByMember(member);
+        //todo
+        return null;
     }
 }

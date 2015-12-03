@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/api/coupons")
+@RequestMapping(value = "/api/coupon")
 public class CouponController {
     @Autowired
     private CouponService service;
@@ -22,6 +22,7 @@ public class CouponController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Success<List<CouponJson>> list(HttpServletRequest request) {
+        //todo
         Member member = (Member) request.getAttribute("member");
         return new Success<List<CouponJson>>(service.findByMemberJson(member));
     }

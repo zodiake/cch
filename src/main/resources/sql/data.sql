@@ -55,13 +55,6 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (2, 2.
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (3, 2.0, 1, 2, 1, 100);
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (4, 2.0, 1, 2, 1, 100);
 
--- test parking_coupon
-INSERT INTO by_parking_coupon (id, name, amount, score, valid) VALUES (1, 'haha', 100, 100, 1);
-
--- test parking_coupon_member
-INSERT INTO by_parking_coupon_member (member_id, parking_coupon_id, total) VALUES (1, 1, 10);
-INSERT INTO by_parking_coupon_member (member_id, parking_coupon_id, total) VALUES (2, 1, 10);
-
 -- test shop
 INSERT INTO by_shop (id, name, user_id) VALUES (1, 'shop1', 2);
 
@@ -72,11 +65,6 @@ INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 3);
 
 
 -- test parking_coupon_use_history
-INSERT INTO by_parking_coupon_use_history (id, member_id, parking_coupon_id, created_time, total, license)
-VALUES (1, 1, 1, '2015-11-25 13:15:22', 1, 'abc');
-
-INSERT INTO by_parking_coupon_use_history (id, member_id, parking_coupon_id, created_time, total, license)
-VALUES (2, 1, 1, '2015-11-25 14:15:23', 1, 'abc');
 
 -- test score add
 INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (1, 1, 1, 'h');
@@ -92,13 +80,3 @@ INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (8, 2, 4
 INSERT INTO by_trading (id, member_id, code, amount) VALUES (1, 1, '321', 100);
 INSERT INTO by_trading (id, member_id, code, amount) VALUES (2, NULL, '123', 100);
 
--- test by_coupon_summary
-INSERT INTO by_coupon_summary (id, name, valid, begin_Time, end_Time, score)
-VALUES (1, 'summary1', 1, '2015-12-1', '2015-12-30', 20);
-INSERT INTO by_coupon_summary (id, name, valid, begin_Time, end_Time, score)
-VALUES (2, 'summary1', 1, '2015-11-1', '2015-11-30', 20);
-
--- test by_coupon
-INSERT INTO by_coupon (id, summary_id, member_id) VALUES (1, 1, 1);
-INSERT INTO by_coupon (id, summary_id, member_id) VALUES (2, 1, 1);
-INSERT INTO by_coupon (id, summary_id, member_id) VALUES (3, 2, 1);

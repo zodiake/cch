@@ -1,33 +1,33 @@
 package com.by.message;
 
-import com.by.model.CouponSummary;
+import com.by.model.Coupon;
 import com.by.model.Member;
 
 /**
  * Created by yagamai on 15-12-2.
  */
 public class CouponMessage {
-    private CouponSummary summary;
-    private Member member;
+	private Coupon coupon;
+	private Member member;
 
-    public CouponMessage(Member m,CouponSummary summary){
-        this.member=m;
-        this.summary=summary;
-    }
+	public CouponMessage(Member m, Coupon coupon) {
+		this.member = m;
+		this.coupon = coupon;
+	}
 
-    public CouponSummary getSummary() {
-        return summary;
-    }
+	public Coupon getCoupon() {
+		return coupon;
+	}
 
-    public void setSummary(CouponSummary summary) {
-        this.summary = summary;
-    }
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
 
-    public Member getMember() {
-        return member;
-    }
+	public Member getMember() {
+		return member;
+	}
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
+	public void setMember(Member member) {
+		this.member = member;
+	}
 }

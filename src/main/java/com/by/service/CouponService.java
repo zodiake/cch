@@ -1,28 +1,20 @@
 package com.by.service;
 
-import com.by.json.CouponJson;
-import com.by.model.Coupon;
-import com.by.model.CouponSummary;
-import com.by.model.Member;
-
 import java.util.List;
 
+import com.by.json.CouponJson;
+import com.by.model.Coupon;
+import com.by.model.Member;
+
 public interface CouponService {
-    Coupon bindMember(CouponSummary summary, Member member);
 
-    Coupon save(Coupon coupon);
+	Coupon save(Coupon coupon);
 
-    Long count();
+	Long count();
 
-    Coupon findById(Long id);
+	Coupon findById(Long id);
 
-    Long countBySummaryWhereMemberIsNull(CouponSummary summary);
+	List<Coupon> findByMember(Member member);
 
-    Long countBySummary(CouponSummary summary);
-
-    Long countBySummaryAndMember(CouponSummary summary, Member member);
-
-    List<Coupon> findByMember(Member member);
-
-    List<CouponJson> findByMemberJson(Member member);
+	List<CouponJson> findByMemberJson(Member member);
 }

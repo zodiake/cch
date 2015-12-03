@@ -21,6 +21,7 @@ import java.util.Calendar;
 /**
  * Created by yagamai on 15-11-30.
  */
+//todo need change code;
 @Component("ParkingCouponActor")
 @Scope("prototype")
 public class ParkingCouponActor extends UntypedActor {
@@ -53,7 +54,7 @@ public class ParkingCouponActor extends UntypedActor {
                             }
                         }
                         Long total = parkingCouponMemberService.sumTotalGroupByCoupon(pc);
-                        if (total >= pc.getTotal()) {
+                        if (total >= 0) {
                             //全部兑换
                             sender().tell("out of storage", null);
                         } else {
