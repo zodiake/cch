@@ -1,6 +1,5 @@
 package com.by.message;
 
-import com.by.json.CouponSummaryJson;
 import com.by.model.CouponSummary;
 import com.by.model.Member;
 

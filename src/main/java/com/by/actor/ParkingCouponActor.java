@@ -1,19 +1,21 @@
 package com.by.actor;
 
-import akka.actor.UntypedActor;
-import com.by.model.ParkingCoupon;
-import com.by.model.ParkingCouponMember;
-import com.by.service.ParkingCouponMemberService;
-import com.by.service.ParkingCouponService;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
+import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
+import com.by.service.ParkingCouponMemberService;
+import com.by.service.ParkingCouponService;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
+
+import akka.actor.UntypedActor;
 
 /**
  * Created by yagamai on 15-11-30.

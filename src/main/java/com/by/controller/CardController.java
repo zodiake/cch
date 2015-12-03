@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.by.exception.Fail;
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;

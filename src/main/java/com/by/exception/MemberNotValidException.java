@@ -8,4 +8,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "member not valid")
 public class MemberNotValidException extends RuntimeException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 }

@@ -1,17 +1,18 @@
 package com.by.actor;
 
-import akka.actor.UntypedActor;
-import com.by.message.CouponMessage;
-import com.by.model.CouponSummary;
-import com.by.service.CouponService;
-import com.by.service.MemberService;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
+import com.by.message.CouponMessage;
+import com.by.model.CouponSummary;
+import com.by.service.CouponService;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
+
+import akka.actor.UntypedActor;
 
 /**
  * Created by yagamai on 15-12-1.
@@ -33,6 +34,8 @@ public class CouponActor extends UntypedActor {
 				if (couponSummary.getBeginTime() != null && couponSummary.getEndTime() != null) {
 					Calendar today = Calendar.getInstance();
 					// 如果在有效期内
+					// 截止日期应为设定的截止日期后一天
+					couponSummary.getEndTime().add(1, Calendar.DATE);
 					if (couponSummary.getBeginTime().before(today) && couponSummary.getEndTime().after(today)) {
 						// 判断是否可以重复兑换
 						if (couponSummary.getDuplicate().equals(DuplicateEnum.NOTDUPLICATE)) {

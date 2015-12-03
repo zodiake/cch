@@ -1,6 +1,5 @@
 package com.by;
 
-import akka.actor.ActorSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +7,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+
+import akka.actor.ActorSystem;
 
 
 @SpringBootApplication

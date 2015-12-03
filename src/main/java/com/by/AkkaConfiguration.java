@@ -1,13 +1,13 @@
 package com.by;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
+import static com.by.SpringExtension.SpringExtProvider;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.by.SpringExtension.SpringExtProvider;
+import akka.actor.ActorSystem;
 
 /**
  * Created by yagamai on 15-11-30.

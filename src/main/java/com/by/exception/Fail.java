@@ -13,8 +13,8 @@ public class Fail extends Status {
 	private String message;
 
 	public Fail(String message) {
-		super(message);
-		this.status = "fail";
+		super("fail");
+		this.message = message;
 		this.errors = null;
 	}
 

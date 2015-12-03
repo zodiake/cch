@@ -1,8 +1,9 @@
 package com.by;
 
+import org.springframework.context.ApplicationContext;
+
 import akka.actor.Actor;
 import akka.actor.IndirectActorProducer;
-import org.springframework.context.ApplicationContext;
 
 /**
  * An actor producer that lets Spring create the Actor instances.
