@@ -94,7 +94,11 @@ INSERT INTO by_trading (id, member_id, code, amount) VALUES (2, NULL, '123', 100
 
 -- test by_coupon_summary
 INSERT INTO by_coupon_summary (id, name, valid, begin_Time, end_Time, score)
-VALUES (1, 'summary1', 1, '2015-12-1', '2015-12-3', 20);
+VALUES (1, 'summary1', 1, '2015-12-1', '2015-12-30', 20);
+INSERT INTO by_coupon_summary (id, name, valid, begin_Time, end_Time, score)
+VALUES (2, 'summary1', 1, '2015-11-1', '2015-11-30', 20);
 
 -- test by_coupon
-INSERT INTO by_coupon (id, summary_id) VALUES (1, 1);
+INSERT INTO by_coupon (id, summary_id, member_id) VALUES (1, 1, 1);
+INSERT INTO by_coupon (id, summary_id, member_id) VALUES (2, 1, 1);
+INSERT INTO by_coupon (id, summary_id, member_id) VALUES (3, 2, 1);

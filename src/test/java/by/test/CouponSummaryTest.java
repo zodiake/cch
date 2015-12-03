@@ -41,7 +41,7 @@ public class CouponSummaryTest {
     public void findByValidAndTimeInToday() {
         Calendar day = Calendar.getInstance();
         day.set(2015, 11, 2);
-        List<CouponSummary> lists = summaryService.findByValidAndTimeInToday(ValidEnum.VALID, Calendar.getInstance());
+        List<CouponSummary> lists = summaryService.findByValidAndTimeInToday(ValidEnum.VALID, day);
         assertEquals(1, lists.size());
     }
 

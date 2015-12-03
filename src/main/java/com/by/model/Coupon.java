@@ -28,7 +28,6 @@ public class Coupon implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "summary_id")
-    @JsonBackReference
     private CouponSummary summary;
 
     @Temporal(TemporalType.TIMESTAMP)
