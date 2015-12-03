@@ -30,11 +30,11 @@ INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 2);
 INSERT INTO by_license (id, name) VALUES (1, '沪A54321');
 
 -- test card
-INSERT INTO by_card (id, name, valid,init_score) VALUES (1, 'low', 1,100);
+INSERT INTO by_card (id, name, valid, init_score) VALUES (1, 'low', 1, 100);
 
 -- test member
 INSERT INTO by_member (id, name, card_id, score) VALUES (1, '13611738422', 1, 110);
-INSERT INTO by_member (id, name, card_id, score) VALUES (2, '13811738422', 1, 200);
+INSERT INTO by_member (id, name, card_id, score, valid) VALUES (2, '13811738422', 1, 200, 0);
 
 -- test pay
 INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)
@@ -93,7 +93,8 @@ INSERT INTO by_trading (id, member_id, code, amount) VALUES (1, 1, '321', 100);
 INSERT INTO by_trading (id, member_id, code, amount) VALUES (2, NULL, '123', 100);
 
 -- test by_coupon_summary
-INSERT INTO by_coupon_summary (id, name, valid, begin_Time, end_Time,score) VALUES (1,'summary1',1,'2015-12-1','2015-12-3',20);
+INSERT INTO by_coupon_summary (id, name, valid, begin_Time, end_Time, score)
+VALUES (1, 'summary1', 1, '2015-12-1', '2015-12-3', 20);
 
 -- test by_coupon
-INSERT INTO by_coupon(id,summary_id) VALUES (1,1);
+INSERT INTO by_coupon (id, summary_id) VALUES (1, 1);

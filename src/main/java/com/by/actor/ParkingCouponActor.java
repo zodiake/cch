@@ -1,21 +1,22 @@
 package com.by.actor;
 
-import java.util.Calendar;
-
+import akka.actor.UntypedActor;
+import com.by.exception.MemberNotValidException;
+import com.by.exception.PasswordNotMatchException;
+import com.by.message.ParkingCouponMessage;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.service.ParkingCouponMemberService;
+import com.by.service.ParkingCouponService;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.by.model.ParkingCoupon;
-import com.by.model.ParkingCouponMember;
-import com.by.service.ParkingCouponMemberService;
-import com.by.service.ParkingCouponService;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
-
-import akka.actor.UntypedActor;
+import java.util.Calendar;
 
 /**
  * Created by yagamai on 15-11-30.
@@ -36,15 +37,17 @@ public class ParkingCouponActor extends UntypedActor {
 
     @Override
     public void onReceive(Object message) throws Exception {
-        if (message instanceof ParkingCouponMember) {
+        if (message instanceof ParkingCouponMessage) {
             Calendar calendar = Calendar.getInstance();
-            ParkingCouponMember pcm = (ParkingCouponMember) message;
-            ParkingCoupon pc = parkingCouponService.findOne(pcm.getCoupon().getId());
+            ParkingCouponMessage pcm = (ParkingCouponMessage) message;
+            ParkingCoupon parkingCoupon = pcm.getParkingCoupon();
+            ParkingCoupon pc = parkingCouponService.findOne(parkingCoupon.getId());
+            // 停车券无效，不能兑换
             if (pc.getValid().equals(ValidEnum.VALID)) {
                 if (pc.getBeginTime() != null && pc.getEndTime() != null) {
                     if (pc.getBeginTime().before(calendar) && pc.getEndTime().after(calendar)) {
                         if (pc.getDuplicate().equals(DuplicateEnum.NOTDUPLICATE)) {
-                            Long count = parkingCouponMemberService.countByCouponAndMember(pcm.getCoupon(), pcm.getMember());
+                            Long count = parkingCouponMemberService.countByCouponAndMember(parkingCoupon, pcm.getMember());
                             if (count > 0) {
                                 sender().tell("duplicate", null);
                             }
@@ -54,15 +57,13 @@ public class ParkingCouponActor extends UntypedActor {
                             //全部兑换
                             sender().tell("out of storage", null);
                         } else {
-                            parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), 1);
-                            sender().tell("success", null);
+                            exchangeCoupon(pcm.getMember(), parkingCoupon, 1);
                         }
                     } else {
                         sender().tell("out of date", null);
                     }
                 } else {
-                    parkingCouponMemberService.exchangeCoupon(pcm.getMember(), pcm.getCoupon(), pcm.getTotal());
-                    sender().tell("success", null);
+                    exchangeCoupon(pcm.getMember(), parkingCoupon, pcm.getTotal());
                 }
             } else {
                 sender().tell("invalid parkingCoupon", null);
@@ -70,5 +71,16 @@ public class ParkingCouponActor extends UntypedActor {
         } else {
             unhandled(message);
         }
+    }
+
+    private void exchangeCoupon(Member member, ParkingCoupon parkingCoupon, int total) {
+        try {
+            parkingCouponMemberService.exchangeCoupon(member, parkingCoupon, 1);
+        } catch (MemberNotValidException e) {
+            sender().tell("member not valid", null);
+        } catch (PasswordNotMatchException e) {
+            sender().tell("password not match", null);
+        }
+        sender().tell("success", null);
     }
 }

@@ -57,14 +57,4 @@ public class MemberController {
 	public Status changePassword(@RequestBody Member member) {
 		return service.update(member).map(i -> new Status("success")).orElseThrow(() -> new NotFoundException());
 	}
-
-	// 用户详情
-	@RequestMapping(value = "jwt", method = RequestMethod.GET)
-	@ResponseBody
-	public String get() {
-		Member m = new Member();
-		m.setId(1L);
-		m.setName("tom");
-		return JWTUtils.encode(m);
-	}
 }

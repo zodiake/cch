@@ -25,4 +25,5 @@ public interface MemberService {
 
 	List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
 
+	Member findOne(Long id);
 }

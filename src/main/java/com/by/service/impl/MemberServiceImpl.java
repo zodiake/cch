@@ -136,6 +136,11 @@ public class MemberServiceImpl implements MemberService {
 		return results;
 	}
 
+	@Override
+	public Member findOne(Long id) {
+		return repository.findOne(id);
+	}
+
 	private void validMember(Member member) {
 		if (member == null)
 			throw new MemberNotFoundException();

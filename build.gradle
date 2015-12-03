@@ -45,5 +45,6 @@ dependencies {
     runtime("com.h2database:h2")
     compile("org.scala-lang:scala-library:2.11.7")
     testCompile("org.springframework:spring-test")
+    testCompile("com.typesafe.akka:akka-testkit_2.11:2.4.1")
     testCompile("junit:junit:4.11")
 }
