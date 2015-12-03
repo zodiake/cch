@@ -1,30 +1,22 @@
 package com.by.service.impl;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.by.exception.CouponOutOfDateException;
-import com.by.exception.MemberNotFoundException;
-import com.by.exception.NoCouponException;
-import com.by.exception.NotEnoughCouponException;
-import com.by.exception.NotFoundException;
+import com.by.exception.*;
 import com.by.form.AdminCouponForm;
+import com.by.json.ParkingCouponJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
 import com.by.model.Shop;
 import com.by.repository.ParkingCouponMemberRepository;
-import com.by.service.LicenseService;
-import com.by.service.MemberService;
-import com.by.service.ParkingCouponExchangeHistoryService;
-import com.by.service.ParkingCouponMemberService;
-import com.by.service.ParkingCouponService;
-import com.by.service.ParkingCouponUseHistoryService;
+import com.by.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -99,6 +91,31 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     @Override
     public List<ParkingCouponMember> findByMember(Member member) {
         return repository.findByMember(member);
+    }
+
+    public List<ParkingCouponJson> findByMemberJson(Member member) {
+        List<ParkingCouponMember> lists = findByMember(member);
+        return lists.stream()
+                .filter(i -> {
+                    ParkingCoupon parkingCoupon = i.getCoupon();
+                    if (parkingCoupon.getBeginTime() == null && parkingCoupon.getEndTime() == null) {
+                        return true;
+                    }
+                    if (parkingCoupon.getBeginTime() != null && parkingCoupon.getEndTime() != null) {
+                        parkingCoupon.getEndTime().add(1, Calendar.DATE);
+                        Calendar today = Calendar.getInstance();
+                        if (parkingCoupon.getBeginTime().before(today) && parkingCoupon.getEndTime().after(today)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return false;
+                })
+                .map(i -> {
+                    ParkingCouponJson json = new ParkingCouponJson();
+                    json.setId(i.getCoupon().getId());
+                    return json;
+                }).collect(Collectors.toList());
     }
 
     @Override

@@ -1,17 +1,5 @@
 package com.by.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.by.exception.MemberNotValidException;
 import com.by.exception.PasswordNotMatchException;
 import com.by.json.CouponJson;
@@ -22,6 +10,16 @@ import com.by.repository.CouponRepository;
 import com.by.service.CouponService;
 import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -99,7 +97,7 @@ public class CouponServiceImpl implements CouponService {
     public List<CouponJson> findByMemberJson(Member member) {
         List<Coupon> coupons = findByMember(member);
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        List<CouponJson> temp = coupons.stream()
+        return coupons.stream()
                 .filter(i -> {
                     Calendar beginTime = i.getSummary().getBeginTime();
                     Calendar endTime = i.getSummary().getEndTime();
@@ -127,11 +125,5 @@ public class CouponServiceImpl implements CouponService {
                     json.setSummaryId(i.getSummary().getId());
                     return json;
                 }).collect(Collectors.toList());
-        Map<String,Long> maps=temp.stream().collect(Collectors.groupingBy(CouponJson::getSummary,Collectors.counting()));
-        temp.forEach(i->{
-        	Long total=maps.get(i.getSummary());
-        	i.setTotal(total.intValue());
-        });
-        return results;
     }
 }

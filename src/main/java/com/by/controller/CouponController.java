@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/api/coupon")
+@RequestMapping(value = "/api/coupons")
 public class CouponController {
     @Autowired
     private CouponService service;
