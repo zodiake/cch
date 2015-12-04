@@ -1,15 +1,16 @@
 package com.by.actor;
 
 import akka.actor.UntypedActor;
+import com.by.exception.AlreadyExchangeException;
 import com.by.exception.MemberNotValidException;
 import com.by.exception.PasswordNotMatchException;
 import com.by.message.ParkingCouponMessage;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
+import com.by.service.CouponService;
 import com.by.service.ParkingCouponMemberService;
 import com.by.service.ParkingCouponService;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,44 +28,40 @@ import java.util.Calendar;
 public class ParkingCouponActor extends UntypedActor {
     private ParkingCouponService parkingCouponService;
     private ParkingCouponMemberService parkingCouponMemberService;
+    private CouponService couponService;
 
     private Logger log = LoggerFactory.getLogger(TestActor.class);
 
     @Autowired
-    public ParkingCouponActor(ParkingCouponService parkingCouponService, ParkingCouponMemberService parkingCouponMemberService) {
+    public ParkingCouponActor(ParkingCouponService parkingCouponService, ParkingCouponMemberService parkingCouponMemberService, CouponService couponService) {
         this.parkingCouponService = parkingCouponService;
         this.parkingCouponMemberService = parkingCouponMemberService;
+        this.couponService = couponService;
     }
 
     @Override
     public void onReceive(Object message) throws Exception {
         if (message instanceof ParkingCouponMessage) {
-            Calendar calendar = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
             ParkingCouponMessage pcm = (ParkingCouponMessage) message;
-            ParkingCoupon parkingCoupon = pcm.getParkingCoupon();
-            ParkingCoupon pc = parkingCouponService.findOne(parkingCoupon.getId());
-            // 停车券无效，不能兑换
-            if (pc.getValid().equals(ValidEnum.VALID)) {
-                if (pc.getBeginTime() != null && pc.getEndTime() != null) {
-                    if (pc.getBeginTime().before(calendar) && pc.getEndTime().after(calendar)) {
-                        if (pc.getDuplicate().equals(DuplicateEnum.NOTDUPLICATE)) {
-                            Long count = parkingCouponMemberService.countByCouponAndMember(parkingCoupon, pcm.getMember());
-                            if (count > 0) {
-                                sender().tell("duplicate", null);
-                            }
-                        }
-                        Long total = parkingCouponMemberService.sumTotalGroupByCoupon(pc);
-                        if (total >= 0) {
-                            //全部兑换
-                            sender().tell("out of storage", null);
-                        } else {
-                            exchangeCoupon(pcm.getMember(), parkingCoupon, 1);
-                        }
-                    } else {
+            ParkingCoupon coupon = pcm.getParkingCoupon();
+            Member member = pcm.getMember();
+            int total = pcm.getTotal();
+            if (couponService.isValidCoupon(coupon)) {
+                if (!couponService.isPermanent(coupon)) {
+                    if (!couponService.withinValidDate(coupon)) {
                         sender().tell("out of date", null);
                     }
+                }
+                if (!couponService.isDuplicateCoupon(coupon)) {
+                    if (hadExchangeCoupon(coupon, member)) {
+                        sender().tell("duplicate", null);
+                    }
+                }
+                if (couponService.noStorageLimited(coupon)) {
+                    exchangeCoupon(coupon, member, total);
                 } else {
-                    exchangeCoupon(pcm.getMember(), parkingCoupon, pcm.getTotal());
+                    checkStorageAndExchangeCoupon(coupon, member, total);
                 }
             } else {
                 sender().tell("invalid parkingCoupon", null);
@@ -74,13 +71,35 @@ public class ParkingCouponActor extends UntypedActor {
         }
     }
 
-    private void exchangeCoupon(Member member, ParkingCoupon parkingCoupon, int total) {
+    public boolean outOfStorage(ParkingCoupon coupon, int count) {
+        Long total = parkingCouponMemberService.sumTotalGroupByCoupon(coupon);
+        if (total == null)
+            total = new Long(0);
+        return total.intValue() == coupon.getTotal() || total.intValue() + count > coupon.getTotal();
+    }
+
+    public boolean hadExchangeCoupon(ParkingCoupon coupon, Member member) {
+        ParkingCouponMember result = parkingCouponMemberService.findByCouponAndMember(member, coupon);
+        return result != null;
+    }
+
+    public void checkStorageAndExchangeCoupon(ParkingCoupon coupon, Member member, int total) {
+        if (outOfStorage(coupon, total)) {
+            sender().tell("out of storage", null);
+        } else {
+            exchangeCoupon(coupon, member, total);
+        }
+    }
+
+    private void exchangeCoupon(ParkingCoupon coupon, Member member, int total) {
         try {
-            parkingCouponMemberService.exchangeCoupon(member, parkingCoupon, 1);
+            parkingCouponMemberService.exchangeCoupon(member, coupon, total);
         } catch (MemberNotValidException e) {
             sender().tell("member not valid", null);
         } catch (PasswordNotMatchException e) {
             sender().tell("password not match", null);
+        } catch (AlreadyExchangeException e) {
+            sender().tell("duplicate", null);
         }
         sender().tell("success", null);
     }

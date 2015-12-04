@@ -105,26 +105,26 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ParkingCouponMember> findByMember(Member member) {
-        return repository.findByMember(member);
-    }
-
-    public List<ParkingCouponJson> findByMemberJson(Member member) {
-        List<ParkingCouponMember> lists = findByMember(member);
+        List<ParkingCouponMember> lists = repository.findByMember(member);
         return lists.stream()
                 .filter(i -> {
-                    ParkingCoupon parkingCoupon = i.getCoupon();
-                    return couponService.isValidCoupon(parkingCoupon);
+                    return couponService.isValidCoupon(i.getCoupon());
                 })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ParkingCouponJson> findByMemberJson(Member member) {
+        return findByMember(member).stream()
                 .map(i -> {
                     ParkingCouponJson json = new ParkingCouponJson();
                     json.setId(i.getCoupon().getId());
+                    json.setName(i.getCoupon().getName());
                     return json;
                 }).collect(Collectors.toList());
-    }
-
-    private boolean isGenericParkingCoupon(ParkingCoupon parkingCoupon) {
-        return parkingCoupon.getBeginTime() != null && parkingCoupon.getEndTime() != null && parkingCoupon.getCouponEndTime() != null;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     }
 
     @Override
-    public ParkingCouponMember findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon) {
+    public ParkingCouponMember findByCouponAndMember(Member member, ParkingCoupon parkingCoupon) {
         return repository.findByMemberAndCoupon(member, parkingCoupon);
     }
 

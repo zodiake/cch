@@ -6,7 +6,6 @@ import com.by.exception.NotEnoughScoreException;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
-import com.by.model.ParkingCouponUseHistory;
 import com.by.service.MemberService;
 import com.by.service.ParkingCouponExchangeHistoryService;
 import com.by.service.ParkingCouponMemberService;
@@ -17,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -54,7 +51,7 @@ public class ParkingCouponMemberTest {
     public void exchangeCoupon() {
         Member member = new Member(1L);
         ParkingCoupon coupon = new ParkingCoupon(1L);
-        ParkingCouponMember pcm = service.findByMemberAndCoupon(member, new ParkingCoupon(1L));
+        ParkingCouponMember pcm = service.findByCouponAndMember(member, new ParkingCoupon(1L));
         assertNull(pcm);
         ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
         assertEquals(new Integer(2), p.getTotal());
@@ -83,7 +80,7 @@ public class ParkingCouponMemberTest {
     public void duplicateExchangeNotDuplicateCoupon() {
         Member member = new Member(1L);
         ParkingCoupon coupon = new ParkingCoupon(2L);
-        ParkingCouponMember pcm = service.findByMemberAndCoupon(member, new ParkingCoupon(2L));
+        ParkingCouponMember pcm = service.findByCouponAndMember(member, new ParkingCoupon(2L));
         ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
         assertEquals(new Integer(1), p.getTotal());
         ParkingCouponMember p2 = service.exchangeCoupon(member, coupon, 2);

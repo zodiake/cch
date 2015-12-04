@@ -8,22 +8,22 @@ import java.util.Calendar;
  */
 @Entity
 @Table(name = "by_preferential_coupon_exchange_history")
+@IdClass(MemberCouponId.class)
 public class PreferentialCouponExchangeHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private PreferentialCoupon coupon;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
     private Calendar createdTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parking_coupon_id")
-    private PreferentialCoupon coupon;
 
     private Integer total;
 
@@ -34,14 +34,6 @@ public class PreferentialCouponExchangeHistory {
         this.member = member;
         this.coupon = coupon;
         this.total = total;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Member getMember() {
@@ -81,19 +73,17 @@ public class PreferentialCouponExchangeHistory {
         this.createdTime = Calendar.getInstance();
     }
 
-    @Override
+
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PreferentialCouponExchangeHistory that = (PreferentialCouponExchangeHistory) o;
-
-        return !(id != null ? !id.equals(that.id) : that.id != null);
-
+        if (o != null && o instanceof PreferentialCouponExchangeHistory) {
+            PreferentialCouponExchangeHistory that = (PreferentialCouponExchangeHistory) o;
+            return this.member.equals(that.member) && this.coupon.equals(that.coupon);
+        } else {
+            return false;
+        }
     }
 
-    @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return member.hashCode() + coupon.hashCode();
     }
 }

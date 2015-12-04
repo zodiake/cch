@@ -4,9 +4,9 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.by.exception.Status;
 import com.by.exception.Success;
+import com.by.json.ParkingCouponJson;
 import com.by.message.ParkingCouponMessage;
 import com.by.model.Member;
-import com.by.model.ParkingCoupon;
 import com.by.service.ParkingCouponMemberService;
 import com.by.service.ParkingCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,10 +56,8 @@ public class ParkingCouponController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<List<ParkingCoupon>> list(HttpServletRequest request) {
+    public Success<List<ParkingCouponJson>> list(HttpServletRequest request) {
         Member member = (Member) request.getAttribute("member");
-        parkingCouponMemberService.findByMember(member);
-        //todo
-        return null;
+        return new Success<List<ParkingCouponJson>>(parkingCouponMemberService.findByMemberJson(member));
     }
 }

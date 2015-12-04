@@ -1,6 +1,7 @@
 package com.by.service;
 
 import com.by.form.AdminCouponForm;
+import com.by.json.ParkingCouponJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
@@ -50,9 +51,11 @@ public interface ParkingCouponMemberService {
 
     ParkingCouponMember update(ParkingCouponMember coupon);
 
-    ParkingCouponMember findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon);
+    ParkingCouponMember findByCouponAndMember(Member member, ParkingCoupon parkingCoupon);
 
     Long sumTotalGroupByCoupon(ParkingCoupon coupon);
 
     Long countByCouponAndMember(ParkingCoupon parkingCoupon, Member member);
+
+    List<ParkingCouponJson> findByMemberJson(Member member);
 }

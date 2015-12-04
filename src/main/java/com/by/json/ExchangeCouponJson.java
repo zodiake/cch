@@ -5,6 +5,8 @@ public class ExchangeCouponJson {
 	private Long id;
 	//密码
 	private String password;
+	//兑换数量
+	private int total;
 
 	public Long getId() {
 		return id;
@@ -20,5 +22,13 @@ public class ExchangeCouponJson {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
 }

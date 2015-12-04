@@ -17,7 +17,7 @@ public class PreferentialCouponMember {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parking_coupon_id")
+    @JoinColumn(name = "coupon_id")
     private PreferentialCoupon coupon;
 
     private Integer total;
