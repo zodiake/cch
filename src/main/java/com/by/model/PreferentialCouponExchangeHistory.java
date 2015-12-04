@@ -23,9 +23,18 @@ public class PreferentialCouponExchangeHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parking_coupon_id")
-    private ParkingCoupon coupon;
+    private PreferentialCoupon coupon;
 
     private Integer total;
+
+    public PreferentialCouponExchangeHistory() {
+    }
+
+    public PreferentialCouponExchangeHistory(Member member, PreferentialCoupon coupon, int total) {
+        this.member = member;
+        this.coupon = coupon;
+        this.total = total;
+    }
 
     public Long getId() {
         return id;
@@ -51,11 +60,11 @@ public class PreferentialCouponExchangeHistory {
         this.createdTime = createdTime;
     }
 
-    public ParkingCoupon getCoupon() {
+    public PreferentialCoupon getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(ParkingCoupon coupon) {
+    public void setCoupon(PreferentialCoupon coupon) {
         this.coupon = coupon;
     }
 
@@ -65,6 +74,11 @@ public class PreferentialCouponExchangeHistory {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.createdTime = Calendar.getInstance();
     }
 
     @Override

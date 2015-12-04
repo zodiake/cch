@@ -1,59 +1,35 @@
 package com.by.model;
 
+import javax.persistence.*;
 import java.util.Calendar;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "by_parking_coupon_exchange_history")
+@IdClass(MemberCouponId.class)
 public class ParkingCouponExchangeHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private ParkingCoupon coupon;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
     private Calendar createdTime;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parking_coupon_id")
-    private ParkingCoupon coupon;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
 
     private Integer total;
 
     public ParkingCouponExchangeHistory() {
     }
 
-    public ParkingCouponExchangeHistory(Member member, int total, Shop shop) {
+    public ParkingCouponExchangeHistory(Member member, ParkingCoupon coupon, int total) {
         this.member = member;
         this.total = total;
-        this.shop = shop;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.coupon = coupon;
     }
 
     public Member getMember() {
@@ -80,14 +56,6 @@ public class ParkingCouponExchangeHistory {
         this.total = total;
     }
 
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
-
     public ParkingCoupon getCoupon() {
         return coupon;
     }
@@ -97,27 +65,17 @@ public class ParkingCouponExchangeHistory {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (o != null && o instanceof ParkingCouponExchangeHistory) {
+            ParkingCouponExchangeHistory that = (ParkingCouponExchangeHistory) o;
+            return this.member.equals(that.member) && this.coupon.equals(that.coupon);
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ParkingCouponExchangeHistory other = (ParkingCouponExchangeHistory) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+    public int hashCode() {
+        return member.hashCode() + coupon.hashCode();
     }
 }

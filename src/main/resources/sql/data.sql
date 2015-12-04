@@ -80,3 +80,9 @@ INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (8, 2, 4
 INSERT INTO by_trading (id, member_id, code, amount) VALUES (1, 1, '321', 100);
 INSERT INTO by_trading (id, member_id, code, amount) VALUES (2, NULL, '123', 100);
 
+-- test coupon
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, couponEndTime, valid, total, duplicate, amount)
+VALUES (1, 'p', '2015-12-1', '2015-12-30', 10, '2016-1-1', 1, 100, 1, 20);
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, couponEndTime, valid, total, duplicate, amount)
+VALUES (2, 'p', '2015-12-1', '2015-12-30', 10, '2016-1-1', 1, 100, 0, 20);
+

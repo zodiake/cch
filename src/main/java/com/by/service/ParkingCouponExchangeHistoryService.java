@@ -1,5 +1,6 @@
 package com.by.service;
 
+import com.by.model.ParkingCoupon;
 import com.by.model.Shop;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,9 +9,9 @@ import com.by.model.Member;
 import com.by.model.ParkingCouponExchangeHistory;
 
 public interface ParkingCouponExchangeHistoryService {
-    public ParkingCouponExchangeHistory save(ParkingCouponExchangeHistory pceh);
+    ParkingCouponExchangeHistory save(ParkingCouponExchangeHistory pceh);
 
-    public ParkingCouponExchangeHistory save(Member member, int total, Shop shop);
+    ParkingCouponExchangeHistory save(Member member ,ParkingCoupon coupon,int total);
 
-    public Page<ParkingCouponExchangeHistory> findByMember(Member member, Pageable pageable);
+    Page<ParkingCouponExchangeHistory> findByMember(Member member, Pageable pageable);
 }

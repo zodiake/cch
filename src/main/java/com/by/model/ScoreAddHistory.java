@@ -26,7 +26,6 @@ public class ScoreAddHistory {
     private Calendar createdTime;
 
     @NotNull
-    @Min(value = 0)
     private int total;
 
     @NotNull

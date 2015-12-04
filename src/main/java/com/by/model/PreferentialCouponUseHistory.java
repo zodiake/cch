@@ -4,16 +4,16 @@ import javax.persistence.*;
 import java.util.Calendar;
 
 /**
- * Created by yagamai on 15-11-23.
+ * Created by yagamai on 15-12-4.
  */
 @Entity
-@Table(name = "by_parking_coupon_use_history")
+@Table(name = "by_preferential_coupon_use_history")
 @IdClass(MemberCouponId.class)
-public class ParkingCouponUseHistory {
+public class PreferentialCouponUseHistory {
     @Id
-    @ManyToOne
-    @JoinColumn(name = "parking_coupon_id")
-    private ParkingCoupon coupon;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "preferential_coupon_id")
+    private PreferentialCoupon coupon;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,23 +26,11 @@ public class ParkingCouponUseHistory {
 
     private Integer total;
 
-    private String license;
-
-    public ParkingCouponUseHistory() {
-    }
-
-    public ParkingCouponUseHistory(ParkingCoupon coupon, Member member, int total, String license) {
-        this.coupon = coupon;
-        this.member = member;
-        this.total = total;
-        this.license = license;
-    }
-
-    public ParkingCoupon getCoupon() {
+    public PreferentialCoupon getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(ParkingCoupon coupon) {
+    public void setCoupon(PreferentialCoupon coupon) {
         this.coupon = coupon;
     }
 
@@ -70,23 +58,17 @@ public class ParkingCouponUseHistory {
         this.total = total;
     }
 
-    public String getLicense() {
-        return license;
-    }
-
-    public void setLicense(String license) {
-        this.license = license;
-    }
-
+    @Override
     public boolean equals(Object o) {
-        if (o != null && o instanceof ParkingCouponUseHistory) {
-            ParkingCouponUseHistory that = (ParkingCouponUseHistory) o;
+        if (o != null && o instanceof PreferentialCouponUseHistory) {
+            PreferentialCouponUseHistory that = (PreferentialCouponUseHistory) o;
             return this.member.equals(that.member) && this.coupon.equals(that.coupon);
         } else {
             return false;
         }
     }
 
+    @Override
     public int hashCode() {
         return member.hashCode() + coupon.hashCode();
     }

@@ -9,10 +9,12 @@ import com.by.model.PreferentialCoupon;
 public class PreferentialCouponMessage {
     private PreferentialCoupon coupon;
     private Member member;
+    private int total;
 
-    public PreferentialCouponMessage(PreferentialCoupon coupon, Member member) {
+    public PreferentialCouponMessage(PreferentialCoupon coupon, Member member, int total) {
         this.coupon = coupon;
         this.member = member;
+        this.total = total;
     }
 
     public PreferentialCoupon getCoupon() {
@@ -29,5 +31,13 @@ public class PreferentialCouponMessage {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

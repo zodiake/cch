@@ -14,11 +14,11 @@ import java.util.List;
  * Created by yagamai on 15-11-23.
  */
 public interface ParkingCouponUseHistoryService {
-    public ParkingCouponUseHistory save(ParkingCouponUseHistory history);
+    ParkingCouponUseHistory save(ParkingCouponUseHistory history);
 
-    public ParkingCouponUseHistory save(Member member, int total, String license, ParkingCoupon coupon);
+    ParkingCouponUseHistory save(Member member, int total, String license, ParkingCoupon coupon);
 
-    public Page<ParkingCouponUseHistory> findByMember(Member member, Pageable pageable);
+    Page<ParkingCouponUseHistory> findByMember(Member member, Pageable pageable);
 
     List<ParkingCouponUseHistory> findByLicenseAndCreatedTimeBetween(String license, Calendar startTime, Calendar endTime);
 

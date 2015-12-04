@@ -25,9 +25,10 @@ public class PreferentialCouponMember {
     public PreferentialCouponMember() {
     }
 
-    public PreferentialCouponMember(Member member, PreferentialCoupon coupon) {
+    public PreferentialCouponMember(Member member, PreferentialCoupon coupon, int total) {
         this.member = member;
         this.coupon = coupon;
+        this.total = total;
     }
 
     public Member getMember() {

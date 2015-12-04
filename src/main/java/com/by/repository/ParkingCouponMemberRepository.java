@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ParkingCouponMemberRepository extends PagingAndSortingRepository<ParkingCouponMember, MemberCouponId> {
     List<ParkingCouponMember> findByMember(Member member);
 
-    Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon coupon);
+    ParkingCouponMember findByMemberAndCoupon(Member member, ParkingCoupon coupon);
 
     @Query("select sum(p.total) from ParkingCouponMember p where p.coupon=:coupon")
     Long sumTotalGroupByCoupon(@Param("coupon") ParkingCoupon coupon);

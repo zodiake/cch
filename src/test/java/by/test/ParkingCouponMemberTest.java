@@ -1,10 +1,12 @@
 package by.test;
 
 import com.by.Application;
-import com.by.exception.MemberNotFoundException;
-import com.by.exception.NotEnoughScore;
-import com.by.form.AdminCouponForm;
-import com.by.model.*;
+import com.by.exception.AlreadyExchangeException;
+import com.by.exception.NotEnoughScoreException;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
+import com.by.model.ParkingCouponUseHistory;
 import com.by.service.MemberService;
 import com.by.service.ParkingCouponExchangeHistoryService;
 import com.by.service.ParkingCouponMemberService;
@@ -23,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -33,7 +35,7 @@ public class ParkingCouponMemberTest {
     @Autowired
     private ParkingCouponMemberService service;
     @Autowired
-    private ParkingCouponExchangeHistoryService exchangeHistroyService;
+    private ParkingCouponExchangeHistoryService exchangeHistoryService;
     @Autowired
     private ParkingCouponUseHistoryService useHistoryService;
     @Autowired
@@ -43,63 +45,48 @@ public class ParkingCouponMemberTest {
     public void reset() {
         ParkingCouponMember pcm = new ParkingCouponMember();
         pcm.setCoupon(new ParkingCoupon(1L));
-        pcm.setMember(new Member(2L));
-        pcm.setTotal(10);
+        pcm.setMember(new Member(1L));
+        pcm.setTotal(0);
         service.update(pcm);
-    }
-
-    @Test(expected = MemberNotFoundException.class)
-    public void getCouponMemberNotExist() {
-        AdminCouponForm form = new AdminCouponForm();
-        form.setCouponTemplateId(1L);
-        form.setMobile("linda");
-        Shop shop = new Shop(1L);
-        service.getCouponFromShop(form, shop);
-    }
-
-    @Test
-    public void getCouponMemberExist() {
-        AdminCouponForm form = new AdminCouponForm();
-        form.setCouponTemplateId(1L);
-        form.setMobile("13611738422");
-        form.setTotal(2);
-        service.getCouponFromShop(form, new Shop(1L));
-        Optional<ParkingCouponMember> pcm = service.findByMemberAndCoupon(new Member(1L), new ParkingCoupon(1L));
-        assertNotNull(pcm.get());
-        assertEquals(pcm.get().getTotal(), new Integer(12));
-        Page<ParkingCouponExchangeHistory> histories = exchangeHistroyService.findByMember(new Member(1L),
-                new PageRequest(1, 10));
-        assertEquals(1, histories.getTotalElements());
     }
 
     @Test
     public void exchangeCoupon() {
-        Member member = new Member(2L);
-        member.setName("aaaaaaaaaaa");
+        Member member = new Member(1L);
         ParkingCoupon coupon = new ParkingCoupon(1L);
-        Optional<ParkingCouponMember> pcm = service.findByMemberAndCoupon(member, new ParkingCoupon(1L));
-        assertEquals(new Integer(10), pcm.get().getTotal());
+        ParkingCouponMember pcm = service.findByMemberAndCoupon(member, new ParkingCoupon(1L));
+        assertNull(pcm);
         ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
-        assertEquals(new Integer(12), p.getTotal());
+        assertEquals(new Integer(2), p.getTotal());
+        Optional<Member> mary = memberService.findById(member.getId());
+        assertEquals(90, mary.get().getScore());
     }
 
-    @Test(expected = NotEnoughScore.class)
+    @Test(expected = NotEnoughScoreException.class)
     public void exchangeCouponNotEnoughScore() {
-        Member member = new Member(2L);
+        Member member = new Member(1L);
         ParkingCoupon coupon = new ParkingCoupon(1L);
-        Optional<ParkingCouponMember> pcm = service.findByMemberAndCoupon(member, new ParkingCoupon(1L));
-        assertEquals(new Integer(10), pcm.get().getTotal());
-        service.exchangeCoupon(member, coupon, 10);
-        assertEquals(new Integer(12), pcm.get().getTotal());
+        service.exchangeCoupon(member, coupon, 200);
     }
 
     @Test
-    public void useCoupon() {
-        service.useCoupon(new Member(2L), new ParkingCoupon(1L), 8, "aaa");
-        Optional<ParkingCouponMember> pcm = service.findByMemberAndCoupon(new Member(2L), new ParkingCoupon(1L));
-        Optional<Member> member = memberService.findById(2L);
-        Page<ParkingCouponUseHistory> histories = useHistoryService.findByMember(member.get(), new PageRequest(1, 10));
-        assertEquals(pcm.get().getTotal(), new Integer(2));
-        assertEquals(histories.getTotalElements(), 1);
+    public void duplicateExchangeDuplicateCoupon() {
+        Member member = new Member(1L);
+        ParkingCoupon coupon = new ParkingCoupon(1L);
+        ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
+        assertEquals(new Integer(2), p.getTotal());
+        ParkingCouponMember p2 = service.exchangeCoupon(member, coupon, 2);
+        assertEquals(new Integer(4), p2.getTotal());
     }
+
+    @Test(expected = AlreadyExchangeException.class)
+    public void duplicateExchangeNotDuplicateCoupon() {
+        Member member = new Member(1L);
+        ParkingCoupon coupon = new ParkingCoupon(2L);
+        ParkingCouponMember pcm = service.findByMemberAndCoupon(member, new ParkingCoupon(2L));
+        ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
+        assertEquals(new Integer(1), p.getTotal());
+        ParkingCouponMember p2 = service.exchangeCoupon(member, coupon, 2);
+    }
+
 }

@@ -82,7 +82,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member updateScore(Member member, int total, String reason) {
 		Member source = repository.findOne(member.getId());
-		validMember(source);
 		source.setScore(source.getScore() + total);
 		scoreAddHistoryService.save(member, total, reason);
 		scoreHistoryService.save(member, total);
@@ -93,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
 	public Member useScore(Member member, int total) {
 		Member source = repository.findOne(member.getId());
 		if (source.getScore() < total)
-			throw new NotEnoughScore();
+			throw new NotEnoughScoreException();
 		List<ScoreAddHistory> historyList = scoreAddHistoryService.findByMember(member);
 		List<ScoreAddHistory> results = extractScoreHistory(historyList, total);
 		if (total > 0) {

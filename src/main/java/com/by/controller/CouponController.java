@@ -4,6 +4,7 @@ import com.by.exception.Success;
 import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.service.CouponService;
+import com.by.service.ParkingCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +18,13 @@ import java.util.List;
 @RequestMapping(value = "/api/coupon")
 public class CouponController {
     @Autowired
-    private CouponService service;
+    private ParkingCouponService service;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Success<List<CouponJson>> list(HttpServletRequest request) {
         //todo
         Member member = (Member) request.getAttribute("member");
-        return new Success<List<CouponJson>>(service.findByMemberJson(member));
+        return null;
     }
 }

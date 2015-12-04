@@ -9,11 +9,12 @@ import com.by.model.ParkingCouponMember;
 import com.by.model.Shop;
 import com.by.repository.ParkingCouponMemberRepository;
 import com.by.service.*;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberService {
+    private final String reason = "";
     @Autowired
     private ParkingCouponMemberRepository repository;
     @Autowired
@@ -33,6 +35,8 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     private LicenseService licenseService;
     @Autowired
     private ParkingCouponService parkingCouponService;
+    @Autowired
+    private CouponService couponService;
 
     @Override
     public ParkingCouponMember save(ParkingCoupon coupon, Member m, int total) {
@@ -44,48 +48,60 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     }
 
     @Override
+    public ParkingCouponMember save(ParkingCouponMember parkingCouponMember) {
+        return repository.save(parkingCouponMember);
+    }
+
+    @Override
     public ParkingCouponMember getCouponFromShop(AdminCouponForm form, Shop shop) {
-        // 未找到会员报错
-        Optional<Member> member = memberService.findByName(form.getMobile());
-        if (!member.isPresent())
-            throw new MemberNotFoundException();
-        Member m = member.get();
-        // 未找到parkingcoupon报错
-        Optional<ParkingCoupon> pc = parkingCouponService.findById(form.getCouponTemplateId());
-        if (!pc.isPresent())
-            throw new NotFoundException();
-        Optional<ParkingCouponMember> pcm = repository.findByMemberAndCoupon(m, pc.get());
-        // 如果该会员已经有停车券，则更新
-        if (pcm.isPresent()) {
-            ParkingCouponMember p = pcm.get();
-            int sourceTotal = p.getTotal();
-            p.setTotal(sourceTotal + form.getTotal());
-            exchangeHistoryService.save(m, form.getTotal(), shop);
-            return p;
-        }
-        // 否则新增一条该用户的停车券记录
-        exchangeHistoryService.save(m, form.getTotal(), shop);
-        return save(pc.get(), m, form.getTotal());
+        return null;
     }
 
     @Override
     public ParkingCouponMember useCoupon(Member member, ParkingCoupon parkingCoupon, int total, String license) {
-        Optional<ParkingCouponMember> pcm = repository.findByMemberAndCoupon(member, parkingCoupon);
-        // 如果该用户无停车券
-        if (!pcm.isPresent())
-            throw new NoCouponException();
-        ParkingCouponMember couponMember = pcm.get();
-        // 该用户的停车券数量为0，或者希望使用的停车券数量大于该用户现有数量
-        if (total > pcm.get().getTotal() || pcm.get().getTotal() == 0)
+        ParkingCouponMember couponMember = repository.findByMemberAndCoupon(member, parkingCoupon);
+        ParkingCoupon sourceCoupon = couponMember.getCoupon();
+        int sourceTotal = couponMember.getTotal();
+        if (couponMember == null)
             throw new NotEnoughCouponException();
-        if (couponMember.getCoupon().getCouponEndTime() != null && couponMember.getCoupon().getCouponEndTime().after(Calendar.getInstance()))
-            throw new CouponOutOfDateException();
-        int source = couponMember.getTotal();
-        couponMember.setTotal(source - total);
-        // 记录该用户对应的车牌
+        if (sourceTotal < total)
+            throw new NotEnoughCouponException();
+        if (!couponService.isValidCoupon(sourceCoupon))
+            throw new NotValidException();
+        couponMember.setTotal(sourceTotal - total);
         licenseService.save(member, license);
-        useHistoryService.save(member, -total, license, couponMember.getCoupon());
+        useHistoryService.save(member, total, license, parkingCoupon);
         return couponMember;
+    }
+
+    @Override
+    public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
+        Optional<Member> sourceMember = memberService.findById(member.getId());
+        ParkingCoupon sourceCoupon = parkingCouponService.findOne(coupon.getId());
+        if (!sourceMember.isPresent())
+            throw new MemberNotFoundException();
+        if (sourceMember.get().getValid().equals(ValidEnum.INVALID))
+            throw new MemberNotValidException();
+        if (!couponService.isValidCoupon(sourceCoupon))
+            throw new NotValidException();
+        if (sourceCoupon.getScore() * total > sourceMember.get().getScore())
+            throw new NotEnoughScoreException();
+        ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
+        if (sourceCoupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE)) {
+            if (pcm != null) {
+                pcm.setTotal(pcm.getTotal() + total);
+            } else {
+                pcm = save(sourceCoupon, sourceMember.get(), total);
+            }
+        } else {
+            if (pcm == null)
+                pcm = save(sourceCoupon, sourceMember.get(), 1);
+            else
+                throw new AlreadyExchangeException();
+        }
+        memberService.updateScore(sourceMember.get(), -total * sourceCoupon.getScore(), reason);
+        exchangeHistoryService.save(sourceMember.get(), sourceCoupon, total);
+        return pcm;
     }
 
     @Override
@@ -98,18 +114,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         return lists.stream()
                 .filter(i -> {
                     ParkingCoupon parkingCoupon = i.getCoupon();
-                    if (parkingCoupon.getBeginTime() == null && parkingCoupon.getEndTime() == null) {
-                        return true;
-                    }
-                    if (parkingCoupon.getBeginTime() != null && parkingCoupon.getEndTime() != null) {
-                        parkingCoupon.getEndTime().add(1, Calendar.DATE);
-                        Calendar today = Calendar.getInstance();
-                        if (parkingCoupon.getBeginTime().before(today) && parkingCoupon.getEndTime().after(today)) {
-                            return true;
-                        }
-                        return false;
-                    }
-                    return false;
+                    return couponService.isValidCoupon(parkingCoupon);
                 })
                 .map(i -> {
                     ParkingCouponJson json = new ParkingCouponJson();
@@ -118,52 +123,22 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
                 }).collect(Collectors.toList());
     }
 
-    @Override
-    public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int count) {
-        Optional<ParkingCoupon> pc = parkingCouponService.findById(coupon.getId());
-        if (!pc.isPresent()) {
-            throw new NoCouponException();
-        }
-        Member m = memberService.useScore(member, pc.get().getScore() * count);
-        Optional<ParkingCouponMember> pcm = repository.findByMemberAndCoupon(member, coupon);
-        //若果该用户已经兑换过停车券，更新数量
-        if (pcm.isPresent()) {
-            ParkingCouponMember parkingCouponMember = pcm.get();
-            parkingCouponMember.setTotal(parkingCouponMember.getTotal() + count);
-            return parkingCouponMember;
-        }
-        //如果没有，新增一条兑换记录
-        exchangeHistoryService.save(m, count, null);
-        return save(pc.get(), m, count);
-    }
-
     private boolean isGenericParkingCoupon(ParkingCoupon parkingCoupon) {
         return parkingCoupon.getBeginTime() != null && parkingCoupon.getEndTime() != null && parkingCoupon.getCouponEndTime() != null;
     }
 
-    private ParkingCouponMember genericExchangeCoupon(Member member, ParkingCoupon coupon, int count) {
-        Member m = memberService.useScore(member, coupon.getScore() * count);
-        Optional<ParkingCouponMember> pcm = repository.findByMemberAndCoupon(member, coupon);
-        //若果该用户已经兑换过停车券，更新数量
-        if (pcm.isPresent()) {
-            ParkingCouponMember parkingCouponMember = pcm.get();
-            parkingCouponMember.setTotal(parkingCouponMember.getTotal() + count);
-            return parkingCouponMember;
-        }
-        //如果没有，新增一条兑换记录
-        exchangeHistoryService.save(m, count, null);
-        return save(coupon, m, count);
-    }
-
     @Override
     public ParkingCouponMember update(ParkingCouponMember coupon) {
-        Optional<ParkingCouponMember> pcm = repository.findByMemberAndCoupon(coupon.getMember(), coupon.getCoupon());
-        pcm.get().setTotal(coupon.getTotal());
-        return pcm.get();
+        ParkingCouponMember pcm = repository.findByMemberAndCoupon(coupon.getMember(), coupon.getCoupon());
+        if (pcm != null)
+            pcm.setTotal(coupon.getTotal());
+        else
+            repository.save(coupon);
+        return pcm;
     }
 
     @Override
-    public Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon) {
+    public ParkingCouponMember findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon) {
         return repository.findByMemberAndCoupon(member, parkingCoupon);
     }
 

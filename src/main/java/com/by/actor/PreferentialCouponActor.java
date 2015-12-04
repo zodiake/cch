@@ -6,6 +6,8 @@ import com.by.exception.PasswordNotMatchException;
 import com.by.message.PreferentialCouponMessage;
 import com.by.model.Coupon;
 import com.by.model.Member;
+import com.by.model.PreferentialCoupon;
+import com.by.model.PreferentialCouponMember;
 import com.by.service.PreferentialCouponMemberService;
 import com.by.typeEnum.DuplicateEnum;
 import com.by.typeEnum.ValidEnum;
@@ -28,23 +30,24 @@ public class PreferentialCouponActor extends UntypedActor {
     public void onReceive(Object message) throws Exception {
         if (message instanceof PreferentialCouponMessage) {
             PreferentialCouponMessage couponMessage = (PreferentialCouponMessage) message;
-            Coupon coupon = couponMessage.getCoupon();
+            PreferentialCoupon coupon = couponMessage.getCoupon();
+            int total = couponMessage.getTotal();
             Member member = couponMessage.getMember();
             if (isValidCoupon(coupon)) {
                 if (!isPermanent(coupon)) {
-                    if (withinValidDate(coupon)) {
-                        if (!isDuplicateCoupon(coupon)) {
-                            if (hadExchangeCoupon(coupon, member)) {
-                                sender().tell("duplicate", null);
-                            }
-                            checkStorageAndBindMember(coupon, member);
-                        }
-                        checkStorageAndBindMember(coupon, member);
-                    } else {
+                    if (!withinValidDate(coupon)) {
                         sender().tell("out of date", null);
                     }
+                }
+                if (!isDuplicateCoupon(coupon)) {
+                    if (hadExchangeCoupon(coupon, member)) {
+                        sender().tell("duplicate", null);
+                    }
+                }
+                if (noStorageLimited(coupon)) {
+                    exchangeCoupon(coupon, member, total);
                 } else {
-                    bindMember(coupon, member);
+                    checkStorageAndExchangeCoupon(coupon, member, total);
                 }
             } else {
                 sender().tell("invalid parkingCoupon", null);
@@ -54,11 +57,15 @@ public class PreferentialCouponActor extends UntypedActor {
         }
     }
 
-    private void checkStorageAndBindMember(Coupon couponSummary, Member member) {
-        if (outOfStorage(couponSummary)) {
+    private boolean noStorageLimited(PreferentialCoupon coupon) {
+        return coupon.getTotal() == 0;
+    }
+
+    private void checkStorageAndExchangeCoupon(PreferentialCoupon couponSummary, Member member, int total) {
+        if (outOfStorage(couponSummary, total)) {
             sender().tell("out of storage", null);
         } else {
-            bindMember(couponSummary, member);
+            exchangeCoupon(couponSummary, member, total);
         }
     }
 
@@ -76,24 +83,23 @@ public class PreferentialCouponActor extends UntypedActor {
         return couponSummary.getDuplicate().equals(DuplicateEnum.ISDUPLICATE);
     }
 
-    private boolean outOfStorage(Coupon summary) {
-        // todo
-        return true;
+    private boolean outOfStorage(PreferentialCoupon coupon, int count) {
+        Long total = service.sumTotalGroupByCoupon(coupon);
+        return total.intValue() == coupon.getTotal() || total.intValue() + count > coupon.getTotal();
     }
 
-    private boolean hadExchangeCoupon(Coupon summary, Member member) {
-        // todo
-        return false;
+    private boolean hadExchangeCoupon(PreferentialCoupon coupon, Member member) {
+        PreferentialCouponMember result = service.findByCouponAndMember(coupon, member);
+        return result != null;
     }
 
     private boolean isPermanent(Coupon couponSummary) {
         return couponSummary.getBeginTime() == null && couponSummary.getEndTime() == null;
     }
 
-    private void bindMember(Coupon summary, Member member) {
+    private void exchangeCoupon(PreferentialCoupon coupon, Member member, int total) {
         try {
-            // todo
-            ;
+            service.exchangeCoupon(coupon, member, total);
         } catch (MemberNotValidException e) {
             sender().tell("member not valid", null);
         } catch (PasswordNotMatchException e) {

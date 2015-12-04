@@ -13,7 +13,7 @@ public class ParkingCouponMember {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parking_coupon_id")
+    @JoinColumn(name = "coupon_id")
     private ParkingCoupon coupon;
 
     private Integer total;

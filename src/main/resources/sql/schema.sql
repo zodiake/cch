@@ -132,96 +132,81 @@ CREATE TABLE by_member_license (
   FOREIGN KEY (license_id) REFERENCES by_license (id)
 );
 
-CREATE TABLE by_coupon_summary (
-  id              BIGINT NOT NULL AUTO_INCREMENT,
-  name            VARCHAR(30),
-  total           SMALLINT        DEFAULT 0,
-  score           SMALLINT        DEFAULT 0,
-  valid           SMALLINT        DEFAULT 1,
-  created_Time    TIMESTAMP,
-  created_By      VARCHAR(10),
-  updated_Time    TIMESTAMP,
-  updated_By      VARCHAR(10),
-  begin_Time      TIMESTAMP,
-  end_Time        TIMESTAMP,
-  coupon_end_time TIMESTAMP,
-  duplicate       SMALLINT        DEFAULT 1,
-  summary         VARCHAR(225),
-  PRIMARY KEY (id)
-);
-
 CREATE TABLE by_coupon (
-  id             BIGINT NOT NULL AUTO_INCREMENT,
-  code           CHAR(64),
-  member_id      BIGINT,
-  summary_id     BIGINT,
-  exchange_Time  TIMESTAMP,
-  exchange_state SMALLINT,
-  use_time       TIMESTAMP,
-  type           CHAR(1),
-  begin_time     TIMESTAMP,
-  end_time       TIMESTAMP,
-  score          INT             DEFAULT 0,
-  couponEndTime  TIMESTAMP,
-  FOREIGN KEY (summary_id) REFERENCES by_coupon_summary (id),
-  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  id            BIGINT NOT NULL AUTO_INCREMENT,
+  code          CHAR(64),
+  type          CHAR(1),
+  name          VARCHAR(50),
+  begin_time    TIMESTAMP,
+  end_time      TIMESTAMP,
+  score         INT             DEFAULT 0,
+  couponEndTime TIMESTAMP,
+  valid         SMALLINT        DEFAULT 1,
+  total         SMALLINT        DEFAULT 0,
+  duplicate     SMALLINT        DEFAULT 1,
+  amount        DOUBLE          DEFAULT 0,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE by_parking_coupon_member (
-  member_id         BIGINT,
-  parking_coupon_id BIGINT,
-  total             INT,
-  PRIMARY KEY (member_id, parking_coupon_id),
+  member_id BIGINT,
+  coupon_id BIGINT,
+  total     INT,
+  PRIMARY KEY (member_id, coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id)
+  FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
 CREATE TABLE by_preferential_coupon_member (
-  member_id         BIGINT,
-  parking_coupon_id BIGINT,
-  total             INT,
-  PRIMARY KEY (member_id, parking_coupon_id),
+  member_id BIGINT,
+  coupon_id BIGINT,
+  total     INT,
+  PRIMARY KEY (member_id, coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id)
+  FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
 CREATE TABLE by_parking_coupon_exchange_history (
-  id                BIGINT NOT NULL AUTO_INCREMENT,
-  member_id         BIGINT,
-  parking_coupon_id BIGINT,
-  created_time      TIMESTAMP,
-  created_by        VARCHAR(20),
-  shop_id           BIGINT,
-  total             INT,
-  PRIMARY KEY (id),
+  member_id    BIGINT,
+  coupon_id    BIGINT,
+  created_time TIMESTAMP,
+  created_by   VARCHAR(20),
+  total        INT,
+  PRIMARY KEY (member_id, coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id),
-  FOREIGN KEY (shop_id) REFERENCES by_shop (id)
+  FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
-CREATE TABLE by_preferential_coupon_exchange_history(
-  id                BIGINT NOT NULL AUTO_INCREMENT,
-  member_id         BIGINT,
-  parking_coupon_id BIGINT,
-  created_time      TIMESTAMP,
-  created_by        VARCHAR(20),
-  total             INT,
-  PRIMARY KEY (id),
+CREATE TABLE by_preferential_coupon_exchange_history (
+  member_id    BIGINT,
+  coupon_id    BIGINT,
+  created_time TIMESTAMP,
+  created_by   VARCHAR(20),
+  total        INT,
+  PRIMARY KEY (member_id, coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id),
+  FOREIGN KEY (coupon_id) REFERENCES by_coupon (id),
 );
 
 CREATE TABLE by_parking_coupon_use_history (
-  id                BIGINT NOT NULL AUTO_INCREMENT,
   member_id         BIGINT,
   parking_coupon_id BIGINT,
   created_time      TIMESTAMP,
   total             INT,
   license           VARCHAR(10),
-  PRIMARY KEY (id),
+  PRIMARY KEY (member_id, parking_coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id),
+);
+
+CREATE TABLE by_preferential_coupon_use_history (
+  member_id              BIGINT,
+  preferential_coupon_id BIGINT,
+  created_time           TIMESTAMP,
+  total                  INT,
+  PRIMARY KEY (member_id, preferential_coupon_id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  FOREIGN KEY (preferential_coupon_id) REFERENCES by_coupon (id),
 );
 
 CREATE TABLE by_score_history (

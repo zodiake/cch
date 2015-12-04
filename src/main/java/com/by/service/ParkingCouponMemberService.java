@@ -46,9 +46,11 @@ public interface ParkingCouponMemberService {
 
     ParkingCouponMember save(ParkingCoupon coupon, Member m, int total);
 
+    ParkingCouponMember save(ParkingCouponMember parkingCouponMember);
+
     ParkingCouponMember update(ParkingCouponMember coupon);
 
-    Optional<ParkingCouponMember> findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon);
+    ParkingCouponMember findByMemberAndCoupon(Member member, ParkingCoupon parkingCoupon);
 
     Long sumTotalGroupByCoupon(ParkingCoupon coupon);
 
