@@ -87,7 +87,7 @@ CREATE TABLE by_rule (
 CREATE TABLE by_member (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   name         CHAR(11) UNIQUE,
-  password     VARCHAR(20),
+  password     CHAR(40),
   card_id      BIGINT,
   score        INT,
   created_time TIMESTAMP,

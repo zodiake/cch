@@ -16,6 +16,8 @@ public interface MemberService {
     Member save(Member member);
 
     Optional<Member> update(Member member);
+    
+    Optional<Member> updatePassword(Member member);
 
     Optional<Member> findByNameAndPassword(Member member);
 

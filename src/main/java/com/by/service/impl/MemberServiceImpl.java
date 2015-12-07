@@ -157,4 +157,12 @@ public class MemberServiceImpl implements MemberService {
         if (member.getValid().equals(ValidEnum.INVALID))
             throw new MemberNotValidException();
     }
+
+	@Override
+	public Optional<Member> updatePassword(Member member) {
+        return repository.findByName(member.getName()).map(i -> {
+            i.setPassword(member.getPassword());
+            return i;
+        });
+	}
 }
