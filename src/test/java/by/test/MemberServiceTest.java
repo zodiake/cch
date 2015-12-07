@@ -17,8 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.*;
 
 /**
  * Created by yagamai on 15-11-25.
@@ -69,7 +68,7 @@ public class MemberServiceTest {
 
     @Test
     public void useHistory() {
-        service.useScore(new Member(1L), 5);
+        service.minusScore(new Member(1L), 5,"");
         List<ScoreAddHistory> histories = scoreAddHistoryService.findByMember(new Member(1L));
         assertEquals(2, histories.size());
         assertEquals(1, histories.get(0).getTotal());
@@ -94,7 +93,7 @@ public class MemberServiceTest {
     @Test
     public void useZeroScore() {
         Member member = new Member(1l);
-        service.useScore(member, 0);
+        service.minusScore(member, 0,"");
         List<ScoreHistory> histories = scoreHistoryService.findByMember(member);
         assertEquals(1, histories.size());
         assertEquals(0, histories.get(0).getDeposit());

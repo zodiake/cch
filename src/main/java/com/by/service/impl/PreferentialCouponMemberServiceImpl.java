@@ -73,7 +73,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
             else
                 throw new AlreadyExchangeException();
         }
-        memberService.updateScore(memberOptional.get(), memberOptional.get().getScore() - total, reason);
+        memberService.minusScore(memberOptional.get(), memberOptional.get().getScore() - total, reason);
         exchangeHistoryService.save(memberOptional.get(), coupon, total);
         return pcm;
     }

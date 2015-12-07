@@ -67,14 +67,14 @@ INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 3);
 -- test parking_coupon_use_history
 
 -- test score add
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (1, 1, 1, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (2, 1, 2, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (3, 1, 3, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (4, 1, 4, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (5, 2, 1, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (6, 2, 2, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (7, 2, 3, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, summary) VALUES (8, 2, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (1, 1, 1, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (2, 1, 2, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (3, 1, 3, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (4, 1, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (5, 2, 1, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (6, 2, 2, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (7, 2, 3, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (8, 2, 4, 'h');
 
 -- test by_trading
 INSERT INTO by_trading (id, member_id, code, amount) VALUES (1, 1, '321', 100);

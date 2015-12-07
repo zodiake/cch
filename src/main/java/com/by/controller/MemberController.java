@@ -1,34 +1,32 @@
 package com.by.controller;
 
-import com.by.exception.NotFoundException;
-import com.by.exception.Status;
-import com.by.exception.Success;
-import com.by.json.CouponJson;
-import com.by.json.MemberRequestJson;
-import com.by.model.Member;
-import com.by.service.MemberService;
-import com.by.service.ParkingCouponMemberService;
-import com.by.utils.FailBuilder;
-import com.by.utils.JWTUtils;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
+import com.by.exception.NotFoundException;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.json.MemberRequestJson;
+import com.by.model.Member;
+import com.by.service.MemberService;
+import com.by.utils.FailBuilder;
+import com.by.utils.JWTUtils;
 
 @RestController
 @RequestMapping(value = "/member")
 public class MemberController {
     @Autowired
     private MemberService service;
-    @Autowired
-    private ParkingCouponMemberService parkingCouponMemberService;
 
     @Autowired
     private ShaPasswordEncoder encoder;

@@ -25,6 +25,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class TradingServiceImpl implements TradingService {
+    private final String reason = "";
     @Autowired
     private TradingRepository repository;
     @Autowired
@@ -46,9 +47,7 @@ public class TradingServiceImpl implements TradingService {
             if (!memberOptional.isPresent())
                 throw new MemberNotFoundException();
             Member member = memberOptional.get();
-            //如果该笔交易已绑定了用户
-            trading.setMember(member);
-            memberService.updateScore(member, tradeToScore(trading), "trading");
+            memberService.addScore(member, tradeToScore(trading), reason);
         }
         return repository.save(trading);
     }

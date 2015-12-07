@@ -29,7 +29,7 @@ public class ScoreAddHistory {
     private int total;
 
     @NotNull
-    private String summary;
+    private String reason;
 
     public Long getId() {
         return id;
@@ -63,12 +63,12 @@ public class ScoreAddHistory {
         this.total = total;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getReason() {
+        return reason;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     @PrePersist

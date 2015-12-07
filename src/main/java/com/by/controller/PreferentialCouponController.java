@@ -114,11 +114,6 @@ public class PreferentialCouponController {
             throw new NotValidException();
     }
 
-    public Success<List<PreferentialCoupon>> list(HttpServletRequest request) {
-        Member member = (Member) request.getAttribute("member");
-        return null;
-    }
-
     // 用户兑换到的优惠券列表
     @RequestMapping(value = "/member", method = RequestMethod.GET)
     @ResponseBody

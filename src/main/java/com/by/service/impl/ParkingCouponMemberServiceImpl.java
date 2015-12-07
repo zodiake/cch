@@ -62,8 +62,6 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         ParkingCouponMember couponMember = repository.findByMemberAndCoupon(member, parkingCoupon);
         ParkingCoupon sourceCoupon = couponMember.getCoupon();
         int sourceTotal = couponMember.getTotal();
-        if (couponMember == null)
-            throw new NotEnoughCouponException();
         if (sourceTotal < total)
             throw new NotEnoughCouponException();
         if (!couponService.couponIsWithinValidDate(sourceCoupon))
@@ -79,7 +77,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         Optional<Member> sourceMember = memberService.findById(member.getId());
         ParkingCoupon sourceCoupon = parkingCouponService.findOne(coupon.getId());
         ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
-        if (sourceCoupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE)) {
+        if (isDuplicate(sourceCoupon)) {
             if (pcm != null) {
                 pcm.setTotal(pcm.getTotal() + total);
             } else {
@@ -91,9 +89,13 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
             else
                 throw new AlreadyExchangeException();
         }
-        memberService.updateScore(sourceMember.get(), -total * sourceCoupon.getScore(), reason);
+        memberService.minusScore(sourceMember.get(), -total * sourceCoupon.getScore(), reason);
         exchangeHistoryService.save(sourceMember.get(), sourceCoupon, total);
         return pcm;
+    }
+
+    private boolean isDuplicate(Coupon coupon) {
+        return coupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE);
     }
 
     @Override

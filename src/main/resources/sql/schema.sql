@@ -215,7 +215,7 @@ CREATE TABLE by_score_history (
   member_id    BIGINT,
   created_time TIMESTAMP,
   deposit      INT,
-  summary      VARCHAR(225),
+  reason       VARCHAR(20),
   PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id)
 );
@@ -239,7 +239,7 @@ CREATE TABLE by_score_add_history (
   member_id    BIGINT,
   created_time TIMESTAMP,
   total        INT,
-  summary      VARCHAR(20),
+  reason       VARCHAR(20),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)
 );

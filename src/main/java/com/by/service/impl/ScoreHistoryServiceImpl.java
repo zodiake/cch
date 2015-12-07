@@ -24,10 +24,11 @@ public class ScoreHistoryServiceImpl implements ScoreHistoryService {
     }
 
     @Override
-    public ScoreHistory save(Member member, int score) {
+    public ScoreHistory save(Member member, int score,String reason) {
         ScoreHistory history = new ScoreHistory();
         history.setMember(member);
         history.setDeposit(score);
+        history.setReason(reason);
         return repository.save(history);
     }
 

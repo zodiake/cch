@@ -32,7 +32,7 @@ public class ScoreHistory {
 
 	private int deposit;
 
-	private String summary;
+	private String reason;
 
 	public Long getId() {
 		return id;
@@ -66,12 +66,12 @@ public class ScoreHistory {
 		this.deposit = deposit;
 	}
 
-	public String getSummary() {
-		return summary;
+	public String getReason() {
+		return reason;
 	}
 
-	public void setSummary(String summary) {
-		this.summary = summary;
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 	@PrePersist

@@ -16,6 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class MemberServiceImpl implements MemberService {
+    private final String reason = "";
     @Autowired
     private MemberRepository repository;
     @Autowired
@@ -56,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
         }
         member.setScore(score);
         scoreAddHistoryService.save(member, score, "sign in score");
-        scoreHistoryService.save(member, score);
+        scoreHistoryService.save(member, score, "");
         return repository.save(member);
     }
 
@@ -80,16 +81,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member updateScore(Member member, int total, String reason) {
+    public Member addScore(Member member, int total, String reason) {
         Member source = repository.findOne(member.getId());
         source.setScore(source.getScore() + total);
         scoreAddHistoryService.save(member, total, reason);
-        scoreHistoryService.save(member, total);
+        scoreHistoryService.save(member, total, reason);
         return source;
     }
 
     @Override
-    public Member useScore(Member member, int total) {
+    public Member minusScore(Member member, int total, String reason) {
         Member source = repository.findOne(member.getId());
         if (source.getScore() < total)
             throw new NotEnoughScoreException();
@@ -111,7 +112,7 @@ public class MemberServiceImpl implements MemberService {
             }
             source.setScore(source.getScore() - total);
         }
-        scoreHistoryService.save(member, -total);
+        scoreHistoryService.save(member, -total, reason);
         return source;
     }
 

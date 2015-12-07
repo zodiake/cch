@@ -10,7 +10,7 @@ import java.util.List;
 public interface ScoreHistoryService {
     ScoreHistory save(ScoreHistory history);
 
-    ScoreHistory save(Member member, int score);
+    ScoreHistory save(Member member, int score,String reason);
 
     Page<ScoreHistory> findByMember(Member member, Pageable pageable);
 
