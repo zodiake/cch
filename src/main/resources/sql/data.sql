@@ -63,7 +63,6 @@ INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 2);
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 3);
 
-
 -- test parking_coupon_use_history
 
 -- test score add

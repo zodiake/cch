@@ -18,4 +18,6 @@ public interface ScoreAddHistoryService {
     ScoreAddHistory update(ScoreAddHistory history, int total);
 
     List<ScoreAddHistory> findByMember(Member member);
+
+    Long sumByMember(Member member);
 }

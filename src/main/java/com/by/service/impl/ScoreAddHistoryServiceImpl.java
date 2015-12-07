@@ -17,39 +17,44 @@ import java.util.List;
 @Service
 @Transactional
 public class ScoreAddHistoryServiceImpl implements ScoreAddHistoryService {
-	@Autowired
-	private ScoreAddHistoryRepository repository;
+    @Autowired
+    private ScoreAddHistoryRepository repository;
 
-	@Override
-	public ScoreAddHistory save(ScoreAddHistory history) {
-		return repository.save(history);
-	}
+    @Override
+    public ScoreAddHistory save(ScoreAddHistory history) {
+        return repository.save(history);
+    }
 
-	@Override
-	public ScoreAddHistory save(Member member, int total, String reason) {
-		ScoreAddHistory sah = new ScoreAddHistory();
-		sah.setMember(member);
-		sah.setTotal(total);
-		sah.setReason(reason);
-		return save(sah);
-	}
+    @Override
+    public ScoreAddHistory save(Member member, int total, String reason) {
+        ScoreAddHistory sah = new ScoreAddHistory();
+        sah.setMember(member);
+        sah.setTotal(total);
+        sah.setReason(reason);
+        return save(sah);
+    }
 
-	@Override
-	public void delete(Long id) {
-		repository.delete(id);
-	}
+    @Override
+    public void delete(Long id) {
+        repository.delete(id);
+    }
 
-	@Override
-	public ScoreAddHistory update(ScoreAddHistory history, int total) {
-		ScoreAddHistory h = repository.findOne(history.getId());
-		h.setTotal(total);
-		return h;
-	}
+    @Override
+    public ScoreAddHistory update(ScoreAddHistory history, int total) {
+        ScoreAddHistory h = repository.findOne(history.getId());
+        h.setTotal(total);
+        return h;
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<ScoreAddHistory> findByMember(Member member) {
-		Sort sort = new Sort(Sort.Direction.ASC, "createdTime");
-		return repository.findByMember(member, sort);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<ScoreAddHistory> findByMember(Member member) {
+        Sort sort = new Sort(Sort.Direction.ASC, "createdTime");
+        return repository.findByMember(member, sort);
+    }
+
+    @Override
+    public Long sumByMember(Member member) {
+        return repository.sumByMember(member);
+    }
 }
