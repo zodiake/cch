@@ -4,8 +4,6 @@ import net.sf.ehcache.config.CacheConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.cache.interceptor.SimpleKeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableCaching
 public class CachingConfig {
-    @Bean(destroyMethod = "shutdown")
     public net.sf.ehcache.CacheManager ehCacheManager() {
         //card cache config
         CacheConfiguration cardCacheConfig = new CacheConfiguration();
@@ -29,23 +26,25 @@ public class CachingConfig {
         ruleCacheConfig.setMaxEntriesLocalHeap(1000);
         ruleCacheConfig.setName("rule");
 
-        //couponSummary cache config
-        CacheConfiguration couponSummaryCacheConfig = new CacheConfiguration();
-        couponSummaryCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        couponSummaryCacheConfig.setMaxEntriesLocalHeap(1000);
-        couponSummaryCacheConfig.setName("couponSummary");
+        //parkingCoupon cache config
+        CacheConfiguration parkingCouponCacheConfig = new CacheConfiguration();
+        parkingCouponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        parkingCouponCacheConfig.setMaxEntriesLocalHeap(1000);
+        parkingCouponCacheConfig.setName("parkingCoupon");
+
+        //preferentialCoupon cache config
+        CacheConfiguration preferentialCouponCacheConfig = new CacheConfiguration();
+        preferentialCouponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        preferentialCouponCacheConfig.setMaxEntriesLocalHeap(1000);
+        preferentialCouponCacheConfig.setName("preferentialCoupon");
 
         net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
         config.addCache(cardCacheConfig);
         config.addCache(ruleCacheConfig);
-        config.addCache(couponSummaryCacheConfig);
+        config.addCache(parkingCouponCacheConfig);
+        config.addCache(preferentialCouponCacheConfig);
 
         return net.sf.ehcache.CacheManager.newInstance(config);
-    }
-
-    @Bean
-    public KeyGenerator keyGenerator() {
-        return new SimpleKeyGenerator();
     }
 
     @Bean

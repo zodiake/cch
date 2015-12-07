@@ -1,6 +1,8 @@
 package com.by.service.impl;
 
-import com.by.exception.*;
+import com.by.exception.AlreadyExchangeException;
+import com.by.exception.NotEnoughCouponException;
+import com.by.exception.NotValidException;
 import com.by.model.Member;
 import com.by.model.PreferentialCoupon;
 import com.by.model.PreferentialCouponMember;
@@ -42,7 +44,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
             throw new NotEnoughCouponException();
         if (sourceTotal < total)
             throw new NotEnoughCouponException();
-        if (!couponService.isValidCoupon(sourceCoupon))
+        if (!couponService.couponIsWithinValidDate(sourceCoupon))
             throw new NotValidException();
         couponMember.setTotal(sourceTotal - total);
         useHistoryService.save(coupon, member, total);
@@ -51,29 +53,23 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 
     @Override
     public PreferentialCouponMember exchangeCoupon(PreferentialCoupon coupon, Member member, int total) {
-        Optional<Member> sourceMember = memberService.findById(member.getId());
+        Optional<Member> memberOptional = memberService.findById(member.getId());
         PreferentialCoupon sourceCoupon = preferentialCouponService.findOne(coupon.getId());
-        if (!sourceMember.isPresent())
-            throw new MemberNotFoundException();
-        if (!couponService.isValidCoupon(sourceCoupon))
-            throw new NotValidException();
-        if (coupon.getScore() * total > member.getScore())
-            throw new NotEnoughScoreException();
         PreferentialCouponMember pcm = repository.findByCouponAndMember(coupon, member);
         if (coupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE)) {
             if (pcm != null) {
                 pcm.setTotal(pcm.getTotal() + total);
             } else {
-                pcm = save(sourceCoupon, sourceMember.get(), total);
+                pcm = save(sourceCoupon, memberOptional.get(), total);
             }
         } else {
             if (pcm == null)
-                pcm = save(sourceCoupon, sourceMember.get(), total);
+                pcm = save(sourceCoupon, memberOptional.get(), total);
             else
                 throw new AlreadyExchangeException();
         }
-        memberService.updateScore(member, sourceMember.get().getScore() - total, reason);
-        exchangeHistoryService.save(member, coupon, total);
+        memberService.updateScore(memberOptional.get(), memberOptional.get().getScore() - total, reason);
+        exchangeHistoryService.save(memberOptional.get(), coupon, total);
         return pcm;
     }
 

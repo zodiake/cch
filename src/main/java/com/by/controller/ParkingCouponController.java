@@ -2,25 +2,35 @@ package com.by.controller;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.by.exception.Status;
-import com.by.exception.Success;
-import com.by.json.ParkingCouponJson;
-import com.by.message.ParkingCouponMessage;
+import akka.actor.Inbox;
+import com.by.exception.*;
+import com.by.json.CouponJson;
+import com.by.json.ExchangeCouponJson;
 import com.by.model.Member;
-import com.by.service.ParkingCouponMemberService;
+import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
+import com.by.service.CouponService;
+import com.by.service.MemberService;
 import com.by.service.ParkingCouponService;
+import com.by.typeEnum.ValidEnum;
+import com.by.utils.FailBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import scala.concurrent.duration.Duration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 import static com.by.SpringExtension.SpringExtProvider;
 
@@ -30,18 +40,19 @@ import static com.by.SpringExtension.SpringExtProvider;
 @Controller
 @RequestMapping(value = "/api/parkingCoupons")
 public class ParkingCouponController {
-    private ParkingCouponService service;
     private ApplicationContext ctx;
-    private ParkingCouponMemberService parkingCouponMemberService;
-
+    private CouponService couponService;
+    private ParkingCouponService parkingCouponService;
     private ActorSystem system;
     private ActorRef ref;
+    private MemberService memberService;
 
     @Autowired
-    public ParkingCouponController(ParkingCouponService service, ApplicationContext ctx, ParkingCouponMemberService parkingCouponMemberService) {
-        this.service = service;
+    public ParkingCouponController(ApplicationContext ctx, CouponService couponService, ParkingCouponService parkingCouponService, MemberService memberService) {
         this.ctx = ctx;
-        this.parkingCouponMemberService = parkingCouponMemberService;
+        this.couponService = couponService;
+        this.parkingCouponService = parkingCouponService;
+        this.memberService = memberService;
         system = ctx.getBean(ActorSystem.class);
         ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "parkingCouponActor");
 
@@ -49,15 +60,51 @@ public class ParkingCouponController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public Status exchangeParkingCoupon(HttpServletRequest request, @Valid @RequestBody ParkingCouponMessage message, BindingResult result) {
-        //todo
-        return null;
+    public Status exchangeParkingCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json, BindingResult result) {
+        if (result.hasErrors()) {
+            FailBuilder.buildFail(result);
+        }
+        Member m = (Member) request.getAttribute("member");
+        if (!StringUtils.isEmpty(json.getPassword()))
+            m.setPassword(json.getPassword());
+        Member member = memberService.findOne(m.getId());
+        ParkingCoupon coupon = parkingCouponService.findOne(json.getId());
+        ParkingCouponMember message = new ParkingCouponMember(member, coupon, json.getTotal());
+
+        validateCoupon(member, coupon, json.getTotal());
+
+        final Inbox inbox = Inbox.create(system);
+        inbox.send(ref, message);
+        try {
+            String code = (String) inbox.receive(Duration.create(2, TimeUnit.SECONDS));
+            if (code.equals("success"))
+                return new Success<String>("success");
+            return new Fail(code);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return new Fail("system error");
+    }
+
+    private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
+        if (member == null)
+            throw new MemberNotFoundException();
+        if (coupon.getScore() * total > member.getScore())
+            throw new NotEnoughScoreException();
+        if (!couponService.isWithinValidDate(coupon))
+            throw new NotValidException();
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<List<ParkingCouponJson>> list(HttpServletRequest request) {
-        Member member = (Member) request.getAttribute("member");
-        return new Success<List<ParkingCouponJson>>(parkingCouponMemberService.findByMemberJson(member));
+    public Success<List<CouponJson>> list(HttpServletRequest request) {
+        List<CouponJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID)
+                .stream()
+                .filter(i -> {
+                    return couponService.isWithinValidDate(i);
+                }).map(i -> {
+                    return new CouponJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary());
+                }).collect(Collectors.toList());
+        return new Success<>(coupons);
     }
 }

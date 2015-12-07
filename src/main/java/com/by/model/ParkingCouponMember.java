@@ -21,9 +21,10 @@ public class ParkingCouponMember {
     public ParkingCouponMember() {
     }
 
-    public ParkingCouponMember(Member member, ParkingCoupon coupon) {
+    public ParkingCouponMember(Member member, ParkingCoupon coupon, int total) {
         this.coupon = coupon;
         this.member = member;
+        this.total = total;
     }
 
     public Member getMember() {

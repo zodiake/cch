@@ -145,6 +145,7 @@ CREATE TABLE by_coupon (
   total         SMALLINT        DEFAULT 0,
   duplicate     SMALLINT        DEFAULT 1,
   amount        DOUBLE          DEFAULT 0,
+  summary       VARCHAR(255),
   PRIMARY KEY (id)
 );
 

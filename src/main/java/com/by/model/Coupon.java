@@ -50,6 +50,8 @@ public abstract class Coupon {
     //是否可重复
     private DuplicateEnum duplicate;
 
+    private String summary;
+
     public Long getId() {
         return id;
     }
@@ -137,6 +139,14 @@ public abstract class Coupon {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     @PrePersist

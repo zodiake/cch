@@ -1,14 +1,13 @@
 package com.by.service;
 
 import com.by.form.AdminCouponForm;
-import com.by.json.ParkingCouponJson;
+import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
 import com.by.model.Shop;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ParkingCouponMemberService {
     /*
@@ -57,5 +56,5 @@ public interface ParkingCouponMemberService {
 
     Long countByCouponAndMember(ParkingCoupon parkingCoupon, Member member);
 
-    List<ParkingCouponJson> findByMemberJson(Member member);
+    List<CouponJson> findByMemberJson(Member member);
 }

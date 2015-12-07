@@ -1,8 +1,10 @@
 package com.by.service.impl;
 
-import com.by.exception.*;
+import com.by.exception.AlreadyExchangeException;
+import com.by.exception.NotEnoughCouponException;
+import com.by.exception.NotValidException;
 import com.by.form.AdminCouponForm;
-import com.by.json.ParkingCouponJson;
+import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
@@ -10,7 +12,6 @@ import com.by.model.Shop;
 import com.by.repository.ParkingCouponMemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +67,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
             throw new NotEnoughCouponException();
         if (sourceTotal < total)
             throw new NotEnoughCouponException();
-        if (!couponService.isValidCoupon(sourceCoupon))
+        if (!couponService.couponIsWithinValidDate(sourceCoupon))
             throw new NotValidException();
         couponMember.setTotal(sourceTotal - total);
         licenseService.save(member, license);
@@ -78,14 +79,6 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
         Optional<Member> sourceMember = memberService.findById(member.getId());
         ParkingCoupon sourceCoupon = parkingCouponService.findOne(coupon.getId());
-        if (!sourceMember.isPresent())
-            throw new MemberNotFoundException();
-        if (sourceMember.get().getValid().equals(ValidEnum.INVALID))
-            throw new MemberNotValidException();
-        if (!couponService.isValidCoupon(sourceCoupon))
-            throw new NotValidException();
-        if (sourceCoupon.getScore() * total > sourceMember.get().getScore())
-            throw new NotEnoughScoreException();
         ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
         if (sourceCoupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE)) {
             if (pcm != null) {
@@ -110,17 +103,17 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         List<ParkingCouponMember> lists = repository.findByMember(member);
         return lists.stream()
                 .filter(i -> {
-                    return couponService.isValidCoupon(i.getCoupon());
+                    return couponService.isWithinValidDate(i.getCoupon());
                 })
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ParkingCouponJson> findByMemberJson(Member member) {
+    public List<CouponJson> findByMemberJson(Member member) {
         return findByMember(member).stream()
                 .map(i -> {
-                    ParkingCouponJson json = new ParkingCouponJson();
+                    CouponJson json = new CouponJson();
                     json.setId(i.getCoupon().getId());
                     json.setName(i.getCoupon().getName());
                     return json;

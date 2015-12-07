@@ -5,6 +5,9 @@ import com.by.repository.PreferentialCouponRepository;
 import com.by.service.PreferentialCouponService;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,5 +35,12 @@ public class PreferentialCouponServiceImpl implements PreferentialCouponService 
     @Override
     public PreferentialCoupon findByIdAndValid(Long id, ValidEnum valid) {
         return repository.findByIdAndValid(id, valid);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable("preferentialCoupon")
+    public Page<PreferentialCoupon> findByValid(ValidEnum valid, Pageable pageable) {
+        return repository.findByValid(valid, pageable);
     }
 }

@@ -1,17 +1,37 @@
 package com.by.json;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by yagamai on 15-12-3.
  */
 public class CouponJson {
     private Long id;
-    private String code;
+
     private String name;
-    private String summary;
+
+    private String couponEndTime;
+
+    private int score;
     private String beginTime;
     private String endTime;
-    private Long summaryId;
-    private Integer total;
+    private String summary;
+
+    public CouponJson() {
+    }
+
+    public CouponJson(Long id, String name, Calendar couponEndTime, int score, Calendar beginTime, Calendar endTime, String summary) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String time = format.format(couponEndTime.getTime());
+        this.id = id;
+        this.name = name;
+        this.couponEndTime = time;
+        this.score = score;
+        this.beginTime = format.format(beginTime.getTime());
+        this.endTime = format.format(endTime.getTime());
+        this.summary = summary;
+    }
 
     public Long getId() {
         return id;
@@ -19,14 +39,6 @@ public class CouponJson {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -37,43 +49,11 @@ public class CouponJson {
         this.name = name;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getCouponEndTime() {
+        return couponEndTime;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(String beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public Long getSummaryId() {
-        return summaryId;
-    }
-
-    public void setSummaryId(Long summaryId) {
-        this.summaryId = summaryId;
-    }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setCouponEndTime(String couponEndTime) {
+        this.couponEndTime = couponEndTime;
     }
 }

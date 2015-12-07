@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
  * Created by yagamai on 15-12-1.
  */
 
+
 public class MemberControllerTest {
     private MockMvc mockMvc;
     private WebApplicationContext wac;

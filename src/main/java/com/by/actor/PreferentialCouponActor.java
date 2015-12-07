@@ -32,7 +32,7 @@ public class PreferentialCouponActor extends UntypedActor {
             PreferentialCoupon coupon = couponMessage.getCoupon();
             int total = couponMessage.getTotal();
             Member member = couponMessage.getMember();
-            if (couponService.isValidCoupon(coupon)) {
+            if (couponService.isWithinValidDate(coupon)) {
                 if (!couponService.isPermanent(coupon)) {
                     if (!couponService.withinValidDate(coupon)) {
                         sender().tell("out of date", null);

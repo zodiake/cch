@@ -3,7 +3,7 @@ package com.by.service;
 import com.by.model.Coupon;
 
 public interface CouponService {
-    boolean isValidCoupon(Coupon coupon);
+    boolean isWithinValidDate(Coupon coupon);
 
     boolean noStorageLimited(Coupon coupon);
 
@@ -14,4 +14,6 @@ public interface CouponService {
     boolean isDuplicateCoupon(Coupon couponSummary);
 
     boolean isPermanent(Coupon couponSummary);
+
+    boolean couponIsWithinValidDate(Coupon coupon);
 }
