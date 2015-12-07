@@ -6,7 +6,11 @@ import com.by.json.ScoreJson;
 import com.by.model.Member;
 import com.by.service.MemberService;
 import com.by.service.ScoreAddHistoryService;
+import com.by.service.ScoreHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +28,8 @@ public class ScoreController {
     private MemberService memberService;
     @Autowired
     private ScoreAddHistoryService scoreAddHistoryService;
+    @Autowired
+    private ScoreHistoryService scoreHistoryService;
 
     @RequestMapping(value = "/available", method = RequestMethod.GET)
     @ResponseBody
@@ -48,5 +54,14 @@ public class ScoreController {
         int available = memberService.findOne(member.getId()).getScore();
         Long total = scoreAddHistoryService.sumByMember(member);
         return new Success<>(new ScoreJson(available, total));
+    }
+
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    @ResponseBody
+    public Status scoreHistory(HttpServletRequest request,
+                               @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC)
+                               Pageable pageable) {
+        Member member = (Member) request.getAttribute("member");
+        return new Success<>(scoreHistoryService.findByMemberJson(member, pageable));
     }
 }
