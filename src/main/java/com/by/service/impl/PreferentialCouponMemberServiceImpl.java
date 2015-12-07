@@ -3,6 +3,8 @@ package com.by.service.impl;
 import com.by.exception.AlreadyExchangeException;
 import com.by.exception.NotEnoughCouponException;
 import com.by.exception.NotValidException;
+import com.by.json.CouponJson;
+import com.by.model.Coupon;
 import com.by.model.Member;
 import com.by.model.PreferentialCoupon;
 import com.by.model.PreferentialCouponMember;
@@ -10,10 +12,13 @@ import com.by.repository.PreferentialCouponMemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.DuplicateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by yagamai on 15-12-3.
@@ -80,6 +85,21 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
     @Override
     public Long sumTotalGroupByCoupon(PreferentialCoupon coupon) {
         return repository.sumTotalGroupByCoupon(coupon);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CouponJson> findByMember(Member member, Pageable pageable) {
+        return repository.findByMember(member, pageable)
+                .getContent()
+                .stream()
+                .filter(i -> {
+                    return couponService.isWithinValidDate(i.getCoupon());
+                })
+                .map(i -> {
+                    Coupon c = i.getCoupon();
+                    return new CouponJson(c.getId(), c.getName(), c.getEndTime(), i.getTotal());
+                }).collect(Collectors.toList());
     }
 
     public PreferentialCouponMember save(PreferentialCouponMember pcm) {

@@ -4,6 +4,8 @@ import com.by.model.Member;
 import com.by.model.MemberCouponId;
 import com.by.model.PreferentialCoupon;
 import com.by.model.PreferentialCouponMember;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +18,6 @@ public interface PreferentialCouponMemberRepository extends PagingAndSortingRepo
 
     @Query("select sum(p.total) from PreferentialCouponMember p where p.coupon=:coupon")
     Long sumTotalGroupByCoupon(@Param("coupon") PreferentialCoupon coupon);
+
+    Page<PreferentialCouponMember> findByMember(Member member, Pageable pageable);
 }

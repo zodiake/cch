@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Inbox;
 import com.by.exception.*;
+import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
 import com.by.message.PreferentialCouponMessage;
@@ -11,6 +12,7 @@ import com.by.model.Member;
 import com.by.model.PreferentialCoupon;
 import com.by.service.CouponService;
 import com.by.service.MemberService;
+import com.by.service.PreferentialCouponMemberService;
 import com.by.service.PreferentialCouponService;
 import com.by.typeEnum.ValidEnum;
 import com.by.utils.FailBuilder;
@@ -44,17 +46,20 @@ public class PreferentialCouponController {
     private ActorSystem system;
     private ActorRef ref;
     private PreferentialCouponService preferentialCouponService;
+    private PreferentialCouponMemberService preferentialCouponMemberService;
     private MemberService memberService;
     private CouponService couponService;
 
     @Autowired
-    public PreferentialCouponController(ApplicationContext ctx, PreferentialCouponService preferentialCouponService, MemberService memberService, CouponService couponService) {
+    public PreferentialCouponController(ApplicationContext ctx, PreferentialCouponService preferentialCouponService,
+                                        MemberService memberService, CouponService couponService, PreferentialCouponMemberService preferentialCouponMemberService) {
         this.ctx = ctx;
         this.system = ctx.getBean(ActorSystem.class);
         this.ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "couponActor");
         this.preferentialCouponService = preferentialCouponService;
         this.memberService = memberService;
         this.couponService = couponService;
+        this.preferentialCouponMemberService = preferentialCouponMemberService;
     }
 
     // 可以兑换的卡券列表
@@ -112,5 +117,14 @@ public class PreferentialCouponController {
     public Success<List<PreferentialCoupon>> list(HttpServletRequest request) {
         Member member = (Member) request.getAttribute("member");
         return null;
+    }
+
+    // 用户兑换到的优惠券列表
+    @RequestMapping(value = "/member", method = RequestMethod.GET)
+    @ResponseBody
+    public Status couponList(HttpServletRequest request, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Member member = (Member) request.getAttribute("member");
+        List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
+        return new Success<>(result);
     }
 }
