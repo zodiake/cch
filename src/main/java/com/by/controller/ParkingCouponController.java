@@ -5,17 +5,21 @@ import akka.actor.ActorSystem;
 import akka.actor.Inbox;
 import com.by.exception.*;
 import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
 import com.by.service.CouponService;
 import com.by.service.MemberService;
+import com.by.service.ParkingCouponMemberService;
 import com.by.service.ParkingCouponService;
 import com.by.typeEnum.ValidEnum;
 import com.by.utils.FailBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -46,18 +50,21 @@ public class ParkingCouponController {
     private ActorSystem system;
     private ActorRef ref;
     private MemberService memberService;
+    private ParkingCouponMemberService parkingCouponMemberService;
 
     @Autowired
-    public ParkingCouponController(ApplicationContext ctx, CouponService couponService, ParkingCouponService parkingCouponService, MemberService memberService) {
+    public ParkingCouponController(ApplicationContext ctx, CouponService couponService, ParkingCouponService parkingCouponService, MemberService memberService, ParkingCouponMemberService parkingCouponMemberService) {
         this.ctx = ctx;
         this.couponService = couponService;
         this.parkingCouponService = parkingCouponService;
         this.memberService = memberService;
+        this.parkingCouponMemberService = parkingCouponMemberService;
         system = ctx.getBean(ActorSystem.class);
         ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "parkingCouponActor");
 
     }
 
+    // 兑换停车券
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public Status exchangeParkingCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json, BindingResult result) {
@@ -95,16 +102,26 @@ public class ParkingCouponController {
             throw new NotValidException();
     }
 
+    // 可以兑换的停车券模板列表
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<List<CouponJson>> list(HttpServletRequest request) {
-        List<CouponJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID)
+    public Success<List<CouponTemplateJson>> list() {
+        List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID)
                 .stream()
                 .filter(i -> {
                     return couponService.isWithinValidDate(i);
                 }).map(i -> {
-                    return new CouponJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary());
+                    return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary());
                 }).collect(Collectors.toList());
         return new Success<>(coupons);
+    }
+
+    // 用户兑换到的停车券列表
+    @RequestMapping(value = "/member", method = RequestMethod.GET)
+    @ResponseBody
+    public Status couponList(HttpServletRequest request, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Member member = (Member) request.getAttribute("member");
+        List<CouponJson> result = parkingCouponMemberService.findByMember(member, pageable);
+        return new Success<>(result);
     }
 }

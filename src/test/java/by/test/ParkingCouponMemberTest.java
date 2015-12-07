@@ -3,6 +3,7 @@ package by.test;
 import com.by.Application;
 import com.by.exception.AlreadyExchangeException;
 import com.by.exception.NotEnoughScoreException;
+import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
@@ -16,9 +17,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -86,4 +89,10 @@ public class ParkingCouponMemberTest {
         ParkingCouponMember p2 = service.exchangeCoupon(member, coupon, 2);
     }
 
+
+    @Test
+    public void memberParkCoupon() {
+        List<CouponJson> results = service.findByMember(new Member(1l), new PageRequest(0, 10));
+        assertEquals(1, results.size());
+    }
 }

@@ -1,9 +1,8 @@
 package com.by.controller;
 
 import com.by.exception.Success;
-import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
-import com.by.service.CouponService;
 import com.by.service.ParkingCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,7 @@ public class CouponController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<List<CouponJson>> list(HttpServletRequest request) {
+    public Success<List<CouponTemplateJson>> list(HttpServletRequest request) {
         //todo
         Member member = (Member) request.getAttribute("member");
         return null;

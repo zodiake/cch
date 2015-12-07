@@ -2,10 +2,13 @@ package com.by.service;
 
 import com.by.form.AdminCouponForm;
 import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
 import com.by.model.Shop;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -56,5 +59,7 @@ public interface ParkingCouponMemberService {
 
     Long countByCouponAndMember(ParkingCoupon parkingCoupon, Member member);
 
-    List<CouponJson> findByMemberJson(Member member);
+    List<CouponTemplateJson> findByMemberJson(Member member);
+
+    List<CouponJson> findByMember(Member member, Pageable pageable);
 }

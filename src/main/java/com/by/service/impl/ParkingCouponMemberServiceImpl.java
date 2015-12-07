@@ -5,14 +5,13 @@ import com.by.exception.NotEnoughCouponException;
 import com.by.exception.NotValidException;
 import com.by.form.AdminCouponForm;
 import com.by.json.CouponJson;
-import com.by.model.Member;
-import com.by.model.ParkingCoupon;
-import com.by.model.ParkingCouponMember;
-import com.by.model.Shop;
+import com.by.json.CouponTemplateJson;
+import com.by.model.*;
 import com.by.repository.ParkingCouponMemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.DuplicateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,13 +109,27 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 
     @Override
     @Transactional(readOnly = true)
-    public List<CouponJson> findByMemberJson(Member member) {
+    public List<CouponTemplateJson> findByMemberJson(Member member) {
         return findByMember(member).stream()
                 .map(i -> {
-                    CouponJson json = new CouponJson();
+                    CouponTemplateJson json = new CouponTemplateJson();
                     json.setId(i.getCoupon().getId());
                     json.setName(i.getCoupon().getName());
                     return json;
+                }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CouponJson> findByMember(Member member, Pageable pageable) {
+        return repository.findByMember(member, pageable)
+                .getContent()
+                .stream()
+                .filter(i -> {
+                    return couponService.isWithinValidDate(i.getCoupon());
+                })
+                .map(i -> {
+                    Coupon c = i.getCoupon();
+                    return new CouponJson(c.getId(), c.getName(), c.getEndTime(), i.getTotal());
                 }).collect(Collectors.toList());
     }
 

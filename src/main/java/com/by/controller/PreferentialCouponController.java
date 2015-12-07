@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Inbox;
 import com.by.exception.*;
-import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
 import com.by.message.PreferentialCouponMessage;
 import com.by.model.Member;
@@ -60,13 +60,13 @@ public class PreferentialCouponController {
     // 可以兑换的卡券列表
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<List<CouponJson>> list(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public Success<List<CouponTemplateJson>> list(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         Page<PreferentialCoupon> coupons = preferentialCouponService.findByValid(ValidEnum.VALID, pageable);
-        List<CouponJson> results = coupons.getContent().stream()
+        List<CouponTemplateJson> results = coupons.getContent().stream()
                 .filter(i -> {
                     return couponService.isWithinValidDate(i);
                 }).map(i -> {
-                    return new CouponJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary());
+                    return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary());
                 }).collect(Collectors.toList());
         return new Success<>(results);
     }
