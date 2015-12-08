@@ -186,18 +186,6 @@ CREATE TABLE by_parking_coupon_exchange_history (
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
-CREATE TABLE by_preferential_coupon_exchange_history (
-  id           BIGINT AUTO_INCREMENT,
-  member_id    BIGINT,
-  coupon_id    BIGINT,
-  created_time TIMESTAMP,
-  created_by   VARCHAR(20),
-  total        INT,
-  PRIMARY KEY (id),
-  FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (coupon_id) REFERENCES by_coupon (id),
-);
-
 CREATE TABLE by_parking_coupon_use_history (
   member_id         BIGINT,
   parking_coupon_id BIGINT,
@@ -207,17 +195,6 @@ CREATE TABLE by_parking_coupon_use_history (
   PRIMARY KEY (member_id, parking_coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id),
-);
-
-CREATE TABLE by_preferential_coupon_use_history (
-  id                     BIGINT AUTO_INCREMENT,
-  member_id              BIGINT,
-  preferential_coupon_id BIGINT,
-  created_time           TIMESTAMP,
-  total                  INT,
-  PRIMARY KEY (id),
-  FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (preferential_coupon_id) REFERENCES by_coupon (id),
 );
 
 CREATE TABLE by_score_history (

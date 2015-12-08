@@ -31,10 +31,6 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
     @Autowired
     private PreferentialCouponService preferentialCouponService;
     @Autowired
-    private PreferentialCouponUseHistoryService useHistoryService;
-    @Autowired
-    private PreferentialCouponExchangeHistoryService exchangeHistoryService;
-    @Autowired
     private MemberService memberService;
     @Autowired
     private CouponService couponService;
@@ -47,7 +43,6 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
         if (pcm.getState().equals(CouponStateEnum.USED))
             throw new AlreadyUsedException();
         pcm.setUsedTime(Calendar.getInstance());
-        useHistoryService.save(pcm.getCoupon(), member);
         return pcm;
     }
 
@@ -65,7 +60,6 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
             save(sourceCoupon, memberOptional.get());
         }
         memberService.minusScore(memberOptional.get(), memberOptional.get().getScore() - count, reason);
-        exchangeHistoryService.save(memberOptional.get(), coupon, count);
         return null;
     }
 
