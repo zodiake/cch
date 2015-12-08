@@ -8,12 +8,13 @@ import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -58,8 +59,8 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     @Override
     @Cacheable(value = "parkingCoupon")
     @Transactional(readOnly = true)
-    public List<ParkingCoupon> findByValid(ValidEnum valid) {
-        return repository.findByValid(valid);
+    public Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable) {
+        return repository.findByValid(valid, pageable);
     }
 
 }

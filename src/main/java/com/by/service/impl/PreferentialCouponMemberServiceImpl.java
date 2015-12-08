@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMemberService {
     private final String reason = "礼品兑换";
-    private final SimpleDateFormat format = new SimpleDateFormat("yyyyMMddS");
+    private final DateFormat format = new SimpleDateFormat("yyyyMMddS");
     @Autowired
     private PreferentialCouponMemberRepository repository;
     @Autowired
@@ -69,7 +70,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 
     @Override
     public Long sumTotalGroupByCoupon(PreferentialCoupon coupon) {
-        return repository.sumTotalGroupByCoupon(coupon);
+        return repository.countByCoupon(coupon);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
         Sequence sequence = sequenceService.save(new Sequence());
         PreferentialCouponMember pcm = new PreferentialCouponMember(member, coupon);
         pcm.setCode(format.format(Calendar.getInstance().getTime()) + sequence.getId());
-        return repository.save(pcm);
+        return save(pcm);
     }
 
 }

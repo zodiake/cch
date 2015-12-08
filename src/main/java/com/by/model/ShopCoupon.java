@@ -2,6 +2,8 @@ package com.by.model;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -9,15 +11,16 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @DiscriminatorValue("s")
-public class ShopCoupon extends Coupon{
-    @ManyToOne
-    private Shop shop;
+public class ShopCoupon extends Coupon {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "shop_id")
+	private Shop shop;
 
-    public Shop getShop() {
-        return shop;
-    }
+	public Shop getShop() {
+		return shop;
+	}
 
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
+	public void setShop(Shop shop) {
+		this.shop = shop;
+	}
 }

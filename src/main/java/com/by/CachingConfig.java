@@ -38,11 +38,18 @@ public class CachingConfig {
         preferentialCouponCacheConfig.setMaxEntriesLocalHeap(1000);
         preferentialCouponCacheConfig.setName("preferentialCoupon");
 
+        //shopcoupon cache config
+        CacheConfiguration shopCouponCacheConfig = new CacheConfiguration();
+        shopCouponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        shopCouponCacheConfig.setMaxEntriesLocalHeap(1000);
+        shopCouponCacheConfig.setName("shopCoupon");
+
         net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
         config.addCache(cardCacheConfig);
         config.addCache(ruleCacheConfig);
         config.addCache(parkingCouponCacheConfig);
         config.addCache(preferentialCouponCacheConfig);
+        config.addCache(shopCouponCacheConfig);
 
         return net.sf.ehcache.CacheManager.newInstance(config);
     }

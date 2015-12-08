@@ -148,6 +148,7 @@ CREATE TABLE by_coupon (
   amount        DOUBLE          DEFAULT 0,
   summary       VARCHAR(255),
   shop_id       BIGINT,
+  sortOrder     SMALLINT        DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id)
 );
@@ -289,7 +290,14 @@ CREATE TABLE by_sequence (
 );
 
 CREATE TABLE by_shop_coupon_member (
-  id BIGINT NOT NULL AUTO_INCREMENT,
+  id                BIGINT NOT NULL AUTO_INCREMENT,
+  member_id         BIGINT,
+  coupon_id         BIGINT,
+  parking_coupon_id BIGINT,
+  exchanged_time    TIMESTAMP,
+  used_time         TIMESTAMP,
+  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  FOREIGN KEY (coupon_id) REFERENCES by_coupon (id),
   PRIMARY KEY (id)
 );
 

@@ -9,74 +9,95 @@ import java.util.List;
 @Entity
 @Table(name = "by_shop")
 public class Shop {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
+	private String name;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    @ManyToMany
-    @JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
-    private List<Menu> menus;
+	@ManyToMany
+	@JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id") , inverseJoinColumns = @JoinColumn(name = "menu_id") )
+	private List<Menu> menus;
 
-    private String key;
+	private String key;
 
-    public Shop() {
-    }
+	@OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+	private List<ShopCoupon> coupons;
 
-    public Shop(Long id) {
-        this.id = id;
-    }
+	public Shop() {
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Shop(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public List<Menu> getMenus() {
-        return menus;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public void setMenus(List<Menu> menus) {
-        this.menus = menus;
-    }
+	public List<Menu> getMenus() {
+		return menus;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
+	
+	public String getKey() {
+		return key;
+	}
 
-        Shop shop = (Shop) o;
+	public void setKey(String key) {
+		this.key = key;
+	}
 
-        return !(id != null ? !id.equals(shop.id) : shop.id != null);
+	public List<ShopCoupon> getCoupons() {
+		return coupons;
+	}
 
-    }
+	public void setCoupons(List<ShopCoupon> coupons) {
+		this.coupons = coupons;
+	}
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Shop shop = (Shop) o;
+
+		return !(id != null ? !id.equals(shop.id) : shop.id != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 }

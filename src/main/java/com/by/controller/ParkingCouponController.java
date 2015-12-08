@@ -19,6 +19,7 @@ import com.by.utils.FailBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -105,7 +106,8 @@ public class ParkingCouponController {
     // 可以兑换的停车券模板列表
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<List<CouponTemplateJson>> list() {
+    public Success<List<CouponTemplateJson>> list(
+            @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
         List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID)
                 .stream()
                 .filter(i -> {

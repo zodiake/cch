@@ -18,7 +18,7 @@ public interface PreferentialCouponMemberRepository extends PagingAndSortingRepo
     List<PreferentialCouponMember> findByCouponAndMember(PreferentialCoupon coupon, Member member);
 
     @Query("select count(*) from PreferentialCouponMember p where p.coupon=:coupon")
-    Long sumTotalGroupByCoupon(@Param("coupon") PreferentialCoupon coupon);
+    Long countByCoupon(@Param("coupon") PreferentialCoupon coupon);
 
     Page<PreferentialCouponMember> findByMember(Member member, Pageable pageable);
 
