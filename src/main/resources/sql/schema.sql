@@ -296,6 +296,7 @@ CREATE TABLE by_shop_coupon_member (
   parking_coupon_id BIGINT,
   exchanged_time    TIMESTAMP,
   used_time         TIMESTAMP,
+  code              CHAR(17),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id),
   PRIMARY KEY (id)
