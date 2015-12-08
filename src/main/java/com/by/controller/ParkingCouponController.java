@@ -21,6 +21,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -52,17 +53,20 @@ public class ParkingCouponController {
     private ActorRef ref;
     private MemberService memberService;
     private ParkingCouponMemberService parkingCouponMemberService;
+    private ShaPasswordEncoder passwordEncoder;
 
     @Autowired
-    public ParkingCouponController(ApplicationContext ctx, CouponService couponService, ParkingCouponService parkingCouponService, MemberService memberService, ParkingCouponMemberService parkingCouponMemberService) {
+    public ParkingCouponController(ApplicationContext ctx, CouponService couponService,
+                                   ParkingCouponService parkingCouponService, ShaPasswordEncoder passwordEncoder,
+                                   MemberService memberService, ParkingCouponMemberService parkingCouponMemberService) {
         this.ctx = ctx;
         this.couponService = couponService;
         this.parkingCouponService = parkingCouponService;
         this.memberService = memberService;
         this.parkingCouponMemberService = parkingCouponMemberService;
+        this.passwordEncoder = passwordEncoder;
         system = ctx.getBean(ActorSystem.class);
         ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "parkingCouponActor");
-
     }
 
     // 兑换停车券
@@ -73,9 +77,12 @@ public class ParkingCouponController {
             FailBuilder.buildFail(result);
         }
         Member m = (Member) request.getAttribute("member");
-        if (!StringUtils.isEmpty(json.getPassword()))
-            m.setPassword(json.getPassword());
         Member member = memberService.findOne(m.getId());
+        if (!StringUtils.isEmpty(json.getPassword())) {
+            m.setPassword(json.getPassword());
+            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(m.getPassword()))
+                throw new PasswordNotMatchException();
+        }
         ParkingCoupon coupon = parkingCouponService.findOne(json.getId());
         ParkingCouponMember message = new ParkingCouponMember(member, coupon, json.getTotal());
 
@@ -97,6 +104,8 @@ public class ParkingCouponController {
     private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
         if (member == null)
             throw new MemberNotFoundException();
+        if (coupon == null)
+            throw new CouponNotFoundException();
         if (coupon.getScore() * total > member.getScore())
             throw new NotEnoughScoreException();
         if (!couponService.isWithinValidDate(coupon))
@@ -108,12 +117,12 @@ public class ParkingCouponController {
     @ResponseBody
     public Success<List<CouponTemplateJson>> list(
             @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
-        List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID,pageable).getContent()
+        List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID, pageable).getContent()
                 .stream()
                 .filter(i -> {
                     return couponService.isWithinValidDate(i);
                 }).map(i -> {
-                    return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary(),null);
+                    return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary(), null);
                 }).collect(Collectors.toList());
         return new Success<>(coupons);
     }
