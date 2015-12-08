@@ -131,7 +131,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
                 })
                 .map(i -> {
                     Coupon c = i.getCoupon();
-                    return new CouponJson(c.getId(), c.getName(), c.getEndTime(), i.getTotal());
+                    return new CouponJson(c.getId(), c.getName(), c.getEndTime());
                 }).collect(Collectors.toList());
     }
 

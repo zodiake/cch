@@ -10,5 +10,5 @@ import com.by.model.PreferentialCouponUseHistory;
 public interface PreferentialCouponUseHistoryService {
     PreferentialCouponUseHistory save(PreferentialCouponUseHistory history);
 
-    PreferentialCouponUseHistory save(PreferentialCoupon coupon, Member member,int total);
+    PreferentialCouponUseHistory save(PreferentialCoupon coupon, Member member);
 }

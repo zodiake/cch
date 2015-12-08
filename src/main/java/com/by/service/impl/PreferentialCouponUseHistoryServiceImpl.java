@@ -24,11 +24,10 @@ public class PreferentialCouponUseHistoryServiceImpl implements PreferentialCoup
     }
 
     @Override
-    public PreferentialCouponUseHistory save(PreferentialCoupon coupon, Member member, int total) {
+    public PreferentialCouponUseHistory save(PreferentialCoupon coupon, Member member) {
         PreferentialCouponUseHistory history = new PreferentialCouponUseHistory();
         history.setCoupon(coupon);
         history.setMember(member);
-        history.setTotal(total);
         return save(history);
     }
 }

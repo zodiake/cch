@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by yagamai on 15-12-1.
  */
@@ -36,11 +38,13 @@ public class PreferentialCouponActor extends UntypedActor {
                 if (!couponService.isPermanent(coupon)) {
                     if (!couponService.withinValidDate(coupon)) {
                         sender().tell("out of date", null);
+                        return;
                     }
                 }
                 if (!couponService.isDuplicateCoupon(coupon)) {
                     if (hadExchangeCoupon(coupon, member)) {
                         sender().tell("duplicate", null);
+                        return;
                     }
                 }
                 if (couponService.noStorageLimited(coupon)) {
@@ -64,8 +68,8 @@ public class PreferentialCouponActor extends UntypedActor {
     }
 
     public boolean hadExchangeCoupon(PreferentialCoupon coupon, Member member) {
-        PreferentialCouponMember result = service.findByCouponAndMember(coupon, member);
-        return result != null;
+        List<PreferentialCouponMember> result = service.findByCouponAndMember(coupon, member);
+        return result.size() > 0;
     }
 
     public void checkStorageAndExchangeCoupon(PreferentialCoupon coupon, Member member, int total) {

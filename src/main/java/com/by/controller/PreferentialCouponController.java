@@ -42,84 +42,88 @@ import static com.by.SpringExtension.SpringExtProvider;
 @Controller
 @RequestMapping(value = "/api/preferentialCoupons")
 public class PreferentialCouponController {
-    private ApplicationContext ctx;
-    private ActorSystem system;
-    private ActorRef ref;
-    private PreferentialCouponService preferentialCouponService;
-    private PreferentialCouponMemberService preferentialCouponMemberService;
-    private MemberService memberService;
-    private CouponService couponService;
+	private ApplicationContext ctx;
+	private ActorSystem system;
+	private ActorRef ref;
+	private PreferentialCouponService preferentialCouponService;
+	private PreferentialCouponMemberService preferentialCouponMemberService;
+	private MemberService memberService;
+	private CouponService couponService;
 
-    @Autowired
-    public PreferentialCouponController(ApplicationContext ctx, PreferentialCouponService preferentialCouponService,
-                                        MemberService memberService, CouponService couponService, PreferentialCouponMemberService preferentialCouponMemberService) {
-        this.ctx = ctx;
-        this.system = ctx.getBean(ActorSystem.class);
-        this.ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "couponActor");
-        this.preferentialCouponService = preferentialCouponService;
-        this.memberService = memberService;
-        this.couponService = couponService;
-        this.preferentialCouponMemberService = preferentialCouponMemberService;
-    }
+	@Autowired
+	public PreferentialCouponController(ApplicationContext ctx, PreferentialCouponService preferentialCouponService,
+			MemberService memberService, CouponService couponService,
+			PreferentialCouponMemberService preferentialCouponMemberService) {
+		this.ctx = ctx;
+		this.system = ctx.getBean(ActorSystem.class);
+		this.ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "couponActor");
+		this.preferentialCouponService = preferentialCouponService;
+		this.memberService = memberService;
+		this.couponService = couponService;
+		this.preferentialCouponMemberService = preferentialCouponMemberService;
+	}
 
-    // 可以兑换的卡券列表
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public Success<List<CouponTemplateJson>> list(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        Page<PreferentialCoupon> coupons = preferentialCouponService.findByValid(ValidEnum.VALID, pageable);
-        List<CouponTemplateJson> results = coupons.getContent().stream()
-                .filter(i -> {
-                    return couponService.isWithinValidDate(i);
-                }).map(i -> {
-                    return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary());
-                }).collect(Collectors.toList());
-        return new Success<>(results);
-    }
+	// 可以兑换的卡券列表
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public Success<List<CouponTemplateJson>> list(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+		Page<PreferentialCoupon> coupons = preferentialCouponService.findByValid(ValidEnum.VALID, pageable);
+		List<CouponTemplateJson> results = coupons.getContent().stream().filter(i -> {
+			return couponService.isWithinValidDate(i);
+		}).map(i -> {
+			return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(),
+					i.getEndTime(), i.getSummary());
+		}).collect(Collectors.toList());
+		return new Success<>(results);
+	}
 
-    // 兑换卡券
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public Status exchangeCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json, BindingResult result) {
-        if (result.hasErrors()) {
-            FailBuilder.buildFail(result);
-        }
-        Member m = (Member) request.getAttribute("member");
-        if (!StringUtils.isEmpty(json.getPassword()))
-            m.setPassword(json.getPassword());
-        Member member = memberService.findOne(m.getId());
-        PreferentialCoupon coupon = preferentialCouponService.findOne(json.getId());
-        PreferentialCouponMessage message = new PreferentialCouponMessage(coupon, member, json.getTotal());
+	// 兑换卡券
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseBody
+	public Status exchangeCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			FailBuilder.buildFail(result);
+		}
+		Member m = (Member) request.getAttribute("member");
+		if (!StringUtils.isEmpty(json.getPassword()))
+			m.setPassword(json.getPassword());
+		Member member = memberService.findOne(m.getId());
+		PreferentialCoupon coupon = preferentialCouponService.findOne(json.getId());
+		if (coupon == null)
+			throw new NotFoundException();
+		PreferentialCouponMessage message = new PreferentialCouponMessage(coupon, member, json.getTotal());
 
-        validateCoupon(member, coupon, json.getTotal());
+		validateCoupon(member, coupon, json.getTotal());
 
-        final Inbox inbox = Inbox.create(system);
-        inbox.send(ref, message);
-        try {
-            String code = (String) inbox.receive(Duration.create(2, TimeUnit.SECONDS));
-            if (code.equals("success"))
-                return new Success<String>("success");
-            return new Fail(code);
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
-        return new Fail("system error");
-    }
+		final Inbox inbox = Inbox.create(system);
+		inbox.send(ref, message);
+		try {
+			String code = (String) inbox.receive(Duration.create(2, TimeUnit.SECONDS));
+			if (code.equals("success"))
+				return new Success<String>("success");
+			return new Fail(code);
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+		return new Fail("system error");
+	}
 
-    private void validateCoupon(Member member, PreferentialCoupon coupon, int total) {
-        if (member == null)
-            throw new MemberNotFoundException();
-        if (coupon.getScore() * total > member.getScore())
-            throw new NotEnoughScoreException();
-        if (!couponService.isWithinValidDate(coupon))
-            throw new NotValidException();
-    }
+	private void validateCoupon(Member member, PreferentialCoupon coupon, int total) {
+		if (member == null)
+			throw new MemberNotFoundException();
+		if (coupon.getScore() * total > member.getScore())
+			throw new NotEnoughScoreException();
+		if (!couponService.isWithinValidDate(coupon))
+			throw new NotValidException();
+	}
 
-    // 用户兑换到的优惠券列表
-    @RequestMapping(value = "/member", method = RequestMethod.GET)
-    @ResponseBody
-    public Status couponList(HttpServletRequest request, @PageableDefault(page = 0, size = 10) Pageable pageable) {
-        Member member = (Member) request.getAttribute("member");
-        List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
-        return new Success<>(result);
-    }
+	// 用户兑换到的优惠券列表
+	@RequestMapping(value = "/member", method = RequestMethod.GET)
+	@ResponseBody
+	public Status couponList(HttpServletRequest request, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+		Member member = (Member) request.getAttribute("member");
+		List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
+		return new Success<>(result);
+	}
 }

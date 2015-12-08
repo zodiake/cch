@@ -12,11 +12,11 @@ import java.util.List;
  * Created by yagamai on 15-12-3.
  */
 public interface PreferentialCouponMemberService {
-    PreferentialCouponMember useCoupon(PreferentialCoupon coupon, Member member, int total);
+    PreferentialCouponMember useCoupon(String code, Member member);
 
     PreferentialCouponMember exchangeCoupon(PreferentialCoupon coupon, Member member, int total);
 
-    PreferentialCouponMember findByCouponAndMember(PreferentialCoupon coupon, Member member);
+    List<PreferentialCouponMember> findByCouponAndMember(PreferentialCoupon coupon, Member member);
 
     Long sumTotalGroupByCoupon(PreferentialCoupon coupon);
 

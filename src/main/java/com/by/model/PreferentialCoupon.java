@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("c")
 public class PreferentialCoupon extends Coupon {
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "coupon")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "coupon")
     private List<PreferentialCouponUseHistory> useHistoryList;
 
     public PreferentialCoupon() {
@@ -21,5 +21,13 @@ public class PreferentialCoupon extends Coupon {
 
     public PreferentialCoupon(Long id) {
         setId(id);
+    }
+
+    public List<PreferentialCouponUseHistory> getUseHistoryList() {
+        return useHistoryList;
+    }
+
+    public void setUseHistoryList(List<PreferentialCouponUseHistory> useHistoryList) {
+        this.useHistoryList = useHistoryList;
     }
 }

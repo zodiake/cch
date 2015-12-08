@@ -24,7 +24,6 @@ public class PreferentialCouponExchangeHistory {
     @Column(name = "created_time")
     private Calendar createdTime;
 
-
     private Integer total;
 
     public PreferentialCouponExchangeHistory() {

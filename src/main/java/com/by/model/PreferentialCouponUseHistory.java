@@ -8,14 +8,15 @@ import java.util.Calendar;
  */
 @Entity
 @Table(name = "by_preferential_coupon_use_history")
-@IdClass(MemberCouponId.class)
 public class PreferentialCouponUseHistory {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "preferential_coupon_id")
     private PreferentialCoupon coupon;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -23,8 +24,6 @@ public class PreferentialCouponUseHistory {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
     private Calendar createdTime;
-
-    private Integer total;
 
     public PreferentialCoupon getCoupon() {
         return coupon;
@@ -48,14 +47,6 @@ public class PreferentialCouponUseHistory {
 
     public void setCreatedTime(Calendar createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
     }
 
     @Override

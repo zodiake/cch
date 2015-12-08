@@ -134,11 +134,12 @@ CREATE TABLE by_member_license (
 
 CREATE TABLE by_coupon (
   id            BIGINT NOT NULL AUTO_INCREMENT,
-  code          CHAR(64),
   type          CHAR(1),
   name          VARCHAR(50),
   begin_time    TIMESTAMP,
   end_time      TIMESTAMP,
+  created_time  TIMESTAMP,
+  created_by    VARCHAR(20),
   score         INT             DEFAULT 0,
   couponEndTime TIMESTAMP,
   valid         SMALLINT        DEFAULT 1,
@@ -146,7 +147,9 @@ CREATE TABLE by_coupon (
   duplicate     SMALLINT        DEFAULT 1,
   amount        DOUBLE          DEFAULT 0,
   summary       VARCHAR(255),
-  PRIMARY KEY (id)
+  shop_id       BIGINT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (shop_id) REFERENCES by_shop (id)
 );
 
 CREATE TABLE by_parking_coupon_member (
@@ -159,10 +162,15 @@ CREATE TABLE by_parking_coupon_member (
 );
 
 CREATE TABLE by_preferential_coupon_member (
-  member_id BIGINT,
-  coupon_id BIGINT,
-  total     INT,
-  PRIMARY KEY (member_id, coupon_id),
+  id             BIGINT AUTO_INCREMENT,
+  member_id      BIGINT,
+  coupon_id      BIGINT,
+  total          INT,
+  code           CHAR(17),
+  state          SMALLINT,
+  exchanged_time TIMESTAMP,
+  used_time      TIMESTAMP,
+  PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
@@ -179,12 +187,13 @@ CREATE TABLE by_parking_coupon_exchange_history (
 );
 
 CREATE TABLE by_preferential_coupon_exchange_history (
+  id           BIGINT AUTO_INCREMENT,
   member_id    BIGINT,
   coupon_id    BIGINT,
   created_time TIMESTAMP,
   created_by   VARCHAR(20),
   total        INT,
-  PRIMARY KEY (member_id, coupon_id),
+  PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id),
 );
@@ -201,11 +210,12 @@ CREATE TABLE by_parking_coupon_use_history (
 );
 
 CREATE TABLE by_preferential_coupon_use_history (
+  id                     BIGINT AUTO_INCREMENT,
   member_id              BIGINT,
   preferential_coupon_id BIGINT,
   created_time           TIMESTAMP,
   total                  INT,
-  PRIMARY KEY (member_id, preferential_coupon_id),
+  PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (preferential_coupon_id) REFERENCES by_coupon (id),
 );
@@ -296,8 +306,18 @@ CREATE TABLE by_trading (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE by_sequence (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE by_shop_coupon_member (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (id)
+);
+
 CREATE UNIQUE INDEX ON by_trading (code);
 CREATE UNIQUE INDEX ON by_member (name);
 CREATE UNIQUE INDEX ON by_shop (key);
-CREATE UNIQUE INDEX ON by_coupon (code);
+CREATE UNIQUE INDEX ON by_preferential_coupon_member (code);
 CREATE INDEX ON by_trading (created_time);

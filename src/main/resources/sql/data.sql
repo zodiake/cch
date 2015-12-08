@@ -94,12 +94,19 @@ INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 1,
 INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 3, 10);
 
 -- test preferentialCoupon
-INSERT INTO by_preferential_coupon_member (member_id, coupon_id, total) VALUES (1, 2, 20);
-INSERT INTO by_preferential_coupon_member (member_id, coupon_id, total) VALUES (1, 4, 20);
+INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 2, 20);
+INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (2, 1, 4, 20);
 
 -- test score_history
-INSERT INTO by_score_history (id, member_id, created_time, deposit, reason) VALUES (1, 1, '2012-12-1 12:22:55',10,'hehe');
-INSERT INTO by_score_history (id, member_id, created_time, deposit, reason) VALUES (2, 1, '2012-12-2 12:22:55',10,'hehe');
-INSERT INTO by_score_history (id, member_id, created_time, deposit, reason) VALUES (3, 1, '2012-12-4 12:22:55',10,'hehe');
-INSERT INTO by_score_history (id, member_id, created_time, deposit, reason) VALUES (4, 1, '2012-12-5 12:22:55',10,'hehe');
-INSERT INTO by_score_history (id, member_id, created_time, deposit, reason) VALUES (5, 1, '2012-12-6 12:22:55',10,'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (1, 1, '2012-12-1 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (2, 1, '2012-12-2 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (3, 1, '2012-12-4 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (4, 1, '2012-12-5 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (5, 1, '2012-12-6 12:22:55', 10, 'hehe');
+
+INSERT INTO by_sequence (id) VALUES (1001);

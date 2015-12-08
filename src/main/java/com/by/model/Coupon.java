@@ -5,7 +5,6 @@ import com.by.typeEnum.ValidEnum;
 
 import javax.persistence.*;
 import java.util.Calendar;
-import java.util.UUID;
 
 @Entity
 @Table(name = "by_coupon")
@@ -15,9 +14,6 @@ public abstract class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    //uuid
-    private String code;
 
     //有效期开始
     @Temporal(TemporalType.TIMESTAMP)
@@ -52,6 +48,13 @@ public abstract class Coupon {
 
     private String summary;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Calendar createdTime;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
     public Long getId() {
         return id;
     }
@@ -59,15 +62,6 @@ public abstract class Coupon {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
 
     public Calendar getBeginTime() {
         return beginTime;
@@ -151,7 +145,6 @@ public abstract class Coupon {
 
     @PrePersist
     private void prePersist() {
-        this.code = UUID.randomUUID().toString().replace("-", "");
     }
 
     @Override

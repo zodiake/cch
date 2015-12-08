@@ -47,11 +47,13 @@ public class ParkingCouponActor extends UntypedActor {
 				if (!couponService.isPermanent(coupon)) {
 					if (!couponService.withinValidDate(coupon)) {
 						sender().tell("out of date", null);
+						return;
 					}
 				}
 				if (!couponService.isDuplicateCoupon(coupon)) {
 					if (hadExchangeCoupon(coupon, member)) {
 						sender().tell("duplicate", null);
+						return;
 					}
 				}
 				if (couponService.noStorageLimited(coupon)) {
