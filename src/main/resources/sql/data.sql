@@ -88,8 +88,8 @@ INSERT INTO by_coupon (id, type, begin_time, end_time, score, couponEndTime, val
 VALUES (3, 'p', '2014-12-1', '2014-12-30', 10, '2016-1-1', 1, 100, 0, 20, 'coupon3');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, couponEndTime, valid, total, duplicate, amount, name)
 VALUES (4, 'c', '2015-12-1', '2015-12-30', 10, '2016-1-1', 0, 100, 0, 20, 'coupon2');
-INSERT INTO by_coupon (id, type, begin_time, end_time, score, couponEndTime, valid, total, duplicate, amount, name)
-VALUES (5, 's', '2015-12-1', '2015-12-30', 10, '2016-1-1', 1, 100, 0, 20, 'shopCoupon1');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, couponEndTime, valid, total, duplicate, amount, name, shop_id)
+VALUES (5, 's', '2015-12-1', '2015-12-30', 10, '2016-1-1', 1, 100, 0, 20, 'shopCoupon1', 1);
 
 -- test parkingCoupon
 INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 1, 10);

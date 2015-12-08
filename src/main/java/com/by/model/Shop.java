@@ -15,11 +15,11 @@ public class Shop {
 
 	private String name;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id") , inverseJoinColumns = @JoinColumn(name = "menu_id") )
 	private List<Menu> menus;
 
@@ -66,7 +66,7 @@ public class Shop {
 	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
 	}
-	
+
 	public String getKey() {
 		return key;
 	}

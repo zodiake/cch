@@ -13,15 +13,17 @@ public class CouponJson {
 
     private String couponEndTime;
 
+    private String shopName;
 
     public CouponJson() {
     }
 
-    public CouponJson(Long id, String name, Calendar endTime) {
+    public CouponJson(Long id, String name, Calendar endTime,String shopName) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         this.id = id;
         this.name = name;
         this.couponEndTime = format.format(endTime.getTime());
+        this.shopName=shopName;
     }
 
     public Long getId() {
@@ -46,5 +48,13 @@ public class CouponJson {
 
     public void setCouponEndTime(String couponEndTime) {
         this.couponEndTime = couponEndTime;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 }

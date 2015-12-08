@@ -76,12 +76,15 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
     @Override
     @Transactional(readOnly = true)
     public List<CouponJson> findByMember(Member member, Pageable pageable) {
-        return repository.findByMember(member, pageable).getContent().stream().filter(i -> {
-            return couponService.isWithinValidDate(i.getCoupon());
-        }).map(i -> {
-            Coupon c = i.getCoupon();
-            return new CouponJson(c.getId(), c.getName(), c.getEndTime());
-        }).collect(Collectors.toList());
+        return repository.findByMember(member, pageable).getContent()
+                .stream()
+                .filter(i -> {
+                    return couponService.isWithinValidDate(i.getCoupon());
+                }).map(i -> {
+                    Coupon c = i.getCoupon();
+                    return new CouponJson(c.getId(), c.getName(), c.getEndTime(), null);
+                })
+                .collect(Collectors.toList());
     }
 
     public PreferentialCouponMember save(PreferentialCouponMember pcm) {

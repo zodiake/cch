@@ -41,7 +41,6 @@ public class ParkingHistoryServiceImpl implements ParkingHistoryService {
         // 该车牌是否存在会员记录中
         if (license != null) {
             List<ParkingCouponUseHistory> useHistories = useHistoryService.findByLicenseAndCreatedTimeBetween(license.getName(), history.getStartTime(), history.getEndTIme());
-            Member m = null;
             //是否有付费记录
             if (useHistories.size() > 0) {
                 ParkingCouponUseHistory ph = useHistories.get(0);

@@ -1,16 +1,15 @@
 package com.by.service.impl;
 
+import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.model.Sequence;
 import com.by.model.ShopCoupon;
 import com.by.model.ShopCouponMember;
 import com.by.repository.ShopCouponMemberRepository;
-import com.by.service.MemberService;
-import com.by.service.SequenceService;
-import com.by.service.ShopCouponMemberService;
-import com.by.service.ShopCouponService;
+import com.by.service.*;
 import com.by.typeEnum.DuplicateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by yagamai on 15-12-8.
@@ -36,6 +36,8 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
     private ShopCouponService shopCouponService;
     @Autowired
     private SequenceService sequenceService;
+    @Autowired
+    private CouponService couponService;
 
     @Override
     public ShopCouponMember exchangeCoupon(Member member, ShopCoupon coupon, int total) {
@@ -80,5 +82,18 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
     @Override
     public List<ShopCouponMember> findByCouponAndMember(ShopCoupon coupon, Member member) {
         return repository.findByCouponAndMember(coupon, member);
+    }
+
+    @Override
+    public List<CouponJson> findByMember(Member member, Pageable pageable) {
+        return repository.findByMember(member, pageable).getContent()
+                .stream()
+                .filter(i -> {
+                    return couponService.isWithinValidDate(i.getCoupon());
+                }).map(i -> {
+                    ShopCoupon c = i.getCoupon();
+                    return new CouponJson(c.getId(), c.getName(), c.getEndTime(), i.getCoupon().getShop().getName());
+                })
+                .collect(Collectors.toList());
     }
 }

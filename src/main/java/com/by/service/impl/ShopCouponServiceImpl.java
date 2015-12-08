@@ -17,24 +17,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ShopCouponServiceImpl implements ShopCouponService {
-    @Autowired
-    private ShopCouponRepository repository;
+	@Autowired
+	private ShopCouponRepository repository;
 
-    @Override
-    public ShopCoupon save(ShopCoupon coupon) {
-        return repository.save(coupon);
-    }
+	@Override
+	public ShopCoupon save(ShopCoupon coupon) {
+		return repository.save(coupon);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public ShopCoupon findOne(Long id) {
-        return repository.findOne(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public ShopCoupon findOne(Long id) {
+		return repository.findOne(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    @Cacheable("shopCoupon")
-    public Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable) {
-        return repository.findByValid(valid, pageable);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	@Cacheable("shopCoupon")
+	public Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable) {
+		Page<ShopCoupon> coupons = repository.findByValid(valid, pageable);
+		coupons.getContent().forEach(i -> i.getShop());
+		return coupons;
+	}
 }

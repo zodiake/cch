@@ -19,7 +19,7 @@ public class ShopCouponMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
-    private PreferentialCoupon coupon;
+    private ShopCoupon coupon;
 
     private String code;
 
@@ -35,7 +35,8 @@ public class ShopCouponMember {
     }
 
     public ShopCouponMember(Member member, ShopCoupon coupon) {
-
+        this.member = member;
+        this.coupon = coupon;
     }
 
     public Long getId() {
@@ -54,11 +55,11 @@ public class ShopCouponMember {
         this.member = member;
     }
 
-    public PreferentialCoupon getCoupon() {
+    public ShopCoupon getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(PreferentialCoupon coupon) {
+    public void setCoupon(ShopCoupon coupon) {
         this.coupon = coupon;
     }
 
@@ -84,6 +85,11 @@ public class ShopCouponMember {
 
     public void setUsedTime(Calendar usedTime) {
         this.usedTime = usedTime;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        this.exchangedTime = Calendar.getInstance();
     }
 
     @Override

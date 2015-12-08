@@ -1,8 +1,10 @@
 package com.by.service;
 
+import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.model.ShopCoupon;
 import com.by.model.ShopCouponMember;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -21,4 +23,6 @@ public interface ShopCouponMemberService {
     Long countByCoupon(ShopCoupon coupon);
 
     List<ShopCouponMember> findByCouponAndMember(ShopCoupon coupon, Member member);
+
+    List<CouponJson> findByMember(Member member, Pageable pageable);
 }

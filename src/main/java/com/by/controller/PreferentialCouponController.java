@@ -78,7 +78,7 @@ public class PreferentialCouponController {
                 })
                 .map(i -> {
                     return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(),
-                            i.getEndTime(), i.getSummary());
+                            i.getEndTime(), i.getSummary(),null);
                 })
                 .collect(Collectors.toList());
         return new Success<>(new PageImpl<>(results, pageable, coupons.getTotalElements()));

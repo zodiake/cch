@@ -1,5 +1,9 @@
 package com.by.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+
 import com.by.form.AdminCouponForm;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
@@ -7,10 +11,6 @@ import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponMember;
 import com.by.model.Shop;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 public interface ParkingCouponMemberService {
     /*
