@@ -1,6 +1,7 @@
 package com.by.service.impl;
 
 import com.by.exception.*;
+import com.by.form.AdminMemberForm;
 import com.by.json.MemberJson;
 import com.by.model.*;
 import com.by.repository.MemberRepository;
@@ -12,7 +13,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +39,8 @@ public class MemberServiceImpl implements MemberService {
     private CardService cardService;
     @Autowired
     private RuleService ruleService;
+    @Autowired
+    private EntityManager em;
     private RuleCategory registerCategory = new RuleCategory(1L);
 
     @Override
@@ -141,10 +150,36 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<MemberJson> findAll(Pageable pageable) {
-        Page<Member> members = repository.findAll(pageable);
-        List<MemberJson> results = members.getContent().stream().map(i -> new MemberJson(i)).collect(Collectors.toList());
-        return new PageImpl<>(results, pageable, members.getTotalElements());
+    public Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Member> c = cb.createQuery(Member.class);
+        Root<Member> root = c.from(Member.class);
+        c.select(root);
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        cq.select(cb.count(cq.from(Member.class)));
+        List<Predicate> criteria = new ArrayList<>();
+
+        if (!StringUtils.isEmpty(form.getMobile()))
+            criteria.add(cb.equal(root.get("name"), form.getMobile()));
+        if (form.getCard() != null)
+            criteria.add(cb.equal(root.get("card"), new Card(form.getCard())));
+        if (form.getBeginTime() != null)
+            criteria.add(cb.greaterThanOrEqualTo(root.get("createdTime"), form.getBeginTime()));
+        if (form.getEndTime() != null)
+            criteria.add(cb.lessThanOrEqualTo(root.get("createdTime"), form.getEndTime()));
+        c.where(criteria.toArray(new Predicate[0]));
+        cq.where(criteria.toArray(new Predicate[0]));
+
+        List<Member> lists = em
+                .createQuery(c)
+                .setFirstResult(
+                        (pageable.getPageNumber()) * pageable.getPageSize())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+        Long count = em.createQuery(cq).getSingleResult();
+
+        List<MemberJson> results = lists.stream().map(i -> new MemberJson(i)).collect(Collectors.toList());
+        return new PageImpl<>(results, pageable, count);
     }
 
     @Override

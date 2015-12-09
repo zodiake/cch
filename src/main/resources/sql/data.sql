@@ -19,6 +19,7 @@ INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 2);
 --tom role_user
 
 INSERT INTO by_user_auth (user_id, auth_id) VALUES (2, 3);
+
 -- mary role_shop
 
 -- test auth_menu
@@ -60,8 +61,6 @@ INSERT INTO by_shop (id, name, user_id) VALUES (1, 'shop1', 2);
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
-INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 2);
-INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 3);
 
 -- test parking_coupon_use_history
 

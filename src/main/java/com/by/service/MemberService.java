@@ -1,5 +1,6 @@
 package com.by.service;
 
+import com.by.form.AdminMemberForm;
 import com.by.json.MemberJson;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
@@ -30,7 +31,7 @@ public interface MemberService {
 
     Member findOne(Long id);
 
-    Page<MemberJson> findAll(Pageable pageable);
+    Page<MemberJson> findAll(AdminMemberForm form,Pageable pageable);
 
     boolean isValidMember(Member member);
 }

@@ -7,6 +7,7 @@ import com.by.json.CardJson;
 import com.by.model.Card;
 import com.by.service.CardService;
 import com.by.typeEnum.ValidEnum;
+import com.by.utils.FailBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -65,13 +66,14 @@ public class AdminCardController {
         c.setId(id);
         c.setName("haha");
         service.update(c);
-        return null;
+        return new Success<>("success");
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Status save(@Valid Card card, BindingResult result) {
         if (result.hasErrors()) {
+            return FailBuilder.buildFail(result);
         }
         Card c = new Card();
         c.setName("low");
