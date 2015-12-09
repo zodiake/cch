@@ -17,7 +17,7 @@ public class ShopServiceImpl implements ShopService {
     private ShopRepository repository;
 
     @Override
-    public Page<Shop> findByCode(String code, Pageable pageable) {
+    public Page<Shop> findByKey(String code, Pageable pageable) {
         return repository.findByKey(code, pageable);
     }
 }

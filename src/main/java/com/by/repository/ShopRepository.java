@@ -10,4 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface ShopRepository extends PagingAndSortingRepository<Shop, Long> {
     Page<Shop> findByKey(String key, Pageable pageable);
+
+    Shop findByKey(String code);
 }

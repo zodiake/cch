@@ -1,5 +1,6 @@
 package com.by.repository;
 
+import com.by.model.Member;
 import com.by.model.Shop;
 import com.by.model.Trading;
 import org.springframework.data.domain.Page;
@@ -15,4 +16,6 @@ public interface TradingRepository extends PagingAndSortingRepository<Trading, L
     Page<Trading> findByShopAndCreatedTimeBetween(Shop shop, Calendar startTime, Calendar endTime, Pageable pageable);
 
     Trading findByCode(String code);
+
+    Page<Trading> findByMember(Member member, Pageable pageable);
 }

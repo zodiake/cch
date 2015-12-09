@@ -2,6 +2,8 @@ package com.by.repository;
 
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -17,4 +19,6 @@ public interface ScoreAddHistoryRepository extends PagingAndSortingRepository<Sc
 
     @Query("select sum(s.total) from ScoreAddHistory s where s.member=:member")
     Long sumByMember(@Param("member") Member member);
+
+    Page<ScoreAddHistory> findByMember(Member member,Pageable pageable);
 }

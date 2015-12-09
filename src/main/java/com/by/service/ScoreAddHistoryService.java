@@ -1,7 +1,10 @@
 package com.by.service;
 
+import com.by.json.ScoreAddHistoryJson;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,7 +14,7 @@ import java.util.List;
 public interface ScoreAddHistoryService {
     ScoreAddHistory save(ScoreAddHistory history);
 
-    ScoreAddHistory save(Member member, int total,String summary);
+    ScoreAddHistory save(Member member, int total, String summary);
 
     void delete(Long id);
 
@@ -20,4 +23,6 @@ public interface ScoreAddHistoryService {
     List<ScoreAddHistory> findByMember(Member member);
 
     Long sumByMember(Member member);
+
+    Page<ScoreAddHistoryJson> findByMember(Member member, Pageable pageable);
 }

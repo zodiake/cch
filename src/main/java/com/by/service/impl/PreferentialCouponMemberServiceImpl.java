@@ -79,7 +79,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
         return repository.findByMember(member, pageable).getContent()
                 .stream()
                 .filter(i -> {
-                    return couponService.isWithinValidDate(i.getCoupon());
+                    return i.getUsedTime() == null && couponService.isWithinValidDate(i.getCoupon());
                 }).map(i -> {
                     Coupon c = i.getCoupon();
                     return new CouponJson(c.getId(), c.getName(), c.getEndTime(), null);

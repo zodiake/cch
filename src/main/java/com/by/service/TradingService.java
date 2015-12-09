@@ -1,5 +1,7 @@
 package com.by.service;
 
+import com.by.json.TradingJson;
+import com.by.model.Member;
 import com.by.model.Shop;
 import com.by.model.Trading;
 import org.springframework.data.domain.Page;
@@ -18,4 +20,6 @@ public interface TradingService {
     int tradeToScore(Trading trading);
 
     Trading bindMember(Trading trading, String mobile);
+
+    Page<TradingJson> findByMember(Member member, Pageable pageable);
 }

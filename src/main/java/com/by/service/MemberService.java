@@ -1,7 +1,10 @@
 package com.by.service;
 
+import com.by.json.MemberJson;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +19,8 @@ public interface MemberService {
     Member save(Member member);
 
     Optional<Member> update(Member member);
-    
-    Optional<Member> updatePassword(Member member);
 
-    Optional<Member> findByNameAndPassword(Member member);
+    Optional<Member> updatePassword(Member member);
 
     Member minusScore(Member member, int total, String reason);
 
@@ -28,6 +29,8 @@ public interface MemberService {
     List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
 
     Member findOne(Long id);
+
+    Page<MemberJson> findAll(Pageable pageable);
 
     boolean isValidMember(Member member);
 }

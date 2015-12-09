@@ -1,17 +1,22 @@
 package com.by.service.impl;
 
 import com.by.exception.*;
+import com.by.json.MemberJson;
 import com.by.model.*;
 import com.by.repository.MemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -72,12 +77,6 @@ public class MemberServiceImpl implements MemberService {
             i.setPassword(member.getPassword());
             return i;
         });
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Member> findByNameAndPassword(Member member) {
-        return repository.findByNameAndPassword(member.getName(), member.getPassword());
     }
 
     @Override
@@ -142,6 +141,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Page<MemberJson> findAll(Pageable pageable) {
+        Page<Member> members = repository.findAll(pageable);
+        List<MemberJson> results = members.getContent().stream().map(i -> new MemberJson(i)).collect(Collectors.toList());
+        return new PageImpl<>(results, pageable, members.getTotalElements());
+    }
+
+    @Override
     public boolean isValidMember(Member member) {
         Member m = findOne(member.getId());
         if (m == null)
@@ -158,11 +164,11 @@ public class MemberServiceImpl implements MemberService {
             throw new MemberNotValidException();
     }
 
-	@Override
-	public Optional<Member> updatePassword(Member member) {
+    @Override
+    public Optional<Member> updatePassword(Member member) {
         return repository.findByName(member.getName()).map(i -> {
             i.setPassword(member.getPassword());
             return i;
         });
-	}
+    }
 }

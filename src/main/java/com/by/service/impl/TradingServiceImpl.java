@@ -3,6 +3,7 @@ package com.by.service.impl;
 import com.by.exception.MemberNotFoundException;
 import com.by.exception.TradingAlreadyBindException;
 import com.by.exception.TradingNotExistException;
+import com.by.json.TradingJson;
 import com.by.model.*;
 import com.by.repository.TradingRepository;
 import com.by.service.MemberService;
@@ -11,6 +12,7 @@ import com.by.service.TradingService;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by yagamai on 15-11-27.
@@ -52,6 +55,7 @@ public class TradingServiceImpl implements TradingService {
         return repository.save(trading);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public int tradeToScore(Trading trading) {
         Optional<Member> m = memberService.findById(trading.getMember().getId());
@@ -75,5 +79,13 @@ public class TradingServiceImpl implements TradingService {
             throw new TradingAlreadyBindException();
         t.setMember(member.get());
         return save(t);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TradingJson> findByMember(Member member, Pageable pageable) {
+        Page<Trading> results = repository.findByMember(member, pageable);
+        List<TradingJson> json = results.getContent().stream().map(i -> new TradingJson(i)).collect(Collectors.toList());
+        return new PageImpl<>(json, pageable, results.getTotalElements());
     }
 }

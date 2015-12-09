@@ -1,15 +1,20 @@
 package com.by.service.impl;
 
+import com.by.json.ScoreAddHistoryJson;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
 import com.by.repository.ScoreAddHistoryRepository;
 import com.by.service.ScoreAddHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yagamai on 15-11-24.
@@ -56,5 +61,12 @@ public class ScoreAddHistoryServiceImpl implements ScoreAddHistoryService {
     @Override
     public Long sumByMember(Member member) {
         return repository.sumByMember(member);
+    }
+
+    @Override
+    public Page<ScoreAddHistoryJson> findByMember(Member member, Pageable pageable) {
+        Page<ScoreAddHistory> histories = repository.findByMember(member, pageable);
+        List<ScoreAddHistoryJson> json = histories.getContent().stream().map(i -> new ScoreAddHistoryJson(i)).collect(Collectors.toList());
+        return new PageImpl<ScoreAddHistoryJson>(json, pageable, histories.getTotalElements());
     }
 }

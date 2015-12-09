@@ -1,104 +1,152 @@
 package com.by.model;
 
-import java.util.List;
-
-import javax.persistence.*;
-
 import com.by.typeEnum.ValidEnum;
 import com.by.validator.CardNameUnique;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.envers.Audited;
+
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @Table(name = "by_card")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@Audited
 public class Card {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@CardNameUnique
-	private String name;
+    @CardNameUnique
+    private String name;
 
-	@OneToMany(mappedBy = "card", cascade = { CascadeType.PERSIST })
-	private List<Rule> rules;
+    @OneToMany(mappedBy = "card", cascade = {CascadeType.PERSIST})
+    private List<Rule> rules;
 
-	@Enumerated
-	private ValidEnum valid;
+    @Enumerated
+    private ValidEnum valid;
 
-	@Column(name="init_score")
-	private Integer initScore;
+    @Column(name = "init_score")
+    private Integer initScore;
 
-	public Card() {
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Calendar createdTime;
 
-	public Card(Long id) {
-		this.id = id;
-	}
+    @Column(name = "created_by")
+    private String createdBy;
 
-	public Long getId() {
-		return id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Calendar updatedTime;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "updated_by")
+    private String updatedBy;
 
-	public String getName() {
-		return name;
-	}
+    public Card() {
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Card(Long id) {
+        this.id = id;
+    }
 
-	public List<Rule> getRules() {
-		return rules;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setRules(List<Rule> rules) {
-		this.rules = rules;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public ValidEnum getValid() {
-		return valid;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setValid(ValidEnum valid) {
-		this.valid = valid;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getInitScore() {
-		return initScore;
-	}
+    public List<Rule> getRules() {
+        return rules;
+    }
 
-	public void setInitScore(Integer initScore) {
-		this.initScore = initScore;
-	}
+    public void setRules(List<Rule> rules) {
+        this.rules = rules;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public ValidEnum getValid() {
+        return valid;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Card other = (Card) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    public void setValid(ValidEnum valid) {
+        this.valid = valid;
+    }
+
+    public Integer getInitScore() {
+        return initScore;
+    }
+
+    public void setInitScore(Integer initScore) {
+        this.initScore = initScore;
+    }
+
+    public Calendar getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Calendar createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Calendar getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Calendar updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Card other = (Card) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 }

@@ -15,9 +15,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.by.typeEnum.ValidEnum;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
 @Table(name = "by_rule")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Rule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

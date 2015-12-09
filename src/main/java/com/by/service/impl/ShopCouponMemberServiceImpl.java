@@ -89,7 +89,7 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
         return repository.findByMember(member, pageable).getContent()
                 .stream()
                 .filter(i -> {
-                    return couponService.isWithinValidDate(i.getCoupon());
+                    return i.getUsedTime() == null && couponService.isWithinValidDate(i.getCoupon());
                 }).map(i -> {
                     ShopCoupon c = i.getCoupon();
                     return new CouponJson(c.getId(), c.getName(), c.getEndTime(), i.getCoupon().getShop().getName());

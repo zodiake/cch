@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
  * Created by yagamai on 15-12-1.
  */
 public interface ShopService {
-    Page<Shop> findByCode(String code, Pageable pageable);
+    Page<Shop> findByKey(String code, Pageable pageable);
 }

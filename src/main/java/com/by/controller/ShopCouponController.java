@@ -71,7 +71,7 @@ public class ShopCouponController {
                 })
                 .map(i -> {
                     return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(),
-                            i.getEndTime(), i.getSummary(),i.getShop().getName());
+                            i.getEndTime(), i.getSummary(), i.getShop().getName());
                 }).collect(Collectors.toList());
         return new Success<>(new PageImpl<>(results, pageable, coupons.getTotalElements()));
     }
@@ -79,7 +79,8 @@ public class ShopCouponController {
     // 用户兑换到的优惠券列表
     @RequestMapping(value = "/member", method = RequestMethod.GET)
     @ResponseBody
-    public Status couponList(HttpServletRequest request, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public Status couponList(HttpServletRequest request,
+                             @PageableDefault(page = 0, size = 10, sort = "exchangedTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
         List<CouponJson> result = shopCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);

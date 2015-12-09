@@ -62,11 +62,29 @@ CREATE TABLE by_rule_category (
 
 
 CREATE TABLE by_card (
-  id         BIGINT NOT NULL AUTO_INCREMENT,
-  name       VARCHAR(50),
-  valid      SMALLINT,
-  init_score INT             DEFAULT 0,
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  name         VARCHAR(50),
+  valid        SMALLINT,
+  init_score   INT             DEFAULT 0,
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
   PRIMARY KEY (id)
+);
+
+CREATE TABLE by_card_aud (
+  id           BIGINT  NOT NULL AUTO_INCREMENT,
+  name         VARCHAR(50),
+  valid        SMALLINT,
+  init_score   INT              DEFAULT 0,
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
+  REV          INTEGER NOT NULL,
+  REVTYPE      TINYINT,
+  PRIMARY KEY (id, REV)
 );
 
 CREATE TABLE by_rule (
