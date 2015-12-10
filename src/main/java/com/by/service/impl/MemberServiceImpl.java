@@ -192,6 +192,11 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+    @Override
+    public Long countByCard(Card card) {
+        return repository.countByCard(card);
+    }
+
     private void validMember(Member member) {
         if (member == null)
             throw new MemberNotFoundException();

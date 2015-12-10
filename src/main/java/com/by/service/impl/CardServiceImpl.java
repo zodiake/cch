@@ -1,5 +1,6 @@
 package com.by.service.impl;
 
+import com.by.json.CardJson;
 import com.by.model.Card;
 import com.by.repository.CardRepository;
 import com.by.service.CardService;
@@ -31,8 +32,8 @@ public class CardServiceImpl implements CardService {
     @Override
     @Cacheable("card")
     @Transactional(readOnly = true)
-    public Optional<Card> findOne(Long id) {
-        return repository.findById(id);
+    public Card findOne(Long id) {
+        return repository.findOne(id);
     }
 
     @Override
@@ -63,6 +64,14 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public Card save(CardJson json) {
+        Card card = new Card();
+        card.setName(json.getName());
+        card.setInitScore(json.getInitScore());
+        return save(card);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<Card> findAllAuditRevision(Long id) {
         AuditReader auditReader = AuditReaderFactory.get(em);
@@ -73,7 +82,18 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional(readOnly = true)
     public List<Card> findByValid(ValidEnum valid, Pageable pageable) {
-        Page<Card> cards = repository.findByValid(valid, pageable);
+        Page<Card> cards;
+        if (valid != null)
+            cards = repository.findByValid(valid, pageable);
+        cards = repository.findAll(pageable);
         return cards.getContent();
     }
+
+	@Override
+    @Transactional(readOnly = true)
+	public Card findOneAndRule(Long id) {
+		Card card=findOne(id);
+		card.getRules().size();
+		return card;
+	}
 }

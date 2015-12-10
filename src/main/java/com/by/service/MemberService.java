@@ -2,6 +2,7 @@ package com.by.service;
 
 import com.by.form.AdminMemberForm;
 import com.by.json.MemberJson;
+import com.by.model.Card;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,9 @@ public interface MemberService {
 
     Member findOne(Long id);
 
-    Page<MemberJson> findAll(AdminMemberForm form,Pageable pageable);
+    Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable);
 
     boolean isValidMember(Member member);
+
+    Long countByCard(Card card);
 }

@@ -52,11 +52,11 @@ INSERT INTO by_rule_category (id, name) VALUES (2, 'asdf');
 
 -- test rule
 -- 注册用规则
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (1, 2.0, 1, 1, 1, 100);
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (2, 2.0, 1, 1, 1, 100);
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (1, 2.0, 1, 1, 1, 100,'rule1');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (2, 2.0, 1, 1, 1, 100,'rule1');
 -- 交易用规则
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (3, 2.0, 1, 2, 1, 100);
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score) VALUES (4, 2.0, 1, 2, 1, 100);
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (3, 2.0, 1, 2, 1, 100,'rule1');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (4, 2.0, 1, 2, 1, 100,'rule1');
 
 -- test shop
 INSERT INTO by_shop (id, name, user_id) VALUES (1, 'shop1', 2);

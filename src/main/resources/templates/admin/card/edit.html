@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <script src="/javascript/jquery-1.11.3.min.js"></script>
+    <script id="registerTemplate" type="application/template">
+        <div class="registerTemplate">
+            <input type="text" name="beginTime"/>
+            <input type="text" name="endTime"/>
+            <input type="text" name="rate"/>
+            <input type="button" class="delete" value="delete"/>
+        </div>
+    </script>
+    <script>
+        $(function () {
+            $('#add').click(function (e) {
+                var template = $('#registerTemplate');
+                $('#register').append($(template.html()));
+            });
+
+            $('#register').on('click', '.confirm', function () {
+                var self = $(this);
+                var array = self.siblings('input[type="text"]');
+                var obj = {};
+                array.each(function (i, e) {
+                    var name = $(this).attr('name');
+                    if (name == 'beginTime') {
+                        obj.beginTime = $(this).val();
+                    } else if (name == 'endTime') {
+                        obj.endTime = $(this).val();
+                    } else if (name == 'rate') {
+                        obj.rate = $(this).val();
+                    }
+                });
+            });
+
+
+            $('#register').on('click', '.delete', function () {
+                var self = $(this);
+                self.parent().remove();
+            });
+        });
+    </script>
+</head>
+<body>
+<form th:object="${card}">
+    <input type="text" th:field="*{name}"/>
+    <input type="button" id="add" value="add"/>
+    <div id="register">
+        <div class="registerTemplate" th:each="rule : ${card.rules}">
+            <input type="text" th:value="${rule.name}"/>
+            <input type="button" class="confirm" value="confirm" data-th-parent="2"/>
+            <input type="button" class="delete" value="delete" data-th-parent="2"/>
+        </div>
+    </div>
+    <input type="submit"/>
+</form>
+</body>
+</html>

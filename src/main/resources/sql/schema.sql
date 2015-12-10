@@ -97,6 +97,7 @@ CREATE TABLE by_rule (
   beginTime   TIMESTAMP,
   endTime     TIMESTAMP,
   category_id BIGINT,
+  name varchar(20),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   FOREIGN KEY (category_id) REFERENCES by_rule_category (id),
   PRIMARY KEY (id)

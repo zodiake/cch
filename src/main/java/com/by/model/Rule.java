@@ -37,6 +37,8 @@ public class Rule {
     private Card card;
 
     private String summary;
+    
+    private String name;
 
     @Enumerated
     private ValidEnum valid;
@@ -121,7 +123,15 @@ public class Rule {
         Score = score;
     }
 
-    @Override
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

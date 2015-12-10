@@ -2,6 +2,7 @@ package com.by.repository;
 
 import java.util.Optional;
 
+import com.by.model.Card;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -15,7 +16,5 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Lon
 
 	Long countByName(String name);
 
-	Optional<Member> findByNameAndPassword(String name, String password);
-
-	Page<Member> findAll(Pageable pageable);
+	Long countByCard(Card card);
 }
