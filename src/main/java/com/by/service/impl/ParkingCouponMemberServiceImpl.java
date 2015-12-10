@@ -1,6 +1,5 @@
 package com.by.service.impl;
 
-import com.by.exception.AlreadyExchangeException;
 import com.by.exception.NotEnoughCouponException;
 import com.by.exception.NotValidException;
 import com.by.form.AdminCouponForm;
@@ -84,12 +83,9 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
                 pcm = save(sourceCoupon, sourceMember.get(), total);
             }
         } else {
-            if (pcm == null)
-                pcm = save(sourceCoupon, sourceMember.get(), 1);
-            else
-                throw new AlreadyExchangeException();
+            pcm = save(sourceCoupon, sourceMember.get(), 1);
         }
-        memberService.minusScore(sourceMember.get(), -total * sourceCoupon.getScore(), reason);
+        memberService.minusScore(sourceMember.get(), total * sourceCoupon.getScore(), reason);
         exchangeHistoryService.save(sourceMember.get(), sourceCoupon, total);
         return pcm;
     }
@@ -131,7 +127,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
                 })
                 .map(i -> {
                     Coupon c = i.getCoupon();
-                    return new CouponJson(c.getId(), c.getName(), c.getEndTime(),null);
+                    return new CouponJson(c.getId(), c.getName(), c.getEndTime(), null);
                 }).collect(Collectors.toList());
     }
 
