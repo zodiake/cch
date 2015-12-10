@@ -29,11 +29,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public Set<Menu> getMenus(User user) {
         Set<Menu> menus = new HashSet<>();
+        User u = repository.findOne(user.getId());
         if (user.getShop() != null) {
-            User u = repository.findOne(user.getId());
             menus.addAll(u.getShop().getMenus());
         } else {
-            user.getUserAuthorities().stream().forEach(i -> {
+            u.getUserAuthorities().stream().forEach(i -> {
                 menus.addAll(i.getMenus());
             });
         }

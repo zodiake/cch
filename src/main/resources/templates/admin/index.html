@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <script src="/js/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+<div>
+    <ul>
+        <li th:each="m : ${menus}">
+			<a th:text="${m.name}">${m.name}</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
