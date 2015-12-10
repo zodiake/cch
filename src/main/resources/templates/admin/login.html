@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"></meta>
-<title>Insert title here</title>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <script src="/javascript/jquery-1.11.3.min.js"></script>
+    <script src="/javascript/pagePlugin.js"></script>
+    <script src="/javascript/page.js"></script>
+    <script>
+        $(function () {
+            $('ul').pageable();
+        })
+    </script>
 </head>
 <body>
-	<form method="post" th:action="@{/adminloginin}" th:object="${user}">
-		<input type="text" th:field="*{name}"/>
-		<input type="text" th:field="*{password}"/>
-		<input type="submit"/>
-	</form>
+<form method="post" th:action="@{/adminloginin}" th:object="${user}">
+    <input type="text" th:field="*{name}"/> <input type="text"
+                                                   th:field="*{password}"/> <input type="submit"/>
+</form>
+
+<ul class="pageable">
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">6</a></li>
+    <li><a href="#">7</a></li>
+</ul>
 </body>
 </html>
