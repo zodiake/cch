@@ -14,7 +14,7 @@ CREATE TABLE by_license (
 CREATE TABLE by_user (
   id       BIGINT NOT NULL AUTO_INCREMENT,
   name     VARCHAR(20),
-  password VARCHAR(20),
+  password CHAR(64),
   valid    SMALLINT        DEFAULT 1,
   PRIMARY KEY (id)
 );
@@ -105,7 +105,7 @@ CREATE TABLE by_rule (
 CREATE TABLE by_member (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   name         CHAR(11) UNIQUE,
-  password     CHAR(40),
+  password     CHAR(64),
   card_id      BIGINT,
   score        INT,
   created_time TIMESTAMP,

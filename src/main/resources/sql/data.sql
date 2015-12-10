@@ -1,6 +1,8 @@
 -- test user
-INSERT INTO by_user (id, name, password) VALUES (1, 'tom22222222', '1');
-INSERT INTO by_user (id, name, password) VALUES (2, 'mary4444444', '1');
+INSERT INTO by_user (id, name, password, valid)
+VALUES (1, 'tom', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1);
+INSERT INTO by_user (id, name, password, valid)
+VALUES (2, 'mary', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1);
 
 -- test menu
 INSERT INTO by_menu (id, name, href) VALUES (1, 'menu1', 'haha');

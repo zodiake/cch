@@ -2,6 +2,7 @@ package com.by.security;
 
 import com.by.model.User;
 import com.by.service.UserService;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,6 +34,7 @@ public class DefaultUserService implements UserDetailsService {
             setName(user.getName());
             setUserAuthorities(user.getUserAuthorities());
             setPassword(user.getPassword());
+            setValid(user.getValid());
         }
 
         @Override
@@ -63,7 +65,7 @@ public class DefaultUserService implements UserDetailsService {
 
         @Override
         public boolean isEnabled() {
-            return true;
+            return getValid().equals(ValidEnum.VALID);
         }
     }
 
