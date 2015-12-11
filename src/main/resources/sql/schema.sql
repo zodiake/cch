@@ -20,10 +20,14 @@ CREATE TABLE by_user (
 );
 
 CREATE TABLE by_shop (
-  id      BIGINT NOT NULL AUTO_INCREMENT,
-  name    VARCHAR(225),
-  user_id BIGINT,
-  key     VARCHAR(225),
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  name         VARCHAR(225),
+  user_id      BIGINT,
+  created_by   VARCHAR(20),
+  updated_by   VARCHAR(20),
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  key          VARCHAR(225),
   FOREIGN KEY (user_id) REFERENCES by_user (id),
   PRIMARY KEY (id)
 );
@@ -97,7 +101,7 @@ CREATE TABLE by_rule (
   beginTime   TIMESTAMP,
   endTime     TIMESTAMP,
   category_id BIGINT,
-  name varchar(20),
+  name        VARCHAR(20),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   FOREIGN KEY (category_id) REFERENCES by_rule_category (id),
   PRIMARY KEY (id)

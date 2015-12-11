@@ -1,6 +1,7 @@
 package com.by.model;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -9,95 +10,109 @@ import java.util.List;
 @Entity
 @Table(name = "by_shop")
 public class Shop {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String name;
+    private String name;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id") , inverseJoinColumns = @JoinColumn(name = "menu_id") )
-	private List<Menu> menus;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private List<Menu> menus;
 
-	private String key;
+    private String key;
 
-	@OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-	private List<ShopCoupon> coupons;
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    private List<ShopCoupon> coupons;
 
-	public Shop() {
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Calendar createdTime;
 
-	public Shop(Long id) {
-		this.id = id;
-	}
+    @Column(name = "created_by")
+    private String createdBy;
 
-	public Long getId() {
-		return id;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Calendar updatedTime;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "updated_by")
+    private String updatedBy;
 
-	public String getName() {
-		return name;
-	}
+    public Shop() {
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Shop(Long id) {
+        this.id = id;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public List<Menu> getMenus() {
-		return menus;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getKey() {
-		return key;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public List<ShopCoupon> getCoupons() {
-		return coupons;
-	}
+    public List<Menu> getMenus() {
+        return menus;
+    }
 
-	public void setCoupons(List<ShopCoupon> coupons) {
-		this.coupons = coupons;
-	}
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+    public String getKey() {
+        return key;
+    }
 
-		Shop shop = (Shop) o;
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-		return !(id != null ? !id.equals(shop.id) : shop.id != null);
+    public List<ShopCoupon> getCoupons() {
+        return coupons;
+    }
 
-	}
+    public void setCoupons(List<ShopCoupon> coupons) {
+        this.coupons = coupons;
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Shop shop = (Shop) o;
+
+        return !(id != null ? !id.equals(shop.id) : shop.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

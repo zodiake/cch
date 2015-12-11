@@ -20,14 +20,13 @@ import com.by.model.ParkingCoupon;
 import com.by.service.ParkingCouponService;
 
 @Controller
-@RequestMapping(value = "/test/parkingCoupon")
+@RequestMapping(value = "/admin/parkingCoupon")
 public class AdminParkingCouponController {
 	@Autowired
 	private ParkingCouponService parkingCouponService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String exchangeCoupon(AdminCouponForm form) {
-
 		return null;
 	}
 

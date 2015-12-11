@@ -43,6 +43,12 @@ public class CachingConfig {
         shopCouponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
         shopCouponCacheConfig.setMaxEntriesLocalHeap(1000);
         shopCouponCacheConfig.setName("shopCoupon");
+        
+        //menu cache config
+        CacheConfiguration menuCacheConfig = new CacheConfiguration();
+        menuCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        menuCacheConfig.setMaxEntriesLocalHeap(1000);
+        menuCacheConfig.setName("menu");
 
         net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
         config.addCache(cardCacheConfig);
@@ -50,6 +56,7 @@ public class CachingConfig {
         config.addCache(parkingCouponCacheConfig);
         config.addCache(preferentialCouponCacheConfig);
         config.addCache(shopCouponCacheConfig);
+        config.addCache(menuCacheConfig);
 
         return net.sf.ehcache.CacheManager.newInstance(config);
     }

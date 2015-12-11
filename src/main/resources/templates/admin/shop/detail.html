@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <script src="/javascript/jquery-1.11.3.min.js"></script>
+    <script>
+    </script>
+</head>
+<body>
+<form th:object="${shop}" th:method="put">
+	<input type="text" th:field="*{name}" />
+	<ul>
+        <li th:each="menu : ${menus}">
+            <input type="checkbox" th:field="*{menus}" th:value="${menu.id}"/>
+            <label th:text="${menu.name}">Heating</label>
+        </li>
+    </ul>
+    <input type="submit"/>
+</form>
+</body>
+</html>
