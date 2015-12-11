@@ -7,9 +7,10 @@ import com.by.exception.*;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
+import com.by.json.UseCouponJson;
+import com.by.message.ParkingCouponMessage;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
-import com.by.model.ParkingCouponMember;
 import com.by.service.CouponService;
 import com.by.service.MemberService;
 import com.by.service.ParkingCouponMemberService;
@@ -57,8 +58,8 @@ public class ParkingCouponController {
 
     @Autowired
     public ParkingCouponController(ApplicationContext ctx, CouponService couponService,
-                                   ParkingCouponService parkingCouponService, ShaPasswordEncoder passwordEncoder,
-                                   MemberService memberService, ParkingCouponMemberService parkingCouponMemberService) {
+                                   ParkingCouponService parkingCouponService, ShaPasswordEncoder passwordEncoder, MemberService memberService,
+                                   ParkingCouponMemberService parkingCouponMemberService) {
         this.ctx = ctx;
         this.couponService = couponService;
         this.parkingCouponService = parkingCouponService;
@@ -66,25 +67,25 @@ public class ParkingCouponController {
         this.parkingCouponMemberService = parkingCouponMemberService;
         this.passwordEncoder = passwordEncoder;
         system = ctx.getBean(ActorSystem.class);
-        ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "parkingCouponActor");
+        ref = system.actorOf(SpringExtProvider.get(system).props("ParkingCouponActor"), "parkingCouponActor");
     }
 
     // 兑换停车券
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Status exchangeParkingCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json, BindingResult result) {
+    public Status exchangeParkingCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json,
+                                        BindingResult result) {
         if (result.hasErrors()) {
-            FailBuilder.buildFail(result);
+            return FailBuilder.buildFail(result);
         }
         Member m = (Member) request.getAttribute("member");
         Member member = memberService.findOne(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
-            m.setPassword(json.getPassword());
-            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(m.getPassword()))
+            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getPassword()))
                 throw new PasswordNotMatchException();
         }
         ParkingCoupon coupon = parkingCouponService.findOne(json.getId());
-        ParkingCouponMember message = new ParkingCouponMember(member, coupon, json.getTotal());
+        ParkingCouponMessage message = new ParkingCouponMessage(coupon, member, json.getTotal());
 
         validateCoupon(member, coupon, json.getTotal());
 
@@ -99,6 +100,16 @@ public class ParkingCouponController {
             e.printStackTrace();
         }
         return new Fail("system error");
+    }
+
+    // 使用停车券
+    @RequestMapping(method = RequestMethod.DELETE)
+    @ResponseBody
+    public Status useCoupon(HttpServletRequest request, @RequestBody UseCouponJson json) {
+        Member member = (Member) request.getAttribute("member");
+        parkingCouponMemberService.useCoupon(member, new ParkingCoupon(json.getCouponId()), json.getTotal(),
+                json.getLicense());
+        return new Status("success");
     }
 
     private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
@@ -118,8 +129,7 @@ public class ParkingCouponController {
     public Success<List<CouponTemplateJson>> list(
             @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
         List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID, pageable).getContent()
-                .stream()
-                .filter(i -> {
+                .stream().filter(i -> {
                     return couponService.isWithinValidDate(i);
                 }).map(i -> {
                     return new CouponTemplateJson(i);

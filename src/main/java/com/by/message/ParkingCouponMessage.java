@@ -10,8 +10,17 @@ public class ParkingCouponMessage {
     private ParkingCoupon parkingCoupon;
     private Member member;
     private int total;
+    
+    public ParkingCouponMessage(){}
+    
+    public ParkingCouponMessage(ParkingCoupon parkingCoupon, Member member, int total) {
+		super();
+		this.parkingCoupon = parkingCoupon;
+		this.member = member;
+		this.total = total;
+	}
 
-    public ParkingCoupon getParkingCoupon() {
+	public ParkingCoupon getParkingCoupon() {
         return parkingCoupon;
     }
 
