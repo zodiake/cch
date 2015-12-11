@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
  * Created by yagamai on 15-12-1.
  */
 public interface ShopService {
-    Page<Shop> findByKey(String code, Pageable pageable);
+    Shop findByKey(String code);
 
     Page<Shop> findAll(String name,Pageable pageable);
 

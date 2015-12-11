@@ -31,88 +31,88 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ShopServiceImpl implements ShopService {
-    @Autowired
-    private ShopRepository repository;
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private ShopRepository repository;
+	@Autowired
+	private EntityManager em;
+	@Autowired
+	private UserService userService;
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<Shop> findByKey(String code, Pageable pageable) {
-        return repository.findByKey(code, pageable);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public Shop findByKey(String code) {
+		return repository.findByKey(code);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<Shop> findAll(String name, Pageable pageable) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Shop> c = cb.createQuery(Shop.class);
-        Root<Shop> root = c.from(Shop.class);
-        c.select(root);
-        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(Shop.class)));
-        List<Predicate> criteria = new ArrayList<>();
-        if (!StringUtils.isEmpty(name))
-            criteria.add(cb.like(root.get("name"), name));
-        c.where(criteria.toArray(new Predicate[0]));
-        cq.where(criteria.toArray(new Predicate[0]));
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Shop> findAll(String name, Pageable pageable) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Shop> c = cb.createQuery(Shop.class);
+		Root<Shop> root = c.from(Shop.class);
+		c.select(root);
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		cq.select(cb.count(cq.from(Shop.class)));
+		List<Predicate> criteria = new ArrayList<>();
+		if (!StringUtils.isEmpty(name))
+			criteria.add(cb.like(root.get("name"), name));
+		c.where(criteria.toArray(new Predicate[0]));
+		cq.where(criteria.toArray(new Predicate[0]));
 
-        List<Shop> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
-                .setMaxResults(pageable.getPageSize()).getResultList();
-        Long count = em.createQuery(cq).getSingleResult();
-        return new PageImpl<>(lists, pageable, count);
-    }
+		List<Shop> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
+				.setMaxResults(pageable.getPageSize()).getResultList();
+		Long count = em.createQuery(cq).getSingleResult();
+		return new PageImpl<>(lists, pageable, count);
+	}
 
-    public Page<Shop> findFirstPage(int size) {
-        return repository.findAll(new PageRequest(0, size, Sort.Direction.DESC, "createdTime"));
-    }
+	public Page<Shop> findFirstPage(int size) {
+		return repository.findAll(new PageRequest(0, size, Sort.Direction.DESC, "createdTime"));
+	}
 
-    @Override
-    public Shop save(Shop shop) {
-        return repository.save(shop);
-    }
+	@Override
+	public Shop save(Shop shop) {
+		return repository.save(shop);
+	}
 
-    @Override
-    public Shop save(ShopJson shop) {
-        Shop s = new Shop();
-        s.setName(shop.getName());
-        s.setKey(shop.getKey());
-        return save(s);
-    }
+	@Override
+	public Shop save(ShopJson shop) {
+		Shop s = new Shop();
+		s.setName(shop.getName());
+		s.setKey(shop.getKey());
+		return save(s);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Shop findOne(Long id) {
-        return repository.findOne(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public Shop findOne(Long id) {
+		return repository.findOne(id);
+	}
 
-    @Override
-    public Shop update(ShopJson shop) {
-        Shop source = repository.findOne(shop.getId());
-        List<Menu> menus = Arrays.stream(shop.getMenus()).map(i -> new Menu(i)).collect(Collectors.toList());
-        source.setName(shop.getName());
-        source.setKey(shop.getKey());
-        source.setMenus(menus);
-        return source;
-    }
+	@Override
+	public Shop update(ShopJson shop) {
+		Shop source = repository.findOne(shop.getId());
+		List<Menu> menus = Arrays.stream(shop.getMenus()).map(i -> new Menu(i)).collect(Collectors.toList());
+		source.setName(shop.getName());
+		source.setKey(shop.getKey());
+		source.setMenus(menus);
+		return source;
+	}
 
-    @Override
-    public Shop bindUser(ShopBindUserForm form) {
-        Shop shop = findOne(form.getId());
-        User user = userService.findByName(form.getUseName());
-        if (shop == null)
-            throw new NotFoundException();
-        if (user == null)
-            throw new NotFoundException();
-        shop.setUser(user);
-        return shop;
-    }
+	@Override
+	public Shop bindUser(ShopBindUserForm form) {
+		Shop shop = findOne(form.getId());
+		User user = userService.findByName(form.getUseName());
+		if (shop == null)
+			throw new NotFoundException();
+		if (user == null)
+			throw new NotFoundException();
+		shop.setUser(user);
+		return shop;
+	}
 
 	@Override
 	public Shop update(Shop shop) {
-		Shop source=findOne(shop.getId());
+		Shop source = findOne(shop.getId());
 		source.setMenus(shop.getMenus());
 		source.setName(shop.getName());
 		return source;

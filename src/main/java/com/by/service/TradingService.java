@@ -1,6 +1,7 @@
 package com.by.service;
 
 import com.by.json.TradingJson;
+import com.by.json.TradingRequestJson;
 import com.by.model.Member;
 import com.by.model.Shop;
 import com.by.model.Trading;
@@ -16,6 +17,8 @@ public interface TradingService {
     Page<Trading> findByShopAndCreatedTimeBetween(Shop shop, Calendar startTime, Calendar endTime, Pageable pageable);
 
     Trading save(Trading trading);
+
+    Trading save(TradingRequestJson trading);
 
     int tradeToScore(Trading trading);
 

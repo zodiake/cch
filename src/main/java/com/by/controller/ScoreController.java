@@ -24,44 +24,47 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/api/score")
 public class ScoreController {
-    @Autowired
-    private MemberService memberService;
-    @Autowired
-    private ScoreAddHistoryService scoreAddHistoryService;
-    @Autowired
-    private ScoreHistoryService scoreHistoryService;
+	@Autowired
+	private MemberService memberService;
+	@Autowired
+	private ScoreAddHistoryService scoreAddHistoryService;
+	@Autowired
+	private ScoreHistoryService scoreHistoryService;
 
-    @RequestMapping(value = "/available", method = RequestMethod.GET)
-    @ResponseBody
-    public Status scoreAvailable(HttpServletRequest request) {
-        Member member = (Member) request.getAttribute("member");
-        Member source = memberService.findOne(member.getId());
-        return new Success<>(source.getScore());
-    }
+	// 可用积分
+	@RequestMapping(value = "/available", method = RequestMethod.GET)
+	@ResponseBody
+	public Status scoreAvailable(HttpServletRequest request) {
+		Member member = (Member) request.getAttribute("member");
+		Member source = memberService.findOne(member.getId());
+		return new Success<>(source.getScore());
+	}
 
-    @RequestMapping(value = "/sum", method = RequestMethod.GET)
-    @ResponseBody
-    public Status scoreSum(HttpServletRequest request) {
-        Member member = (Member) request.getAttribute("member");
-        Long total = scoreAddHistoryService.sumByMember(member);
-        return new Success<>(total);
-    }
+	// 总积分
+	@RequestMapping(value = "/sum", method = RequestMethod.GET)
+	@ResponseBody
+	public Status scoreSum(HttpServletRequest request) {
+		Member member = (Member) request.getAttribute("member");
+		Long total = scoreAddHistoryService.sumByMember(member);
+		return new Success<>(total);
+	}
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    @ResponseBody
-    public Status scoreSumAndAvailable(HttpServletRequest request) {
-        Member member = (Member) request.getAttribute("member");
-        int available = memberService.findOne(member.getId()).getScore();
-        Long total = scoreAddHistoryService.sumByMember(member);
-        return new Success<>(new ScoreJson(available, total));
-    }
+	// 可用积分+总积分
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@ResponseBody
+	public Status scoreSumAndAvailable(HttpServletRequest request) {
+		Member member = (Member) request.getAttribute("member");
+		int available = memberService.findOne(member.getId()).getScore();
+		Long total = scoreAddHistoryService.sumByMember(member);
+		return new Success<>(new ScoreJson(available, total));
+	}
 
-    @RequestMapping(value = "/history", method = RequestMethod.GET)
-    @ResponseBody
-    public Status scoreHistory(HttpServletRequest request,
-                               @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC)
-                               Pageable pageable) {
-        Member member = (Member) request.getAttribute("member");
-        return new Success<>(scoreHistoryService.findByMemberJson(member, pageable));
-    }
+	// 积分历史
+	@RequestMapping(value = "/history", method = RequestMethod.GET)
+	@ResponseBody
+	public Status scoreHistory(HttpServletRequest request,
+			@PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Member member = (Member) request.getAttribute("member");
+		return new Success<>(scoreHistoryService.findByMemberJson(member, pageable));
+	}
 }
