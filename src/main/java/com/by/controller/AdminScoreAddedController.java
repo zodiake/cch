@@ -14,5 +14,5 @@ public class AdminScoreAddedController {
     @Autowired
     private ScoreAddHistoryService service;
 
-
+    
 }

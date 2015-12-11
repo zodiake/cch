@@ -1,10 +1,13 @@
 package com.by.controller;
 
 import com.by.exception.NotFoundException;
+import com.by.exception.Status;
+import com.by.exception.Success;
 import com.by.form.AdminMemberForm;
 import com.by.json.MemberJson;
 import com.by.json.ScoreHistoryJson;
 import com.by.json.TradingJson;
+import com.by.json.UpdateScoreJson;
 import com.by.model.Member;
 import com.by.service.MemberService;
 import com.by.service.ScoreHistoryService;
@@ -17,9 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by yagamai on 15-12-9.
@@ -37,7 +38,7 @@ public class AdminMemberController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(AdminMemberForm form, Model uiModel,
                        @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<MemberJson> results = memberService.findAll(form,pageable);
+        Page<MemberJson> results = memberService.findAll(form, pageable);
         uiModel.addAttribute("results", results);
         return "admin/member/members";
     }
@@ -54,5 +55,12 @@ public class AdminMemberController {
         model.addAttribute("trade", json);
         model.addAttribute("histories", histories);
         return "admin/member/detail";
+    }
+
+    @RequestMapping(value = "/score", method = RequestMethod.PUT)
+    @ResponseBody
+    public Status updateScore(@RequestBody UpdateScoreJson json) {
+        Member member = memberService.addScore(new Member(json.getId()), json.getScore(), "admin");
+        return new Success<>(member);
     }
 }
