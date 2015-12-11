@@ -85,5 +85,4 @@ public class AdminCardController {
 		}
 		return new Success<>(card);
 	}
-
 }

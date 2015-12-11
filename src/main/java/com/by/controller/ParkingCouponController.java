@@ -122,7 +122,7 @@ public class ParkingCouponController {
                 .filter(i -> {
                     return couponService.isWithinValidDate(i);
                 }).map(i -> {
-                    return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(), i.getEndTime(), i.getSummary(), null);
+                    return new CouponTemplateJson(i);
                 }).collect(Collectors.toList());
         return new Success<>(coupons);
     }

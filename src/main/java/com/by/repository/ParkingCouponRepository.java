@@ -14,4 +14,6 @@ public interface ParkingCouponRepository extends CrudRepository<ParkingCoupon, L
 	Optional<ParkingCoupon> findById(Long id);
 
 	Page<ParkingCoupon> findByValid(ValidEnum valid,Pageable pageable);
+
+	Page<ParkingCoupon> findAll(Pageable pageable);
 }

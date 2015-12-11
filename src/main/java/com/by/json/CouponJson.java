@@ -1,5 +1,8 @@
 package com.by.json;
 
+import com.by.model.Coupon;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 

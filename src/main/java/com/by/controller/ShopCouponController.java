@@ -70,8 +70,9 @@ public class ShopCouponController {
                     return couponService.isWithinValidDate(i);
                 })
                 .map(i -> {
-                    return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(),
-                            i.getEndTime(), i.getSummary(), i.getShop().getName());
+                    CouponTemplateJson json= new CouponTemplateJson(i);
+                    json.setShopName(i.getShop().getName());
+                    return json;
                 }).collect(Collectors.toList());
         return new Success<>(new PageImpl<>(results, pageable, coupons.getTotalElements()));
     }

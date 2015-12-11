@@ -74,11 +74,10 @@ public class PreferentialCouponController {
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
                 .filter(i -> {
-			return couponService.isWithinValidDate(i);
+                	return couponService.isWithinValidDate(i);
                 })
                 .map(i -> {
-			return new CouponTemplateJson(i.getId(), i.getName(), i.getCouponEndTime(), i.getScore(), i.getBeginTime(),
-					i.getEndTime(), i.getSummary(), null);
+                	return new CouponTemplateJson(i);
                 })
                 .collect(Collectors.toList());
 		return new Success<>(new PageImpl<>(results, pageable, coupons.getTotalElements()));
