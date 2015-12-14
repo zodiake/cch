@@ -23,7 +23,7 @@ public abstract class Pay {
     @Column(name = "created_time")
     private Calendar createdTime;
 
-    private int amount;
+    private double amount;
 
     public Long getId() {
         return id;
@@ -49,11 +49,11 @@ public abstract class Pay {
         this.createdTime = createdTime;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

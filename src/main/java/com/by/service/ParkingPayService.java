@@ -3,6 +3,7 @@ package com.by.service;
 import java.util.Calendar;
 import java.util.List;
 
+import com.by.json.ParkingPayJson;
 import com.by.model.ParkingPay;
 
 /**
@@ -14,4 +15,6 @@ public interface ParkingPayService {
     List<ParkingPay> findByLicenseAndCreatedTimeBetween(String license, Calendar startTime, Calendar endTime);
 
     List<ParkingPay> findByLicense(String license);
+
+    ParkingPay save(ParkingPayJson pay);
 }

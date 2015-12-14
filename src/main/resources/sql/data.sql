@@ -31,6 +31,7 @@ INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 2);
 
 -- test license
 INSERT INTO by_license (id, name) VALUES (1, '沪A54321');
+INSERT INTO by_license (id, name) VALUES (2, '沪A14321');
 
 -- test card
 INSERT INTO by_card (id, name, valid, init_score) VALUES (1, 'low', 1, 100);
@@ -52,11 +53,11 @@ INSERT INTO by_rule_category (id, name) VALUES (2, 'asdf');
 
 -- test rule
 -- 注册用规则
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (1, 2.0, 1, 1, 1, 100,'rule1');
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (2, 2.0, 1, 1, 1, 100,'rule1');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name) VALUES (1, 2.0, 1, 1, 1, 100, 'rule1');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name) VALUES (2, 2.0, 1, 1, 1, 100, 'rule1');
 -- 交易用规则
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (3, 2.0, 1, 2, 1, 100,'rule1');
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score,name) VALUES (4, 2.0, 1, 2, 1, 100,'rule1');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name) VALUES (3, 2.0, 1, 2, 1, 100, 'rule1');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name) VALUES (4, 2.0, 1, 2, 1, 100, 'rule1');
 
 -- test shop
 INSERT INTO by_shop (id, name, user_id) VALUES (1, 'shop1', 2);
@@ -113,3 +114,7 @@ INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
 VALUES (5, 1, '2012-12-6 12:22:55', 10, 'hehe');
 
 INSERT INTO by_sequence (id) VALUES (1001);
+
+-- test by_member_license
+INSERT INTO by_member_license (member_id, license_id) VALUES (1, 1);
+INSERT INTO by_member_license (member_id, license_id) VALUES (1, 2);

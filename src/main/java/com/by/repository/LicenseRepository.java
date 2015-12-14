@@ -1,5 +1,6 @@
 package com.by.repository;
 
+import com.by.model.Member;
 import org.springframework.data.repository.CrudRepository;
 
 import com.by.model.License;

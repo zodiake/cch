@@ -21,7 +21,6 @@ import akka.actor.UntypedActor;
 /**
  * Created by yagamai on 15-11-30.
  */
-// todo need change code;
 @Component("ParkingCouponActor")
 @Scope("prototype")
 public class ParkingCouponActor extends UntypedActor {

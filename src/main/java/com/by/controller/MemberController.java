@@ -7,6 +7,7 @@ import com.by.exception.Success;
 import com.by.json.MemberJson;
 import com.by.json.MemberRequestJson;
 import com.by.model.Member;
+import com.by.model.MemberDetail;
 import com.by.service.MemberService;
 import com.by.utils.FailBuilder;
 import com.by.utils.JWTUtils;
@@ -30,13 +31,15 @@ public class MemberController {
     // 用户注册
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
-    public Status signIn(@Valid @RequestBody MemberRequestJson member, BindingResult result) {
+    public Status signIn(@Valid @RequestBody MemberRequestJson json, BindingResult result) {
         if (result.hasErrors()) {
             return FailBuilder.buildFail(result);
         }
-        if (!StringUtils.isEmpty(member.getPassword()))
-            member.setPassword(encoder.encodePassword(member.getPassword(), null));
-        Member m = service.save(new Member(member));
+        if (!StringUtils.isEmpty(json.getPassword()))
+            json.setPassword(encoder.encodePassword(json.getPassword(), null));
+        Member member = new Member(json);
+        member.setMemberDetail(new MemberDetail());
+        Member m = service.save(member);
         return new Success<>(JWTUtils.encode(m));
     }
 

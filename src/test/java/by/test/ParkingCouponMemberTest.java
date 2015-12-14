@@ -41,13 +41,13 @@ public class ParkingCouponMemberTest {
     @Autowired
     private MemberService memberService;
 
-    @After
+    @Test
     public void reset() {
         ParkingCouponMember pcm = new ParkingCouponMember();
         pcm.setCoupon(new ParkingCoupon(1L));
         pcm.setMember(new Member(1L));
         pcm.setTotal(0);
-        service.update(pcm);
+        service.save(pcm);
     }
 
     @Test

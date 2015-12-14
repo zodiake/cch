@@ -14,8 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +36,8 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     private ParkingCouponService parkingCouponService;
     @Autowired
     private CouponService couponService;
+    @Autowired
+    private EntityManager em;
 
     @Override
     public ParkingCouponMember save(ParkingCoupon coupon, Member m, int total) {
@@ -73,20 +75,20 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 
     @Override
     public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
-        Optional<Member> sourceMember = memberService.findById(member.getId());
-        ParkingCoupon sourceCoupon = parkingCouponService.findOne(coupon.getId());
+        Member sourceMember = em.find(Member.class, member.getId());
+        ParkingCoupon sourceCoupon = em.find(ParkingCoupon.class, coupon.getId());
         ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
         if (isDuplicate(sourceCoupon)) {
             if (pcm != null) {
                 pcm.setTotal(pcm.getTotal() + total);
             } else {
-                pcm = save(sourceCoupon, sourceMember.get(), total);
+                pcm = save(sourceCoupon, sourceMember, total);
             }
         } else {
-            pcm = save(sourceCoupon, sourceMember.get(), 1);
+            pcm = save(sourceCoupon, sourceMember, 1);
         }
-        memberService.minusScore(sourceMember.get(), total * sourceCoupon.getScore(), reason);
-        exchangeHistoryService.save(sourceMember.get(), sourceCoupon, total);
+        memberService.minusScore(sourceMember, total * sourceCoupon.getScore(), reason);
+        exchangeHistoryService.save(sourceMember, sourceCoupon, total);
         return pcm;
     }
 
