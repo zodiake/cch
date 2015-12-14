@@ -27,8 +27,6 @@ public class ParkingCouponActor extends UntypedActor {
 	private ParkingCouponMemberService parkingCouponMemberService;
 	private CouponService couponService;
 
-	private Logger log = LoggerFactory.getLogger(TestActor.class);
-
 	@Autowired
 	public ParkingCouponActor(ParkingCouponMemberService parkingCouponMemberService, CouponService couponService) {
 		this.parkingCouponMemberService = parkingCouponMemberService;

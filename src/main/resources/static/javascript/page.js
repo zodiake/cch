@@ -2,6 +2,7 @@ $(function ($) {
     $.fn.pageable = function (options) {
         var settings = $.extend({
             url: '',
+            data:{},
             fn: function () {
             }
         }, options || {});
@@ -47,10 +48,11 @@ $(function ($) {
             var source = $(e.target);
             var current = source.html();
             $.ajax({
-                url: settings.url
+                url: settings.url,
+                data:settings.data
             }).done(function (data) {
                 settings.fn(data);
-                var pages = getPages(current, 7, 100);
+                var pages = getPages(current, 7, data.obj.totalPages);
                 var ul = $('ul.pageable');
                 ul.children().remove();
                 pages.forEach(function (e) {

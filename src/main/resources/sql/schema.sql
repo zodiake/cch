@@ -115,6 +115,9 @@ CREATE TABLE by_member (
   score        INT,
   created_time TIMESTAMP,
   valid        SMALLINT        DEFAULT 1,
+  invalid_time TIMESTAMP,
+  invalid_by   VARCHAR(20),
+  updated_time TIMESTAMP,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   PRIMARY KEY (id),
 );

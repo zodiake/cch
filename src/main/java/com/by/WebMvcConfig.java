@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.by.converter.StringToCalendar;
 import com.by.converter.StringToValidEnumConverter;
 import com.by.interceptor.JWTInterceptor;
 
@@ -43,10 +44,16 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addFormatters(FormatterRegistry formatterRegistry) {
 		formatterRegistry.addConverter(stringToValidEnumConverter());
+		formatterRegistry.addConverter(stringToCalendar());
 	}
 
 	@Bean
 	public StringToValidEnumConverter stringToValidEnumConverter() {
 		return new StringToValidEnumConverter();
+	}
+
+	@Bean
+	public StringToCalendar stringToCalendar() {
+		return new StringToCalendar();
 	}
 }

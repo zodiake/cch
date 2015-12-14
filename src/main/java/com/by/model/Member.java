@@ -26,11 +26,6 @@ public class Member {
 
     private String password;
 
-    // 注册时间
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_time")
-    private Calendar createdTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id")
     @JsonManagedReference
@@ -54,6 +49,22 @@ public class Member {
 
     @Enumerated
     private ValidEnum valid;
+
+    // 注册时间
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Calendar createdTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Calendar updatedTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "invalid_time")
+    private Calendar inValidTime;
+
+    @Column(name = "invalid_by")
+    private String inValidBy;
 
     public Member() {
     }
@@ -159,6 +170,40 @@ public class Member {
 
     public void setValid(ValidEnum valid) {
         this.valid = valid;
+    }
+
+    public Calendar getInValidTime() {
+        return inValidTime;
+    }
+
+    public void setInValidTime(Calendar inValidTime) {
+        this.inValidTime = inValidTime;
+    }
+    
+    public Calendar getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Calendar updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
+	public String getInValidBy() {
+		return inValidBy;
+	}
+
+	public void setInValidBy(String inValidBy) {
+		this.inValidBy = inValidBy;
+	}
+
+	@PrePersist
+    private void prePersist() {
+        this.createdTime = Calendar.getInstance();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.updatedTime = Calendar.getInstance();
     }
 
     @Override

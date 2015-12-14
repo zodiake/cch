@@ -12,29 +12,33 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberService {
-    Optional<Member> findById(Long id);
+	Member findOne(Long id);
 
-    Optional<Member> findByName(String name);
+	Optional<Member> findById(Long id);
 
-    Long countByName(String name);
+	Optional<Member> findByName(String name);
 
-    Member save(Member member);
+	Long countByName(String name);
 
-    Optional<Member> update(Member member);
+	Member save(Member member);
 
-    Optional<Member> updatePassword(Member member);
+	Optional<Member> update(Member member);
 
-    Member minusScore(Member member, int total, String reason);
+	Optional<Member> updatePassword(Member member);
 
-    Member addScore(Member member, int total, String reason);
+	Member minusScore(Member member, int total, String reason);
 
-    List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
+	Member addScore(Member member, int total, String reason);
 
-    Member findOne(Long id);
+	List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
 
-    Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable);
+	Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable);
 
-    boolean isValidMember(Member member);
+	Page<Member> findFirstPage(int size);
 
-    Long countByCard(Card card);
+	boolean isValidMember(Member member);
+
+	Long countByCard(Card card);
+
+	Member validateOrInValidate(Member member,String name);
 }
