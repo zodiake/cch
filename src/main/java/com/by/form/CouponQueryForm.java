@@ -1,5 +1,6 @@
 package com.by.form;
 
+import com.by.typeEnum.CouponAdminStateEnum;
 import com.by.typeEnum.ValidEnum;
 
 import java.util.Calendar;
@@ -8,16 +9,16 @@ import java.util.Calendar;
  * Created by yagamai on 15-12-11.
  */
 public class CouponQueryForm {
-    private ValidEnum valid;
+    private CouponAdminStateEnum state;
     private Calendar beginTime;
     private Calendar endTime;
 
-    public ValidEnum getValid() {
-        return valid;
+    public CouponAdminStateEnum getState() {
+        return state;
     }
 
-    public void setValid(ValidEnum valid) {
-        this.valid = valid;
+    public void setState(CouponAdminStateEnum state) {
+        this.state = state;
     }
 
     public Calendar getBeginTime() {

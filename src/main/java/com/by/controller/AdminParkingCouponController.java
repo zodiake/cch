@@ -18,6 +18,7 @@ import com.by.form.CouponQueryForm;
 import com.by.json.CouponTemplateJson;
 import com.by.model.ParkingCoupon;
 import com.by.service.ParkingCouponService;
+import com.by.utils.PageUtils;
 
 @Controller
 @RequestMapping(value = "/admin/parkingCoupon")
@@ -34,6 +35,7 @@ public class AdminParkingCouponController {
 	public String list(Model uiModel) {
 		Page<ParkingCoupon> lists = parkingCouponService.findFirstPage(10);
 		uiModel.addAttribute("lists", lists);
+		uiModel.addAttribute("last", PageUtils.computeLastPage(lists.getTotalPages()));
 		return "admin/parkingCoupon/list";
 	}
 

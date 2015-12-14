@@ -8,11 +8,12 @@
     <script>
         $(function () {
             $('ul').pageable({
-                url: '/admin/member/json',
+                url: '/admin/parkingCoupon/json',
                 parameter: function () {
                     return {
                         beginTime: '2012-12-1',
-                        endTime: '2012-12-30'
+                        endTime: '2012-12-30',
+                        state: $('#state').val()
                     }
                 },
                 fn: function (data) {
@@ -23,10 +24,16 @@
     </script>
 </head>
 <body>
+<select id="state">
+    <option value="">all</option>
+    <option value="closed">closed</option>
+    <option value="noexpire">noexpire</option>
+    <option value="expire">expire</option>
+    <option value="using">using</option>
+</select>
 <table>
     <tr th:each="m:${lists.content}">
         <td th:text="${m.name}"></td>
-        <td th:text="${m.password}"></td>
     </tr>
 </table>
 <ul class="pageable" th:each="i:${#numbers.sequence(1,last)}">

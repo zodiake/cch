@@ -20,7 +20,6 @@ public class CouponServiceImpl implements CouponService {
             if (coupon.getBeginTime() == null && coupon.getEndTime() == null)
                 return true;
             if (coupon.getBeginTime() != null && coupon.getEndTime() != null) {
-                coupon.getEndTime().add(Calendar.DATE, 1);
                 Calendar today = Calendar.getInstance();
                 if (coupon.getBeginTime().before(today) && coupon.getEndTime().after(today)) {
                     return true;

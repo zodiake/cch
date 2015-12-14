@@ -5,6 +5,7 @@ import com.by.json.CouponTemplateJson;
 import com.by.model.ParkingCoupon;
 import com.by.repository.ParkingCouponRepository;
 import com.by.service.ParkingCouponService;
+import com.by.typeEnum.CouponAdminStateEnum;
 import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,6 +35,10 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 
     @Override
     public ParkingCoupon save(ParkingCoupon coupon) {
+        Calendar time = coupon.getEndTime();
+        time.set(Calendar.HOUR, 23);
+        time.set(Calendar.MINUTE, 59);
+        time.set(Calendar.SECOND, 59);
         return repository.save(coupon);
     }
 
@@ -93,23 +99,33 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         cq.select(cb.count(cq.from(ParkingCoupon.class)));
         List<Predicate> criteria = new ArrayList<>();
-        if (form.getValid() != null)
-            criteria.add(cb.equal(root.get("valid"), ValidEnum.VALID));
-        if (form.getBeginTime() != null)
+        if (form.getState() != null) {
+            Calendar today = Calendar.getInstance();
+            if (form.getState().equals(CouponAdminStateEnum.CLOSED)) {
+                criteria.add(cb.equal(root.get("valid"), ValidEnum.INVALID));
+            } else if (form.getState().equals(CouponAdminStateEnum.NOEXPIRE)) {
+                criteria.add(cb.greaterThan(root.get("beginTime"), today));
+            } else if (form.getState().equals(CouponAdminStateEnum.USING)) {
+                criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), today));
+                criteria.add(cb.greaterThanOrEqualTo(root.get("endTime"), today));
+            } else if (form.getState().equals(CouponAdminStateEnum.EXPIRE)) {
+                criteria.add(cb.greaterThan(root.get("endTime"), today));
+            }
+        }
+        if (form.getBeginTime() != null) {
             criteria.add(cb.greaterThanOrEqualTo(root.get("beginTime"), form.getBeginTime()));
+        }
         if (form.getEndTime() != null)
             criteria.add(cb.lessThanOrEqualTo(root.get("endTime"), form.getBeginTime()));
         c.where(criteria.toArray(new Predicate[0]));
         cq.where(criteria.toArray(new Predicate[0]));
 
-        List<ParkingCoupon> lists = em
-                .createQuery(c)
-                .setFirstResult(
-                        (pageable.getPageNumber()) * pageable.getPageSize())
-                .setMaxResults(pageable.getPageSize())
-                .getResultList();
+        List<ParkingCoupon> lists = em.createQuery(c)
+                .setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
+                .setMaxResults(pageable.getPageSize()).getResultList();
         Long count = em.createQuery(cq).getSingleResult();
-        List<CouponTemplateJson> results=lists.stream().map(i->new CouponTemplateJson(i)).collect(Collectors.toList());
+        List<CouponTemplateJson> results = lists.stream().map(i -> new CouponTemplateJson(i))
+                .collect(Collectors.toList());
         return new PageImpl<>(results, pageable, count);
     }
 
