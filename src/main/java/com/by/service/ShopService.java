@@ -27,4 +27,5 @@ public interface ShopService {
     Shop update(Shop shop);
 
     Shop bindUser(ShopBindUserForm form);
+
 }
