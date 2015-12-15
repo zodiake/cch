@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.by.typeEnum.ScoreHistoryEnum;
 
 @Entity
 @Table(name = "by_score_history")
@@ -33,6 +36,9 @@ public class ScoreHistory {
 	private int deposit;
 
 	private String reason;
+
+	@Enumerated
+	private ScoreHistoryEnum type;
 
 	public Long getId() {
 		return id;
@@ -77,6 +83,14 @@ public class ScoreHistory {
 	@PrePersist
 	private void prePersist() {
 		this.createdTime = Calendar.getInstance();
+	}
+	
+	public ScoreHistoryEnum getType() {
+		return type;
+	}
+
+	public void setType(ScoreHistoryEnum type) {
+		this.type = type;
 	}
 
 	@Override

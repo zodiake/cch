@@ -1,35 +1,29 @@
 package com.by.service;
 
-import com.by.model.Card;
-import com.by.model.Rule;
-import com.by.model.RuleCategory;
-import com.by.typeEnum.ValidEnum;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import com.by.model.Rule;
+import com.by.model.RuleCategory;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-11-26.
  */
 public interface RuleService {
-    Page<Rule> findByCard(Card card, Pageable pageable);
+	Rule findByIdAndValid(Long id, ValidEnum valid);
 
-    List<Rule> findByCard(Card card);
+	Rule save(Rule rule);
 
-    Rule findByIdAndValid(Long id, ValidEnum valid);
+	Rule update(Rule rule);
 
-    Rule save(Rule rule);
+	Page<Rule> findByRuleCategory(RuleCategory category, Pageable pageable);
 
-    Rule update(Rule rule);
+	List<Rule> findByRuleCategoryAndValid(RuleCategory category, ValidEnum valid);
 
-    Page<Rule> findByRuleCategory(RuleCategory category, Pageable pageable);
+	int getMaxScore(List<? extends Rule> rules);
 
-    List<Rule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid);
-
-    List<Rule> findByRuleCategoryAndValid(RuleCategory category, ValidEnum valid);
-
-    int getMaxScore(List<Rule> rules);
-
-    double getMaxRate(List<Rule> rules);
+	double getMaxRate(List<? extends Rule> rules);
 }

@@ -29,6 +29,10 @@ public class Shop {
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<ShopCoupon> coupons;
 
+    @ManyToMany
+    @JoinTable(name = "by_shop_rule", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "rule_id"))
+    private List<ShopRule> rules;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
     private Calendar createdTime;
@@ -96,6 +100,38 @@ public class Shop {
 
     public void setCoupons(List<ShopCoupon> coupons) {
         this.coupons = coupons;
+    }
+
+    public Calendar getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Calendar createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Calendar getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Calendar updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     @Override

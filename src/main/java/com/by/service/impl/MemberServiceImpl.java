@@ -1,28 +1,49 @@
 package com.by.service.impl;
 
-import com.by.exception.*;
-import com.by.form.AdminMemberForm;
-import com.by.json.MemberJson;
-import com.by.model.*;
-import com.by.repository.MemberRepository;
-import com.by.service.*;
-import com.by.typeEnum.ValidEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import com.by.exception.MemberAlreadyExistException;
+import com.by.exception.MemberNotFoundException;
+import com.by.exception.MemberNotValidException;
+import com.by.exception.NotEnoughScoreException;
+import com.by.exception.NotValidException;
+import com.by.form.AdminMemberForm;
+import com.by.json.MemberJson;
+import com.by.model.Card;
+import com.by.model.CardRule;
+import com.by.model.Member;
+import com.by.model.MemberDetail;
+import com.by.model.RuleCategory;
+import com.by.model.ScoreAddHistory;
+import com.by.repository.CardRuleRepository;
+import com.by.repository.MemberRepository;
+import com.by.service.CardService;
+import com.by.service.MemberService;
+import com.by.service.RuleService;
+import com.by.service.ScoreAddHistoryService;
+import com.by.service.ScoreHistoryService;
+import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
 
 @Service
 @Transactional
@@ -38,6 +59,8 @@ public class MemberServiceImpl implements MemberService {
 	private CardService cardService;
 	@Autowired
 	private RuleService ruleService;
+	@Autowired
+	private CardRuleRepository cardRuleRepository;
 	@Autowired
 	private EntityManager em;
 	private RuleCategory registerCategory = new RuleCategory(1L);
@@ -63,14 +86,15 @@ public class MemberServiceImpl implements MemberService {
 		Card card = cardService.findByIdAndValid(member.getCard().getId(), ValidEnum.VALID);
 		if (card == null)
 			throw new NotValidException();
-		List<Rule> rules = ruleService.findByRuleCategoryAndCardAndValid(registerCategory, card, ValidEnum.VALID);
+		List<CardRule> rules = cardRuleRepository.findByRuleCategoryAndCardAndValid(registerCategory, card,
+				ValidEnum.VALID);
 		int score = card.getInitScore();
 		if (rules.size() > 0) {
 			score += ruleService.getMaxScore(rules);
 		}
 		member.setScore(score);
 		scoreAddHistoryService.save(member, score, "sign in score");
-		scoreHistoryService.save(member, score, "");
+		scoreHistoryService.save(member, score, "", ScoreHistoryEnum.SIGNUP);
 		return repository.save(member);
 	}
 
@@ -88,16 +112,16 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member addScore(Member member, int total, String reason) {
+	public Member addScore(Member member, int total, String reason, ScoreHistoryEnum type) {
 		Member source = repository.findOne(member.getId());
 		source.setScore(source.getScore() + total);
 		scoreAddHistoryService.save(member, total, reason);
-		scoreHistoryService.save(member, total, reason);
+		scoreHistoryService.save(member, total, reason, type);
 		return source;
 	}
 
 	@Override
-	public Member minusScore(Member member, int total, String reason) {
+	public Member minusScore(Member member, int total, String reason, ScoreHistoryEnum type) {
 		Member source = repository.findOne(member.getId());
 		if (source.getScore() < total)
 			throw new NotEnoughScoreException();
@@ -119,7 +143,7 @@ public class MemberServiceImpl implements MemberService {
 			}
 			source.setScore(source.getScore() - total);
 		}
-		scoreHistoryService.save(member, -total, reason);
+		scoreHistoryService.save(member, -total, reason, type);
 		return source;
 	}
 

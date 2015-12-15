@@ -2,6 +2,7 @@ package com.by;
 
 import com.by.converter.StringToCalendar;
 import com.by.converter.StringToCouponAdminStateEnum;
+import com.by.converter.StringToDuplicateEnum;
 import com.by.converter.StringToValidEnumConverter;
 import com.by.interceptor.JWTInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -46,6 +47,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         formatterRegistry.addConverter(stringToValidEnumConverter());
         formatterRegistry.addConverter(stringToCalendar());
         formatterRegistry.addConverter(stringToCouponAdminStateEnum());
+        formatterRegistry.addConverter(stringToDuplicateEnum());
     }
 
     @Bean
@@ -61,7 +63,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public StringToCouponAdminStateEnum stringToCouponAdminStateEnum() {
         return new StringToCouponAdminStateEnum();
-
     }
 
+    @Bean
+    public StringToDuplicateEnum stringToDuplicateEnum() {
+        return new StringToDuplicateEnum();
+    }
 }

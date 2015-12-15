@@ -28,4 +28,6 @@ public interface ParkingCouponService {
     Page<ParkingCoupon> findAll(Pageable pageable);
 
     Page<ParkingCoupon> findFirstPage(int size);
+    
+    ParkingCoupon validOrInValid(ParkingCoupon coupon);
 }

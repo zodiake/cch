@@ -2,128 +2,123 @@ package com.by.model;
 
 import java.util.Calendar;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.by.typeEnum.ValidEnum;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
+import com.by.typeEnum.ValidEnum;
+
 @Entity
 @Table(name = "by_rule")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-public class Rule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public abstract class Rule {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private double rate;
+	private double rate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private RuleCategory ruleCategory;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private RuleCategory ruleCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_id")
-    private Card card;
+	private String summary;
 
-    private String summary;
-    
-    private String name;
+	private String name;
 
-    @Enumerated
-    private ValidEnum valid;
+	@Enumerated
+	private ValidEnum valid;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar beginTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar beginTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar endTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar endTime;
 
-    private int Score;
+	private int Score;
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public double getRate() {
-        return rate;
-    }
+	public double getRate() {
+		return rate;
+	}
 
-    public void setRate(double rate) {
-        this.rate = rate;
-    }
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
 
-    public Card getCard() {
-        return card;
-    }
+	public String getSummary() {
+		return summary;
+	}
 
-    public void setCard(Card card) {
-        this.card = card;
-    }
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 
-    public String getSummary() {
-        return summary;
-    }
+	public ValidEnum getValid() {
+		return valid;
+	}
 
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
+	public void setValid(ValidEnum valid) {
+		this.valid = valid;
+	}
 
-    public ValidEnum getValid() {
-        return valid;
-    }
+	public Calendar getBeginTime() {
+		return beginTime;
+	}
 
-    public void setValid(ValidEnum valid) {
-        this.valid = valid;
-    }
+	public void setBeginTime(Calendar beginTime) {
+		this.beginTime = beginTime;
+	}
 
-    public Calendar getBeginTime() {
-        return beginTime;
-    }
+	public Calendar getEndTime() {
+		return endTime;
+	}
 
-    public void setBeginTime(Calendar beginTime) {
-        this.beginTime = beginTime;
-    }
+	public void setEndTime(Calendar endTime) {
+		this.endTime = endTime;
+	}
 
-    public Calendar getEndTime() {
-        return endTime;
-    }
+	public RuleCategory getRuleCategory() {
+		return ruleCategory;
+	}
 
-    public void setEndTime(Calendar endTime) {
-        this.endTime = endTime;
-    }
+	public void setRuleCategory(RuleCategory ruleCategory) {
+		this.ruleCategory = ruleCategory;
+	}
 
-    public RuleCategory getRuleCategory() {
-        return ruleCategory;
-    }
+	public int getScore() {
+		return Score;
+	}
 
-    public void setRuleCategory(RuleCategory ruleCategory) {
-        this.ruleCategory = ruleCategory;
-    }
+	public void setScore(int score) {
+		Score = score;
+	}
 
-    public int getScore() {
-        return Score;
-    }
-
-    public void setScore(int score) {
-        Score = score;
-    }
-
-    public String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -132,28 +127,28 @@ public class Rule {
 	}
 
 	@Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Rule other = (Rule) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Rule other = (Rule) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
 }

@@ -29,6 +29,7 @@ public abstract class Coupon {
     private Integer score;
 
     //生成的卡券的截止日期
+    @Column(name = "coupon_end_time")
     private Calendar couponEndTime;
 
     //对应的金额
@@ -171,7 +172,7 @@ public abstract class Coupon {
 
     @PrePersist
     private void prePersist() {
-        this.createdTime=Calendar.getInstance();
+        this.createdTime = Calendar.getInstance();
     }
 
     @Override

@@ -28,6 +28,7 @@ import com.by.security.UserContext;
 import com.by.service.MemberService;
 import com.by.service.ScoreHistoryService;
 import com.by.service.TradingService;
+import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.utils.PageUtils;
 
 /**
@@ -79,7 +80,8 @@ public class AdminMemberController {
 	@RequestMapping(value = "/score", method = RequestMethod.PUT)
 	@ResponseBody
 	public Status updateScore(@RequestBody UpdateScoreJson json) {
-		Member member = memberService.addScore(new Member(json.getId()), json.getScore(), "admin");
+		Member member = memberService.addScore(new Member(json.getId()), json.getScore(), "admin",
+				ScoreHistoryEnum.ADMIN);
 		return new Success<>(member);
 	}
 

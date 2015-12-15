@@ -5,6 +5,8 @@ import com.by.json.MemberJson;
 import com.by.model.Card;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
+import com.by.typeEnum.ScoreHistoryEnum;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,9 +28,9 @@ public interface MemberService {
 
 	Optional<Member> updatePassword(Member member);
 
-	Member minusScore(Member member, int total, String reason);
+	Member minusScore(Member member, int total, String reason, ScoreHistoryEnum type);
 
-	Member addScore(Member member, int total, String reason);
+	Member addScore(Member member, int total, String reason, ScoreHistoryEnum type);
 
 	List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
 
@@ -40,5 +42,5 @@ public interface MemberService {
 
 	Long countByCard(Card card);
 
-	Member validateOrInValidate(Member member,String name);
+	Member validateOrInValidate(Member member, String name);
 }

@@ -1,18 +1,10 @@
 package com.by.service.impl;
 
-import com.by.exception.MemberNotFoundException;
-import com.by.exception.NotFoundException;
-import com.by.exception.TradingAlreadyBindException;
-import com.by.exception.TradingNotExistException;
-import com.by.json.TradingJson;
-import com.by.json.TradingRequestJson;
-import com.by.model.*;
-import com.by.repository.TradingRepository;
-import com.by.service.MemberService;
-import com.by.service.RuleService;
-import com.by.service.ShopService;
-import com.by.service.TradingService;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,10 +12,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.by.exception.MemberNotFoundException;
+import com.by.exception.NotFoundException;
+import com.by.exception.TradingAlreadyBindException;
+import com.by.exception.TradingNotExistException;
+import com.by.json.TradingJson;
+import com.by.json.TradingRequestJson;
+import com.by.model.CardRule;
+import com.by.model.Member;
+import com.by.model.RuleCategory;
+import com.by.model.Shop;
+import com.by.model.Trading;
+import com.by.repository.CardRuleRepository;
+import com.by.repository.TradingRepository;
+import com.by.service.MemberService;
+import com.by.service.RuleService;
+import com.by.service.ShopService;
+import com.by.service.TradingService;
+import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-11-27.
@@ -40,6 +47,8 @@ public class TradingServiceImpl implements TradingService {
 	private RuleService ruleService;
 	@Autowired
 	private ShopService shopService;
+	@Autowired
+	private CardRuleRepository cardRuleRepository;
 	private RuleCategory tradingRuleCategory = new RuleCategory(2l);
 
 	@Override
@@ -56,7 +65,7 @@ public class TradingServiceImpl implements TradingService {
 			if (!memberOptional.isPresent())
 				throw new MemberNotFoundException();
 			Member member = memberOptional.get();
-			memberService.addScore(member, tradeToScore(trading), reason);
+			memberService.addScore(member, tradeToScore(trading), reason, ScoreHistoryEnum.TRADE);
 		}
 		return repository.save(trading);
 	}
@@ -83,8 +92,8 @@ public class TradingServiceImpl implements TradingService {
 		Optional<Member> m = memberService.findById(trading.getMember().getId());
 		if (!m.isPresent())
 			throw new MemberNotFoundException();
-		List<Rule> rules = ruleService.findByRuleCategoryAndCardAndValid(tradingRuleCategory, m.get().getCard(),
-				ValidEnum.VALID);
+		List<CardRule> rules = cardRuleRepository.findByRuleCategoryAndCardAndValid(tradingRuleCategory,
+				m.get().getCard(), ValidEnum.VALID);
 		double maxRate = ruleService.getMaxRate(rules);
 		double maxScore = ruleService.getMaxScore(rules);
 		return Long.valueOf(Math.round(trading.getAmount() * maxRate + maxScore)).intValue();

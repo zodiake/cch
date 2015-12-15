@@ -102,9 +102,18 @@ CREATE TABLE by_rule (
   endTime     TIMESTAMP,
   category_id BIGINT,
   name        VARCHAR(20),
+  type        CHAR(1),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   FOREIGN KEY (category_id) REFERENCES by_rule_category (id),
   PRIMARY KEY (id)
+);
+
+CREATE TABLE by_shop_rule (
+  shop_id BIGINT,
+  rule_id BIGINT,
+  PRIMARY KEY (shop_id, rule_id),
+  FOREIGN KEY (shop_id) REFERENCES by_shop (id),
+  FOREIGN KEY (rule_id) REFERENCES by_rule (id),
 );
 
 CREATE TABLE by_member (
@@ -159,22 +168,22 @@ CREATE TABLE by_member_license (
 );
 
 CREATE TABLE by_coupon (
-  id            BIGINT NOT NULL AUTO_INCREMENT,
-  type          CHAR(1),
-  name          VARCHAR(50),
-  begin_time    TIMESTAMP,
-  end_time      TIMESTAMP,
-  created_time  TIMESTAMP,
-  created_by    VARCHAR(20),
-  score         INT             DEFAULT 0,
-  couponEndTime TIMESTAMP,
-  valid         SMALLINT        DEFAULT 1,
-  total         SMALLINT        DEFAULT 0,
-  duplicate     SMALLINT        DEFAULT 1,
-  amount        DOUBLE          DEFAULT 0,
-  summary       VARCHAR(255),
-  shop_id       BIGINT,
-  sortOrder     SMALLINT        DEFAULT 0,
+  id              BIGINT NOT NULL AUTO_INCREMENT,
+  type            CHAR(1),
+  name            VARCHAR(50),
+  begin_time      TIMESTAMP,
+  end_time        TIMESTAMP,
+  created_time    TIMESTAMP,
+  created_by      VARCHAR(20),
+  score           INT             DEFAULT 0,
+  coupon_end_time TIMESTAMP,
+  valid           SMALLINT        DEFAULT 1,
+  total           SMALLINT        DEFAULT 0,
+  duplicate       SMALLINT        DEFAULT 1,
+  amount          DOUBLE          DEFAULT 0,
+  summary         VARCHAR(255),
+  shop_id         BIGINT,
+  sortOrder       SMALLINT        DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id)
 );
@@ -230,6 +239,7 @@ CREATE TABLE by_score_history (
   created_time TIMESTAMP,
   deposit      INT,
   reason       VARCHAR(20),
+  type         SMALLINT,
   PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id)
 );

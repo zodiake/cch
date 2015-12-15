@@ -1,10 +1,8 @@
 package com.by.service.impl;
 
-import com.by.json.ScoreHistoryJson;
-import com.by.model.Member;
-import com.by.model.ScoreHistory;
-import com.by.repository.ScoreHistoryRepository;
-import com.by.service.ScoreHistoryService;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,8 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.json.ScoreHistoryJson;
+import com.by.model.Member;
+import com.by.model.ScoreHistory;
+import com.by.repository.ScoreHistoryRepository;
+import com.by.service.ScoreHistoryService;
+import com.by.typeEnum.ScoreHistoryEnum;
 
 @Service
 @Transactional
@@ -27,11 +29,12 @@ public class ScoreHistoryServiceImpl implements ScoreHistoryService {
     }
 
     @Override
-    public ScoreHistory save(Member member, int score, String reason) {
+    public ScoreHistory save(Member member, int score, String reason,ScoreHistoryEnum type) {
         ScoreHistory history = new ScoreHistory();
         history.setMember(member);
         history.setDeposit(score);
         history.setReason(reason);
+        history.setType(type);
         return repository.save(history);
     }
 

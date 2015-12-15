@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +16,7 @@ import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.form.AdminCouponForm;
 import com.by.form.CouponQueryForm;
+import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.model.ParkingCoupon;
 import com.by.service.ParkingCouponService;
@@ -45,5 +47,12 @@ public class AdminParkingCouponController {
 			@PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<CouponTemplateJson> json = parkingCouponService.findAll(form, pageable);
 		return new Success<>(json);
+	}
+
+	@RequestMapping(value = "/{id}/valid", method = RequestMethod.PUT)
+	@ResponseBody
+	public Status validOrNotValid(@PathVariable("id") Long id) {
+		ParkingCoupon coupon = new ParkingCoupon(id);
+		return new Success<CouponJson>(new CouponJson(parkingCouponService.validOrInValid(coupon)));
 	}
 }
