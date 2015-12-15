@@ -134,6 +134,14 @@ public class Shop {
         this.updatedBy = updatedBy;
     }
 
+    public List<ShopRule> getRules() {
+        return rules;
+    }
+
+    public void setRules(List<ShopRule> rules) {
+        this.rules = rules;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

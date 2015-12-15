@@ -17,12 +17,24 @@ public class CardRule extends Rule {
 	@JoinColumn(name = "card_id")
 	private Card card;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private RuleCategory ruleCategory;
+
 	public Card getCard() {
 		return card;
 	}
 
 	public void setCard(Card card) {
 		this.card = card;
+	}
+
+	public RuleCategory getRuleCategory() {
+		return ruleCategory;
+	}
+
+	public void setRuleCategory(RuleCategory ruleCategory) {
+		this.ruleCategory = ruleCategory;
 	}
 
 }

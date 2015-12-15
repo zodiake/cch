@@ -11,4 +11,6 @@ import com.by.typeEnum.ValidEnum;
 
 public interface CardRuleRepository extends PagingAndSortingRepository<CardRule, Long> {
 	List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid);
+
+	List<CardRule> findByRuleCategory(RuleCategory category);
 }

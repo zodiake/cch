@@ -13,7 +13,7 @@ public class RuleCategory {
     private String name;
 
     @OneToMany(mappedBy = "ruleCategory", fetch = FetchType.LAZY)
-    private List<Rule> rules;
+    private List<CardRule> rules;
 
     public RuleCategory() {
     }
@@ -38,11 +38,11 @@ public class RuleCategory {
         this.name = name;
     }
 
-    public List<Rule> getRules() {
+    public List<CardRule> getRules() {
         return rules;
     }
 
-    public void setRules(List<Rule> rules) {
+    public void setRules(List<CardRule> rules) {
         this.rules = rules;
     }
 

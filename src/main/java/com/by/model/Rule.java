@@ -35,9 +35,6 @@ public abstract class Rule {
 
 	private double rate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id")
-	private RuleCategory ruleCategory;
 
 	private String summary;
 
@@ -100,14 +97,6 @@ public abstract class Rule {
 
 	public void setEndTime(Calendar endTime) {
 		this.endTime = endTime;
-	}
-
-	public RuleCategory getRuleCategory() {
-		return ruleCategory;
-	}
-
-	public void setRuleCategory(RuleCategory ruleCategory) {
-		this.ruleCategory = ruleCategory;
 	}
 
 	public int getScore() {
