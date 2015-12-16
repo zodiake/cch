@@ -123,6 +123,8 @@ public class PreferentialCouponController {
     private void validateCoupon(Member member, PreferentialCoupon coupon, int total) {
         if (member == null)
             throw new MemberNotFoundException();
+        if (member.getValid().equals(ValidEnum.INVALID))
+            throw new NotValidException();
         if (coupon.getScore() * total > member.getScore())
             throw new NotEnoughScoreException();
         if (!couponService.isWithinValidDate(coupon))
@@ -133,7 +135,7 @@ public class PreferentialCouponController {
     @RequestMapping(value = "/member", method = RequestMethod.GET)
     @ResponseBody
     public Status couponList(HttpServletRequest request,
-                             @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Direction.DESC) Pageable pageable) {
+                             @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
         List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);

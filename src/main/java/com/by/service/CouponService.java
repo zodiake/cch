@@ -1,6 +1,9 @@
 package com.by.service;
 
+import com.by.json.CouponJson;
 import com.by.model.Coupon;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CouponService {
 	boolean isWithinValidDate(Coupon coupon);
@@ -18,4 +21,6 @@ public interface CouponService {
 	boolean couponIsWithinValidDate(Coupon coupon);
 
 	boolean canUpdate(Coupon coupon);
+
+	Page<CouponJson> findAll(Pageable pageable);
 }

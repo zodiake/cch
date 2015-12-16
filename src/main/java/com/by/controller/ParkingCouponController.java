@@ -115,6 +115,8 @@ public class ParkingCouponController {
     private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
         if (member == null)
             throw new MemberNotFoundException();
+        if (member.getValid().equals(ValidEnum.INVALID))
+            throw new NotValidException();
         if (coupon == null)
             throw new CouponNotFoundException();
         if (coupon.getScore() * total > member.getScore())
@@ -127,7 +129,7 @@ public class ParkingCouponController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Success<List<CouponTemplateJson>> list(
-            @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
         List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID, pageable).getContent()
                 .stream().filter(i -> {
                     return couponService.isWithinValidDate(i);

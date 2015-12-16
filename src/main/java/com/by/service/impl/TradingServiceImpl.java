@@ -10,6 +10,7 @@ import com.by.model.*;
 import com.by.repository.TradingRepository;
 import com.by.service.*;
 import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -82,13 +83,15 @@ public class TradingServiceImpl implements TradingService {
         Optional<Member> m = memberService.findById(trading.getMember().getId());
         if (!m.isPresent())
             throw new MemberNotFoundException();
+        if (m.get().getValid().equals(ValidEnum.INVALID))
+            return 0;
         List<CardRule> rules = cardRuleService.findByCategory(tradingRuleCategory)
                 .stream()
-                .filter(i -> ruleService.withValidDate(i))
+                .filter(i -> ruleService.withinValidDate(i))
                 .collect(Collectors.toList());
         List<ShopRule> shopRules = trading.getShop().getRules()
                 .stream()
-                .filter(i -> ruleService.withValidDate(i))
+                .filter(i -> ruleService.withinValidDate(i))
                 .collect(Collectors.toList());
         double maxRate = Math.max(ruleService.getMaxRate(rules), ruleService.getMaxRate(shopRules));
         double maxScore = Math.max(ruleService.getMaxRate(rules), ruleService.getMaxScore(shopRules));

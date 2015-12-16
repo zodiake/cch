@@ -136,6 +136,8 @@ public class ShopCouponController {
     private void validateCoupon(Member member, ShopCoupon coupon, int total) {
         if (member == null)
             throw new MemberNotFoundException();
+        if (member.getValid().equals(ValidEnum.INVALID))
+            throw new NotValidException();
         if (coupon.getScore() * total > member.getScore())
             throw new NotEnoughScoreException();
         if (!couponService.isWithinValidDate(coupon))

@@ -56,8 +56,6 @@ public abstract class Coupon {
     @Column(name = "created_by")
     private String createdBy;
 
-    private int sortOrder;
-
     public Long getId() {
         return id;
     }
@@ -160,14 +158,6 @@ public abstract class Coupon {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public int getSortOrder() {
-        return sortOrder;
-    }
-
-    public void setSortOrder(int sortOrder) {
-        this.sortOrder = sortOrder;
     }
 
     @PrePersist
