@@ -6,7 +6,6 @@ import com.by.model.Card;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
 import com.by.typeEnum.ScoreHistoryEnum;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,33 +13,35 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberService {
-	Member findOne(Long id);
+    Member findOne(Long id);
 
-	Optional<Member> findById(Long id);
+    Member findOneCache(Long id);
 
-	Optional<Member> findByName(String name);
+    Optional<Member> findById(Long id);
 
-	Long countByName(String name);
+    Optional<Member> findByName(String name);
 
-	Member save(Member member);
+    Long countByName(String name);
 
-	Optional<Member> update(Member member);
+    Member save(Member member);
 
-	Optional<Member> updatePassword(Member member);
+    Optional<Member> update(Member member);
 
-	Member minusScore(Member member, int total, String reason, ScoreHistoryEnum type);
+    Optional<Member> updatePassword(Member member);
 
-	Member addScore(Member member, int total, String reason, ScoreHistoryEnum type);
+    Member minusScore(Member member, int total, String reason, ScoreHistoryEnum type);
 
-	List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
+    Member addScore(Member member, int total, String reason, ScoreHistoryEnum type);
 
-	Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable);
+    List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
 
-	Page<Member> findFirstPage(int size);
+    Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable);
 
-	boolean isValidMember(Member member);
+    Page<Member> findFirstPage(int size);
 
-	Long countByCard(Card card);
+    boolean isValidMember(Member member);
 
-	Member validateOrInValidate(Member member, String name);
+    Long countByCard(Card card);
+
+    Member validateOrInValidate(Member member, String name);
 }

@@ -46,7 +46,7 @@ import static com.by.SpringExtension.SpringExtProvider;
  */
 @Controller
 @RequestMapping(value = "/api/parkingCoupons")
-public class ParkingCouponController {
+public class ParkingCouponController extends BaseController {
     private ApplicationContext ctx;
     private CouponService couponService;
     private ParkingCouponService parkingCouponService;
@@ -79,6 +79,7 @@ public class ParkingCouponController {
             return FailBuilder.buildFail(result);
         }
         Member m = (Member) request.getAttribute("member");
+        isValidMember(memberService, m);
         Member member = memberService.findOne(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
             if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getPassword()))
@@ -107,29 +108,19 @@ public class ParkingCouponController {
     @ResponseBody
     public Status useCoupon(HttpServletRequest request, @RequestBody UseCouponJson json) {
         Member member = (Member) request.getAttribute("member");
+        isValidMember(memberService, member);
         parkingCouponMemberService.useCoupon(member, new ParkingCoupon(json.getCouponId()), json.getTotal(),
                 json.getLicense());
         return new Status("success");
     }
 
-    private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
-        if (member == null)
-            throw new MemberNotFoundException();
-        if (member.getValid().equals(ValidEnum.INVALID))
-            throw new NotValidException();
-        if (coupon == null)
-            throw new CouponNotFoundException();
-        if (coupon.getScore() * total > member.getScore())
-            throw new NotEnoughScoreException();
-        if (!couponService.isWithinValidDate(coupon))
-            throw new NotValidException();
-    }
-
     // 可以兑换的停车券模板列表
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<List<CouponTemplateJson>> list(
-            @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Success<List<CouponTemplateJson>> list(HttpServletRequest request,
+                                                  @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Member member = (Member) request.getAttribute("member");
+        isValidMember(memberService, member);
         List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID, pageable).getContent()
                 .stream().filter(i -> {
                     return couponService.isWithinValidDate(i);
@@ -144,7 +135,23 @@ public class ParkingCouponController {
     @ResponseBody
     public Status couponList(HttpServletRequest request, @PageableDefault(page = 0, size = 10) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
+        isValidMember(memberService, member);
         List<CouponJson> result = parkingCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
     }
+
+
+    private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
+        if (member == null)
+            throw new MemberNotFoundException();
+        if (member.getValid().equals(ValidEnum.INVALID))
+            throw new NotValidException();
+        if (coupon == null)
+            throw new CouponNotFoundException();
+        if (coupon.getScore() * total > member.getScore())
+            throw new NotEnoughScoreException();
+        if (!couponService.isWithinValidDate(coupon))
+            throw new NotValidException();
+    }
+
 }

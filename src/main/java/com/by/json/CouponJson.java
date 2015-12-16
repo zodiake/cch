@@ -3,6 +3,7 @@ package com.by.json;
 import com.by.model.Coupon;
 import com.by.typeEnum.ValidEnum;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -16,19 +17,26 @@ public class CouponJson {
 
     private String couponEndTime;
 
+    private Calendar couponTime;
+
     private String shopName;
 
     private ValidEnum valid;
 
     private String type;
 
+    private int total;
+
     public CouponJson() {
     }
 
     public CouponJson(Coupon coupon) {
+        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         this.id = coupon.getId();
         this.name = coupon.getName();
         this.valid = coupon.getValid();
+        this.couponTime = coupon.getCouponEndTime();
+        this.couponEndTime=format.format(this.couponTime.getTime());
     }
 
     public CouponJson(Long id, String name, Calendar endTime, String shopName) {
@@ -85,5 +93,21 @@ public class CouponJson {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Calendar getCouponTime() {
+        return couponTime;
+    }
+
+    public void setCouponTime(Calendar couponTime) {
+        this.couponTime = couponTime;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

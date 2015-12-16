@@ -47,7 +47,7 @@ import static com.by.SpringExtension.SpringExtProvider;
  */
 @Controller
 @RequestMapping(value = "/api/shopCoupons")
-public class ShopCouponController {
+public class ShopCouponController extends BaseController {
     private ApplicationContext ctx;
     private ActorSystem system;
     private ActorRef ref;
@@ -73,8 +73,10 @@ public class ShopCouponController {
     // 可以兑换的卡券列表
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<Page<CouponTemplateJson>> list(
-            @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Success<Page<CouponTemplateJson>> list(HttpServletRequest request,
+                                                  @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
+        Member member = (Member) request.getAttribute("member");
+        isValidMember(memberService, member);
         Page<ShopCoupon> coupons = shopCouponService.findByValid(ValidEnum.VALID, pageable);
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
@@ -95,6 +97,7 @@ public class ShopCouponController {
     public Status couponList(HttpServletRequest request,
                              @PageableDefault(page = 0, size = 10, sort = "exchangedTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
+        isValidMember(memberService, member);
         List<CouponJson> result = shopCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
     }
@@ -108,6 +111,7 @@ public class ShopCouponController {
             return FailBuilder.buildFail(result);
         }
         Member m = (Member) request.getAttribute("member");
+        isValidMember(memberService, m);
         Member member = memberService.findOne(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
             if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getPassword()))
@@ -133,14 +137,4 @@ public class ShopCouponController {
         return new Fail("system error");
     }
 
-    private void validateCoupon(Member member, ShopCoupon coupon, int total) {
-        if (member == null)
-            throw new MemberNotFoundException();
-        if (member.getValid().equals(ValidEnum.INVALID))
-            throw new NotValidException();
-        if (coupon.getScore() * total > member.getScore())
-            throw new NotEnoughScoreException();
-        if (!couponService.isWithinValidDate(coupon))
-            throw new NotValidException();
-    }
 }

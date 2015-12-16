@@ -2,8 +2,10 @@ package com.by;
 
 import net.sf.ehcache.config.CacheConfiguration;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableCaching
-public class CachingConfig {
+public class CachingConfig extends CachingConfigurerSupport{
     public net.sf.ehcache.CacheManager ehCacheManager() {
         //card cache config
         CacheConfiguration cardCacheConfig = new CacheConfiguration();
@@ -62,6 +64,11 @@ public class CachingConfig {
         shopCacheConfig.setMaxEntriesLocalHeap(1000);
         shopCacheConfig.setName("shop");
 
+        CacheConfiguration memberCacheConfig = new CacheConfiguration();
+        memberCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        memberCacheConfig.setMaxEntriesLocalHeap(1000);
+        memberCacheConfig.setName("member");
+
         net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
         config.addCache(cardCacheConfig);
         config.addCache(ruleCacheConfig);
@@ -71,6 +78,7 @@ public class CachingConfig {
         config.addCache(menuCacheConfig);
         config.addCache(cardRuleCacheConfig);
         config.addCache(shopCacheConfig);
+        config.addCache(memberCacheConfig);
 
         return net.sf.ehcache.CacheManager.newInstance(config);
     }

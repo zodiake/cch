@@ -329,7 +329,6 @@ CREATE TABLE by_shop_coupon_member (
   id                BIGINT NOT NULL AUTO_INCREMENT,
   member_id         BIGINT,
   coupon_id         BIGINT,
-  parking_coupon_id BIGINT,
   exchanged_time    TIMESTAMP,
   used_time         TIMESTAMP,
   code              CHAR(17),

@@ -2,6 +2,7 @@ package com.by.service;
 
 import com.by.json.CouponJson;
 import com.by.model.Coupon;
+import com.by.model.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,4 +24,6 @@ public interface CouponService {
 	boolean canUpdate(Coupon coupon);
 
 	Page<CouponJson> findAll(Pageable pageable);
+
+	Page<CouponJson> findByMember(Member member, Pageable pageable);
 }

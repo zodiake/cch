@@ -2,6 +2,7 @@ package by.test;
 
 import com.by.Application;
 import com.by.exception.TradingAlreadyBindException;
+import com.by.json.TradingRequestJson;
 import com.by.model.Member;
 import com.by.model.Trading;
 import com.by.service.MemberService;
@@ -83,12 +84,10 @@ public class TradingServiceTest {
 
     @Test
     public void tradeSaveWithMember() {
-        Member m = new Member();
-        m.setName("13611738422");
-        Trading t = new Trading();
-        t.setCode("123333");
-        t.setAmount(100.0);
-        t.setMember(m);
+        TradingRequestJson t = new TradingRequestJson();
+        t.setMobile("13611738422");
+        t.setShopKey("abc");
+        tradingService.save(t);
         tradingService.save(t);
         Optional<Member> member = memberService.findByName("13611738422");
         assertEquals(110 + 100 * 2 + 100, member.get().getScore());

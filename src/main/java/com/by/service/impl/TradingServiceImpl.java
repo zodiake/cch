@@ -85,16 +85,22 @@ public class TradingServiceImpl implements TradingService {
             throw new MemberNotFoundException();
         if (m.get().getValid().equals(ValidEnum.INVALID))
             return 0;
-        List<CardRule> rules = cardRuleService.findByCategory(tradingRuleCategory)
-                .stream()
-                .filter(i -> ruleService.withinValidDate(i))
-                .collect(Collectors.toList());
-        List<ShopRule> shopRules = trading.getShop().getRules()
-                .stream()
-                .filter(i -> ruleService.withinValidDate(i))
-                .collect(Collectors.toList());
-        double maxRate = Math.max(ruleService.getMaxRate(rules), ruleService.getMaxRate(shopRules));
-        double maxScore = Math.max(ruleService.getMaxRate(rules), ruleService.getMaxScore(shopRules));
+        double maxRate, maxScore;
+        if (trading.getShop().getRules() != null && trading.getShop().getRules().size() > 0) {
+            List<ShopRule> shopRules = trading.getShop().getRules()
+                    .stream()
+                    .filter(i -> ruleService.withinValidDate(i))
+                    .collect(Collectors.toList());
+            maxScore = ruleService.getMaxScore(shopRules);
+            maxRate = ruleService.getMaxRate(shopRules);
+        } else {
+            List<CardRule> rules = cardRuleService.findByCategory(tradingRuleCategory)
+                    .stream()
+                    .filter(i -> ruleService.withinValidDate(i))
+                    .collect(Collectors.toList());
+            maxScore = ruleService.getMaxScore(rules);
+            maxRate = ruleService.getMaxRate(rules);
+        }
         return Long.valueOf(Math.round(trading.getAmount() * maxRate + maxScore)).intValue();
     }
 

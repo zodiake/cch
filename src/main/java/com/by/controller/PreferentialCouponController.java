@@ -44,7 +44,7 @@ import static com.by.SpringExtension.SpringExtProvider;
 
 @Controller
 @RequestMapping(value = "/api/preferentialCoupons")
-public class PreferentialCouponController {
+public class PreferentialCouponController extends BaseController {
     private ApplicationContext ctx;
     private ActorSystem system;
     private ActorRef ref;
@@ -71,8 +71,10 @@ public class PreferentialCouponController {
     // 可以兑换的卡券列表
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<Page<CouponTemplateJson>> list(
-            @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Direction.DESC) Pageable pageable) {
+    public Success<Page<CouponTemplateJson>> list(HttpServletRequest request,
+                                                  @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Direction.DESC) Pageable pageable) {
+        Member member = (Member) request.getAttribute("member");
+        isValidMember(memberService, member);
         Page<PreferentialCoupon> coupons = preferentialCouponService.findByValid(ValidEnum.VALID, pageable);
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
@@ -91,10 +93,11 @@ public class PreferentialCouponController {
     @ResponseBody
     public Status exchangeCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json,
                                  BindingResult result) {
+        Member m = (Member) request.getAttribute("member");
+        isValidMember(memberService, m);
         if (result.hasErrors()) {
             return FailBuilder.buildFail(result);
         }
-        Member m = (Member) request.getAttribute("member");
         Member member = memberService.findOne(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
             if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getPassword()))
@@ -120,16 +123,6 @@ public class PreferentialCouponController {
         return new Fail("system error");
     }
 
-    private void validateCoupon(Member member, PreferentialCoupon coupon, int total) {
-        if (member == null)
-            throw new MemberNotFoundException();
-        if (member.getValid().equals(ValidEnum.INVALID))
-            throw new NotValidException();
-        if (coupon.getScore() * total > member.getScore())
-            throw new NotEnoughScoreException();
-        if (!couponService.isWithinValidDate(coupon))
-            throw new NotValidException();
-    }
 
     // 用户兑换到的优惠券列表
     @RequestMapping(value = "/member", method = RequestMethod.GET)
@@ -137,6 +130,7 @@ public class PreferentialCouponController {
     public Status couponList(HttpServletRequest request,
                              @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
+        isValidMember(memberService, member);
         List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
     }

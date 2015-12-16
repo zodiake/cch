@@ -41,10 +41,11 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "shop", key = "#code")
+    @Cacheable(value = "shop")
     public Shop findByKey(String code) {
         Shop shop = repository.findByKey(code);
         shop.getRules().size();
+        System.out.println("---called");
         return shop;
     }
 
