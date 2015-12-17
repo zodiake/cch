@@ -27,10 +27,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import scala.concurrent.duration.Duration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -98,9 +95,9 @@ public class PreferentialCouponController extends BaseController {
         if (result.hasErrors()) {
             return FailBuilder.buildFail(result);
         }
-        Member member = memberService.findOne(m.getId());
+        Member member = memberService.findOneCache(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
-            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getPassword()))
+            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getMemberDetail().getPassword()))
                 throw new PasswordNotMatchException();
         }
         PreferentialCoupon coupon = preferentialCouponService.findOne(json.getId());
@@ -133,5 +130,15 @@ public class PreferentialCouponController extends BaseController {
         isValidMember(memberService, member);
         List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
+    }
+
+    // 详情
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Status detail(@PathVariable("id") Long id) {
+        PreferentialCoupon coupon = preferentialCouponService.findOneCache(id);
+        if (coupon == null)
+            throw new NotFoundException();
+        return new Success<>(new CouponJson(coupon));
     }
 }

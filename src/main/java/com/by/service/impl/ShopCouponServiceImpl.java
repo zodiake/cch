@@ -33,6 +33,12 @@ public class ShopCouponServiceImpl implements ShopCouponService {
 
 	@Override
 	@Transactional(readOnly = true)
+	public ShopCoupon findOneCache(Long id){
+		return repository.findOne(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	@Cacheable("shopCoupon")
 	public Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable) {
 		Page<ShopCoupon> coupons = repository.findByValid(valid, pageable);

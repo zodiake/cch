@@ -1,16 +1,16 @@
 package com.by.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.by.json.MemberDetailJson;
 import com.by.model.Member;
 import com.by.model.MemberDetail;
 
-public interface MemberDetailService {
-    Optional<MemberDetail> update(MemberDetail detail);
+import java.util.List;
+import java.util.Optional;
 
-    Optional<MemberDetail> findByMember(Member m);
+public interface MemberDetailService {
+    MemberDetail update(Long memberId, MemberDetailJson detail);
+
+    MemberDetail findByMember(Member m);
 
     MemberDetail save(MemberDetail detail);
 
@@ -18,5 +18,4 @@ public interface MemberDetailService {
 
     List<MemberDetail> findAllAuditRevision(Long id);
 
-	Optional<MemberDetail> update(Member member, MemberDetailJson json);
 }

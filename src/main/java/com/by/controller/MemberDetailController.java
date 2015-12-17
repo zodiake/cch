@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.json.MemberDetailJson;
 import com.by.model.Member;
+import com.by.model.MemberDetail;
 import com.by.service.MemberDetailService;
+import com.by.service.MemberService;
 import com.by.utils.FailBuilder;
 
 @Controller
@@ -24,23 +25,25 @@ import com.by.utils.FailBuilder;
 public class MemberDetailController {
 	@Autowired
 	private MemberDetailService service;
+	@Autowired
+	private MemberService memberService;
 
 	@RequestMapping(value = "/details", method = RequestMethod.PUT)
 	@ResponseBody
 	public Status update(@Valid @RequestBody MemberDetailJson detail, BindingResult result,
 			HttpServletRequest request) {
-		if(result.hasErrors()){
+		Member member = (Member) request.getAttribute("member");
+		if (result.hasErrors()) {
 			return FailBuilder.buildFail(result);
 		}
-		Member m = (Member) request.getAttribute("member");
-		return service.update(m, detail).map(i -> new Status("success")).orElseThrow(() -> new NotFoundException());
+		return new Success<>(new MemberDetailJson(service.update(member.getId(), detail)));
 	}
 
 	@RequestMapping(value = "/details", method = RequestMethod.GET)
 	@ResponseBody
 	public Status get(HttpServletRequest request) {
 		Member m = (Member) request.getAttribute("member");
-		return service.findByMember(m).map(i -> new Success<MemberDetailJson>(new MemberDetailJson(i)))
-				.orElseThrow(() -> new NotFoundException());
+		MemberDetail detail = memberService.findOneCache(m.getId()).getMemberDetail();
+		return new Success<>(new MemberDetailJson(detail));
 	}
 }

@@ -80,9 +80,9 @@ public class ParkingCouponController extends BaseController {
         }
         Member m = (Member) request.getAttribute("member");
         isValidMember(memberService, m);
-        Member member = memberService.findOne(m.getId());
+        Member member = memberService.findOneCache(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
-            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getPassword()))
+            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getMemberDetail().getPassword()))
                 throw new PasswordNotMatchException();
         }
         ParkingCoupon coupon = parkingCouponService.findOne(json.getId());

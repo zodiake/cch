@@ -24,8 +24,6 @@ public class Member {
     @Length(max = 11, min = 11)
     private String name;
 
-    private String password;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id")
     @JsonManagedReference
@@ -75,7 +73,6 @@ public class Member {
 
     public Member(MemberRequestJson json) {
         this.name = json.getName();
-        this.password = json.getPassword();
         this.card = new Card(json.getCard());
     }
 
@@ -98,14 +95,6 @@ public class Member {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Card getCard() {

@@ -10,5 +10,5 @@ import com.by.model.MemberDetail;
 public interface MemberDetailRepository extends CrudRepository<MemberDetail, Long> {
 	public Optional<MemberDetail> findById(Long id);
 
-	public Optional<MemberDetail> findByMember(Member member);
+	public MemberDetail findByMember(Member member);
 }

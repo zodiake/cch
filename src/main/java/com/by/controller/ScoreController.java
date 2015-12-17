@@ -50,7 +50,7 @@ public class ScoreController {
 	}
 
 	// 可用积分+总积分
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/both", method = RequestMethod.GET)
 	@ResponseBody
 	public Status scoreSumAndAvailable(HttpServletRequest request) {
 		Member member = (Member) request.getAttribute("member");

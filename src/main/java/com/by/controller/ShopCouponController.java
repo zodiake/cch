@@ -27,10 +27,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import scala.concurrent.duration.Duration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -112,9 +109,9 @@ public class ShopCouponController extends BaseController {
         }
         Member m = (Member) request.getAttribute("member");
         isValidMember(memberService, m);
-        Member member = memberService.findOne(m.getId());
+        Member member = memberService.findOneCache(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
-            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getPassword()))
+            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getMemberDetail().getPassword()))
                 throw new PasswordNotMatchException();
         }
         ShopCoupon coupon = shopCouponService.findOne(json.getId());
@@ -135,6 +132,16 @@ public class ShopCouponController extends BaseController {
             e.printStackTrace();
         }
         return new Fail("system error");
+    }
+
+    // todo
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Status detail(@PathVariable("id") Long id) {
+        ShopCoupon shopCoupon = shopCouponService.findOneCache(id);
+        if (shopCoupon == null)
+            throw new NotFoundException();
+        return new Success<>(new CouponJson(shopCoupon));
     }
 
 }

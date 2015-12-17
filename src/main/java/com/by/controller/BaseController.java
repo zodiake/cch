@@ -21,7 +21,7 @@ public class BaseController {
 
     protected void isValidMember(MemberService memberService, Member member) {
         Member cacheMember = memberService.findOneCache(member.getId());
-        if (cacheMember.getValid().equals(ValidEnum.VALID)) {
+        if (!cacheMember.getValid().equals(ValidEnum.VALID)) {
             throw new NotValidException();
         }
     }

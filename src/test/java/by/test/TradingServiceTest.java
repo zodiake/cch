@@ -41,7 +41,6 @@ public class TradingServiceTest {
     public void init() {
         Member m = new Member(1l);
         m.setScore(110);
-        memberService.update(m);
     }
 
     @Test

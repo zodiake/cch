@@ -5,7 +5,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableCaching
-public class CachingConfig extends CachingConfigurerSupport{
+public class CachingConfig extends CachingConfigurerSupport {
     public net.sf.ehcache.CacheManager ehCacheManager() {
         //card cache config
         CacheConfiguration cardCacheConfig = new CacheConfiguration();
@@ -29,22 +28,10 @@ public class CachingConfig extends CachingConfigurerSupport{
         ruleCacheConfig.setName("rule");
 
         //parkingCoupon cache config
-        CacheConfiguration parkingCouponCacheConfig = new CacheConfiguration();
-        parkingCouponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        parkingCouponCacheConfig.setMaxEntriesLocalHeap(1000);
-        parkingCouponCacheConfig.setName("parkingCoupon");
-
-        //preferentialCoupon cache config
-        CacheConfiguration preferentialCouponCacheConfig = new CacheConfiguration();
-        preferentialCouponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        preferentialCouponCacheConfig.setMaxEntriesLocalHeap(1000);
-        preferentialCouponCacheConfig.setName("preferentialCoupon");
-
-        //shopcoupon cache config
-        CacheConfiguration shopCouponCacheConfig = new CacheConfiguration();
-        shopCouponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        shopCouponCacheConfig.setMaxEntriesLocalHeap(1000);
-        shopCouponCacheConfig.setName("shopCoupon");
+        CacheConfiguration couponCacheConfig = new CacheConfiguration();
+        couponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        couponCacheConfig.setMaxEntriesLocalHeap(1000);
+        couponCacheConfig.setName("coupon");
 
         //menu cache config
         CacheConfiguration menuCacheConfig = new CacheConfiguration();
@@ -72,9 +59,7 @@ public class CachingConfig extends CachingConfigurerSupport{
         net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
         config.addCache(cardCacheConfig);
         config.addCache(ruleCacheConfig);
-        config.addCache(parkingCouponCacheConfig);
-        config.addCache(preferentialCouponCacheConfig);
-        config.addCache(shopCouponCacheConfig);
+        config.addCache(couponCacheConfig);
         config.addCache(menuCacheConfig);
         config.addCache(cardRuleCacheConfig);
         config.addCache(shopCacheConfig);

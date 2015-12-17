@@ -13,6 +13,8 @@ public interface PreferentialCouponService {
 
     PreferentialCoupon findOne(Long id);
 
+    PreferentialCoupon findOneCache(Long id);
+
     PreferentialCoupon findByIdAndValid(Long id, ValidEnum valid);
 
     Page<PreferentialCoupon> findByValid(ValidEnum valid, Pageable pageable);

@@ -125,7 +125,8 @@ public class CouponServiceImpl implements CouponService {
                 })
                 .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
-                    json.setTotal(json.getTotal());
+                    json.setType("p");
+                    json.setTotal(i.getTotal());
                     return json;
                 }).collect(Collectors.toList());
         List<CouponJson> preferentialJson = preferentialCouponMemberList.getContent()
@@ -134,7 +135,9 @@ public class CouponServiceImpl implements CouponService {
                     return i.getCoupon().getValid().equals(ValidEnum.VALID);
                 })
                 .map(i -> {
-                    return new CouponJson(i.getCoupon());
+                	CouponJson json=new CouponJson(i.getCoupon());
+                	json.setType("c");
+                    return json;
                 })
                 .collect(Collectors.toList());
         List<CouponJson> shopJson = shopCouponMemberList.getContent()
@@ -143,7 +146,9 @@ public class CouponServiceImpl implements CouponService {
                     return i.getCoupon().getValid().equals(ValidEnum.VALID);
                 })
                 .map(i -> {
-                    return new CouponJson(i.getCoupon());
+                	CouponJson json=new CouponJson(i.getCoupon());
+                	json.setType("s");
+                    return json;
                 })
                 .collect(Collectors.toList());
         parkingJson.addAll(preferentialJson);

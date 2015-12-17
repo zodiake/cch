@@ -13,5 +13,7 @@ public interface ShopCouponService {
 
     ShopCoupon findOne(Long id);
 
+    ShopCoupon findOneCache(Long id);
+
     Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
 }

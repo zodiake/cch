@@ -106,14 +106,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Optional<Member> update(Member member) {
-		return repository.findById(member.getId()).map(i -> {
-			i.setPassword(member.getPassword());
-			return i;
-		});
-	}
-
-	@Override
 	public Member addScore(Member member, int total, String reason, ScoreHistoryEnum type) {
 		Member source = repository.findOne(member.getId());
 		source.setScore(source.getScore() + total);
@@ -178,8 +170,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	@Transactional(readOnly = true)
 	@Cacheable("member")
-	public Member findOneCache(Long id){
-		return repository.findOne(id);
+	public Member findOneCache(Long id) {
+		Member member = repository.findOne(id);
+		member.getMemberDetail();
+		return member;
 	}
 
 	@Override
@@ -229,21 +223,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Long countByCard(Card card) {
 		return repository.countByCard(card);
-	}
-
-	private void validMember(Member member) {
-		if (member == null)
-			throw new MemberNotFoundException();
-		if (member.getValid().equals(ValidEnum.INVALID))
-			throw new MemberNotValidException();
-	}
-
-	@Override
-	public Optional<Member> updatePassword(Member member) {
-		return repository.findByName(member.getName()).map(i -> {
-			i.setPassword(member.getPassword());
-			return i;
-		});
 	}
 
 	@Override

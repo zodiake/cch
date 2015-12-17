@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -51,17 +52,6 @@ public class MemberController {
         if (count > 0)
             return new Fail("use already exist");
         return new Success<>("");
-    }
-
-    // 修改用户密码
-    @RequestMapping(value = "/password", method = RequestMethod.PUT)
-    @ResponseBody
-    public Status changePassword(@RequestBody MemberJson json) {
-        Member member = new Member();
-        member.setName(json.getMobile());
-        member.setPassword(encoder.encodePassword(json.getPassword(), null));
-        return service.updatePassword(member).map(i -> new Status("success"))
-                .orElseThrow(() -> new NotFoundException());
     }
 
 }

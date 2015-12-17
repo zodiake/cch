@@ -33,6 +33,13 @@ public class PreferentialCouponServiceImpl implements PreferentialCouponService 
     }
 
     @Override
+    @Transactional(readOnly = true)
+    @Cacheable("coupon")
+    public PreferentialCoupon findOneCache(Long id) {
+        return null;
+    }
+
+    @Override
     public PreferentialCoupon findByIdAndValid(Long id, ValidEnum valid) {
         return repository.findByIdAndValid(id, valid);
     }

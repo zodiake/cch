@@ -71,7 +71,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 	}
 
 	@Override
-	@Cacheable(value = "parkingCoupon")
+	@Cacheable(value = "coupon")
 	@Transactional(readOnly = true)
 	public Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable) {
 		return repository.findByValid(valid, pageable);

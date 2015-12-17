@@ -1,23 +1,10 @@
 package com.by.model;
 
-import java.util.Calendar;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+
+import javax.persistence.*;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "by_member_detail")
@@ -31,6 +18,11 @@ public class MemberDetail {
     private String realName;
 
     private String address;
+
+    private String password;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar birthday;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
@@ -65,6 +57,14 @@ public class MemberDetail {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Calendar getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Calendar birthday) {
+        this.birthday = birthday;
     }
 
     public String getAddress() {
@@ -113,6 +113,14 @@ public class MemberDetail {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @PrePersist

@@ -25,10 +25,6 @@ public interface MemberService {
 
     Member save(Member member);
 
-    Optional<Member> update(Member member);
-
-    Optional<Member> updatePassword(Member member);
-
     Member minusScore(Member member, int total, String reason, ScoreHistoryEnum type);
 
     Member addScore(Member member, int total, String reason, ScoreHistoryEnum type);

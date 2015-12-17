@@ -61,7 +61,7 @@ CREATE TABLE by_auth_menu (
 CREATE TABLE by_rule_category (
   id   BIGINT NOT NULL AUTO_INCREMENT,
   name VARCHAR(20),
-  PRIMARY KEY (id),
+  PRIMARY KEY (id)
 );
 
 
@@ -113,13 +113,12 @@ CREATE TABLE by_shop_rule (
   rule_id BIGINT,
   PRIMARY KEY (shop_id, rule_id),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id),
-  FOREIGN KEY (rule_id) REFERENCES by_rule (id),
+  FOREIGN KEY (rule_id) REFERENCES by_rule (id)
 );
 
 CREATE TABLE by_member (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   name         CHAR(11) UNIQUE,
-  password     CHAR(64),
   card_id      BIGINT,
   score        INT,
   created_time TIMESTAMP,
@@ -128,26 +127,30 @@ CREATE TABLE by_member (
   invalid_by   VARCHAR(20),
   updated_time TIMESTAMP,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
-  PRIMARY KEY (id),
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE by_member_detail (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   real_name    VARCHAR(10),
   address      VARCHAR(225),
+  password     CHAR(64),
+  birthday     TIMESTAMP,
   member_id    BIGINT,
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  PRIMARY KEY (id),
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE by_member_detail_aud (
   id           BIGINT  NOT NULL AUTO_INCREMENT,
   real_name    VARCHAR(10),
   address      VARCHAR(225),
+  password     CHAR(64),
+  birthday     TIMESTAMP,
   member_id    BIGINT,
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
@@ -156,7 +159,7 @@ CREATE TABLE by_member_detail_aud (
   REV          INTEGER NOT NULL,
   REVTYPE      TINYINT,
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  PRIMARY KEY (id, REV),
+  PRIMARY KEY (id, REV)
 );
 
 CREATE TABLE by_member_license (
@@ -230,7 +233,7 @@ CREATE TABLE by_parking_coupon_use_history (
   license           VARCHAR(10),
   PRIMARY KEY (member_id, parking_coupon_id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id),
+  FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id)
 );
 
 CREATE TABLE by_score_history (
@@ -326,12 +329,12 @@ CREATE TABLE by_sequence (
 );
 
 CREATE TABLE by_shop_coupon_member (
-  id                BIGINT NOT NULL AUTO_INCREMENT,
-  member_id         BIGINT,
-  coupon_id         BIGINT,
-  exchanged_time    TIMESTAMP,
-  used_time         TIMESTAMP,
-  code              CHAR(17),
+  id             BIGINT NOT NULL AUTO_INCREMENT,
+  member_id      BIGINT,
+  coupon_id      BIGINT,
+  exchanged_time TIMESTAMP,
+  used_time      TIMESTAMP,
+  code           CHAR(17),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id),
   PRIMARY KEY (id)
