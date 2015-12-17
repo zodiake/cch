@@ -37,8 +37,8 @@ INSERT INTO by_license (id, name) VALUES (2, '沪A14321');
 INSERT INTO by_card (id, name, valid, init_score) VALUES (1, 'low', 1, 100);
 
 -- test member
-INSERT INTO by_member (id, name, card_id, score) VALUES (1, '13611738422', 1, 110);
-INSERT INTO by_member (id, name, card_id, score, valid) VALUES (2, '13811738422', 1, 200, 0);
+INSERT INTO by_member (id, name, card_id, score,sumScore) VALUES (1, '13611738422', 1, 10,10);
+INSERT INTO by_member (id, name, card_id, score, valid,sumScore) VALUES (2, '13811738422', 1, 200, 0,10);
 
 -- test pay
 INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)
@@ -99,7 +99,7 @@ VALUES (5, 's', '2015-12-1', '2015-12-30', 10, '2016-1-5', 1, 100, 0, 20, 'shopC
 
 -- test parkingCoupon
 INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 1, 10);
-INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 3, 10);
+INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 3, 1);
 
 -- test preferentialCoupon
 INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 2, 20);

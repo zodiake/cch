@@ -45,6 +45,8 @@ public class Member {
 
     private int score;
 
+    private int sumScore;
+
     @Enumerated
     private ValidEnum valid;
 
@@ -193,6 +195,14 @@ public class Member {
     @PreUpdate
     private void preUpdate() {
         this.updatedTime = Calendar.getInstance();
+    }
+
+    public int getSumScore() {
+        return sumScore;
+    }
+
+    public void setSumScore(int sumScore) {
+        this.sumScore = sumScore;
     }
 
     @Override

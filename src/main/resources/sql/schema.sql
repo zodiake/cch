@@ -121,6 +121,7 @@ CREATE TABLE by_member (
   name         CHAR(11) UNIQUE,
   card_id      BIGINT,
   score        INT,
+  sumScore     INT,
   created_time TIMESTAMP,
   valid        SMALLINT        DEFAULT 1,
   invalid_time TIMESTAMP,

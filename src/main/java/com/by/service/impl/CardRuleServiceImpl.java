@@ -1,9 +1,11 @@
 package com.by.service.impl;
 
+import com.by.model.Card;
 import com.by.model.CardRule;
 import com.by.model.RuleCategory;
 import com.by.repository.CardRuleRepository;
 import com.by.service.CardRuleService;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ public class CardRuleServiceImpl implements CardRuleService {
 
     @Override
     @Cacheable(value = "cardRule", key = "#category.id")
-    public List<CardRule> findByCategory(RuleCategory category) {
-        return repository.findByRuleCategory(category);
+    public List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid) {
+        return repository.findByRuleCategoryAndCardAndValid(category, card, ValidEnum.VALID);
     }
 }

@@ -83,7 +83,8 @@ public class TradingServiceImpl implements TradingService {
         Optional<Member> m = memberService.findById(trading.getMember().getId());
         if (!m.isPresent())
             throw new MemberNotFoundException();
-        if (m.get().getValid().equals(ValidEnum.INVALID))
+        Member member=m.get();
+        if (member.getValid().equals(ValidEnum.INVALID))
             return 0;
         double maxRate, maxScore;
         if (trading.getShop().getRules() != null && trading.getShop().getRules().size() > 0) {
@@ -94,7 +95,7 @@ public class TradingServiceImpl implements TradingService {
             maxScore = ruleService.getMaxScore(shopRules);
             maxRate = ruleService.getMaxRate(shopRules);
         } else {
-            List<CardRule> rules = cardRuleService.findByCategory(tradingRuleCategory)
+            List<CardRule> rules = cardRuleService.findByRuleCategoryAndCardAndValid(tradingRuleCategory, member.getCard(), ValidEnum.VALID)
                     .stream()
                     .filter(i -> ruleService.withinValidDate(i))
                     .collect(Collectors.toList());

@@ -35,7 +35,6 @@ public abstract class Rule {
 
 	private double rate;
 
-
 	private String summary;
 
 	private String name;

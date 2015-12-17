@@ -9,6 +9,7 @@ import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ public class MemberDetailServiceImpl implements MemberDetailService {
     private EntityManager em;
 
     @Override
+    @CachePut(value = "member", key = "memberId")
     public MemberDetail update(Long memberId, MemberDetailJson detail) {
         MemberDetail memberDetail = repository.findOne(memberId);
         String newPassword = encoder.encodePassword(detail.getPassword(), null);

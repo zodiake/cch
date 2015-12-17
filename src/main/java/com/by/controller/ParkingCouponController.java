@@ -1,22 +1,15 @@
 package com.by.controller;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Inbox;
-import com.by.exception.*;
-import com.by.json.CouponJson;
-import com.by.json.CouponTemplateJson;
-import com.by.json.ExchangeCouponJson;
-import com.by.json.UseCouponJson;
-import com.by.message.ParkingCouponMessage;
-import com.by.model.Member;
-import com.by.model.ParkingCoupon;
-import com.by.service.CouponService;
-import com.by.service.MemberService;
-import com.by.service.ParkingCouponMemberService;
-import com.by.service.ParkingCouponService;
-import com.by.typeEnum.ValidEnum;
-import com.by.utils.FailBuilder;
+import static com.by.SpringExtension.SpringExtProvider;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Pageable;
@@ -30,16 +23,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.by.exception.CouponNotFoundException;
+import com.by.exception.Fail;
+import com.by.exception.MemberNotFoundException;
+import com.by.exception.NotEnoughScoreException;
+import com.by.exception.NotValidException;
+import com.by.exception.PasswordNotMatchException;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
+import com.by.json.ExchangeCouponJson;
+import com.by.json.UseCouponJson;
+import com.by.message.ParkingCouponMessage;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.service.CouponService;
+import com.by.service.MemberService;
+import com.by.service.ParkingCouponMemberService;
+import com.by.service.ParkingCouponService;
+import com.by.typeEnum.ValidEnum;
+import com.by.utils.FailBuilder;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Inbox;
 import scala.concurrent.duration.Duration;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-
-import static com.by.SpringExtension.SpringExtProvider;
 
 /**
  * Created by yagamai on 15-12-3.
@@ -79,7 +89,6 @@ public class ParkingCouponController extends BaseController {
             return FailBuilder.buildFail(result);
         }
         Member m = (Member) request.getAttribute("member");
-        isValidMember(memberService, m);
         Member member = memberService.findOneCache(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
             if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getMemberDetail().getPassword()))
@@ -88,6 +97,7 @@ public class ParkingCouponController extends BaseController {
         ParkingCoupon coupon = parkingCouponService.findOne(json.getId());
         ParkingCouponMessage message = new ParkingCouponMessage(coupon, member, json.getTotal());
 
+        isValidMember(memberService, member);
         validateCoupon(member, coupon, json.getTotal());
 
         final Inbox inbox = Inbox.create(system);
@@ -144,12 +154,8 @@ public class ParkingCouponController extends BaseController {
     private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
         if (member == null)
             throw new MemberNotFoundException();
-        if (member.getValid().equals(ValidEnum.INVALID))
-            throw new NotValidException();
         if (coupon == null)
             throw new CouponNotFoundException();
-        if (coupon.getScore() * total > member.getScore())
-            throw new NotEnoughScoreException();
         if (!couponService.isWithinValidDate(coupon))
             throw new NotValidException();
     }

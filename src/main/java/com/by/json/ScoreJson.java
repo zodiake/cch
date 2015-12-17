@@ -8,12 +8,12 @@ public class ScoreJson {
     // 可用积分
     private int available;
     // 总积分
-    private Long sum;
+    private int sum;
 
     public ScoreJson() {
     }
 
-    public ScoreJson(int available, Long sum) {
+    public ScoreJson(int available, int sum) {
         this.available = available;
         this.sum = sum;
     }
@@ -26,11 +26,11 @@ public class ScoreJson {
         this.available = available;
     }
 
-    public Long getSum() {
+    public int getSum() {
         return sum;
     }
 
-    public void setSum(Long sum) {
+    public void setSum(int sum) {
         this.sum = sum;
     }
 }

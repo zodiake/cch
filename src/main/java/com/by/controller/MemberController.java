@@ -1,10 +1,8 @@
 package com.by.controller;
 
 import com.by.exception.Fail;
-import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
-import com.by.json.MemberJson;
 import com.by.json.MemberRequestJson;
 import com.by.model.Member;
 import com.by.model.MemberDetail;
@@ -17,7 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -36,10 +33,12 @@ public class MemberController {
         if (result.hasErrors()) {
             return FailBuilder.buildFail(result);
         }
-        if (!StringUtils.isEmpty(json.getPassword()))
-            json.setPassword(encoder.encodePassword(json.getPassword(), null));
+        MemberDetail detail = new MemberDetail();
+        if (!StringUtils.isEmpty(json.getPassword())) {
+            detail.setPassword(encoder.encodePassword(json.getPassword(), null));
+        }
         Member member = new Member(json);
-        member.setMemberDetail(new MemberDetail());
+        member.setMemberDetail(detail);
         Member m = service.save(member);
         return new Success<>(JWTUtils.encode(m));
     }
