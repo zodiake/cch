@@ -1,25 +1,33 @@
 package com.by.service.impl;
 
-import com.by.exception.AlreadyUsedException;
-import com.by.json.CouponJson;
-import com.by.model.*;
-import com.by.repository.PreferentialCouponMemberRepository;
-import com.by.service.*;
-import com.by.typeEnum.CouponStateEnum;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ScoreHistoryEnum;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.by.exception.AlreadyUsedException;
+import com.by.json.CouponJson;
+import com.by.model.Coupon;
+import com.by.model.Member;
+import com.by.model.PreferentialCoupon;
+import com.by.model.PreferentialCouponMember;
+import com.by.model.Sequence;
+import com.by.repository.PreferentialCouponMemberRepository;
+import com.by.service.CouponService;
+import com.by.service.MemberService;
+import com.by.service.PreferentialCouponMemberService;
+import com.by.service.PreferentialCouponService;
+import com.by.service.SequenceService;
+import com.by.typeEnum.CouponStateEnum;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ScoreHistoryEnum;
 
 /**
  * Created by yagamai on 15-12-3.
@@ -50,7 +58,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 	}
 
 	@Override
-	public PreferentialCouponMember exchangeCoupon(PreferentialCoupon coupon, Member member, int total) {
+	public void exchangeCoupon(PreferentialCoupon coupon, Member member, int total) {
 		int count = total;
 		Optional<Member> memberOptional = memberService.findById(member.getId());
 		PreferentialCoupon sourceCoupon = preferentialCouponService.findOne(coupon.getId());
@@ -62,9 +70,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 			count = 1;
 			save(sourceCoupon, memberOptional.get());
 		}
-		memberService.minusScore(memberOptional.get(), memberOptional.get().getScore() - count, reason,
-				ScoreHistoryEnum.COUPONEXCHANGE);
-		return null;
+		memberService.minusScore(memberOptional.get(), sourceCoupon.getScore()*count, reason, ScoreHistoryEnum.COUPONEXCHANGE);
 	}
 
 	public List<PreferentialCouponMember> findByCouponAndMember(PreferentialCoupon coupon, Member member) {

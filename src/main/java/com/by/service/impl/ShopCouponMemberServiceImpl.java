@@ -42,7 +42,7 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
 	private CouponService couponService;
 
 	@Override
-	public ShopCouponMember exchangeCoupon(Member member, ShopCoupon coupon, int total) {
+	public void exchangeCoupon(Member member, ShopCoupon coupon, int total) {
 		int count = total;
 		Optional<Member> memberOptional = memberService.findById(member.getId());
 		ShopCoupon shopCoupon = shopCouponService.findOne(coupon.getId());
@@ -54,9 +54,7 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
 			count = 1;
 			save(shopCoupon, memberOptional.get());
 		}
-		memberService.minusScore(memberOptional.get(), memberOptional.get().getScore() - count, reason,
-				ScoreHistoryEnum.COUPONEXCHANGE);
-		return null;
+		memberService.minusScore(memberOptional.get(),  count*shopCoupon.getScore(), reason, ScoreHistoryEnum.COUPONEXCHANGE);
 	}
 
 	@Override

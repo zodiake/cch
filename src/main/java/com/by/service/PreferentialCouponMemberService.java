@@ -14,7 +14,7 @@ import java.util.List;
 public interface PreferentialCouponMemberService {
     PreferentialCouponMember useCoupon(String code, Member member);
 
-    PreferentialCouponMember exchangeCoupon(PreferentialCoupon coupon, Member member, int total);
+    void exchangeCoupon(PreferentialCoupon coupon, Member member, int total);
 
     List<PreferentialCouponMember> findByCouponAndMember(PreferentialCoupon coupon, Member member);
 

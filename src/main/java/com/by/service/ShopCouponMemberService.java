@@ -12,7 +12,7 @@ import java.util.List;
  * Created by yagamai on 15-12-8.
  */
 public interface ShopCouponMemberService {
-    ShopCouponMember exchangeCoupon(Member member, ShopCoupon coupon, int total);
+    void exchangeCoupon(Member member, ShopCoupon coupon, int total);
 
     ShopCouponMember useCoupon(String code, Member member);
 

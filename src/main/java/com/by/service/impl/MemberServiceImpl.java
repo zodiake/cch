@@ -65,7 +65,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member save(Member member) {
-        member.setMemberDetail(new MemberDetail());
         Card card = cardService.findByIdAndValid(member.getCard().getId(), ValidEnum.VALID);
         if (card == null)
             throw new NotValidException();
@@ -101,7 +100,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member minusScore(Member member, int total, String reason, ScoreHistoryEnum type) {
         Member source = repository.findOne(member.getId());
-        System.out.println(total + "---");
         if (source.getScore() < total)
             throw new NotEnoughScoreException();
         List<ScoreAddHistory> historyList = scoreAddHistoryService.findByMember(member);
@@ -162,6 +160,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Member> c = cb.createQuery(Member.class);
@@ -191,11 +190,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Member> findFirstPage(int size) {
         return repository.findAll(new PageRequest(0, size, Sort.Direction.DESC, "createdTime"));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean isValidMember(Member member) {
         Member m = findOne(member.getId());
         if (m == null)
@@ -206,6 +207,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long countByCard(Card card) {
         return repository.countByCard(card);
     }

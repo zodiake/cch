@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.by.exception.CouponNotFoundException;
 import com.by.exception.Fail;
 import com.by.exception.MemberNotFoundException;
-import com.by.exception.NotEnoughScoreException;
 import com.by.exception.NotValidException;
 import com.by.exception.PasswordNotMatchException;
 import com.by.exception.Status;
@@ -97,7 +96,6 @@ public class ParkingCouponController extends BaseController {
         ParkingCoupon coupon = parkingCouponService.findOne(json.getId());
         ParkingCouponMessage message = new ParkingCouponMessage(coupon, member, json.getTotal());
 
-        isValidMember(memberService, member);
         validateCoupon(member, coupon, json.getTotal());
 
         final Inbox inbox = Inbox.create(system);
@@ -158,6 +156,9 @@ public class ParkingCouponController extends BaseController {
             throw new CouponNotFoundException();
         if (!couponService.isWithinValidDate(coupon))
             throw new NotValidException();
+        if (!member.getValid().equals(ValidEnum.VALID)) {
+            throw new NotValidException();
+        }
     }
 
 }
