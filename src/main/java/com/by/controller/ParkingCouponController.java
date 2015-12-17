@@ -119,6 +119,7 @@ public class ParkingCouponController extends BaseController {
         isValidMember(memberService, member);
         parkingCouponMemberService.useCoupon(member, new ParkingCoupon(json.getCouponId()), json.getTotal(),
                 json.getLicense());
+        //todo
         return new Status("success");
     }
 
