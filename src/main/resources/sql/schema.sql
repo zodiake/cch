@@ -343,6 +343,24 @@ CREATE TABLE by_shop_coupon_member (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE by_content (
+  id      INT NOT NULL AUTO_INCREMENT,
+  summary VARCHAR(1000),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE by_member_help (
+  id           INT NOT NULL AUTO_INCREMENT,
+  content_id   INT,
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
+  type         CHAR(1),
+  PRIMARY KEY (id),
+  FOREIGN KEY (content_id) REFERENCES by_content (id)
+);
+
 CREATE UNIQUE INDEX ON by_trading (code);
 CREATE UNIQUE INDEX ON by_member (name);
 CREATE UNIQUE INDEX ON by_shop (key);
