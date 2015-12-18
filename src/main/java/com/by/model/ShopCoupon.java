@@ -1,10 +1,7 @@
 package com.by.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by yagamai on 15-12-8.
@@ -12,15 +9,26 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("s")
 public class ShopCoupon extends Coupon {
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "shop_id")
-	private Shop shop;
+    @OneToMany(mappedBy = "coupon", fetch = FetchType.LAZY)
+    private List<ShopCouponMember> members;
 
-	public Shop getShop() {
-		return shop;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
 
-	public void setShop(Shop shop) {
-		this.shop = shop;
-	}
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    public List<ShopCouponMember> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<ShopCouponMember> members) {
+        this.members = members;
+    }
 }

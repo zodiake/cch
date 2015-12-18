@@ -16,14 +16,14 @@ import com.by.exception.AlreadyUsedException;
 import com.by.json.CouponJson;
 import com.by.model.Coupon;
 import com.by.model.Member;
-import com.by.model.PreferentialCoupon;
-import com.by.model.PreferentialCouponMember;
+import com.by.model.GiftCoupon;
+import com.by.model.GiftCouponMember;
 import com.by.model.Sequence;
-import com.by.repository.PreferentialCouponMemberRepository;
+import com.by.repository.GiftCouponMemberRepository;
 import com.by.service.CouponService;
 import com.by.service.MemberService;
-import com.by.service.PreferentialCouponMemberService;
-import com.by.service.PreferentialCouponService;
+import com.by.service.GiftCouponMemberService;
+import com.by.service.GiftCouponService;
 import com.by.service.SequenceService;
 import com.by.typeEnum.CouponStateEnum;
 import com.by.typeEnum.DuplicateEnum;
@@ -34,13 +34,13 @@ import com.by.typeEnum.ScoreHistoryEnum;
  */
 @Service
 @Transactional
-public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMemberService {
+public class GiftCouponMemberServiceImpl implements GiftCouponMemberService {
 	private final String reason = "礼品兑换";
 	private final DateFormat format = new SimpleDateFormat("yyyyMMddS");
 	@Autowired
-	private PreferentialCouponMemberRepository repository;
+	private GiftCouponMemberRepository repository;
 	@Autowired
-	private PreferentialCouponService preferentialCouponService;
+	private GiftCouponService giftCouponService;
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -49,8 +49,8 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 	private SequenceService sequenceService;
 
 	@Override
-	public PreferentialCouponMember useCoupon(String code, Member member) {
-		PreferentialCouponMember pcm = repository.findByCode(code);
+	public GiftCouponMember useCoupon(String code, Member member) {
+		GiftCouponMember pcm = repository.findByCode(code);
 		if (pcm.getState().equals(CouponStateEnum.USED))
 			throw new AlreadyUsedException();
 		pcm.setUsedTime(Calendar.getInstance());
@@ -58,10 +58,10 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 	}
 
 	@Override
-	public void exchangeCoupon(PreferentialCoupon coupon, Member member, int total) {
+	public void exchangeCoupon(GiftCoupon coupon, Member member, int total) {
 		int count = total;
 		Optional<Member> memberOptional = memberService.findById(member.getId());
-		PreferentialCoupon sourceCoupon = preferentialCouponService.findOne(coupon.getId());
+		GiftCoupon sourceCoupon = giftCouponService.findOne(coupon.getId());
 		if (coupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE)) {
 			for (int i = 1; i <= total; i++) {
 				save(sourceCoupon, memberOptional.get());
@@ -73,12 +73,12 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 		memberService.minusScore(memberOptional.get(), sourceCoupon.getScore()*count, reason, ScoreHistoryEnum.COUPONEXCHANGE);
 	}
 
-	public List<PreferentialCouponMember> findByCouponAndMember(PreferentialCoupon coupon, Member member) {
+	public List<GiftCouponMember> findByCouponAndMember(GiftCoupon coupon, Member member) {
 		return repository.findByCouponAndMember(coupon, member);
 	}
 
 	@Override
-	public Long sumTotalGroupByCoupon(PreferentialCoupon coupon) {
+	public Long sumTotalGroupByCoupon(GiftCoupon coupon) {
 		return repository.countByCoupon(coupon);
 	}
 
@@ -93,13 +93,13 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 		}).collect(Collectors.toList());
 	}
 
-	public PreferentialCouponMember save(PreferentialCouponMember pcm) {
+	public GiftCouponMember save(GiftCouponMember pcm) {
 		return repository.save(pcm);
 	}
 
-	public PreferentialCouponMember save(PreferentialCoupon coupon, Member member) {
+	public GiftCouponMember save(GiftCoupon coupon, Member member) {
 		Sequence sequence = sequenceService.save(new Sequence());
-		PreferentialCouponMember pcm = new PreferentialCouponMember(member, coupon);
+		GiftCouponMember pcm = new GiftCouponMember(member, coupon);
 		pcm.setCode(format.format(Calendar.getInstance().getTime()) + sequence.getId());
 		return save(pcm);
 	}

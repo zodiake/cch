@@ -6,25 +6,28 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+/**
+ * Created by yagamai on 15-12-3.
+ */
 @Entity
-@DiscriminatorValue("p")
-public class ParkingCoupon extends Coupon {
+@DiscriminatorValue("g")
+public class GiftCoupon extends Coupon {
     @OneToMany(mappedBy = "coupon", fetch = FetchType.LAZY)
-    private List<ParkingCouponMember> members;
+    private List<GiftCouponMember> members;
 
-    public ParkingCoupon() {
+    public GiftCoupon() {
         super();
     }
 
-    public ParkingCoupon(Long id) {
+    public GiftCoupon(Long id) {
         setId(id);
     }
 
-    public List<ParkingCouponMember> getMembers() {
+    public List<GiftCouponMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<ParkingCouponMember> members) {
+    public void setMembers(List<GiftCouponMember> members) {
         this.members = members;
     }
 }

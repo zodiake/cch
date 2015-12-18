@@ -29,15 +29,17 @@ public class Member {
     @JsonManagedReference
     private Card card;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private MemberDetail memberDetail;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<ParkingCouponMember> parkingCoupons;
 
-    // 兑换记录
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<ShopCouponMember> shopCoupons;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    private List<PreferentialCouponMember> coupons;
+    private List<GiftCouponMember> coupons;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "by_member_license", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "license_id"))
@@ -115,11 +117,11 @@ public class Member {
         this.createdTime = createdTime;
     }
 
-    public List<PreferentialCouponMember> getCoupons() {
+    public List<GiftCouponMember> getCoupons() {
         return coupons;
     }
 
-    public void setCoupons(List<PreferentialCouponMember> coupons) {
+    public void setCoupons(List<GiftCouponMember> coupons) {
         this.coupons = coupons;
     }
 
@@ -137,6 +139,14 @@ public class Member {
 
     public void setParkingCoupons(List<ParkingCouponMember> parkingCoupons) {
         this.parkingCoupons = parkingCoupons;
+    }
+
+    public List<ShopCouponMember> getShopCoupons() {
+        return shopCoupons;
+    }
+
+    public void setShopCoupons(List<ShopCouponMember> shopCoupons) {
+        this.shopCoupons = shopCoupons;
     }
 
     public List<License> getLicenses() {
@@ -170,24 +180,24 @@ public class Member {
     public void setInValidTime(Calendar inValidTime) {
         this.inValidTime = inValidTime;
     }
-    
+
     public Calendar getUpdatedTime() {
-		return updatedTime;
-	}
+        return updatedTime;
+    }
 
-	public void setUpdatedTime(Calendar updatedTime) {
-		this.updatedTime = updatedTime;
-	}
+    public void setUpdatedTime(Calendar updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 
-	public String getInValidBy() {
-		return inValidBy;
-	}
+    public String getInValidBy() {
+        return inValidBy;
+    }
 
-	public void setInValidBy(String inValidBy) {
-		this.inValidBy = inValidBy;
-	}
+    public void setInValidBy(String inValidBy) {
+        this.inValidBy = inValidBy;
+    }
 
-	@PrePersist
+    @PrePersist
     private void prePersist() {
         this.createdTime = Calendar.getInstance();
     }

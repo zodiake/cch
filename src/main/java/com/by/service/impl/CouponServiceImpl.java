@@ -5,7 +5,7 @@ import com.by.json.CouponJson;
 import com.by.model.*;
 import com.by.repository.CouponRepository;
 import com.by.repository.ParkingCouponMemberRepository;
-import com.by.repository.PreferentialCouponMemberRepository;
+import com.by.repository.GiftCouponMemberRepository;
 import com.by.repository.ShopCouponMemberRepository;
 import com.by.service.CouponService;
 import com.by.typeEnum.CouponAdminStateEnum;
@@ -34,7 +34,7 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private ParkingCouponMemberRepository parkingCouponMemberRepository;
     @Autowired
-    private PreferentialCouponMemberRepository preferentialCouponMemberRepository;
+    private GiftCouponMemberRepository giftCouponMemberRepository;
     @Autowired
     private ShopCouponMemberRepository shopCouponMemberRepository;
 
@@ -133,8 +133,8 @@ public class CouponServiceImpl implements CouponService {
                 json.setType("s");
             } else if (i instanceof ParkingCoupon) {
                 json.setType("p");
-            } else if (i instanceof PreferentialCoupon) {
-                json.setType("c");
+            } else if (i instanceof GiftCoupon) {
+                json.setType("g");
             }
             return json;
         }).collect(Collectors.toList());
@@ -144,7 +144,7 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Page<CouponJson> findByMember(Member member, Pageable pageable) {
         Page<ParkingCouponMember> parkingList = parkingCouponMemberRepository.findByMember(member, pageable);
-        Page<PreferentialCouponMember> preferentialCouponMemberList = preferentialCouponMemberRepository.findByMember(member, pageable);
+        Page<GiftCouponMember> giftCouponList = giftCouponMemberRepository.findByMember(member, pageable);
         Page<ShopCouponMember> shopCouponMemberList = shopCouponMemberRepository.findByMember(member, pageable);
         List<CouponJson> parkingJson = parkingList.getContent()
                 .stream()
@@ -157,14 +157,14 @@ public class CouponServiceImpl implements CouponService {
                     json.setTotal(i.getTotal());
                     return json;
                 }).collect(Collectors.toList());
-        List<CouponJson> preferentialJson = preferentialCouponMemberList.getContent()
+        List<CouponJson> preferentialJson = giftCouponList.getContent()
                 .stream()
                 .filter(i -> {
                     return i.getCoupon().getValid().equals(ValidEnum.VALID);
                 })
                 .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
-                    json.setType("c");
+                    json.setType("g");
                     return json;
                 })
                 .collect(Collectors.toList());
@@ -186,7 +186,7 @@ public class CouponServiceImpl implements CouponService {
                 return 1;
             return -1;
         });
-        Long max = Math.max(shopCouponMemberList.getTotalElements(), Math.max(parkingList.getTotalElements(), preferentialCouponMemberList.getTotalElements()));
+        Long max = Math.max(shopCouponMemberList.getTotalElements(), Math.max(parkingList.getTotalElements(), giftCouponList.getTotalElements()));
         return new PageImpl<>(parkingJson.stream().limit(15).collect(Collectors.toList()), pageable, max);
     }
 }

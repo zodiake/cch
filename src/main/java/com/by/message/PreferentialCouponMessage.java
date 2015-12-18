@@ -1,27 +1,27 @@
 package com.by.message;
 
 import com.by.model.Member;
-import com.by.model.PreferentialCoupon;
+import com.by.model.GiftCoupon;
 
 /**
  * Created by yagamai on 15-12-2.
  */
 public class PreferentialCouponMessage {
-    private PreferentialCoupon coupon;
+    private GiftCoupon coupon;
     private Member member;
     private int total;
 
-    public PreferentialCouponMessage(PreferentialCoupon coupon, Member member, int total) {
+    public PreferentialCouponMessage(GiftCoupon coupon, Member member, int total) {
         this.coupon = coupon;
         this.member = member;
         this.total = total;
     }
 
-    public PreferentialCoupon getCoupon() {
+    public GiftCoupon getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(PreferentialCoupon coupon) {
+    public void setCoupon(GiftCoupon coupon) {
         this.coupon = coupon;
     }
 

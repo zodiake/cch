@@ -24,7 +24,7 @@ import com.by.typeEnum.CouponStateEnum;
 
 @Entity
 @Table(name = "by_preferential_coupon_member")
-public class PreferentialCouponMember {
+public class GiftCouponMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +35,7 @@ public class PreferentialCouponMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
-    private PreferentialCoupon coupon;
+    private GiftCoupon coupon;
 
     private String code;
 
@@ -50,10 +50,10 @@ public class PreferentialCouponMember {
     @Column(name = "used_time")
     private Calendar usedTime;
 
-    public PreferentialCouponMember() {
+    public GiftCouponMember() {
     }
 
-    public PreferentialCouponMember(Member member, PreferentialCoupon coupon) {
+    public GiftCouponMember(Member member, GiftCoupon coupon) {
         this.member = member;
         this.coupon = coupon;
     }
@@ -74,11 +74,11 @@ public class PreferentialCouponMember {
         this.member = member;
     }
 
-    public PreferentialCoupon getCoupon() {
+    public GiftCoupon getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(PreferentialCoupon coupon) {
+    public void setCoupon(GiftCoupon coupon) {
         this.coupon = coupon;
     }
 
@@ -124,7 +124,7 @@ public class PreferentialCouponMember {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PreferentialCouponMember that = (PreferentialCouponMember) o;
+        GiftCouponMember that = (GiftCouponMember) o;
 
         return !(id != null ? !id.equals(that.id) : that.id != null);
 

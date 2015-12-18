@@ -9,11 +9,11 @@ import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
 import com.by.message.PreferentialCouponMessage;
 import com.by.model.Member;
-import com.by.model.PreferentialCoupon;
+import com.by.model.GiftCoupon;
 import com.by.service.CouponService;
 import com.by.service.MemberService;
-import com.by.service.PreferentialCouponMemberService;
-import com.by.service.PreferentialCouponService;
+import com.by.service.GiftCouponMemberService;
+import com.by.service.GiftCouponService;
 import com.by.typeEnum.ValidEnum;
 import com.by.utils.FailBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,27 +41,27 @@ import static com.by.SpringExtension.SpringExtProvider;
 
 @Controller
 @RequestMapping(value = "/api/preferentialCoupons")
-public class PreferentialCouponController extends BaseController {
+public class GiftCouponController extends BaseController {
     private ApplicationContext ctx;
     private ActorSystem system;
     private ActorRef ref;
-    private PreferentialCouponService preferentialCouponService;
-    private PreferentialCouponMemberService preferentialCouponMemberService;
+    private GiftCouponService giftCouponService;
+    private GiftCouponMemberService giftCouponMemberService;
     private MemberService memberService;
     private CouponService couponService;
     private ShaPasswordEncoder passwordEncoder;
 
     @Autowired
-    public PreferentialCouponController(ApplicationContext ctx, PreferentialCouponService preferentialCouponService,
-                                        MemberService memberService, CouponService couponService,
-                                        PreferentialCouponMemberService preferentialCouponMemberService, ShaPasswordEncoder passwordEncoder) {
+    public GiftCouponController(ApplicationContext ctx, GiftCouponService giftCouponService,
+                                MemberService memberService, CouponService couponService,
+                                GiftCouponMemberService giftCouponMemberService, ShaPasswordEncoder passwordEncoder) {
         this.ctx = ctx;
         this.system = ctx.getBean(ActorSystem.class);
-        this.ref = system.actorOf(SpringExtProvider.get(system).props("PreferentialCouponActor"), "couponActor");
-        this.preferentialCouponService = preferentialCouponService;
+        this.ref = system.actorOf(SpringExtProvider.get(system).props("GiftCouponActor"), "giftCouponActor");
+        this.giftCouponService = giftCouponService;
         this.memberService = memberService;
         this.couponService = couponService;
-        this.preferentialCouponMemberService = preferentialCouponMemberService;
+        this.giftCouponMemberService = giftCouponMemberService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -72,7 +72,7 @@ public class PreferentialCouponController extends BaseController {
                                                   @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
         isValidMember(member);
-        Page<PreferentialCoupon> coupons = preferentialCouponService.findByValid(ValidEnum.VALID, pageable);
+        Page<GiftCoupon> coupons = giftCouponService.findByValid(ValidEnum.VALID, pageable);
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
                 .filter(i -> {
@@ -99,7 +99,7 @@ public class PreferentialCouponController extends BaseController {
             if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getMemberDetail().getPassword()))
                 throw new PasswordNotMatchException();
         }
-        PreferentialCoupon coupon = preferentialCouponService.findOne(json.getId());
+        GiftCoupon coupon = giftCouponService.findOne(json.getId());
         if (coupon == null)
             throw new NotFoundException();
         PreferentialCouponMessage message = new PreferentialCouponMessage(coupon, member, json.getTotal());
@@ -125,7 +125,7 @@ public class PreferentialCouponController extends BaseController {
                              @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
         isValidMember(member);
-        List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
+        List<CouponJson> result = giftCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
     }
 
@@ -133,7 +133,7 @@ public class PreferentialCouponController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Status detail(@PathVariable("id") Long id) {
-        PreferentialCoupon coupon = preferentialCouponService.findOneCache(id);
+        GiftCoupon coupon = giftCouponService.findOneCache(id);
         if (coupon == null)
             throw new NotFoundException();
         return new Success<>(new CouponJson(coupon));
