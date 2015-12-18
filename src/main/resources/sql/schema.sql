@@ -352,11 +352,11 @@ CREATE TABLE by_content (
 CREATE TABLE by_member_help (
   id           INT NOT NULL AUTO_INCREMENT,
   content_id   INT,
+  title        VARCHAR(50),
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
-  type         CHAR(1),
   PRIMARY KEY (id),
   FOREIGN KEY (content_id) REFERENCES by_content (id)
 );

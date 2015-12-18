@@ -14,62 +14,70 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableCaching
 public class CachingConfig extends CachingConfigurerSupport {
-    public net.sf.ehcache.CacheManager ehCacheManager() {
-        //card cache config
-        CacheConfiguration cardCacheConfig = new CacheConfiguration();
-        cardCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        cardCacheConfig.setMaxEntriesLocalHeap(1000);
-        cardCacheConfig.setName("card");
+	public net.sf.ehcache.CacheManager ehCacheManager() {
+		// card cache config
+		CacheConfiguration cardCacheConfig = new CacheConfiguration();
+		cardCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		cardCacheConfig.setMaxEntriesLocalHeap(1000);
+		cardCacheConfig.setName("card");
 
-        //rule cache config
-        CacheConfiguration ruleCacheConfig = new CacheConfiguration();
-        ruleCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        ruleCacheConfig.setMaxEntriesLocalHeap(1000);
-        ruleCacheConfig.setName("rule");
+		// rule cache config
+		CacheConfiguration ruleCacheConfig = new CacheConfiguration();
+		ruleCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		ruleCacheConfig.setMaxEntriesLocalHeap(1000);
+		ruleCacheConfig.setName("rule");
 
-        //parkingCoupon cache config
-        CacheConfiguration couponCacheConfig = new CacheConfiguration();
-        couponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        couponCacheConfig.setMaxEntriesLocalHeap(1000);
-        couponCacheConfig.setName("coupon");
+		// coupon cache config
+		CacheConfiguration couponCacheConfig = new CacheConfiguration();
+		couponCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		couponCacheConfig.setMaxEntriesLocalHeap(1000);
+		couponCacheConfig.setName("coupon");
 
-        //menu cache config
-        CacheConfiguration menuCacheConfig = new CacheConfiguration();
-        menuCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        menuCacheConfig.setMaxEntriesLocalHeap(1000);
-        menuCacheConfig.setName("menu");
+		// menu cache config
+		CacheConfiguration menuCacheConfig = new CacheConfiguration();
+		menuCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		menuCacheConfig.setMaxEntriesLocalHeap(1000);
+		menuCacheConfig.setName("menu");
 
-        //rule cache config
-        CacheConfiguration cardRuleCacheConfig = new CacheConfiguration();
-        cardRuleCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        cardRuleCacheConfig.setMaxEntriesLocalHeap(1000);
-        cardRuleCacheConfig.setName("cardRule");
+		// rule cache config
+		CacheConfiguration cardRuleCacheConfig = new CacheConfiguration();
+		cardRuleCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		cardRuleCacheConfig.setMaxEntriesLocalHeap(1000);
+		cardRuleCacheConfig.setName("cardRule");
 
-        //shop cache config
-        CacheConfiguration shopCacheConfig = new CacheConfiguration();
-        shopCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        shopCacheConfig.setMaxEntriesLocalHeap(1000);
-        shopCacheConfig.setName("shop");
+		// shop cache config
+		CacheConfiguration shopCacheConfig = new CacheConfiguration();
+		shopCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		shopCacheConfig.setMaxEntriesLocalHeap(1000);
+		shopCacheConfig.setName("shop");
 
-        CacheConfiguration memberCacheConfig = new CacheConfiguration();
-        memberCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-        memberCacheConfig.setMaxEntriesLocalHeap(1000);
-        memberCacheConfig.setName("member");
+		// member cache config
+		CacheConfiguration memberCacheConfig = new CacheConfiguration();
+		memberCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		memberCacheConfig.setMaxEntriesLocalHeap(1000);
+		memberCacheConfig.setName("member");
 
-        net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
-        config.addCache(cardCacheConfig);
-        config.addCache(ruleCacheConfig);
-        config.addCache(couponCacheConfig);
-        config.addCache(menuCacheConfig);
-        config.addCache(cardRuleCacheConfig);
-        config.addCache(shopCacheConfig);
-        config.addCache(memberCacheConfig);
+		// help cache config
+		CacheConfiguration helpCacheConfig = new CacheConfiguration();
+		helpCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+		helpCacheConfig.setMaxEntriesLocalHeap(1000);
+		helpCacheConfig.setName("help");
 
-        return net.sf.ehcache.CacheManager.newInstance(config);
-    }
+		net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
+		config.addCache(cardCacheConfig);
+		config.addCache(ruleCacheConfig);
+		config.addCache(couponCacheConfig);
+		config.addCache(menuCacheConfig);
+		config.addCache(cardRuleCacheConfig);
+		config.addCache(shopCacheConfig);
+		config.addCache(memberCacheConfig);
+		config.addCache(helpCacheConfig);
 
-    @Bean
-    public CacheManager cacheManager() {
-        return new EhCacheCacheManager(ehCacheManager());
-    }
+		return net.sf.ehcache.CacheManager.newInstance(config);
+	}
+
+	@Bean
+	public CacheManager cacheManager() {
+		return new EhCacheCacheManager(ehCacheManager());
+	}
 }

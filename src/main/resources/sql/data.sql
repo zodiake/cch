@@ -127,3 +127,7 @@ INSERT INTO by_sequence (id) VALUES (1001);
 -- test by_member_license
 INSERT INTO by_member_license (member_id, license_id) VALUES (1, 1);
 INSERT INTO by_member_license (member_id, license_id) VALUES (1, 2);
+
+-- test help
+INSERT INTO by_content (id, summary) VALUES (1, 'ahahahahah');
+INSERT INTO by_member_help (content_id, title, id) VALUES (1, 'h', 1);

@@ -8,16 +8,14 @@ import java.util.Calendar;
  */
 @Entity
 @Table(name = "by_member_help")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "type")
-public abstract class MemberHelp {
+public class MemberHelp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String title;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private Content content;
 
