@@ -1,9 +1,8 @@
 package com.by.form;
 
-import com.by.typeEnum.CouponAdminStateEnum;
-import com.by.typeEnum.ValidEnum;
-
 import java.util.Calendar;
+
+import com.by.typeEnum.CouponAdminStateEnum;
 
 /**
  * Created by yagamai on 15-12-11.

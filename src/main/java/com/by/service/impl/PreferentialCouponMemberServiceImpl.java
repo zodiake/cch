@@ -89,7 +89,7 @@ public class PreferentialCouponMemberServiceImpl implements PreferentialCouponMe
 			return i.getUsedTime() == null && couponService.isValidCoupon(i.getCoupon());
 		}).map(i -> {
 			Coupon c = i.getCoupon();
-			return new CouponJson(c.getId(), c.getName(), c.getEndTime(), null);
+			return new CouponJson(c);
 		}).collect(Collectors.toList());
 	}
 

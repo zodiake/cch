@@ -1,5 +1,7 @@
 package com.by.service;
 
+import com.by.form.CouponQueryForm;
+import com.by.json.CouponTemplateJson;
 import com.by.model.ShopCoupon;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.data.domain.Page;
@@ -16,4 +18,6 @@ public interface ShopCouponService {
     ShopCoupon findOneCache(Long id);
 
     Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
+
+    Page<CouponTemplateJson> findAll(CouponQueryForm form, Pageable pageable);
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <title>Insert title here</title>
@@ -13,75 +13,16 @@
         </div>
     </script>
     <script>
-        $(function () {
-            var registerArray = [];
-            var tradingArray = [];
-
-            $('#add').click(function (e) {
-                var template = $('#registerTemplate');
-                $('#register').append($(template.html()));
-                return false;
-            });
-
-            $('#register').on('click', '.confirm', function () {
-                var self = $(this);
-                var array = self.siblings('input[type="text"]');
-                var obj = {};
-                array.each(function (i, e) {
-                    var name = $(this).attr('name');
-                    if (name == 'beginTime') {
-                        obj.beginTime = $(this).val();
-                    } else if (name == 'endTime') {
-                        obj.endTime = $(this).val();
-                    } else if (name == 'rate') {
-                        obj.rate = $(this).val();
-                    }
-                });
-                registerArray.push(obj);
-                console.log(registerArray);
-            });
-
-            $('form').submit(function () {
-                registerArray = [];
-                tradingArray = [];
-                $('#register').children().each(function (i, e) {
-                    var obj = {};
-                    $(e).children().each(function (i, e) {
-                        var name = $(this).attr('name');
-                        if (name == 'beginTime') {
-                            obj.beginTime = $(this).val();
-                        } else if (name == 'endTime') {
-                            obj.endTime = $(this).val();
-                        } else if (name == 'rate') {
-                            obj.rate = $(this).val();
-                        }
-                    });
-                    if (obj.rate.trim())
-                        registerArray.push(obj);
-                });
-
-                return false;
-            });
-
-            $('#register').on('click', '.delete', function () {
-                var self = $(this);
-                self.parent().remove();
-            });
-        });
     </script>
 </head>
 <body>
-<form>
-    <input type="text" name="name"/>
-    <button id="add">add</button>
-    <div id="register">
-        <div class="registerTemplate">
-            <input type="text" name="beginTime"/>
-            <input type="text" name="endTime"/>
-            <input type="text" name="rate"/>
-            <input type="button" class="delete" value="delete"/>
-        </div>
-    </div>
+<form th:object="${coupon}" th:method="post">
+	<ul>
+<li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+</ul>
+    <input th:field="*{name}"/>
+    <input th:field="*{summary}"/>
+    <p th:if="${#fields.hasErrors('summary')}" >Incorrect date</p>
     <input type="submit"/>
 </form>
 </body>

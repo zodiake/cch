@@ -19,8 +19,6 @@ public class CouponJson {
 
     private Calendar couponTime;
 
-    private String shopName;
-
     private ValidEnum valid;
 
     private String type;
@@ -31,12 +29,12 @@ public class CouponJson {
     }
 
     public CouponJson(Coupon coupon) {
-        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         this.id = coupon.getId();
         this.name = coupon.getName();
         this.valid = coupon.getValid();
         this.couponTime = coupon.getCouponEndTime();
-        this.couponEndTime=format.format(this.couponTime.getTime());
+        this.couponEndTime = format.format(this.couponTime.getTime());
     }
 
     public CouponJson(Long id, String name, Calendar endTime, String shopName) {
@@ -44,7 +42,6 @@ public class CouponJson {
         this.id = id;
         this.name = name;
         this.couponEndTime = format.format(endTime.getTime());
-        this.shopName = shopName;
     }
 
     public Long getId() {
@@ -69,14 +66,6 @@ public class CouponJson {
 
     public void setCouponEndTime(String couponEndTime) {
         this.couponEndTime = couponEndTime;
-    }
-
-    public String getShopName() {
-        return shopName;
-    }
-
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
     }
 
     public ValidEnum getValid() {

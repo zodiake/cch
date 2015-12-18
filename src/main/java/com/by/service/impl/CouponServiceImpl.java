@@ -1,5 +1,6 @@
 package com.by.service.impl;
 
+import com.by.form.CouponQueryForm;
 import com.by.json.CouponJson;
 import com.by.model.*;
 import com.by.repository.CouponRepository;
@@ -7,6 +8,7 @@ import com.by.repository.ParkingCouponMemberRepository;
 import com.by.repository.PreferentialCouponMemberRepository;
 import com.by.repository.ShopCouponMemberRepository;
 import com.by.service.CouponService;
+import com.by.typeEnum.CouponAdminStateEnum;
 import com.by.typeEnum.DuplicateEnum;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,6 +95,29 @@ public class CouponServiceImpl implements CouponService {
         return couponSummary.getBeginTime() == null && couponSummary.getEndTime() == null;
     }
 
+    public <T extends Coupon> Predicate[] getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb) {
+        List<Predicate> criteria = new ArrayList<>();
+        if (form.getState() != null) {
+            Calendar today = Calendar.getInstance();
+            if (form.getState().equals(CouponAdminStateEnum.CLOSED)) {
+                criteria.add(cb.equal(root.get("valid"), ValidEnum.INVALID));
+            } else if (form.getState().equals(CouponAdminStateEnum.NOEXPIRE)) {
+                criteria.add(cb.greaterThan(root.get("beginTime"), today));
+            } else if (form.getState().equals(CouponAdminStateEnum.USING)) {
+                criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), today));
+                criteria.add(cb.greaterThanOrEqualTo(root.get("endTime"), today));
+            } else if (form.getState().equals(CouponAdminStateEnum.EXPIRE)) {
+                criteria.add(cb.lessThan(root.get("endTime"), today));
+            }
+        }
+        if (form.getBeginTime() != null) {
+            criteria.add(cb.greaterThanOrEqualTo(root.get("beginTime"), form.getBeginTime()));
+        }
+        if (form.getEndTime() != null)
+            criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), form.getEndTime()));
+        return criteria.toArray(new Predicate[0]);
+    }
+
     @Override
     public boolean canUpdate(Coupon coupon) {
         Calendar today = Calendar.getInstance();
@@ -134,8 +163,8 @@ public class CouponServiceImpl implements CouponService {
                     return i.getCoupon().getValid().equals(ValidEnum.VALID);
                 })
                 .map(i -> {
-                	CouponJson json=new CouponJson(i.getCoupon());
-                	json.setType("c");
+                    CouponJson json = new CouponJson(i.getCoupon());
+                    json.setType("c");
                     return json;
                 })
                 .collect(Collectors.toList());
@@ -145,8 +174,8 @@ public class CouponServiceImpl implements CouponService {
                     return i.getCoupon().getValid().equals(ValidEnum.VALID);
                 })
                 .map(i -> {
-                	CouponJson json=new CouponJson(i.getCoupon());
-                	json.setType("s");
+                    CouponJson json = new CouponJson(i.getCoupon());
+                    json.setType("s");
                     return json;
                 })
                 .collect(Collectors.toList());
