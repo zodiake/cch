@@ -47,6 +47,12 @@ public abstract class Coupon {
     //是否可重复
     private DuplicateEnum duplicate;
 
+    @Column(name = "cover_img")
+    private String coverImg;
+
+    @Column(name = "content_img")
+    private String contentImg;
+
     private String summary;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -158,6 +164,22 @@ public abstract class Coupon {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
+    }
+
+    public String getContentImg() {
+        return contentImg;
+    }
+
+    public void setContentImg(String contentImg) {
+        this.contentImg = contentImg;
     }
 
     @PrePersist

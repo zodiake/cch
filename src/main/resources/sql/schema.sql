@@ -185,6 +185,8 @@ CREATE TABLE by_coupon (
   total           SMALLINT        DEFAULT 0,
   duplicate       SMALLINT        DEFAULT 1,
   amount          DOUBLE          DEFAULT 0,
+  cover_img       VARCHAR(50),
+  content_img     VARCHAR(50),
   summary         VARCHAR(255),
   shop_id         BIGINT,
   sortOrder       SMALLINT        DEFAULT 0,
