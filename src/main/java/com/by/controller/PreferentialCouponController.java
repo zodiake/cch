@@ -1,9 +1,37 @@
 package com.by.controller;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Inbox;
-import com.by.exception.*;
+import static com.by.SpringExtension.SpringExtProvider;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.by.exception.Fail;
+import com.by.exception.NotFoundException;
+import com.by.exception.PasswordNotMatchException;
+import com.by.exception.Status;
+import com.by.exception.Success;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
@@ -16,28 +44,11 @@ import com.by.service.PreferentialCouponMemberService;
 import com.by.service.PreferentialCouponService;
 import com.by.typeEnum.ValidEnum;
 import com.by.utils.FailBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Inbox;
 import scala.concurrent.duration.Duration;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-
-import static com.by.SpringExtension.SpringExtProvider;
 
 @Controller
 @RequestMapping(value = "/api/preferentialCoupons")
@@ -71,7 +82,7 @@ public class PreferentialCouponController extends BaseController {
     public Success<Page<CouponTemplateJson>> list(HttpServletRequest request,
                                                   @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
-        isValidMember(memberService, member);
+        isValidMember( member);
         Page<PreferentialCoupon> coupons = preferentialCouponService.findByValid(ValidEnum.VALID, pageable);
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
@@ -91,7 +102,7 @@ public class PreferentialCouponController extends BaseController {
     public Status exchangeCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json,
                                  BindingResult result) {
         Member m = (Member) request.getAttribute("member");
-        isValidMember(memberService, m);
+        isValidMember( m);
         if (result.hasErrors()) {
             return FailBuilder.buildFail(result);
         }
@@ -104,8 +115,6 @@ public class PreferentialCouponController extends BaseController {
         if (coupon == null)
             throw new NotFoundException();
         PreferentialCouponMessage message = new PreferentialCouponMessage(coupon, member, json.getTotal());
-
-        validateCoupon(member, coupon, json.getTotal());
 
         final Inbox inbox = Inbox.create(system);
         inbox.send(ref, message);
@@ -127,7 +136,7 @@ public class PreferentialCouponController extends BaseController {
     public Status couponList(HttpServletRequest request,
                              @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
-        isValidMember(memberService, member);
+        isValidMember(member);
         List<CouponJson> result = preferentialCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
     }

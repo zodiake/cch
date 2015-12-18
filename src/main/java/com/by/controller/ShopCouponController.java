@@ -73,7 +73,7 @@ public class ShopCouponController extends BaseController {
     public Success<Page<CouponTemplateJson>> list(HttpServletRequest request,
                                                   @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
-        isValidMember(memberService, member);
+        isValidMember( member);
         Page<ShopCoupon> coupons = shopCouponService.findByValid(ValidEnum.VALID, pageable);
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
@@ -94,7 +94,7 @@ public class ShopCouponController extends BaseController {
     public Status couponList(HttpServletRequest request,
                              @PageableDefault(page = 0, size = 10, sort = "exchangedTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
-        isValidMember(memberService, member);
+        isValidMember( member);
         List<CouponJson> result = shopCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
     }
@@ -108,7 +108,7 @@ public class ShopCouponController extends BaseController {
             return FailBuilder.buildFail(result);
         }
         Member m = (Member) request.getAttribute("member");
-        isValidMember(memberService, m);
+        isValidMember( m);
         Member member = memberService.findOneCache(m.getId());
         if (!StringUtils.isEmpty(json.getPassword())) {
             if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getMemberDetail().getPassword()))
@@ -118,8 +118,6 @@ public class ShopCouponController extends BaseController {
         if (coupon == null)
             throw new NotFoundException();
         ShopCouponMessage message = new ShopCouponMessage(coupon, member, json.getTotal());
-
-        validateCoupon(member, coupon, json.getTotal());
 
         final Inbox inbox = Inbox.create(system);
         inbox.send(ref, message);

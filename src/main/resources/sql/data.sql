@@ -37,8 +37,8 @@ INSERT INTO by_license (id, name) VALUES (2, '沪A14321');
 INSERT INTO by_card (id, name, valid, init_score) VALUES (1, 'low', 1, 100);
 
 -- test member
-INSERT INTO by_member (id, name, card_id, score,sumScore) VALUES (1, '13611738422', 1, 10,10);
-INSERT INTO by_member (id, name, card_id, score, valid,sumScore) VALUES (2, '13811738422', 1, 200, 0,10);
+INSERT INTO by_member (id, name, card_id, score, sumScore) VALUES (1, '13611738422', 1, 10, 10);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore) VALUES (2, '13811738422', 1, 200, 0, 10);
 
 -- test pay
 INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)
@@ -64,7 +64,7 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type)
 VALUES (4, 2.0, 1, 2, 1, 100, 'rule4', 'c');
 
 -- test shop
-INSERT INTO by_shop (id, name,key, user_id) VALUES (1, 'shop1','abc', 2);
+INSERT INTO by_shop (id, name, key, user_id) VALUES (1, 'shop1', 'abc', 2);
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
@@ -87,26 +87,27 @@ INSERT INTO by_trading (id, member_id, code, amount) VALUES (2, NULL, '123', 100
 
 -- test coupon
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (1, 'p', '2015-12-1', '2015-12-30', 10, '2016-1-1', 1, 100, 1, 20, 'coupon1');
+VALUES (1, 'p', '2015-12-1', '2015-12-30', 10, '2016-1-1', 1, 100, 1, 20, 'parkingCoupon1');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (2, 'c', '2015-12-1', '2015-12-30', 10, '2016-1-2', 1, 100, 0, 20, 'coupon2');
+VALUES (2, 'p', '2014-12-1', '2014-12-30', 10, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon3');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (3, 'p', '2014-12-1', '2014-12-30', 10, '2016-1-3', 1, 100, 0, 20, 'coupon3');
+VALUES (3, 'c', '2015-12-1', '2015-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'pCoupon2');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (4, 'c', '2015-12-1', '2015-12-30', 10, '2016-1-4', 0, 100, 0, 20, 'coupon2');
+VALUES (4, 'c', '2015-12-1', '2015-12-30', 10, '2016-1-4', 0, 100, 0, 20, 'pCoupon2');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
-VALUES (5, 's', '2015-12-1', '2015-12-30', 10, '2016-1-5', 1, 100, 0, 20, 'shopCoupon1', 1);
+VALUES (5, 's', '2015-12-1', '2015-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shopCoupon1', 1);
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
+VALUES (6, 's', '2015-12-1', '2015-12-30', 10, '2016-1-5', 1, 100, 0, 20, 'shopCoupon2', 1);
 
 -- test parkingCoupon
 INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 1, 10);
-INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 3, 1);
+INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 2, 1);
 
 -- test preferentialCoupon
-INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 2, 20);
+INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 3, 20);
 INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (2, 1, 4, 20);
 
 -- test shop coupon
-INSERT INTO by_shop_coupon_member (member_id, coupon_id) VALUES (1, 5);
 INSERT INTO by_shop_coupon_member (member_id, coupon_id) VALUES (1, 5);
 
 -- test score_history

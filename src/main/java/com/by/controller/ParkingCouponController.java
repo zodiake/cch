@@ -96,8 +96,6 @@ public class ParkingCouponController extends BaseController {
         ParkingCoupon coupon = parkingCouponService.findOne(json.getId());
         ParkingCouponMessage message = new ParkingCouponMessage(coupon, member, json.getTotal());
 
-        validateCoupon(member, coupon, json.getTotal());
-
         final Inbox inbox = Inbox.create(system);
         inbox.send(ref, message);
         try {
@@ -116,7 +114,7 @@ public class ParkingCouponController extends BaseController {
     @ResponseBody
     public Status useCoupon(HttpServletRequest request, @RequestBody UseCouponJson json) {
         Member member = (Member) request.getAttribute("member");
-        isValidMember(memberService, member);
+        isValidMember( member);
         parkingCouponMemberService.useCoupon(member, new ParkingCoupon(json.getCouponId()), json.getTotal(),
                 json.getLicense());
         //todo
@@ -129,7 +127,7 @@ public class ParkingCouponController extends BaseController {
     public Success<List<CouponTemplateJson>> list(HttpServletRequest request,
                                                   @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
-        isValidMember(memberService, member);
+        isValidMember( member);
         List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID, pageable).getContent()
                 .stream().filter(i -> {
                     return couponService.isValidCoupon(i);
@@ -144,22 +142,9 @@ public class ParkingCouponController extends BaseController {
     @ResponseBody
     public Status couponList(HttpServletRequest request, @PageableDefault(page = 0, size = 10) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
-        isValidMember(memberService, member);
+        isValidMember( member);
         List<CouponJson> result = parkingCouponMemberService.findByMember(member, pageable);
         return new Success<>(result);
-    }
-
-
-    private void validateCoupon(Member member, ParkingCoupon coupon, int total) {
-        if (member == null)
-            throw new MemberNotFoundException();
-        if (coupon == null)
-            throw new CouponNotFoundException();
-        if (!couponService.isValidCoupon(coupon))
-            throw new NotValidException();
-        if (!member.getValid().equals(ValidEnum.VALID)) {
-            throw new NotValidException();
-        }
     }
 
 }

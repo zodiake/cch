@@ -1,12 +1,7 @@
 package com.by.controller;
 
-import com.by.exception.Status;
-import com.by.exception.Success;
-import com.by.json.ScoreJson;
-import com.by.model.Member;
-import com.by.service.MemberService;
-import com.by.service.ScoreAddHistoryService;
-import com.by.service.ScoreHistoryService;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.json.ScoreJson;
+import com.by.model.Member;
+import com.by.service.MemberService;
+import com.by.service.ScoreHistoryService;
 
 /**
  * Created by yagamai on 15-12-7.
@@ -26,8 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 public class ScoreController {
     @Autowired
     private MemberService memberService;
-    @Autowired
-    private ScoreAddHistoryService scoreAddHistoryService;
     @Autowired
     private ScoreHistoryService scoreHistoryService;
 
