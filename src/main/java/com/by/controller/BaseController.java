@@ -1,6 +1,6 @@
 package com.by.controller;
 
-import com.by.exception.NotValidException;
+import com.by.exception.MemberNotValidException;
 import com.by.model.Member;
 import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
@@ -18,7 +18,7 @@ public class BaseController {
     protected void isValidMember(Member member) {
         Member cacheMember = memberService.findOneCache(member.getId());
         if (!cacheMember.getValid().equals(ValidEnum.VALID)) {
-            throw new NotValidException();
+            throw new MemberNotValidException();
         }
     }
 }

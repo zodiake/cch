@@ -42,7 +42,7 @@ public class PreferentialCouponActor extends AbstractCouponActor<PreferentialCou
     }
 
     @Override
-    protected boolean hadExchangeCoupon(PreferentialCoupon coupon, Member member) {
+    protected boolean alreadyExchangeCoupon(PreferentialCoupon coupon, Member member) {
         List<PreferentialCouponMember> result = service.findByCouponAndMember(coupon, member);
         return result.size() > 0;
     }

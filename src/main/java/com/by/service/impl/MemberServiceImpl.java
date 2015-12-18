@@ -1,11 +1,11 @@
 package com.by.service.impl;
 
+import com.by.exception.MemberNotValidException;
 import com.by.exception.NotEnoughScoreException;
 import com.by.exception.NotValidException;
 import com.by.form.AdminMemberForm;
 import com.by.json.MemberJson;
 import com.by.model.*;
-import com.by.repository.CardRuleRepository;
 import com.by.repository.MemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.ScoreHistoryEnum;
@@ -69,9 +69,9 @@ public class MemberServiceImpl implements MemberService {
         if (card == null)
             throw new NotValidException();
         List<CardRule> rules = cardRuleService.findByRuleCategoryAndCardAndValid(registerCategory, card, ValidEnum.VALID)
-        		.stream()
-        		.filter(i -> ruleService.withinValidDate(i))
-        		.collect(Collectors.toList());
+                .stream()
+                .filter(i -> ruleService.withinValidDate(i))
+                .collect(Collectors.toList());
         int score = card.getInitScore();
         if (rules.size() > 0) {
             score += ruleService.getMaxScore(rules);

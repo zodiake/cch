@@ -33,6 +33,7 @@ public class ShopCouponActor extends AbstractCouponActor<ShopCoupon> {
         }
     }
 
+    @Override
     public boolean outOfStorage(ShopCoupon coupon, int count) {
         Long total = service.countByCoupon(coupon);
         if (total == null)
@@ -41,7 +42,7 @@ public class ShopCouponActor extends AbstractCouponActor<ShopCoupon> {
     }
 
     @Override
-    protected boolean hadExchangeCoupon(ShopCoupon coupon, Member member) {
+    protected boolean alreadyExchangeCoupon(ShopCoupon coupon, Member member) {
         List<ShopCouponMember> result = service.findByCouponAndMember(coupon, member);
         return result.size() > 0;
     }
