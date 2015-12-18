@@ -132,7 +132,7 @@ public class ParkingCouponController extends BaseController {
         isValidMember(memberService, member);
         List<CouponTemplateJson> coupons = parkingCouponService.findByValid(ValidEnum.VALID, pageable).getContent()
                 .stream().filter(i -> {
-                    return couponService.isWithinValidDate(i);
+                    return couponService.isValidCoupon(i);
                 }).map(i -> {
                     return new CouponTemplateJson(i);
                 }).collect(Collectors.toList());
@@ -155,7 +155,7 @@ public class ParkingCouponController extends BaseController {
             throw new MemberNotFoundException();
         if (coupon == null)
             throw new CouponNotFoundException();
-        if (!couponService.isWithinValidDate(coupon))
+        if (!couponService.isValidCoupon(coupon))
             throw new NotValidException();
         if (!member.getValid().equals(ValidEnum.VALID)) {
             throw new NotValidException();

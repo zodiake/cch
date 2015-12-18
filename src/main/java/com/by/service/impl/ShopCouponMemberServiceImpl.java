@@ -88,7 +88,7 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
 	@Override
 	public List<CouponJson> findByMember(Member member, Pageable pageable) {
 		return repository.findByMember(member, pageable).getContent().stream().filter(i -> {
-			return i.getUsedTime() == null && couponService.isWithinValidDate(i.getCoupon());
+			return i.getUsedTime() == null && couponService.isValidCoupon(i.getCoupon());
 		}).map(i -> {
 			ShopCoupon c = i.getCoupon();
 			return new CouponJson(c.getId(), c.getName(), c.getEndTime(), i.getCoupon().getShop().getName());

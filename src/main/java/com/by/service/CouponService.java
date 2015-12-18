@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CouponService {
-	boolean isWithinValidDate(Coupon coupon);
+	boolean isValidCoupon(Coupon coupon);
 
 	boolean noStorageLimited(Coupon coupon);
 

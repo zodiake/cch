@@ -31,7 +31,7 @@ public class BaseController {
             throw new MemberNotFoundException();
         if (coupon.getScore() * total > member.getScore())
             throw new NotEnoughScoreException();
-        if (!couponService.isWithinValidDate(coupon))
+        if (!couponService.isValidCoupon(coupon))
             throw new NotValidException();
     }
 }

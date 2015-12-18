@@ -34,7 +34,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public boolean isWithinValidDate(Coupon coupon) {
+    public boolean isValidCoupon(Coupon coupon) {
         if (isValid(coupon)) {
             if (coupon.getBeginTime() == null && coupon.getEndTime() == null)
                 return true;
@@ -72,10 +72,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public boolean withinValidDate(Coupon couponSummary) {
+    public boolean withinValidDate(Coupon coupon) {
         Calendar today = Calendar.getInstance();
-        couponSummary.getEndTime().add(1, Calendar.DATE);
-        return couponSummary.getBeginTime().before(today) && couponSummary.getEndTime().after(today);
+        return coupon.getBeginTime().before(today) && coupon.getEndTime().after(today);
     }
 
     @Override

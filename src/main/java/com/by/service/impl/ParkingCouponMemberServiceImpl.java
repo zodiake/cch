@@ -1,7 +1,6 @@
 package com.by.service.impl;
 
 import com.by.exception.NotEnoughCouponException;
-import com.by.exception.NotEnoughScoreException;
 import com.by.exception.NotValidException;
 import com.by.form.AdminCouponForm;
 import com.by.json.CouponJson;
@@ -75,6 +74,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 
     @Override
     public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
+        int count = total;
         Member sourceMember = em.find(Member.class, member.getId());
         ParkingCoupon sourceCoupon = em.find(ParkingCoupon.class, coupon.getId());
         ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
@@ -85,9 +85,10 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
                 pcm = save(sourceCoupon, sourceMember, total);
             }
         } else {
+            count = 1;
             pcm = save(sourceCoupon, sourceMember, 1);
         }
-        memberService.minusScore(sourceMember, total * sourceCoupon.getScore(), reason,
+        memberService.minusScore(sourceMember, count * sourceCoupon.getScore(), reason,
                 ScoreHistoryEnum.COUPONEXCHANGE);
         exchangeHistoryService.save(sourceMember, sourceCoupon, total);
         return pcm;
@@ -102,7 +103,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     public List<ParkingCouponMember> findByMember(Member member) {
         List<ParkingCouponMember> lists = repository.findByMember(member);
         return lists.stream().filter(i -> {
-            return couponService.isWithinValidDate(i.getCoupon());
+            return couponService.isValidCoupon(i.getCoupon());
         }).collect(Collectors.toList());
     }
 
@@ -120,7 +121,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     @Override
     public List<CouponJson> findByMember(Member member, Pageable pageable) {
         return repository.findByMember(member, pageable).getContent().stream().filter(i -> {
-            return couponService.isWithinValidDate(i.getCoupon());
+            return couponService.isValidCoupon(i.getCoupon());
         }).map(i -> {
             CouponJson json = new CouponJson(i.getCoupon());
             json.setTotal(i.getTotal());

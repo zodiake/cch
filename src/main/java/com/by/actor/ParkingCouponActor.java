@@ -35,7 +35,7 @@ public class ParkingCouponActor extends UntypedActor {
             ParkingCoupon coupon = pcm.getParkingCoupon();
             Member member = pcm.getMember();
             int total = pcm.getTotal();
-            if (couponService.isWithinValidDate(coupon)) {
+            if (couponService.isValidCoupon(coupon)) {
                 if (!couponService.isPermanent(coupon)) {
                     if (!couponService.withinValidDate(coupon)) {
                         sender().tell("out of date", null);

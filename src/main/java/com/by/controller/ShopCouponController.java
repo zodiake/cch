@@ -78,7 +78,7 @@ public class ShopCouponController extends BaseController {
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
                 .filter(i -> {
-                    return couponService.isWithinValidDate(i);
+                    return couponService.isValidCoupon(i);
                 })
                 .map(i -> {
                     CouponTemplateJson json = new CouponTemplateJson(i);

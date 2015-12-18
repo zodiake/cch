@@ -39,6 +39,6 @@ public class CouponServiceTest {
         coupon.setBeginTime(beginTime);
         coupon.setEndTime(endTime);
         assertEquals(false, coupon.getEndTime().after(Calendar.getInstance()));
-        assertEquals(false, service.isWithinValidDate(coupon));
+        assertEquals(false, service.isValidCoupon(coupon));
     }
 }
