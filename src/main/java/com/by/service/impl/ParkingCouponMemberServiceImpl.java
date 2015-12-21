@@ -1,14 +1,17 @@
 package com.by.service.impl;
 
+import com.by.exception.AlreadyExchangeException;
 import com.by.exception.NotEnoughCouponException;
 import com.by.exception.NotValidException;
 import com.by.form.AdminCouponForm;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
-import com.by.model.*;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
+import com.by.model.Shop;
 import com.by.repository.ParkingCouponMemberRepository;
 import com.by.service.*;
-import com.by.typeEnum.DuplicateEnum;
 import com.by.typeEnum.ScoreHistoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -78,12 +81,14 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         Member sourceMember = em.find(Member.class, member.getId());
         ParkingCoupon sourceCoupon = em.find(ParkingCoupon.class, coupon.getId());
         ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
-        if (isDuplicate(sourceCoupon)) {
+        if (couponService.isDuplicateCoupon(sourceCoupon)) {
             if (pcm != null) {
                 pcm.setTotal(pcm.getTotal() + total);
             } else {
                 pcm = save(sourceCoupon, sourceMember, total);
             }
+        } else if (pcm != null && !couponService.isDuplicateCoupon(sourceCoupon)) {
+            throw new AlreadyExchangeException();
         } else {
             count = 1;
             pcm = save(sourceCoupon, sourceMember, 1);
@@ -94,17 +99,13 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         return pcm;
     }
 
-    private boolean isDuplicate(Coupon coupon) {
-        return coupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE);
-    }
-
     @Override
     @Transactional(readOnly = true)
     public List<ParkingCouponMember> findByMember(Member member) {
         List<ParkingCouponMember> lists = repository.findByMember(member);
-        return lists.stream().filter(i -> {
-            return couponService.isValidCoupon(i.getCoupon());
-        }).collect(Collectors.toList());
+        return lists.stream().filter(i ->
+                couponService.isValidCoupon(i.getCoupon()) && i.getTotal() > 0
+        ).collect(Collectors.toList());
     }
 
     @Override

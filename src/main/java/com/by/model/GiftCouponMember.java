@@ -23,7 +23,7 @@ import com.by.typeEnum.CouponStateEnum;
  */
 
 @Entity
-@Table(name = "by_preferential_coupon_member")
+@Table(name = "by_gift_coupon_member")
 public class GiftCouponMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +38,6 @@ public class GiftCouponMember {
     private GiftCoupon coupon;
 
     private String code;
-
-    @Enumerated
-    private CouponStateEnum state;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "exchanged_time")
@@ -88,14 +85,6 @@ public class GiftCouponMember {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public CouponStateEnum getState() {
-        return state;
-    }
-
-    public void setState(CouponStateEnum state) {
-        this.state = state;
     }
 
     public Calendar getExchangedTime() {

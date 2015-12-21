@@ -18,4 +18,6 @@ public interface ShopCouponMemberRepository extends PagingAndSortingRepository<S
     List<ShopCouponMember> findByCouponAndMember(ShopCoupon coupon, Member member);
 
     Page<ShopCouponMember> findByMember(Member member, Pageable pageable);
+
+    ShopCouponMember findByCode(String code);
 }

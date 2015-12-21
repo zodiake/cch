@@ -4,8 +4,8 @@ import com.by.form.CouponQueryForm;
 import com.by.json.CouponJson;
 import com.by.model.*;
 import com.by.repository.CouponRepository;
-import com.by.repository.ParkingCouponMemberRepository;
 import com.by.repository.GiftCouponMemberRepository;
+import com.by.repository.ParkingCouponMemberRepository;
 import com.by.repository.ShopCouponMemberRepository;
 import com.by.service.CouponService;
 import com.by.typeEnum.CouponAdminStateEnum;
@@ -148,9 +148,9 @@ public class CouponServiceImpl implements CouponService {
         Page<ShopCouponMember> shopCouponMemberList = shopCouponMemberRepository.findByMember(member, pageable);
         List<CouponJson> parkingJson = parkingList.getContent()
                 .stream()
-                .filter(i -> {
-                    return i.getCoupon().getValid().equals(ValidEnum.VALID);
-                })
+                .filter(i ->
+                        i.getCoupon().getValid().equals(ValidEnum.VALID) && i.getTotal() > 0
+                )
                 .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setType("p");
@@ -159,9 +159,9 @@ public class CouponServiceImpl implements CouponService {
                 }).collect(Collectors.toList());
         List<CouponJson> preferentialJson = giftCouponList.getContent()
                 .stream()
-                .filter(i -> {
-                    return i.getCoupon().getValid().equals(ValidEnum.VALID);
-                })
+                .filter(i ->
+                        i.getCoupon().getValid().equals(ValidEnum.VALID) && i.getUsedTime() == null
+                )
                 .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setType("g");
@@ -170,9 +170,9 @@ public class CouponServiceImpl implements CouponService {
                 .collect(Collectors.toList());
         List<CouponJson> shopJson = shopCouponMemberList.getContent()
                 .stream()
-                .filter(i -> {
-                    return i.getCoupon().getValid().equals(ValidEnum.VALID);
-                })
+                .filter(i ->
+                        i.getCoupon().getValid().equals(ValidEnum.VALID) && i.getUsedTime() == null
+                )
                 .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setType("s");

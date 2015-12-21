@@ -104,8 +104,8 @@ INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 1,
 INSERT INTO by_parking_coupon_member (member_id, coupon_id, total) VALUES (1, 2, 1);
 
 -- test preferentialCoupon
-INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 3, 20);
-INSERT INTO by_preferential_coupon_member (id, member_id, coupon_id, total) VALUES (2, 1, 4, 20);
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 3, 20);
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, total) VALUES (2, 1, 4, 20);
 
 -- test shop coupon
 INSERT INTO by_shop_coupon_member (member_id, coupon_id) VALUES (1, 5);

@@ -203,7 +203,7 @@ CREATE TABLE by_parking_coupon_member (
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
-CREATE TABLE by_preferential_coupon_member (
+CREATE TABLE by_gift_coupon_member (
   id             BIGINT AUTO_INCREMENT,
   member_id      BIGINT,
   coupon_id      BIGINT,
@@ -364,5 +364,5 @@ CREATE TABLE by_member_help (
 CREATE UNIQUE INDEX ON by_trading (code);
 CREATE UNIQUE INDEX ON by_member (name);
 CREATE UNIQUE INDEX ON by_shop (key);
-CREATE UNIQUE INDEX ON by_preferential_coupon_member (code);
+CREATE UNIQUE INDEX ON by_gift_coupon_member (code);
 CREATE INDEX ON by_trading (created_time);

@@ -1,5 +1,7 @@
 package com.by.service.impl;
 
+import com.by.exception.AlreadyExchangeException;
+import com.by.exception.AlreadyUsedException;
 import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.model.Sequence;
@@ -49,6 +51,8 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
             for (int i = 1; i <= total; i++) {
                 save(shopCoupon, memberOptional.get());
             }
+        } else if (shopCoupon != null && !couponService.isDuplicateCoupon(shopCoupon)) {
+            throw new AlreadyExchangeException();
         } else {
             count = 1;
             save(shopCoupon, memberOptional.get());
@@ -58,7 +62,11 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
 
     @Override
     public ShopCouponMember useCoupon(String code, Member member) {
-        return null;
+        ShopCouponMember shopCouponMember = repository.findByCode(code);
+        if (shopCouponMember.getUsedTime() != null)
+            throw new AlreadyUsedException();
+        shopCouponMember.setUsedTime(Calendar.getInstance());
+        return shopCouponMember;
     }
 
     @Override

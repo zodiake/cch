@@ -23,12 +23,6 @@ public abstract class AbstractCouponActor<T extends Coupon> extends UntypedActor
 
     protected void checkAndExchangeCoupon(T coupon, Member member, int total) {
         if (couponService.isValidCoupon(coupon)) {
-            if (!couponService.isDuplicateCoupon(coupon)) {
-                if (alreadyExchangeCoupon(coupon, member)) {
-                    sender().tell("duplicate", null);
-                    return;
-                }
-            }
             if (couponService.noStorageLimited(coupon)) {
                 exchangeCoupon(coupon, member, total);
             } else {
