@@ -59,7 +59,7 @@ CREATE TABLE by_auth_menu (
 );
 
 CREATE TABLE by_rule_category (
-  id   BIGINT NOT NULL AUTO_INCREMENT,
+  id   int NOT NULL AUTO_INCREMENT,
   name VARCHAR(20),
   PRIMARY KEY (id)
 );
@@ -100,7 +100,7 @@ CREATE TABLE by_rule (
   valid       SMALLINT,
   beginTime   TIMESTAMP,
   endTime     TIMESTAMP,
-  category_id BIGINT,
+  category_id int,
   name        VARCHAR(20),
   type        CHAR(1),
   FOREIGN KEY (card_id) REFERENCES by_card (id),

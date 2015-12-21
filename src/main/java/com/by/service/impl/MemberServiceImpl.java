@@ -62,7 +62,7 @@ public class MemberServiceImpl implements MemberService {
     private CardRuleService cardRuleService;
     @Autowired
     private EntityManager em;
-    private RuleCategory registerCategory = new RuleCategory(1L);
+    private RuleCategory registerCategory = new RuleCategory(1);
 
     @Override
     @Transactional(readOnly = true)

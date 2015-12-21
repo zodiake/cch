@@ -9,8 +9,8 @@ import com.by.model.CardRule;
 import com.by.model.RuleCategory;
 import com.by.typeEnum.ValidEnum;
 
-public interface CardRuleRepository extends PagingAndSortingRepository<CardRule, Long> {
+public interface CardRuleRepository extends PagingAndSortingRepository<CardRule, Integer> {
 	List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid);
 
-	List<CardRule> findByRuleCategory(RuleCategory category);
+	List<CardRule> findByRuleCategoryAndCard(RuleCategory category, Card card);
 }

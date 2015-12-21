@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script src="/javascript/jquery-1.11.3.min.js"></script>
+<script src="/javascript/page.js"></script>
+<script>
+	$(function() {
+		$('#validate').click(function() {
+			var self = $(this);
+			var id = self.attr('member');
+			$.ajax({
+				url : '/admin/member/' + id + '/validate',
+				method : 'put',
+				success : function(data) {
+					if (data.status == 'success') {
+						if (data.obj.valid == 'VALID') {
+							self.val('valid');
+						} else if (data.obj.valid == 'INVALID') {
+							self.val('invalid');
+						}
+					}
+				}
+			});
+		});
+	});
+</script>
+</head>
+<body>
+	<div>
+		name:<span th:text="${member.name}"></span>
+	</div>
+	<input id="validate" type="button" value="add"
+		th:attr="member=${member.id}" />
+</body>
+</html>

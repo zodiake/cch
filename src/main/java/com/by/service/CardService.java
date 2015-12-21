@@ -11,10 +11,10 @@ import java.util.Optional;
 
 public interface CardService {
     Card findOne(Long id);
-    
-    Card findOneAndRule(Long id);
 
     Page<Card> findAll(Pageable pageable);
+
+    List<Card> findAll();
 
     Card save(Card card);
 

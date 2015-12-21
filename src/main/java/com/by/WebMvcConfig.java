@@ -1,9 +1,6 @@
 package com.by;
 
-import com.by.converter.StringToCalendar;
-import com.by.converter.StringToCouponAdminStateEnum;
-import com.by.converter.StringToDuplicateEnum;
-import com.by.converter.StringToValidEnumConverter;
+import com.by.converter.*;
 import com.by.interceptor.JWTInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

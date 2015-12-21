@@ -19,12 +19,28 @@ import java.util.List;
 @Service
 @Transactional
 public class CardRuleServiceImpl implements CardRuleService {
-    @Autowired
-    private CardRuleRepository repository;
+	@Autowired
+	private CardRuleRepository repository;
 
-    @Override
-    @Cacheable(value = "cardRule", key = "#category.id")
-    public List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid) {
-        return repository.findByRuleCategoryAndCardAndValid(category, card, ValidEnum.VALID);
-    }
+	@Override
+	@Cacheable(value = "cardRule", key = "#category.id")
+	public List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid) {
+		return repository.findByRuleCategoryAndCardAndValid(category, card, ValidEnum.VALID);
+	}
+
+	@Override
+	public List<CardRule> findByRuleCategoryAndCard(RuleCategory category, Card card) {
+		return repository.findByRuleCategoryAndCard(category, card);
+	}
+
+	@Override
+	public CardRule save(CardRule rule) {
+		return repository.save(rule);
+	}
+
+	@Override
+	public CardRule findOne(int id) {
+		return repository.findOne(id);
+	}
+
 }

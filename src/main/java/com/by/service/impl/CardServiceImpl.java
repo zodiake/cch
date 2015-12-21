@@ -1,10 +1,10 @@
 package com.by.service.impl;
 
-import com.by.json.CardJson;
-import com.by.model.Card;
-import com.by.repository.CardRepository;
-import com.by.service.CardService;
-import com.by.typeEnum.ValidEnum;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
@@ -17,9 +17,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
+import com.by.json.CardJson;
+import com.by.model.Card;
+import com.by.repository.CardRepository;
+import com.by.service.CardService;
+import com.by.typeEnum.ValidEnum;
+import com.google.common.collect.Lists;
 
 @Service
 @Transactional
@@ -40,6 +43,13 @@ public class CardServiceImpl implements CardService {
     @Transactional(readOnly = true)
     public Page<Card> findAll(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable("card")
+    public List<Card> findAll() {
+        return Lists.newArrayList(repository.findAll());
     }
 
     @Override
@@ -89,11 +99,4 @@ public class CardServiceImpl implements CardService {
         return cards.getContent();
     }
 
-	@Override
-    @Transactional(readOnly = true)
-	public Card findOneAndRule(Long id) {
-		Card card=findOne(id);
-		card.getRules().size();
-		return card;
-	}
 }

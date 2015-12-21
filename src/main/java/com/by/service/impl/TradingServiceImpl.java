@@ -40,7 +40,7 @@ public class TradingServiceImpl implements TradingService {
     private ShopService shopService;
     @Autowired
     private CardRuleService cardRuleService;
-    private RuleCategory tradingRuleCategory = new RuleCategory(2l);
+    private RuleCategory tradingRuleCategory = new RuleCategory(2);
 
     @Override
     @Transactional(readOnly = true)

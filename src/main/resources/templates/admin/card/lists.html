@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <script src="/javascript/jquery-1.11.3.min.js"></script>
+    <script src="/javascript/page.js"></script>
+    <script>
+        $(function () {
+        });
+    </script>
+</head>
+<body>
+<form th:object="${rule}" th:method="post">
+	<input type="text" th:field="*{name}"/>
+	<select th:field="*{card}">
+		<option th:each="c:${cards}" th:value="${c.id}" th:text="${c.name}"></option>
+	</select>
+</form>
+</body>
+</html>

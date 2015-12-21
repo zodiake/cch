@@ -1,0 +1,22 @@
+signup
+<div>
+	<table>
+		<tr th:each="rule:${signUpRules}">
+			<td th:text="${rule.name}"></td>
+			<td th:text="${rule.beginTime}"></td>
+			<td th:text="${rule.endTime}"></td>
+			<td th:text="${rule.score}"></td>
+		</tr>
+	</table>
+</div>
+trading:
+<div>
+	<table>
+		<tr th:each="rule:${tradingRules}">
+			<td th:text="${rule.name}"></td>
+			<td th:text="${rule.beginTime}"></td>
+			<td th:text="${rule.endTime}"></td>
+			<td th:text="${rule.rate}"></td>
+		</tr>
+	</table>
+</div>

@@ -2,6 +2,7 @@ package com.by.service;
 
 import java.util.List;
 
+import com.by.model.Card;
 import com.by.model.Rule;
 
 /**
@@ -17,4 +18,5 @@ public interface RuleService {
     double getMaxRate(List<? extends Rule> rules);
 
     boolean withinValidDate(Rule rule);
+
 }
