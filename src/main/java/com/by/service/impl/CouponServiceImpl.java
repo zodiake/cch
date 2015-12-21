@@ -1,20 +1,14 @@
 package com.by.service.impl;
 
-import com.by.exception.AlreadyExchangeException;
-import com.by.exception.NotValidException;
-import com.by.exception.OutOfStorageException;
-import com.by.form.CouponQueryForm;
-import com.by.json.CouponJson;
-import com.by.model.*;
-import com.by.repository.CouponRepository;
-import com.by.repository.GiftCouponMemberRepository;
-import com.by.repository.ParkingCouponMemberRepository;
-import com.by.repository.ShopCouponMemberRepository;
-import com.by.service.CouponService;
-import com.by.typeEnum.CouponAdminStateEnum;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ScoreHistoryEnum;
-import com.by.typeEnum.ValidEnum;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,13 +17,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.form.CouponQueryForm;
+import com.by.json.CouponJson;
+import com.by.model.Coupon;
+import com.by.model.GiftCoupon;
+import com.by.model.GiftCouponMember;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
+import com.by.model.ShopCoupon;
+import com.by.model.ShopCouponMember;
+import com.by.repository.CouponRepository;
+import com.by.repository.GiftCouponMemberRepository;
+import com.by.repository.ParkingCouponMemberRepository;
+import com.by.repository.ShopCouponMemberRepository;
+import com.by.service.CouponService;
+import com.by.typeEnum.CouponAdminStateEnum;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 
 @Service
 public class CouponServiceImpl implements CouponService {

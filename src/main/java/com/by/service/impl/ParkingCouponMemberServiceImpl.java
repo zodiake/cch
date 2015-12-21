@@ -53,6 +53,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
             return p;
         }
         pcm.setTotal(pcm.getTotal() + total);
+        exchangeHistoryService.save(m, coupon, total);
         return pcm;
     }
 

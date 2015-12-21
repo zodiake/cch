@@ -1,21 +1,15 @@
 package com.by.controller;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Inbox;
-import com.by.exception.*;
-import com.by.json.CouponJson;
-import com.by.json.CouponTemplateJson;
-import com.by.json.ExchangeCouponJson;
-import com.by.message.GiftCouponMessage;
-import com.by.model.Member;
-import com.by.model.GiftCoupon;
-import com.by.service.CouponService;
-import com.by.service.MemberService;
-import com.by.service.GiftCouponMemberService;
-import com.by.service.GiftCouponService;
-import com.by.typeEnum.ValidEnum;
-import com.by.utils.FailBuilder;
+import static com.by.SpringExtension.SpringExtProvider;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -27,17 +21,34 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.by.exception.Fail;
+import com.by.exception.NotFoundException;
+import com.by.exception.PasswordNotMatchException;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
+import com.by.json.ExchangeCouponJson;
+import com.by.message.GiftCouponMessage;
+import com.by.model.GiftCoupon;
+import com.by.model.Member;
+import com.by.service.CouponService;
+import com.by.service.GiftCouponMemberService;
+import com.by.service.GiftCouponService;
+import com.by.service.MemberService;
+import com.by.typeEnum.ValidEnum;
+import com.by.utils.FailBuilder;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Inbox;
 import scala.concurrent.duration.Duration;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-
-import static com.by.SpringExtension.SpringExtProvider;
 
 @Controller
 @RequestMapping(value = "/api/giftCoupons")
