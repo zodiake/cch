@@ -1,5 +1,8 @@
 package com.by.service.impl;
 
+import com.by.exception.AlreadyExchangeException;
+import com.by.exception.NotValidException;
+import com.by.exception.OutOfStorageException;
 import com.by.form.CouponQueryForm;
 import com.by.json.CouponJson;
 import com.by.model.*;
@@ -10,6 +13,7 @@ import com.by.repository.ShopCouponMemberRepository;
 import com.by.service.CouponService;
 import com.by.typeEnum.CouponAdminStateEnum;
 import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

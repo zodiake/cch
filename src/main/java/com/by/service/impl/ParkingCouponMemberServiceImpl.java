@@ -1,8 +1,9 @@
 package com.by.service.impl;
 
 import com.by.exception.AlreadyExchangeException;
-import com.by.exception.NotEnoughCouponException;
+import com.by.exception.NotFoundException;
 import com.by.exception.NotValidException;
+import com.by.exception.OutOfStorageException;
 import com.by.form.AdminCouponForm;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
@@ -43,16 +44,21 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 
     @Override
     public ParkingCouponMember save(ParkingCoupon coupon, Member m, int total) {
-        ParkingCouponMember pcm = new ParkingCouponMember();
-        pcm.setCoupon(coupon);
-        pcm.setMember(m);
-        pcm.setTotal(total);
-        return repository.save(pcm);
+        ParkingCouponMember pcm = repository.findByMemberAndCoupon(m, coupon);
+        if (pcm != null) {
+            ParkingCouponMember p = new ParkingCouponMember();
+            p.setCoupon(coupon);
+            p.setMember(m);
+            p.setTotal(total);
+            return p;
+        }
+        pcm.setTotal(pcm.getTotal() + total);
+        return pcm;
     }
 
     @Override
     public ParkingCouponMember save(ParkingCouponMember parkingCouponMember) {
-        return repository.save(parkingCouponMember);
+        return save(parkingCouponMember.getCoupon(), parkingCouponMember.getMember(), parkingCouponMember.getTotal());
     }
 
     @Override
@@ -66,7 +72,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         ParkingCoupon sourceCoupon = couponMember.getCoupon();
         int sourceTotal = couponMember.getTotal();
         if (sourceTotal < total)
-            throw new NotEnoughCouponException();
+            throw new OutOfStorageException();
         if (!couponService.couponIsWithinValidDate(sourceCoupon))
             throw new NotValidException();
         couponMember.setTotal(sourceTotal - total);
@@ -76,27 +82,38 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
     }
 
     @Override
-    public ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
+    public void exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
         int count = total;
-        Member sourceMember = em.find(Member.class, member.getId());
+        Member m = em.find(Member.class, member.getId());
         ParkingCoupon sourceCoupon = em.find(ParkingCoupon.class, coupon.getId());
         ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
-        if (couponService.isDuplicateCoupon(sourceCoupon)) {
-            if (pcm != null) {
-                pcm.setTotal(pcm.getTotal() + total);
-            } else {
-                pcm = save(sourceCoupon, sourceMember, total);
+
+        if (sourceCoupon == null)
+            throw new NotFoundException();
+        if (couponService.isValidCoupon(coupon)) {
+            // 如果不能重复
+            if (!couponService.isDuplicateCoupon(coupon)) {
+                if (pcm != null)
+                    throw new AlreadyExchangeException();
+                count = 1;
             }
-        } else if (pcm != null && !couponService.isDuplicateCoupon(sourceCoupon)) {
-            throw new AlreadyExchangeException();
+            // 判断是否有库存
+            if (!couponService.noStorageLimited(coupon)) {
+                if (outOfStorage(coupon, total))
+                    throw new OutOfStorageException();
+            }
+            save(sourceCoupon, m, count);
+            memberService.minusScore(m, sourceCoupon.getScore() * count, reason, ScoreHistoryEnum.COUPONEXCHANGE);
         } else {
-            count = 1;
-            pcm = save(sourceCoupon, sourceMember, 1);
+            throw new NotValidException();
         }
-        memberService.minusScore(sourceMember, count * sourceCoupon.getScore(), reason,
-                ScoreHistoryEnum.COUPONEXCHANGE);
-        exchangeHistoryService.save(sourceMember, sourceCoupon, total);
-        return pcm;
+    }
+
+    private boolean outOfStorage(ParkingCoupon coupon, int count) {
+        Long total = sumTotalGroupByCoupon(coupon);
+        if (total == null)
+            total = new Long(0);
+        return total.intValue() == coupon.getTotal() || total.intValue() + count > coupon.getTotal();
     }
 
     @Override

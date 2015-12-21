@@ -40,12 +40,6 @@ public class ParkingCouponActor extends AbstractCouponActor<ParkingCoupon> {
     }
 
     @Override
-    protected boolean alreadyExchangeCoupon(ParkingCoupon coupon, Member member) {
-        ParkingCouponMember result = parkingCouponMemberService.findByCouponAndMember(member, coupon);
-        return result != null;
-    }
-
-    @Override
     protected void serviceExchangeCoupon(ParkingCoupon coupon, Member member, int total) {
         parkingCouponMemberService.exchangeCoupon(member, coupon, total);
     }

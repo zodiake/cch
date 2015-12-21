@@ -27,7 +27,7 @@ public interface ParkingCouponMemberService {
      *
      * @param count 兑换的数量
      */
-    ParkingCouponMember exchangeCoupon(Member member, ParkingCoupon coupon, int count);
+    void exchangeCoupon(Member member, ParkingCoupon coupon, int count);
 
     /*
      * 用户使用停车券

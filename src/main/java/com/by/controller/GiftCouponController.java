@@ -7,7 +7,7 @@ import com.by.exception.*;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
-import com.by.message.PreferentialCouponMessage;
+import com.by.message.GiftCouponMessage;
 import com.by.model.Member;
 import com.by.model.GiftCoupon;
 import com.by.service.CouponService;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 import static com.by.SpringExtension.SpringExtProvider;
 
 @Controller
-@RequestMapping(value = "/api/preferentialCoupons")
+@RequestMapping(value = "/api/giftCoupons")
 public class GiftCouponController extends BaseController {
     private ApplicationContext ctx;
     private ActorSystem system;
@@ -69,7 +69,7 @@ public class GiftCouponController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Success<Page<CouponTemplateJson>> list(HttpServletRequest request,
-                                                  @PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Direction.DESC) Pageable pageable) {
+                                                  @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
         isValidMember(member);
         Page<GiftCoupon> coupons = giftCouponService.findByValid(ValidEnum.VALID, pageable);
@@ -102,7 +102,7 @@ public class GiftCouponController extends BaseController {
         GiftCoupon coupon = giftCouponService.findOne(json.getId());
         if (coupon == null)
             throw new NotFoundException();
-        PreferentialCouponMessage message = new PreferentialCouponMessage(coupon, member, json.getTotal());
+        GiftCouponMessage message = new GiftCouponMessage(coupon, member, json.getTotal());
 
         final Inbox inbox = Inbox.create(system);
         inbox.send(ref, message);

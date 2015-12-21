@@ -1,7 +1,6 @@
 package com.by.service.impl;
 
-import com.by.exception.AlreadyExchangeException;
-import com.by.exception.AlreadyUsedException;
+import com.by.exception.*;
 import com.by.json.CouponJson;
 import com.by.model.Member;
 import com.by.model.Sequence;
@@ -9,7 +8,6 @@ import com.by.model.ShopCoupon;
 import com.by.model.ShopCouponMember;
 import com.by.repository.ShopCouponMemberRepository;
 import com.by.service.*;
-import com.by.typeEnum.DuplicateEnum;
 import com.by.typeEnum.ScoreHistoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +18,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -45,19 +42,37 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
     @Override
     public void exchangeCoupon(Member member, ShopCoupon coupon, int total) {
         int count = total;
-        Optional<Member> memberOptional = memberService.findById(member.getId());
+        Member m = memberService.findOne(member.getId());
         ShopCoupon shopCoupon = shopCouponService.findOne(coupon.getId());
-        if (coupon.getDuplicate().equals(DuplicateEnum.ISDUPLICATE)) {
-            for (int i = 1; i <= total; i++) {
-                save(shopCoupon, memberOptional.get());
+        List<ShopCouponMember> lists = findByCouponAndMember(shopCoupon, m);
+        if (shopCoupon == null)
+            throw new NotFoundException();
+        if (couponService.isValidCoupon(coupon)) {
+            // 如果不能重复
+            if (!couponService.isDuplicateCoupon(coupon)) {
+                if (lists.size() > 0)
+                    throw new AlreadyExchangeException();
+                count = 1;
             }
-        } else if (shopCoupon != null && !couponService.isDuplicateCoupon(shopCoupon)) {
-            throw new AlreadyExchangeException();
+            // 判断是否有库存
+            if (!couponService.noStorageLimited(coupon)) {
+                if (outOfStorage(coupon, count))
+                    throw new OutOfStorageException();
+            }
+            for (int i = 1; i <= count; i++) {
+                save(shopCoupon, m);
+            }
+            memberService.minusScore(m, shopCoupon.getScore() * count, reason, ScoreHistoryEnum.COUPONEXCHANGE);
         } else {
-            count = 1;
-            save(shopCoupon, memberOptional.get());
+            throw new NotValidException();
         }
-        memberService.minusScore(memberOptional.get(), count * shopCoupon.getScore(), reason, ScoreHistoryEnum.COUPONEXCHANGE);
+    }
+
+    private boolean outOfStorage(ShopCoupon coupon, int count) {
+        Long total = countByCoupon(coupon);
+        if (total == null)
+            total = new Long(0);
+        return total.intValue() == coupon.getTotal() || total.intValue() + count > coupon.getTotal();
     }
 
     @Override

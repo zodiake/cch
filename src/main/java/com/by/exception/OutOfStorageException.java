@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "not enough coupon")
-public class NotEnoughCouponException extends RuntimeException {
+public class OutOfStorageException extends RuntimeException {
 
 	/**
 	 * 

@@ -62,7 +62,6 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable("preferentialCoupon")
     public Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable) {
         return repository.findByValid(valid, pageable);
     }

@@ -42,12 +42,6 @@ public class ShopCouponActor extends AbstractCouponActor<ShopCoupon> {
     }
 
     @Override
-    protected boolean alreadyExchangeCoupon(ShopCoupon coupon, Member member) {
-        List<ShopCouponMember> result = service.findByCouponAndMember(coupon, member);
-        return result.size() > 0;
-    }
-
-    @Override
     protected void serviceExchangeCoupon(ShopCoupon coupon, Member member, int total) {
         service.exchangeCoupon(member, coupon, total);
     }

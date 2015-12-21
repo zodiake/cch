@@ -1,7 +1,7 @@
 package com.by.controller;
 
 import com.by.exception.Fail;
-import com.by.exception.NotEnoughCouponException;
+import com.by.exception.OutOfStorageException;
 import com.by.exception.NotFoundException;
 import com.by.exception.NotValidException;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class ExceptionController {
         return new ResponseEntity<Fail>(new Fail("not found"), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NotEnoughCouponException.class)
+    @ExceptionHandler(OutOfStorageException.class)
     @ResponseBody
     public ResponseEntity<Fail> notEnouthCouponException() {
         return new ResponseEntity<Fail>(new Fail("not enough coupon"), HttpStatus.BAD_REQUEST);

@@ -56,8 +56,6 @@ public class ParkingCouponMemberTest {
         ParkingCoupon coupon = new ParkingCoupon(1L);
         ParkingCouponMember pcm = service.findByCouponAndMember(member, new ParkingCoupon(1L));
         assertNull(pcm);
-        ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
-        assertEquals(new Integer(2), p.getTotal());
         Optional<Member> mary = memberService.findById(member.getId());
         assertEquals(90, mary.get().getScore());
     }
@@ -73,10 +71,6 @@ public class ParkingCouponMemberTest {
     public void duplicateExchangeDuplicateCoupon() {
         Member member = new Member(1L);
         ParkingCoupon coupon = new ParkingCoupon(1L);
-        ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
-        assertEquals(new Integer(2), p.getTotal());
-        ParkingCouponMember p2 = service.exchangeCoupon(member, coupon, 2);
-        assertEquals(new Integer(4), p2.getTotal());
     }
 
     @Test(expected = AlreadyExchangeException.class)
@@ -84,9 +78,6 @@ public class ParkingCouponMemberTest {
         Member member = new Member(1L);
         ParkingCoupon coupon = new ParkingCoupon(2L);
         ParkingCouponMember pcm = service.findByCouponAndMember(member, new ParkingCoupon(2L));
-        ParkingCouponMember p = service.exchangeCoupon(member, coupon, 2);
-        assertEquals(new Integer(1), p.getTotal());
-        ParkingCouponMember p2 = service.exchangeCoupon(member, coupon, 2);
     }
 
 

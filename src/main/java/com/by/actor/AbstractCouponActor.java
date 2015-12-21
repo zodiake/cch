@@ -58,8 +58,6 @@ public abstract class AbstractCouponActor<T extends Coupon> extends UntypedActor
 
     protected abstract boolean outOfStorage(T coupon, int count);
 
-    protected abstract boolean alreadyExchangeCoupon(T coupon, Member member);
-
     protected abstract void serviceExchangeCoupon(T coupon, Member member, int total);
 
 }

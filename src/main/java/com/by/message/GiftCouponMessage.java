@@ -6,12 +6,12 @@ import com.by.model.GiftCoupon;
 /**
  * Created by yagamai on 15-12-2.
  */
-public class PreferentialCouponMessage {
+public class GiftCouponMessage {
     private GiftCoupon coupon;
     private Member member;
     private int total;
 
-    public PreferentialCouponMessage(GiftCoupon coupon, Member member, int total) {
+    public GiftCouponMessage(GiftCoupon coupon, Member member, int total) {
         this.coupon = coupon;
         this.member = member;
         this.total = total;

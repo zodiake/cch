@@ -1,7 +1,6 @@
 package com.by.service.impl;
 
-import com.by.exception.AlreadyExchangeException;
-import com.by.exception.AlreadyUsedException;
+import com.by.exception.*;
 import com.by.json.CouponJson;
 import com.by.model.*;
 import com.by.repository.GiftCouponMemberRepository;
@@ -16,7 +15,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -50,20 +48,37 @@ public class GiftCouponMemberServiceImpl implements GiftCouponMemberService {
     @Override
     public void exchangeCoupon(GiftCoupon coupon, Member member, int total) {
         int count = total;
-        Optional<Member> memberOptional = memberService.findById(member.getId());
+        Member m = memberService.findOne(member.getId());
         GiftCoupon sourceCoupon = giftCouponService.findOne(coupon.getId());
-        if (couponService.isDuplicateCoupon(sourceCoupon)) {
-            for (int i = 1; i <= total; i++) {
-                save(sourceCoupon, memberOptional.get());
+        List<GiftCouponMember> giftCouponMember = findByCouponAndMember(coupon, member);
+        if (sourceCoupon == null)
+            throw new NotFoundException();
+        if (couponService.isValidCoupon(coupon)) {
+            // 如果不能重复
+            if (!couponService.isDuplicateCoupon(coupon)) {
+                if (giftCouponMember.size() > 0)
+                    throw new AlreadyExchangeException();
+                count = 1;
             }
-        } else if (sourceCoupon != null && !couponService.isDuplicateCoupon(sourceCoupon)) {
-            throw new AlreadyExchangeException();
+            // 判断是否有库存
+            if (!couponService.noStorageLimited(coupon)) {
+                if (outOfStorage(coupon, count))
+                    throw new OutOfStorageException();
+            }
+            for (int i = 1; i <= count; i++) {
+                save(sourceCoupon, m);
+            }
+            memberService.minusScore(m, sourceCoupon.getScore() * count, reason, ScoreHistoryEnum.COUPONEXCHANGE);
         } else {
-            count = 1;
-            save(sourceCoupon, memberOptional.get());
+            throw new NotValidException();
         }
-        memberService.minusScore(memberOptional.get(), sourceCoupon.getScore() * count, reason,
-                ScoreHistoryEnum.COUPONEXCHANGE);
+    }
+
+    private boolean outOfStorage(GiftCoupon coupon, int count) {
+        Long total = sumTotalGroupByCoupon(coupon);
+        if (total == null)
+            total = new Long(0);
+        return total.intValue() + count > coupon.getTotal();
     }
 
     public List<GiftCouponMember> findByCouponAndMember(GiftCoupon coupon, Member member) {

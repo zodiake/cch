@@ -1,54 +1,48 @@
 package com.by.actor;
 
-import com.by.message.PreferentialCouponMessage;
-import com.by.model.Member;
+import akka.actor.UntypedActor;
+import com.by.exception.AlreadyExchangeException;
+import com.by.exception.NotEnoughScoreException;
+import com.by.exception.NotValidException;
+import com.by.exception.OutOfStorageException;
+import com.by.message.GiftCouponMessage;
 import com.by.model.GiftCoupon;
-import com.by.model.GiftCouponMember;
+import com.by.model.Member;
 import com.by.service.GiftCouponMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Created by yagamai on 15-12-1.
  */
 @Component("GiftCouponActor")
 @Scope("prototype")
-public class GiftCouponActor extends AbstractCouponActor<GiftCoupon> {
+public class GiftCouponActor extends UntypedActor {
     @Autowired
     private GiftCouponMemberService service;
 
     @Override
     public void onReceive(Object message) throws Exception {
-        if (message instanceof PreferentialCouponMessage) {
-            PreferentialCouponMessage couponMessage = (PreferentialCouponMessage) message;
+        if (message instanceof GiftCouponMessage) {
+            GiftCouponMessage couponMessage = (GiftCouponMessage) message;
             GiftCoupon coupon = couponMessage.getCoupon();
             int total = couponMessage.getTotal();
             Member member = couponMessage.getMember();
-            checkAndExchangeCoupon(coupon, member, total);
+            try {
+                service.exchangeCoupon(coupon, member, total);
+                sender().tell("success", null);
+            } catch (AlreadyExchangeException e) {
+                sender().tell("alreadyExchanged", null);
+            } catch (OutOfStorageException e) {
+                sender().tell("OutOfStorageException ", null);
+            } catch (NotValidException e) {
+                sender().tell("NotValidException ", null);
+            } catch (NotEnoughScoreException e) {
+                sender().tell("NotEnoughScoreException ", null);
+            }
         } else {
             unhandled(message);
         }
-    }
-
-    @Override
-    protected boolean outOfStorage(GiftCoupon coupon, int count) {
-        Long total = service.sumTotalGroupByCoupon(coupon);
-        if (total == null)
-            total = new Long(0);
-        return total.intValue() == coupon.getTotal() || total.intValue() + count > coupon.getTotal();
-    }
-
-    @Override
-    protected boolean alreadyExchangeCoupon(GiftCoupon coupon, Member member) {
-        List<GiftCouponMember> result = service.findByCouponAndMember(coupon, member);
-        return result.size() > 0;
-    }
-
-    @Override
-    protected void serviceExchangeCoupon(GiftCoupon coupon, Member member, int total) {
-        service.exchangeCoupon(coupon, member, total);
     }
 }
