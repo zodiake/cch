@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin/cardRules")
 public class AdminCardRuleController {
     private final int PAGE_SIZE = 10;
+    private final String CREATE = "admin/cardRules/create";
+    private final String EDIT = "admin/cardRules/edit";
+    private final String REDIRECT = "redirect:/admin/cardRules/";
+    private final String LIST = "admin/cardRules/list";
     @Autowired
     private CardRuleService service;
     @Autowired
@@ -45,33 +49,43 @@ public class AdminCardRuleController {
     public String create(Model uiModel) {
         CardRule cardRule = new CardRule();
         uiModel.addAttribute("rule", cardRule);
-        return "admin/cardRule/create";
+        return CREATE;
     }
 
     @RequestMapping(params = "form", method = RequestMethod.POST)
     public String form(@Valid @ModelAttribute("rule") CardRule rule, BindingResult result, Model uiModel) {
         if (result.hasErrors()) {
             uiModel.addAttribute("rule", rule);
-            return "admin/cardRule/create";
+            return CREATE;
         }
         CardRule r = service.save(rule);
-        return "redirect:/admin/cardRules/" + r.getId();
+        return REDIRECT + r.getId();
     }
 
     @RequestMapping(params = "/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") int id, Model uiModel) {
         CardRule rule = service.findOne(id);
         uiModel.addAttribute("rule", rule);
-        return "admin/cardRule/detail";
+        return EDIT;
+    }
+
+    @RequestMapping(params = "/{id}", method = RequestMethod.PUT)
+    public String update(@Valid @ModelAttribute("rule") CardRule rule, BindingResult result, Model uiModel) {
+        if (result.hasErrors()) {
+            uiModel.addAttribute("rule", rule);
+            return EDIT;
+        }
+        CardRule r = service.update(rule);
+        return REDIRECT + r.getId();
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model uiModel) {
         Page<RuleJson> lists = service.findAll(null, new PageRequest(0, PAGE_SIZE, Sort.Direction.DESC, "beginTime"));
         int pages = PageUtils.computeLastPage(lists.getTotalPages());
-        uiModel.addAttribute("lists",lists);
-        uiModel.addAttribute("pages",pages);
-        return "admin/carRule/lists";
+        uiModel.addAttribute("lists", lists);
+        uiModel.addAttribute("pages", pages);
+        return LIST;
     }
 
 }

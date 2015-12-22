@@ -24,4 +24,6 @@ public interface CardRuleService {
     CardRule findOne(int id);
 
     Page<RuleJson> findAll(CouponQueryForm form, Pageable pageable);
+
+    CardRule update(CardRule cardRule);
 }
