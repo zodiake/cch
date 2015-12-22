@@ -1,6 +1,7 @@
 package com.by.json;
 
 import com.by.model.CardRule;
+import com.by.model.ShopRule;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,12 @@ public class RuleJson {
         this.endTime = format.format(rule.getEndTime().getTime());
         this.cardName = rule.getCard().getName();
         this.category = rule.getRuleCategory().getName();
+    }
+
+    public RuleJson(ShopRule rule) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        this.beginTime = format.format(rule.getBeginTime().getTime());
+        this.endTime = format.format(rule.getEndTime().getTime());
     }
 
     public String getEndTime() {
