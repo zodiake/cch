@@ -26,7 +26,7 @@ public class SigninController {
 	public String signin(@Valid User user,BindingResult result) {
 		JWTSigner signer = new JWTSigner("crm");
 		Map<String, Object> u = new HashMap<>();
-		u.put("user", new User(1l, "tom"));
+		u.put("user", new User(1, "tom"));
 		return signer.sign(u);
 	}
 }

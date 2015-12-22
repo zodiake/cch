@@ -4,10 +4,17 @@ VALUES (1, 'tom', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875
 INSERT INTO by_user (id, name, password, valid)
 VALUES (2, 'mary', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1);
 
+-- test menu_category
+INSERT INTO by_menu_category (id, name) VALUES (1, 'menu_category1');
+INSERT INTO by_menu_category (id, name) VALUES (2, 'menu_category1');
+INSERT INTO by_menu_category (id, name) VALUES (3, 'menu_category1');
+INSERT INTO by_menu_category (id, name) VALUES (4, 'menu_category1');
+
 -- test menu
-INSERT INTO by_menu (id, name, href) VALUES (1, 'menu1', 'haha');
-INSERT INTO by_menu (id, name, href) VALUES (2, 'menu2', 'haha');
-INSERT INTO by_menu (id, name, href) VALUES (3, 'menu3', 'haha');
+INSERT INTO by_menu (id, name,  category_id) VALUES (1, 'menu1',  1);
+INSERT INTO by_menu (id, name,  category_id) VALUES (2, 'menu2',  2);
+INSERT INTO by_menu (id, name,  category_id) VALUES (3, 'menu3',  3);
+INSERT INTO by_menu (id, name,  category_id) VALUES (4, 'menu3',  4);
 
 -- test authority
 INSERT INTO by_authority (id, name) VALUES (1, 'ROLE_ADMIN');
@@ -19,13 +26,14 @@ INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 1);
 --tom role_admin
 INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 2);
 --tom role_user
-
 INSERT INTO by_user_auth (user_id, auth_id) VALUES (2, 3);
 
 -- mary role_shop
 
 -- test auth_menu
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 1);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 2);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 3);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 1);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 2);
 
@@ -48,8 +56,8 @@ VALUES (1, 1, '2015-11-25 13:14:22', 'p', '沪A54321', 15, 0);
 INSERT INTO by_member_detail (id, member_id) VALUES (1, 1);
 
 -- test category
-INSERT INTO by_rule_category (id, name) VALUES (1, 'asdf');-- register
-INSERT INTO by_rule_category (id, name) VALUES (2, 'asdf');-- trading
+INSERT INTO by_rule_category (id, name) VALUES (1, 'asdf'); -- register
+INSERT INTO by_rule_category (id, name) VALUES (2, 'asdf'); -- trading
 
 -- test rule
 -- 注册用规则
@@ -131,3 +139,4 @@ INSERT INTO by_member_license (member_id, license_id) VALUES (1, 2);
 -- test help
 INSERT INTO by_content (id, summary) VALUES (1, 'ahahahahah');
 INSERT INTO by_member_help (content_id, title, id) VALUES (1, 'h', 1);
+

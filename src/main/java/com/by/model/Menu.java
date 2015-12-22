@@ -11,6 +11,10 @@ public class Menu {
 
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private MenuCategory category;
+
     public Menu() {
     }
 
@@ -32,6 +36,14 @@ public class Menu {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public MenuCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(MenuCategory category) {
+        this.category = category;
     }
 
     @Override

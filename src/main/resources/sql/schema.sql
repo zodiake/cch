@@ -1,7 +1,14 @@
-CREATE TABLE by_menu (
-  id   BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE by_menu_category (
+  id   INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(20),
-  href VARCHAR(50),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE by_menu (
+  id          BIGINT NOT NULL AUTO_INCREMENT,
+  name        VARCHAR(20),
+  category_id INT,
+  FOREIGN KEY (category_id) REFERENCES by_menu_category (id),
   PRIMARY KEY (id)
 );
 
@@ -59,7 +66,7 @@ CREATE TABLE by_auth_menu (
 );
 
 CREATE TABLE by_rule_category (
-  id   int NOT NULL AUTO_INCREMENT,
+  id   INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(20),
   PRIMARY KEY (id)
 );
@@ -100,7 +107,7 @@ CREATE TABLE by_rule (
   valid       SMALLINT,
   beginTime   TIMESTAMP,
   endTime     TIMESTAMP,
-  category_id int,
+  category_id INT,
   name        VARCHAR(20),
   type        CHAR(1),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
@@ -360,6 +367,7 @@ CREATE TABLE by_member_help (
   PRIMARY KEY (id),
   FOREIGN KEY (content_id) REFERENCES by_content (id)
 );
+
 
 CREATE UNIQUE INDEX ON by_trading (code);
 CREATE UNIQUE INDEX ON by_member (name);

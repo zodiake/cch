@@ -7,8 +7,9 @@
 </head>
 <body>
 <div>
-    <ul>
-        <li th:each="m : ${menus}">
+    <ul th:each="c:${menus}">
+    	<li th:text="${c.key.name}"></li>
+        <li th:each="m : ${c.value}">
 			<a th:text="${m.name}">${m.name}</a>
         </li>
     </ul>

@@ -1,17 +1,18 @@
 package com.by.service;
 
-import com.by.form.UserQueryForm;
-import com.by.model.Menu;
-import com.by.model.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.by.form.UserQueryForm;
+import com.by.model.Menu;
+import com.by.model.User;
+
 public interface UserService {
-    Optional<User> findId(Long id);
+    Optional<User> findId(int id);
 
     User findByName(String name);
 
