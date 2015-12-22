@@ -11,10 +11,10 @@ INSERT INTO by_menu_category (id, name) VALUES (3, 'menu_category1');
 INSERT INTO by_menu_category (id, name) VALUES (4, 'menu_category1');
 
 -- test menu
-INSERT INTO by_menu (id, name,  category_id) VALUES (1, 'menu1',  1);
-INSERT INTO by_menu (id, name,  category_id) VALUES (2, 'menu2',  2);
-INSERT INTO by_menu (id, name,  category_id) VALUES (3, 'menu3',  3);
-INSERT INTO by_menu (id, name,  category_id) VALUES (4, 'menu3',  4);
+INSERT INTO by_menu (id, name, category_id) VALUES (1, 'menu1', 1);
+INSERT INTO by_menu (id, name, category_id) VALUES (2, 'menu2', 2);
+INSERT INTO by_menu (id, name, category_id) VALUES (3, 'menu3', 3);
+INSERT INTO by_menu (id, name, category_id) VALUES (4, 'menu3', 4);
 
 -- test authority
 INSERT INTO by_authority (id, name) VALUES (1, 'ROLE_ADMIN');
@@ -72,7 +72,15 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type)
 VALUES (4, 2.0, 1, 2, 1, 100, 'rule4', 'c');
 
 -- test shop
-INSERT INTO by_shop (id, name, key, user_id) VALUES (1, 'shop1', 'abc', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (1, 'shop1', 'abc1', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (2, '光明', 'abc2', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (3, '哈根达斯', 'abc3', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (4, 'h&m', 'abc4', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (5, '索尼', 'abc5', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (6, '三星', 'abc6', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (7, 'java', 'abc7', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (8, 'scala', 'abc8', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (9, 'csharp', 'abc9', 2);
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);

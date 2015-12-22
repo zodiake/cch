@@ -60,4 +60,6 @@ public class AdminCardRuleController {
 		uiModel.addAttribute("rule", rule);
 		return "admin/cardRule/detail";
 	}
+
+
 }

@@ -42,6 +42,12 @@ public class AdminShopController {
 		return menuService.findAll();
 	}
 
+	@RequestMapping(value="/all",method=RequestMethod.GET)
+	@ResponseBody
+	public Status all(){
+		return new Success<>(service.findAll());
+	}
+
 	// 店铺列表json
 	@RequestMapping(value = "/json", method = RequestMethod.GET)
 	@ResponseBody

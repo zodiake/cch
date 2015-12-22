@@ -29,4 +29,9 @@ public class AdminTradingController {
                                   @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
         return service.findByMember(new Member(id), pageable);
     }
+
+    @RequestMapping(params = "form", method = RequestMethod.GET)
+    public String form() {
+        return "admin/manual/create";
+    }
 }

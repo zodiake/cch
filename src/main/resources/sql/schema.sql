@@ -370,6 +370,6 @@ CREATE TABLE by_member_help (
 
 CREATE UNIQUE INDEX ON by_trading (code);
 CREATE UNIQUE INDEX ON by_member (name);
-CREATE UNIQUE INDEX ON by_shop (key);
+CREATE UNIQUE INDEX ON by_shop (shop_key);
 CREATE UNIQUE INDEX ON by_gift_coupon_member (code);
 CREATE INDEX ON by_trading (created_time);
