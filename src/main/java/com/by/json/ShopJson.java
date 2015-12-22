@@ -20,7 +20,7 @@ public class ShopJson {
     public ShopJson(Shop shop) {
         this.id = shop.getId();
         this.name = shop.getName();
-        this.key = shop.getKey();
+        this.key = shop.getShopKey();
         this.menus = shop.getMenus().stream().map(Menu::getId).collect(Collectors.toList()).toArray(new Long[]{});
     }
 

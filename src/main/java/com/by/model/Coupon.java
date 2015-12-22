@@ -1,14 +1,25 @@
 package com.by.model;
 
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Calendar;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 
 @Entity
 @Table(name = "by_coupon")

@@ -84,7 +84,7 @@ public class ScoreHistory {
 	private void prePersist() {
 		this.createdTime = Calendar.getInstance();
 	}
-	
+
 	public ScoreHistoryEnum getType() {
 		return type;
 	}
@@ -92,7 +92,7 @@ public class ScoreHistory {
 	public void setType(ScoreHistoryEnum type) {
 		this.type = type;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

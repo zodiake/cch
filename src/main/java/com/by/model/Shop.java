@@ -24,7 +24,8 @@ public class Shop {
     @JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private List<Menu> menus;
 
-    private String key;
+    @Column(name="shop_key")
+    private String shopKey;
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<ShopCoupon> coupons;
@@ -86,12 +87,12 @@ public class Shop {
         this.menus = menus;
     }
 
-    public String getKey() {
-        return key;
+    public String getShopKey() {
+        return shopKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setShopKey(String shopKey) {
+        this.shopKey = shopKey;
     }
 
     public List<ShopCoupon> getCoupons() {

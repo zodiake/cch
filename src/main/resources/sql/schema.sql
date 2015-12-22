@@ -34,7 +34,7 @@ CREATE TABLE by_shop (
   updated_by   VARCHAR(20),
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
-  key          VARCHAR(225),
+  shop_key     VARCHAR(225),
   FOREIGN KEY (user_id) REFERENCES by_user (id),
   PRIMARY KEY (id)
 );
@@ -367,7 +367,6 @@ CREATE TABLE by_member_help (
   PRIMARY KEY (id),
   FOREIGN KEY (content_id) REFERENCES by_content (id)
 );
-
 
 CREATE UNIQUE INDEX ON by_trading (code);
 CREATE UNIQUE INDEX ON by_member (name);

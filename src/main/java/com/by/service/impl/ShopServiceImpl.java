@@ -83,7 +83,7 @@ public class ShopServiceImpl implements ShopService {
     public Shop save(ShopJson shop) {
         Shop s = new Shop();
         s.setName(shop.getName());
-        s.setKey(shop.getKey());
+        s.setShopKey(shop.getKey());
         return save(s);
     }
 
@@ -98,7 +98,7 @@ public class ShopServiceImpl implements ShopService {
         Shop source = repository.findOne(shop.getId());
         List<Menu> menus = Arrays.stream(shop.getMenus()).map(i -> new Menu(i)).collect(Collectors.toList());
         source.setName(shop.getName());
-        source.setKey(shop.getKey());
+        source.setShopKey(shop.getKey());
         source.setMenus(menus);
         return source;
     }
