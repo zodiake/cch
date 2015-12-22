@@ -75,9 +75,11 @@ public class GiftCouponServiceImpl implements GiftCouponService {
         c.select(root);
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         cq.select(cb.count(cq.from(GiftCoupon.class)));
-        Predicate[] predicates = couponService.getPredicateList(form, root, cb);
-        c.where(predicates);
-        cq.where(predicates);
+        if (form != null) {
+            Predicate[] predicates = couponService.getPredicateList(form, root, cb);
+            c.where(predicates);
+            cq.where(predicates);
+        }
 
         List<GiftCoupon> lists = em.createQuery(c)
                 .setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())

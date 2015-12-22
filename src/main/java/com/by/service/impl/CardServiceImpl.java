@@ -35,7 +35,7 @@ public class CardServiceImpl implements CardService {
     @Override
     @Cacheable("card")
     @Transactional(readOnly = true)
-    public Card findOne(Long id) {
+    public Card findOne(int id) {
         return repository.findOne(id);
     }
 
@@ -63,7 +63,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional(readOnly = true)
-    public Card findByIdAndValid(Long id, ValidEnum valid) {
+    public Card findByIdAndValid(int id, ValidEnum valid) {
         return repository.findByIdAndValid(id, valid);
     }
 

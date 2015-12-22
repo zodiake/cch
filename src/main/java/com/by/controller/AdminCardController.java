@@ -64,7 +64,7 @@ public class AdminCardController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String get(@PathVariable("id") Long id, Model uiModel) {
+    public String get(@PathVariable("id") Integer id, Model uiModel) {
         Card card = service.findOne(id);
         Long count = memberService.countByCard(new Card(id));
         List<CardRule> signUpRules = cardRuleService.findByRuleCategoryAndCard(SIGNUP_CATEGORY, card);
@@ -78,7 +78,7 @@ public class AdminCardController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Status update(@PathVariable("id") Long id) {
+    public Status update(@PathVariable("id") Integer id) {
         Card c = new Card();
         c.setId(id);
         c.setName("haha");

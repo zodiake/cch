@@ -1,8 +1,11 @@
 package com.by.json;
 
 import com.by.model.Coupon;
+import com.by.typeEnum.CouponAdminStateEnum;
+import com.by.typeEnum.ValidEnum;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by yagamai on 15-12-3.
@@ -24,11 +27,15 @@ public class CouponTemplateJson {
 
     private String shopName;
 
+    private CouponAdminStateEnum state;
+
     public CouponTemplateJson() {
     }
 
     public CouponTemplateJson(Coupon coupon) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar today = Calendar.getInstance();
+
         this.id = coupon.getId();
         this.name = coupon.getName();
         this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
@@ -36,6 +43,18 @@ public class CouponTemplateJson {
         this.beginTime = format.format(coupon.getBeginTime().getTime());
         this.endTime = format.format(coupon.getEndTime().getTime());
         this.summary = coupon.getSummary();
+
+        if (coupon.getBeginTime() != null && coupon.getEndTime() != null) {
+            if (coupon.getValid().equals(ValidEnum.INVALID)) {
+                this.state = CouponAdminStateEnum.CLOSED;
+            } else if (coupon.getBeginTime().after(today)) {
+                this.state = CouponAdminStateEnum.NOEXPIRE;
+            } else if (coupon.getBeginTime().before(today) && coupon.getEndTime().after(today)) {
+                this.state = CouponAdminStateEnum.USING;
+            } else {
+                this.state = CouponAdminStateEnum.EXPIRE;
+            }
+        }
     }
 
     public Long getId() {
@@ -100,5 +119,13 @@ public class CouponTemplateJson {
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+
+    public CouponAdminStateEnum getState() {
+        return state;
+    }
+
+    public void setState(CouponAdminStateEnum state) {
+        this.state = state;
     }
 }

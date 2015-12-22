@@ -8,12 +8,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
 
-public interface CardRepository extends PagingAndSortingRepository<Card, Long> {
-    Optional<Card> findById(Long id);
+public interface CardRepository extends PagingAndSortingRepository<Card, Integer> {
+	Optional<Card> findById(int id);
 
-    Long countByName(String name);
+	Long countByName(String name);
 
-    Card findByIdAndValid(Long id, ValidEnum valid);
+	Card findByIdAndValid(int id, ValidEnum valid);
 
-    Page<Card> findByValid(ValidEnum valid, Pageable pageable);
+	Page<Card> findByValid(ValidEnum valid, Pageable pageable);
 }

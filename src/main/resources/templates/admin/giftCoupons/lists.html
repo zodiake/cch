@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <script src="/javascript/jquery-1.11.3.min.js"></script>
+    <script src="/javascript/page.js"></script>
+    <script>
+        $(function () {
+        });
+    </script>
+</head>
+<body>
+	<table>
+		<tr th:each="l:${lists}">
+			<td th:switch="${l.state.toString()}">
+				<span th:case="'USING'">使用中</span>
+				<span th:case="'EXPIRE'">已过期</span>
+				<span th:case="'CLOSED'">已关闭</span>
+				<span th:case="'NOEXPIRED'" >未生效</span>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

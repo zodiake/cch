@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CardService {
-    Card findOne(Long id);
+    Card findOne(int id);
 
     Page<Card> findAll(Pageable pageable);
 
@@ -22,7 +22,7 @@ public interface CardService {
 
     Optional<Card> update(Card card);
 
-    Card findByIdAndValid(Long id, ValidEnum valid);
+    Card findByIdAndValid(int id, ValidEnum valid);
 
     List<Card> findAllAuditRevision(Long id);
 

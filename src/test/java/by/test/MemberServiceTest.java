@@ -53,7 +53,7 @@ public class MemberServiceTest {
 		Member member = new Member();
 		member.setName("11112222223");
 		member.setMemberDetail(new MemberDetail());
-		member.setCard(new Card(1l));
+		member.setCard(new Card(1));
 		Member source = service.save(member);
 		assertNotNull(source.getMemberDetail());
 	}
@@ -79,7 +79,7 @@ public class MemberServiceTest {
 	@Test
 	public void signin() {
 		Member member = new Member();
-		member.setCard(new Card(1L));
+		member.setCard(new Card(1));
 		member.setName("1111111111a");
 		Member m = service.save(member);
 		List<ScoreAddHistory> addHistories = scoreAddHistoryService.findByMember(m);

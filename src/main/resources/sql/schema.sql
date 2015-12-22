@@ -73,7 +73,7 @@ CREATE TABLE by_rule_category (
 
 
 CREATE TABLE by_card (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
+  id           int NOT NULL AUTO_INCREMENT,
   name         VARCHAR(50),
   valid        SMALLINT,
   init_score   INT             DEFAULT 0,
@@ -102,7 +102,7 @@ CREATE TABLE by_rule (
   id          BIGINT NOT NULL AUTO_INCREMENT,
   rate        DOUBLE,
   score       INT             DEFAULT 0,
-  card_id     BIGINT,
+  card_id     int,
   summary     VARCHAR(50),
   valid       SMALLINT,
   beginTime   TIMESTAMP,
@@ -126,7 +126,7 @@ CREATE TABLE by_shop_rule (
 CREATE TABLE by_member (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   name         CHAR(11) UNIQUE,
-  card_id      BIGINT,
+  card_id      INT,
   score        INT,
   sumScore     INT,
   created_time TIMESTAMP,

@@ -7,7 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class CardJson {
-    private Long id;
+    private int id;
     private String name;
     private ValidEnum valid;
     private int initScore;
@@ -33,15 +33,15 @@ public class CardJson {
         this.updatedBy = card.getUpdatedBy();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public int getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 

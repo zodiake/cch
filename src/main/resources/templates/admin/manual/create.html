@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="UTF-8" />
-<title>Insert title here</title>
-<link rel="stylesheet" href="/css/jquery-ui.min.css"/>
-<script src="/javascript/jquery-1.11.3.min.js"></script>
-<script src="/javascript/jquery-ui.js"></script>
-<script>
-	$(function() {
-		function init() {
-			$.ajax({
-				url : '/admin/shop/all',
-				success : function(data) {
-					var shop = $.map(data.obj, function(e) {
-						return e.name;
-					});
-					$('#shop').autocomplete({
-						source : shop
-					});
-				}
-			});
-		}
-		
-		init();
-	});
-</script>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="/css/jquery-ui.min.css"/>
+    <script src="/javascript/jquery-1.11.3.min.js"></script>
+    <script src="/javascript/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            function init() {
+                $.ajax({
+                    url: '/admin/shop/all',
+                    success: function (data) {
+                        var shop = $.map(data.obj, function (e) {
+                            return e.name;
+                        });
+                        $('#shop').autocomplete({
+                            source: shop
+                        });
+                    }
+                });
+            }
+
+            init();
+        });
+    </script>
 </head>
 <body>
-	<form>
-		<input id="shop" type="text" name="name" /> <input type="submit" />
-	</form>
-	<div th:include="admin/layout/footer :: footer"></div>
+<form>
+    <input id="shop" type="text" name="name"/>
+    <input type="submit"/>
+</form>
+<div th:include="admin/layout/footer :: footer"></div>
 </body>
 </html>

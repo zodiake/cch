@@ -12,7 +12,7 @@ public class MemberRequestJson {
     private String password;
 
     @NotNull
-    private Long card;
+    private Integer card;
 
     public String getName() {
         return name;
@@ -30,12 +30,11 @@ public class MemberRequestJson {
         this.password = password;
     }
 
-    public Long getCard() {
-        return card;
-    }
+	public Integer getCard() {
+		return card;
+	}
 
-    public void setCard(Long card) {
-        this.card = card;
-    }
-
+	public void setCard(Integer card) {
+		this.card = card;
+	}
 }

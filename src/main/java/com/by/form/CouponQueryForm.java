@@ -2,6 +2,7 @@ package com.by.form;
 
 import java.util.Calendar;
 
+import com.by.model.Card;
 import com.by.typeEnum.CouponAdminStateEnum;
 
 /**
@@ -9,8 +10,17 @@ import com.by.typeEnum.CouponAdminStateEnum;
  */
 public class CouponQueryForm {
     private CouponAdminStateEnum state;
+    private Card card;
     private Calendar beginTime;
     private Calendar endTime;
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
 
     public CouponAdminStateEnum getState() {
         return state;
