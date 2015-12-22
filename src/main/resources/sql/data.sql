@@ -56,8 +56,8 @@ VALUES (1, 1, '2015-11-25 13:14:22', 'p', '沪A54321', 15, 0);
 INSERT INTO by_member_detail (id, member_id) VALUES (1, 1);
 
 -- test category
-INSERT INTO by_rule_category (id, name) VALUES (1, 'asdf'); -- register
-INSERT INTO by_rule_category (id, name) VALUES (2, 'asdf'); -- trading
+INSERT INTO by_rule_category (id, name) VALUES (1, 'register rule'); -- register
+INSERT INTO by_rule_category (id, name) VALUES (2, 'trading rule'); -- trading
 
 -- test rule
 -- 注册用规则

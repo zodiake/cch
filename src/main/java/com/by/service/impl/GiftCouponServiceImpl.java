@@ -85,7 +85,7 @@ public class GiftCouponServiceImpl implements GiftCouponService {
                 .setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
                 .setMaxResults(pageable.getPageSize()).getResultList();
         Long count = em.createQuery(cq).getSingleResult();
-        List<CouponTemplateJson> results = lists.stream().map(i -> new CouponTemplateJson(i))
+        List<CouponTemplateJson> results = lists.stream().map(CouponTemplateJson::new)
                 .collect(Collectors.toList());
         return new PageImpl<>(results, pageable, count);
     }

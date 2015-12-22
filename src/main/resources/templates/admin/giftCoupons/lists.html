@@ -12,7 +12,7 @@
 </head>
 <body>
 	<table>
-		<tr th:each="l:${lists}">
+		<tr th:each="l:${lists.content}">
 			<td th:switch="${l.state.toString()}">
 				<span th:case="'USING'">使用中</span>
 				<span th:case="'EXPIRE'">已过期</span>

@@ -32,6 +32,20 @@ public abstract class Rule {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar endTime;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="created_time")
+    private Calendar createdTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="updated_time")
+    private Calendar updatedTime;
+
+    @Column(name="created_by")
+    private String createdBy;
+
+    @Column(name="updated_by")
+    private String updatedBy;
+
     private int Score;
 
     public int getId() {
@@ -98,7 +112,39 @@ public abstract class Rule {
         this.name = name;
     }
 
-	@Override
+    public Calendar getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Calendar createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Calendar getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Calendar updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

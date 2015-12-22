@@ -67,16 +67,16 @@ CREATE TABLE by_auth_menu (
 
 CREATE TABLE by_rule_category (
   id   INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(20),
+  name VARCHAR(20) NOT NULL ,
   PRIMARY KEY (id)
 );
 
 
 CREATE TABLE by_card (
-  id           int NOT NULL AUTO_INCREMENT,
+  id           INT NOT NULL AUTO_INCREMENT,
   name         VARCHAR(50),
   valid        SMALLINT,
-  init_score   INT             DEFAULT 0,
+  init_score   INT          DEFAULT 0,
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   updated_by   VARCHAR(20),
@@ -99,17 +99,21 @@ CREATE TABLE by_card_aud (
 );
 
 CREATE TABLE by_rule (
-  id          BIGINT NOT NULL AUTO_INCREMENT,
-  rate        DOUBLE,
-  score       INT             DEFAULT 0,
-  card_id     int,
-  summary     VARCHAR(50),
-  valid       SMALLINT,
-  beginTime   TIMESTAMP,
-  endTime     TIMESTAMP,
-  category_id INT,
-  name        VARCHAR(20),
-  type        CHAR(1),
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  rate         DOUBLE,
+  score        INT             DEFAULT 0,
+  card_id      INT,
+  summary      VARCHAR(50),
+  valid        SMALLINT,
+  beginTime    TIMESTAMP,
+  endTime      TIMESTAMP,
+  category_id  INT,
+  name         VARCHAR(20),
+  type         CHAR(1),
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   FOREIGN KEY (category_id) REFERENCES by_rule_category (id),
   PRIMARY KEY (id)

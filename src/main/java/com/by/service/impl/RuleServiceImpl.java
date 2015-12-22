@@ -1,9 +1,10 @@
 package com.by.service.impl;
 
-import com.by.model.Card;
+import com.by.form.CouponQueryForm;
 import com.by.model.Rule;
 import com.by.repository.RuleRepository;
 import com.by.service.RuleService;
+import com.by.typeEnum.CouponAdminStateEnum;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -11,6 +12,10 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -73,4 +78,29 @@ public class RuleServiceImpl implements RuleService {
         return rule.getValid().equals(ValidEnum.VALID) && rule.getBeginTime().before(today) && rule.getEndTime().after(today);
     }
 
+    @Override
+    public <T extends Rule> Predicate[] getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb) {
+        List<Predicate> criteria = new ArrayList<>();
+        if (form.getState() != null) {
+            Calendar today = Calendar.getInstance();
+            if (form.getState().equals(CouponAdminStateEnum.CLOSED)) {
+                criteria.add(cb.equal(root.get("valid"), ValidEnum.INVALID));
+            } else if (form.getState().equals(CouponAdminStateEnum.NOEXPIRE)) {
+                criteria.add(cb.greaterThan(root.get("beginTime"), today));
+            } else if (form.getState().equals(CouponAdminStateEnum.USING)) {
+                criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), today));
+                criteria.add(cb.greaterThanOrEqualTo(root.get("endTime"), today));
+            } else if (form.getState().equals(CouponAdminStateEnum.EXPIRE)) {
+                criteria.add(cb.lessThan(root.get("endTime"), today));
+            }
+        }
+        if (form.getBeginTime() != null) {
+            criteria.add(cb.greaterThanOrEqualTo(root.get("beginTime"), form.getBeginTime()));
+        }
+        if (form.getEndTime() != null)
+            criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), form.getEndTime()));
+        if (form.getCard() != null)
+            criteria.add(cb.equal(root.get("card"), form.getCard()));
+        return criteria.toArray(new Predicate[0]);
+    }
 }
