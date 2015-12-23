@@ -52,7 +52,7 @@ public class GiftCouponServiceImpl implements GiftCouponService {
     @Transactional(readOnly = true)
     @Cacheable("coupon")
     public GiftCoupon findOneCache(Long id) {
-        return null;
+        return repository.findOne(id);
     }
 
     @Override

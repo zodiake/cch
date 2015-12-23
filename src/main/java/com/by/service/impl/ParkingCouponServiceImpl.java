@@ -72,6 +72,12 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     }
 
     @Override
+    @Cacheable("coupon")
+    public ParkingCoupon findOneCache(Long id) {
+        return repository.findOne(id);
+    }
+
+    @Override
     @Cacheable(value = "coupon")
     @Transactional(readOnly = true)
     public Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable) {

@@ -146,6 +146,6 @@ public class GiftCouponController extends BaseController {
         GiftCoupon coupon = giftCouponService.findOneCache(id);
         if (coupon == null)
             throw new NotFoundException();
-        return new Success<>(new CouponJson(coupon));
+        return new Success<>(new CouponTemplateJson(coupon));
     }
 }

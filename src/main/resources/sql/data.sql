@@ -5,16 +5,30 @@ INSERT INTO by_user (id, name, password, valid)
 VALUES (2, 'mary', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1);
 
 -- test menu_category
-INSERT INTO by_menu_category (id, name) VALUES (1, 'menu_category1');
-INSERT INTO by_menu_category (id, name) VALUES (2, 'menu_category1');
-INSERT INTO by_menu_category (id, name) VALUES (3, 'menu_category1');
-INSERT INTO by_menu_category (id, name) VALUES (4, 'menu_category1');
+INSERT INTO by_menu_category (id, name) VALUES (1, 'icon-two');
+INSERT INTO by_menu_category (id, name) VALUES (2, 'icon-three');
+INSERT INTO by_menu_category (id, name) VALUES (3, 'icon-four');
+INSERT INTO by_menu_category (id, name) VALUES (4, 'icon-five');
+INSERT INTO by_menu_category (id, name) VALUES (5, 'icon-six');
+INSERT INTO by_menu_category (id, name) VALUES (6, 'icon-seven');
 
 -- test menu
-INSERT INTO by_menu (id, name, category_id) VALUES (1, 'menu1', 1);
-INSERT INTO by_menu (id, name, category_id) VALUES (2, 'menu2', 2);
-INSERT INTO by_menu (id, name, category_id) VALUES (3, 'menu3', 3);
-INSERT INTO by_menu (id, name, category_id) VALUES (4, 'menu3', 4);
+INSERT INTO by_menu (id, name, category_id, href) VALUES (1, '会员卡', 1, '/admin/cards');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (2, '会员管理', 1, '/admin/members');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (3, '会员黑名单', 1, '/admin/members');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (4, '会员卡积分', 2, '/admin/cardRules');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (5, '店铺积分', 2, '/admin/shopRules');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (6, '人工积分', 2, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (7, '停车券', 3, '/admin/parkingCoupons');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (8, '礼品券', 3, '/admin/giftCoupons');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (9, '店铺券', 3, '/admin/shopCoupons');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (10, '店铺管理', 4, '/admin/shops');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (11, '注册协议', 5, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (12, '会员卡使用帮助', 5, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (13, '会员卡积分规则', 5, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (14, '权限管理', 6, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (15, '用户管理', 6, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (16, '账户设置', 6, '');
 
 -- test authority
 INSERT INTO by_authority (id, name) VALUES (1, 'ROLE_ADMIN');
@@ -34,6 +48,19 @@ INSERT INTO by_user_auth (user_id, auth_id) VALUES (2, 3);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 1);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 2);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 3);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 4);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 5);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 6);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 7);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 8);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 9);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 10);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 11);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 12);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 13);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 14);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 15);
+INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 16);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 1);
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (2, 2);
 

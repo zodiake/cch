@@ -1,16 +1,48 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Insert title here</title>
-    <script src="/js/jquery-1.11.3.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
+    <title>无标题文</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" type="text/css" href="/css/template.css"></link>
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/js/template.js"></script>
 </head>
+
 <body>
-<div>
-    <ul th:each="c:${menus}">
-    	<li th:text="${c.key.name}"></li>
-        <li th:each="m : ${c.value}">
-			<a th:text="${m.name}">${m.name}</a>
+<div class="header clearfix">
+    <div class="logo pull-left">
+        <img src="img/logo.png" width="50" height="60"/>
+    </div>
+    <div class="sidebar-toggle pull-left">
+        <i class="icon icon-toggle"></i>
+    </div>
+    <div class="crm-name pull-left">后台管理系统</div>
+    <div class="username pull-right">
+        <a>admin</a>
+        <a class="signout">
+            <i class="icon icon-sign"></i>
+        </a>
+    </div>
+</div>
+
+<div class="aside">
+    <ul class="par-nav">
+        <li class="active top-nav">
+            <a>
+                <i class="icon icon-one active"></i>
+                导航
+            </a>
+        </li>
+        <li th:each="menu:${menus}" th:class="${#lists.contains(menu.value,subMenu)}?'active'">
+            <a><i class="icon" th:attrappend="class=${' ' + menu.key.name}"></i></a>
+            <ul class="child-nav">
+                <li th:each="m : ${menu.value}" th:class="${m == subMenu}?'active'">
+                    <a th:text="${m.name}"></a>
+                </li>
+            </ul>
         </li>
     </ul>
 </div>

@@ -8,6 +8,7 @@ CREATE TABLE by_menu (
   id          BIGINT NOT NULL AUTO_INCREMENT,
   name        VARCHAR(20),
   category_id INT,
+  href varchar(50),
   FOREIGN KEY (category_id) REFERENCES by_menu_category (id),
   PRIMARY KEY (id)
 );

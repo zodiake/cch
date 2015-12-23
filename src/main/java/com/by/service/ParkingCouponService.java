@@ -21,13 +21,15 @@ public interface ParkingCouponService {
 
     ParkingCoupon findOne(Long id);
 
-    Page<ParkingCoupon> findByValid(ValidEnum valid,Pageable pageable);
+    ParkingCoupon findOneCache(Long id);
+
+    Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
     Page<CouponTemplateJson> findAll(CouponQueryForm from, Pageable pageable);
 
     Page<ParkingCoupon> findAll(Pageable pageable);
 
     Page<ParkingCoupon> findFirstPage(int size);
-    
+
     ParkingCoupon validOrInValid(ParkingCoupon coupon);
 }
