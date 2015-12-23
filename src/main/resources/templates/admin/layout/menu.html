@@ -8,7 +8,24 @@
 </head>
 <body>
 	<div th:fragment="menu">
-		&copy; 2011 The Good Thymes Virtual Grocery
+		<div class="aside">
+			<ul class="par-nav">
+				<li class="active top-nav">
+					<a>
+						<i class="icon icon-one active"></i>
+						导航
+					</a>
+				</li>
+				<li th:each="menu:${menus}" th:class="${#lists.contains(menu.value,subMenu)}?'active'">
+					<a><i class="icon" th:attrappend="class=${' ' + menu.key.name}"></i></a>
+					<ul class="child-nav">
+						<li th:each="m : ${menu.value}" th:class="${m == subMenu}?'active'">
+							<a th:text="${m.name}"></a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 	</div>
 </body>
 </html>

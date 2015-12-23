@@ -88,15 +88,15 @@ INSERT INTO by_rule_category (id, name) VALUES (2, 'trading rule'); -- trading
 
 -- test rule
 -- 注册用规则
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type)
-VALUES (1, 2.0, 1, 1, 1, 100, 'rule1', 's');
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type)
-VALUES (2, 2.0, 1, 1, 1, 100, 'rule2', 's');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (1, 2.0, 1, 1, 1, 100, 'rule1', 's', '2012-12-01', '2012-12-30');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (2, 2.0, 1, 1, 1, 100, 'rule2', 's', '2012-12-01', '2012-12-30');
 -- 交易用规则
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type)
-VALUES (3, 2.0, 1, 2, 1, 100, 'rule3', 'c');
-INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type)
-VALUES (4, 2.0, 1, 2, 1, 100, 'rule4', 'c');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (3, 2.0, 1, 2, 1, 100, 'rule3', 'c', '2012-12-01', '2012-12-30');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (4, 2.0, 1, 2, 1, 100, 'rule4', 'c', '2012-12-01', '2012-12-30');
 
 -- test shop
 INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (1, 'shop1', 'abc1', 2);

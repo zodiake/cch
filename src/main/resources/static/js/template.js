@@ -21,11 +21,5 @@ $(function(){
 	//alert(detail_h)
 	$('.card-detail-wrap').css('height',detail_h);
 	
-	$('.mem-list li').click(function(){
-		$('.card-detail-wrap').css('right','0')
-	})
-	$('.close-btn').click(function(){
-		$('.card-detail-wrap').css('right','-350px')
-	})
 
 })

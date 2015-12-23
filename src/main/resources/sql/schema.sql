@@ -5,10 +5,10 @@ CREATE TABLE by_menu_category (
 );
 
 CREATE TABLE by_menu (
-  id          BIGINT NOT NULL AUTO_INCREMENT,
+  id          INT NOT NULL AUTO_INCREMENT,
   name        VARCHAR(20),
   category_id INT,
-  href varchar(50),
+  href        VARCHAR(50),
   FOREIGN KEY (category_id) REFERENCES by_menu_category (id),
   PRIMARY KEY (id)
 );
@@ -60,15 +60,15 @@ CREATE TABLE by_user_auth (
 
 CREATE TABLE by_auth_menu (
   auth_id BIGINT,
-  menu_id BIGINT,
+  menu_id INT,
   FOREIGN KEY (auth_id) REFERENCES by_authority (id),
   FOREIGN KEY (menu_id) REFERENCES by_menu (id),
   PRIMARY KEY (auth_id, menu_id)
 );
 
 CREATE TABLE by_rule_category (
-  id   INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(20) NOT NULL ,
+  id   INT         NOT NULL AUTO_INCREMENT,
+  name VARCHAR(20) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -82,6 +82,7 @@ CREATE TABLE by_card (
   updated_time TIMESTAMP,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
+  summary      VARCHAR(500),
   PRIMARY KEY (id)
 );
 
@@ -270,7 +271,7 @@ CREATE TABLE REVINFO (
 
 CREATE TABLE by_shop_menu (
   shop_id BIGINT,
-  menu_id BIGINT,
+  menu_id INT,
   FOREIGN KEY (shop_id) REFERENCES by_shop (id),
   FOREIGN KEY (menu_id) REFERENCES by_menu (id),
   PRIMARY KEY (shop_id, menu_id)

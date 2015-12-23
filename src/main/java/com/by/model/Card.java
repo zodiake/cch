@@ -15,134 +15,144 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Audited
 public class Card {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	@CardNameUnique
-	private String name;
+    @CardNameUnique
+    private String name;
 
-	@OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
-	private List<CardRule> rules;
+    @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
+    private List<CardRule> rules;
 
-	@Enumerated
-	private ValidEnum valid;
+    @Enumerated
+    private ValidEnum valid;
 
-	@Column(name = "init_score")
-	private Integer initScore;
+    @Column(name = "init_score")
+    private Integer initScore;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_time")
-	private Calendar createdTime;
+    private String summary;
 
-	@Column(name = "created_by")
-	private String createdBy;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Calendar createdTime;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_time")
-	private Calendar updatedTime;
+    @Column(name = "created_by")
+    private String createdBy;
 
-	@Column(name = "updated_by")
-	private String updatedBy;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Calendar updatedTime;
 
-	public Card() {
-	}
+    @Column(name = "updated_by")
+    private String updatedBy;
 
-	public Card(int id) {
-		this.id = id;
-	}
+    public Card() {
+    }
 
-	public int getId() {
-		return id;
-	}
+    public Card(int id) {
+        this.id = id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public List<CardRule> getRules() {
-		return rules;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setRules(List<CardRule> rules) {
-		this.rules = rules;
-	}
+    public List<CardRule> getRules() {
+        return rules;
+    }
 
-	public ValidEnum getValid() {
-		return valid;
-	}
+    public void setRules(List<CardRule> rules) {
+        this.rules = rules;
+    }
 
-	public void setValid(ValidEnum valid) {
-		this.valid = valid;
-	}
+    public ValidEnum getValid() {
+        return valid;
+    }
 
-	public Integer getInitScore() {
-		return initScore;
-	}
+    public void setValid(ValidEnum valid) {
+        this.valid = valid;
+    }
 
-	public void setInitScore(Integer initScore) {
-		this.initScore = initScore;
-	}
+    public Integer getInitScore() {
+        return initScore;
+    }
 
-	public Calendar getCreatedTime() {
-		return createdTime;
-	}
+    public void setInitScore(Integer initScore) {
+        this.initScore = initScore;
+    }
 
-	public void setCreatedTime(Calendar createdTime) {
-		this.createdTime = createdTime;
-	}
+    public Calendar getCreatedTime() {
+        return createdTime;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public void setCreatedTime(Calendar createdTime) {
+        this.createdTime = createdTime;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	public Calendar getUpdatedTime() {
-		return updatedTime;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public void setUpdatedTime(Calendar updatedTime) {
-		this.updatedTime = updatedTime;
-	}
+    public Calendar getUpdatedTime() {
+        return updatedTime;
+    }
 
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
+    public void setUpdatedTime(Calendar updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
-	}
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Card other = (Card) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Card other = (Card) obj;
+        if (id != other.id)
+            return false;
+        return true;
+    }
 }

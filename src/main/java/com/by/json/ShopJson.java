@@ -12,7 +12,7 @@ public class ShopJson {
     private Long id;
     private String name;
     private String key;
-    private Long[] menus;
+    private Integer[] menus;
 
     public ShopJson() {
     }
@@ -21,7 +21,7 @@ public class ShopJson {
         this.id = shop.getId();
         this.name = shop.getName();
         this.key = shop.getShopKey();
-        this.menus = shop.getMenus().stream().map(Menu::getId).collect(Collectors.toList()).toArray(new Long[]{});
+        this.menus = shop.getMenus().stream().map(Menu::getId).collect(Collectors.toList()).toArray(new Integer[]{});
     }
 
     public Long getId() {
@@ -48,11 +48,11 @@ public class ShopJson {
         this.key = key;
     }
 
-    public Long[] getMenus() {
-        return menus;
-    }
+	public Integer[] getMenus() {
+		return menus;
+	}
 
-    public void setMenus(Long[] menus) {
-        this.menus = menus;
-    }
+	public void setMenus(Integer[] menus) {
+		this.menus = menus;
+	}
 }
