@@ -57,13 +57,14 @@ $(function($) {
             }).done(function(data) {
                 settings.fn(data);
                 var pages = getPages(current, 7, data.obj.totalPages);
-                var ul = $('ul.pageable');
+                var ul = $('ul.pagination');
                 ul.children().remove();
                 pages.forEach(function(e) {
                     var li = $('<li><a href="#"></a></li>');
                     var a = li.find('a').html(e.text);
-                    if (e.active)
-                        a.addClass('active');
+                    if (e.active){
+                        li.addClass('active');
+                    }
                     ul.append(li);
                 });
             });

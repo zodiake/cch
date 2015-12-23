@@ -1,5 +1,19 @@
 package com.by.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
@@ -9,6 +23,7 @@ import com.by.json.ScoreHistoryJson;
 import com.by.json.TradingJson;
 import com.by.json.UpdateScoreJson;
 import com.by.model.Member;
+import com.by.model.Menu;
 import com.by.model.User;
 import com.by.security.UserContext;
 import com.by.service.MemberService;
@@ -16,24 +31,16 @@ import com.by.service.ScoreHistoryService;
 import com.by.service.TradingService;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.utils.PageUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by yagamai on 15-12-9.
  */
 @Controller
 @RequestMapping("/admin/member")
-public class AdminMemberController {
+public class AdminMemberController extends BaseController{
     private final int PAGE_SIZE = 10;
     private final int INIT_PAGE = 0;
+    private final Menu subMenu=new Menu(2);
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -47,7 +54,9 @@ public class AdminMemberController {
     public String firstPage(Model uiModel) {
         Page<Member> members = memberService.findFirstPage(PAGE_SIZE);
         uiModel.addAttribute("lists", members);
-        uiModel.addAttribute("last", PageUtils.computeLastPage(members.getTotalPages()));
+        uiModel.addAttribute("last", 7);
+        uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
+        uiModel.addAttribute("subMenu", subMenu);
         return "admin/member/lists";
     }
 
