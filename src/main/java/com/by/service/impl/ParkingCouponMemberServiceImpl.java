@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -139,13 +142,16 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
 
     @Override
     public List<CouponJson> findByMember(Member member, Pageable pageable) {
-        return repository.findByMember(member, pageable).getContent().stream().filter(i -> {
-            return couponService.isValidCoupon(i.getCoupon());
-        }).map(i -> {
-            CouponJson json = new CouponJson(i.getCoupon());
-            json.setTotal(i.getTotal());
-            return json;
-        }).collect(Collectors.toList());
+        return repository.findByMember(member, pageable)
+                .getContent()
+                .stream()
+                .filter(i ->
+                        couponService.isValidCoupon(i.getCoupon())
+                ).map(i -> {
+                    CouponJson json = new CouponJson(i.getCoupon());
+                    json.setTotal(i.getTotal());
+                    return json;
+                }).collect(Collectors.toList());
     }
 
     @Override

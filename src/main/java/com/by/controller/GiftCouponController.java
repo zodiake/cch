@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.by.exception.Fail;
 import com.by.exception.NotFoundException;
+import com.by.exception.NotValidException;
 import com.by.exception.PasswordNotMatchException;
 import com.by.exception.Status;
 import com.by.exception.Success;
@@ -53,6 +54,7 @@ import scala.concurrent.duration.Duration;
 @Controller
 @RequestMapping(value = "/api/giftCoupons")
 public class GiftCouponController extends BaseController {
+    private final String INVALID_MESSAGE = "用户无效";
     private ApplicationContext ctx;
     private ActorSystem system;
     private ActorRef ref;
@@ -79,19 +81,18 @@ public class GiftCouponController extends BaseController {
     // 可以兑换的卡券列表
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Success<Page<CouponTemplateJson>> list(HttpServletRequest request,
-                                                  @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
-        Member member = (Member) request.getAttribute("member");
-        isValidMember(member);
+    public Status list(HttpServletRequest request,
+                       @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
+        Member m = (Member) request.getAttribute("member");
+        Member member = memberService.findOneCache(m.getId());
+        if(!isValidMember(member)){
+        	throw new NotValidException();
+        }
         Page<GiftCoupon> coupons = giftCouponService.findByValid(ValidEnum.VALID, pageable);
         List<CouponTemplateJson> results = coupons.getContent()
                 .stream()
-                .filter(i -> {
-                    return couponService.isValidCoupon(i);
-                })
-                .map(i -> {
-                    return new CouponTemplateJson(i);
-                })
+                .filter(i -> couponService.isValidCoupon(i))
+                .map(CouponTemplateJson::new)
                 .collect(Collectors.toList());
         return new Success<>(new PageImpl<>(results, pageable, coupons.getTotalElements()));
     }
@@ -132,12 +133,15 @@ public class GiftCouponController extends BaseController {
     // 用户兑换到的优惠券列表
     @RequestMapping(value = "/member", method = RequestMethod.GET)
     @ResponseBody
-    public Status couponList(HttpServletRequest request,
+    public Status couponList(HttpServletRequest request, 
                              @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
-        Member member = (Member) request.getAttribute("member");
-        isValidMember(member);
-        List<CouponJson> result = giftCouponMemberService.findByMember(member, pageable);
-        return new Success<>(result);
+        Member m = (Member) request.getAttribute("member");
+        Member member = memberService.findOneCache(m.getId());
+        if(!isValidMember(member)){
+        	throw new NotValidException();
+        }
+        List<CouponJson> jsonList = giftCouponMemberService.findByMember(member, pageable);
+        return new Success<>(jsonList);
     }
 
     // 详情

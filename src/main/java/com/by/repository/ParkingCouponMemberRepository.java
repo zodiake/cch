@@ -13,14 +13,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ParkingCouponMemberRepository extends PagingAndSortingRepository<ParkingCouponMember, MemberCouponId> {
-    List<ParkingCouponMember> findByMember(Member member);
+	List<ParkingCouponMember> findByMember(Member member);
 
-    ParkingCouponMember findByMemberAndCoupon(Member member, ParkingCoupon coupon);
+	ParkingCouponMember findByMemberAndCoupon(Member member, ParkingCoupon coupon);
 
-    @Query("select sum(p.total) from ParkingCouponMember p where p.coupon=:coupon")
-    Long sumTotalGroupByCoupon(@Param("coupon") ParkingCoupon coupon);
+	@Query("select sum(p.total) from ParkingCouponMember p where p.coupon=:coupon")
+	Long sumTotalGroupByCoupon(@Param("coupon") ParkingCoupon coupon);
 
-    Long countByCouponAndMember(ParkingCoupon parkingCoupon, Member member);
+	Long countByCouponAndMember(ParkingCoupon parkingCoupon, Member member);
 
-    Page<ParkingCouponMember> findByMember(Member member, Pageable pageable);
+	@Query("select p from ParkingCouponMember p where p.member=:member order by p.coupon.couponEndTime")
+	Page<ParkingCouponMember> findByMember(@Param("member") Member member, Pageable pageable);
 }
