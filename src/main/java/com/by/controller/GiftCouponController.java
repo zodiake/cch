@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.by.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -27,12 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.by.exception.Fail;
-import com.by.exception.NotFoundException;
-import com.by.exception.NotValidException;
-import com.by.exception.PasswordNotMatchException;
-import com.by.exception.Status;
-import com.by.exception.Success;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
@@ -86,7 +81,7 @@ public class GiftCouponController extends BaseController {
         Member m = (Member) request.getAttribute("member");
         Member member = memberService.findOneCache(m.getId());
         if(!isValidMember(member)){
-        	throw new NotValidException();
+        	throw new MemberNotValidException();
         }
         Page<GiftCoupon> coupons = giftCouponService.findByValid(ValidEnum.VALID, pageable);
         List<CouponTemplateJson> results = coupons.getContent()
@@ -138,7 +133,7 @@ public class GiftCouponController extends BaseController {
         Member m = (Member) request.getAttribute("member");
         Member member = memberService.findOneCache(m.getId());
         if(!isValidMember(member)){
-        	throw new NotValidException();
+        	throw new MemberNotValidException();
         }
         List<CouponJson> jsonList = giftCouponMemberService.findByMember(member, pageable);
         return new Success<>(jsonList);

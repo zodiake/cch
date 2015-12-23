@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.by.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,12 +22,12 @@ public class SigninController {
 	@Autowired
 	private UserService service;
 
-	@RequestMapping(value = "/signin", method = RequestMethod.POST)
+	@RequestMapping(value = "/signin", method = RequestMethod.GET)
 	@ResponseBody
-	public String signin(@Valid User user,BindingResult result) {
+	public String signin() {
 		JWTSigner signer = new JWTSigner("crm");
 		Map<String, Object> u = new HashMap<>();
-		u.put("user", new User(1, "tom"));
+		u.put("member", new Member(2L, "13811738422"));
 		return signer.sign(u);
 	}
 }

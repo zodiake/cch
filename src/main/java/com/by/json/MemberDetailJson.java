@@ -26,11 +26,14 @@ public class MemberDetailJson {
 
 	public MemberDetailJson(MemberDetail detail) {
 		DateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
-		this.realName = detail.getRealName();
-		this.address = detail.getAddress();
-		if (detail.getBirthday() != null)
+		if (detail.getRealName() != null)
+			this.realName = detail.getRealName();
+		if (detail.getAddress() != null)
+			this.address = detail.getAddress();
+		if (detail.getBirthday() != null) {
 			this.birth = formate.format(detail.getBirthday().getTime());
-		this.birthday = detail.getBirthday();
+			this.birthday = detail.getBirthday();
+		}
 	}
 
 	public String getRealName() {
