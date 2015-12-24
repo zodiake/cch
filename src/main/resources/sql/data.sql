@@ -72,8 +72,10 @@ INSERT INTO by_license (id, name) VALUES (2, '沪A14321');
 INSERT INTO by_card (id, name, valid, init_score) VALUES (1, 'low', 1, 100);
 
 -- test member
-INSERT INTO by_member (id, name, card_id, score, sumScore) VALUES (1, '13611738422', 1, 10, 10);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore) VALUES (2, '13811738422', 1, 200, 0, 10);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (2, '13811738422', 1, 200, 0, 10, '2012-12-12');
 
 -- test pay
 INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)

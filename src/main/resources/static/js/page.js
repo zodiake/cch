@@ -52,7 +52,7 @@ $(function ($) {
 
         this.on('click', 'li a', function (e) {
             var source = $(e.target);
-            var page = Number(source.html());
+            var page = Number(source.html())-1;
             var parameter = settings.parameter();
             if (source.attr('aria-label') == 'Previous' && current != null) {
                 page = current - 1;

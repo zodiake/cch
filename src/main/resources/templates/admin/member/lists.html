@@ -7,37 +7,54 @@
     <title>会员管理</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.theme.css"/>
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/template.css"/>
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap-timepicker.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
+    <script type="text/javascript" src="/js/jsRender.js"></script>
     <script src="/js/page.js"></script>
     <script id="detail" type="text/x-jsrender">
+		{{for content}}
 		<tr>
-			<td><a>Jessica Foster</a></td>
-			<td><a>12334556677</a></td>
-			<td><a>普通</a></td>
-			<td><a>2015年10月10号</a></td>
-			<td><a>1234</a></td>
+			<td><a>{{>mobile}}</a></td>
+			<td><a>{{>name}}</a></td>
+			<td><a>{{>card}}</a></td>
+			<td><a>{{>createdTime}}</a></td>
+			<td><a>{{>score}}</a></td>
 		</tr>
+		{{/for}}
     </script>
     <script>
         $(function () {
+            var submitFn = function (data) {
+                var tmpl = $.templates("#detail");
+                var html = tmpl.render(data.obj);
+                $('table tbody').children().remove();
+                $('table tbody').html(html);
+            };
+
+            var parameterFn = function () {
+                var beginTime = $('#beginTime').val();
+                var endTime = $('#endTime').val();
+                var card = $('#card').val();
+                return {
+                    beginTime: beginTime,
+                    endTime: endTime,
+                    card: card
+                }
+            };
+
             $('ul.pagination').pageable({
                 url: '/admin/members/json',
-                parameter: function () {
-                    return {
-                        beginTime: '2012-12-1',
-                        endTime: '2012-12-30'
-                    }
-                },
-                fn: function (data) {
-                }
+                parameter: parameterFn,
+                fn: submitFn
             });
+
             $('.datepicker').datepicker();
+            $('.datepicker').datepicker("option", "dateFormat", 'yy-mm-dd');
         });
     </script>
 </head>
@@ -58,15 +75,16 @@
             <form class="form-inline">
                 <div class="form-group">
                     <label>会员卡类型</label>
-                    <select class="form-control w120">
-                        <option>全部</option>
-                        <option>普通</option>
+                    <select class="form-control w120" name="card" id="card">
+                        <option value="">全部</option>
+                        <option value="1">普通</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>注册日期</label>
-                    <input class="form-control datepicker " placeholder="" type="text"/> -
-                    <input class="form-control datepicker " placeholder="" type="text"/>
+                    <input class="form-control datepicker" id="beginTime" name="beginTime" placeholder="" type="text"/>
+                    -
+                    <input class="form-control datepicker" id="endTime" name="endTime" placeholder="" type="text"/>
                 </div>
                 <div class="form-group">
                     <input class="form-control w200" value="请输入手机号进行查找" type="text"
@@ -87,8 +105,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><a>Jessica Foster</a></td>
+                <tr th:each="m:${lists.content}">
+                    <td><a th:text="${m.mobile}" th:href="@{'/admin/members/'+${m.id}}">Jessica Foster</a></td>
                     <td><a>12334556677</a></td>
                     <td><a>普通</a></td>
                     <td><a>2015年10月10号</a></td>
