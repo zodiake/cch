@@ -76,7 +76,8 @@ CREATE TABLE by_rule_category (
 CREATE TABLE by_card (
   id           INT NOT NULL AUTO_INCREMENT,
   name         VARCHAR(50),
-  valid        SMALLINT,
+  valid        SMALLINT default 1,
+  img_href     VARCHAR(50),
   init_score   INT          DEFAULT 0,
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
@@ -90,11 +91,13 @@ CREATE TABLE by_card_aud (
   id           BIGINT  NOT NULL AUTO_INCREMENT,
   name         VARCHAR(50),
   valid        SMALLINT,
+  img_href     VARCHAR(50),
   init_score   INT              DEFAULT 0,
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
+  summary      VARCHAR(500),
   REV          INTEGER NOT NULL,
   REVTYPE      TINYINT,
   PRIMARY KEY (id, REV)

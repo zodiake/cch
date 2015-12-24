@@ -1,14 +1,25 @@
 package com.by.model;
 
-import com.by.typeEnum.ValidEnum;
-import com.by.validator.CardNameUnique;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.hibernate.envers.Audited;
-
-import javax.persistence.*;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.envers.Audited;
+
+import com.by.typeEnum.ValidEnum;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "by_card")
@@ -19,7 +30,6 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @CardNameUnique
     private String name;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
@@ -32,6 +42,9 @@ public class Card {
     private Integer initScore;
 
     private String summary;
+
+    @Column(name="img_href")
+    private String imgHref;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
@@ -132,6 +145,14 @@ public class Card {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public String getImgHref() {
+        return imgHref;
+    }
+
+    public void setImgHref(String imgHref) {
+        this.imgHref = imgHref;
     }
 
     @Override

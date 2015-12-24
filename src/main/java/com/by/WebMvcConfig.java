@@ -1,7 +1,5 @@
 package com.by;
 
-import com.by.converter.*;
-import com.by.interceptor.JWTInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -9,6 +7,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import com.by.converter.StringToCalendar;
+import com.by.converter.StringToCouponAdminStateEnum;
+import com.by.converter.StringToDuplicateEnum;
+import com.by.converter.StringToValidEnumConverter;
+import com.by.interceptor.JWTInterceptor;
 
 @Configuration
 @EnableWebMvc

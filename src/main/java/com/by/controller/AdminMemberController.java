@@ -24,7 +24,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Created by yagamai on 15-12-9.
@@ -53,6 +56,12 @@ public class AdminMemberController extends BaseController {
         uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
         uiModel.addAttribute("subMenu", subMenu);
         return "admin/member/lists";
+    }
+
+    @RequestMapping(value = "/{card}", method = RequestMethod.POST)
+    public String create(@PathVariable("card") int card, @Valid @ModelAttribute("member") Member member, BindingResult result) {
+        //// TODO: 15-12-24  
+        return null;
     }
 
     @RequestMapping(value = "/json", method = RequestMethod.GET)

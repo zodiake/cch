@@ -1,28 +1,28 @@
 package com.by.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.by.model.Card;
 import com.by.repository.CardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-public class CardNameValidator implements ConstraintValidator<CardNameUnique, String> {
-	@Autowired
-	private CardRepository repository;
+@Component("cardNameValidator")
+public class CardNameValidator implements Validator {
+    @Autowired
+    private CardRepository repository;
 
-	@Override
-	public void initialize(CardNameUnique constraintAnnotation) {
-		// TODO Auto-generated method stub
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return Card.class.equals(clazz);
+    }
 
-	}
-
-	@Override
-	public boolean isValid(String value, ConstraintValidatorContext context) {
-		Long count = repository.countByName(value);
-		if (count > 0)
-			return false;
-		return true;
-	}
-
+    @Override
+    public void validate(Object target, Errors errors) {
+        Card c = (Card) target;
+        Long count = repository.countByName(c.getName());
+        if (count > 0)
+            errors.rejectValue("name", "duplicate");
+    }
 }

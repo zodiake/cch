@@ -70,6 +70,7 @@ public class CardServiceImpl implements CardService {
     @Override
     @CachePut("card")
     public Card save(Card card) {
+    	card.setValid(ValidEnum.VALID);
         return repository.save(card);
     }
 

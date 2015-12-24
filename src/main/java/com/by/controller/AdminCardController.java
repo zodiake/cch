@@ -2,7 +2,6 @@ package com.by.controller;
 
 import com.by.exception.Status;
 import com.by.exception.Success;
-import com.by.form.CardForm;
 import com.by.json.CardJson;
 import com.by.json.CardTemplateJson;
 import com.by.model.Card;
@@ -14,8 +13,9 @@ import com.by.service.CardRuleService;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
-import com.by.utils.FailBuilder;
+import com.by.validator.CardNameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/cards")
 public class AdminCardController extends BaseController {
+    private final String CREATE = "admin/card/create";
+    private final String REDIRECT = "redirect:/admin/cards/";
     private final RuleCategory SIGNUP_CATEGORY = new RuleCategory(1);
     private final RuleCategory TRADING_CATEGORY = new RuleCategory(2);
     private final String LISTS = "admin/card/lists";
@@ -43,11 +45,9 @@ public class AdminCardController extends BaseController {
     private CardRuleService cardRuleService;
     @Autowired
     private UserContext userContext;
-
-    @RequestMapping(method = RequestMethod.GET, params = "form")
-    public String create() {
-        return "admin/card/create";
-    }
+    @Autowired
+    @Qualifier("cardNameValidator")
+    private CardNameValidator validator;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model uiModel,
@@ -92,12 +92,22 @@ public class AdminCardController extends BaseController {
         return new Success<>("success");
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public Status save(@RequestBody @Valid CardForm card, BindingResult result) {
+    @RequestMapping(params = "form", method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute Card card, BindingResult result, Model uiModel) {
+        validator.validate(card, result);
         if (result.hasErrors()) {
-            return FailBuilder.buildFail(result);
+            uiModel.addAttribute("card", card);
+            return CREATE;
         }
-        return new Success<>(card);
+        Card source = service.save(card);
+        return REDIRECT + source.getId();
+    }
+
+    @RequestMapping(params = "form", method = RequestMethod.GET)
+    public String save(Model uiModel) {
+        uiModel.addAttribute("card", new Card());
+        uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
+        uiModel.addAttribute("subMenu", subMenu);
+        return CREATE;
     }
 }
