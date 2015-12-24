@@ -16,18 +16,18 @@
     <script type="text/javascript" src="/js/template.js"></script>
     <script src="/js/page.js"></script>
     <script id="detail" type="text/x-jsrender">
-                    <tr>
-                        <td><a>Jessica Foster</a></td>
-                        <td><a>12334556677</a></td>
-                        <td><a>普通</a></td>
-                        <td><a>2015年10月10号</a></td>
-                        <td><a>1234</a></td>
-                    </tr>
+		<tr>
+			<td><a>Jessica Foster</a></td>
+			<td><a>12334556677</a></td>
+			<td><a>普通</a></td>
+			<td><a>2015年10月10号</a></td>
+			<td><a>1234</a></td>
+		</tr>
     </script>
     <script>
         $(function () {
             $('ul.pagination').pageable({
-                url: '/admin/member/json',
+                url: '/admin/members/json',
                 parameter: function () {
                     return {
                         beginTime: '2012-12-1',

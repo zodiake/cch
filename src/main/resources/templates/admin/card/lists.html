@@ -12,97 +12,97 @@
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/jsRender.js"></script>
     <script id="detail" type="text/x-jsrender">
-    <div class="msg-wrap">
-        <div class="top-meun">
-            <a class="close-btn">
-                <img src="/img/icon-close.png" width="20" height="20"/>
-            </a>
-            <button type="button" class="btn btn-info pull-right">添加成员</button>
-        </div>
-        <div class="bar state-bar">使用情况</div>
-        <div class="group use-state">
-            <div class="group-list">
-                <label>状态</label>
-                <div class="succees">{{:state}}</div>
+        <div class="msg-wrap">
+            <div class="top-meun">
+                <a class="close-btn">
+                    <img src="/img/icon-close.png" width="20" height="20"/>
+                </a>
+                <button type="button" class="btn btn-info pull-right">添加成员</button>
             </div>
-            <div class="group-list">
-                <label>当前会员数</label>
-                <div class="succees">{{:total}}</div>
-            </div>
-        </div>
-        <div class="bar edit-bar">基本信息</div>
-        <div class="group base-info">
-            <div class="group-list">
-                <label>名称</label>
-                <div>{{:name}}</div>
-            </div>
-            <div class="group-list">
-                <label>背景图</label>
-                <div class="ml">
-                    <img src="img/1.png" width="300" height="210"/>
+            <div class="bar state-bar">使用情况</div>
+            <div class="group use-state">
+                <div class="group-list">
+                    <label>状态</label>
+                    <div class="succees">{{:state}}</div>
+                </div>
+                <div class="group-list">
+                    <label>当前会员数</label>
+                    <div class="succees">{{:total}}</div>
                 </div>
             </div>
-            <div class="group-list">
-                <label>初始积分</label>
-                <div>
-                    {{:initScore}}
+            <div class="bar edit-bar">基本信息</div>
+            <div class="group base-info">
+                <div class="group-list">
+                    <label>名称</label>
+                    <div>{{:name}}</div>
+                </div>
+                <div class="group-list">
+                    <label>背景图</label>
+                    <div class="ml">
+                        <img src="img/1.png" width="300" height="210"/>
+                    </div>
+                </div>
+                <div class="group-list">
+                    <label>初始积分</label>
+                    <div>
+                        {{:initScore}}
+                    </div>
+                </div>
+                <div class="group-list">
+                    <label>描述</label>
+                    <div>
+                        {{:summary}}
+                    </div>
                 </div>
             </div>
-            <div class="group-list">
-                <label>描述</label>
-                <div>
-                    {{:summary}}
+            <div class="bar state-bar">积分规则</div>
+            <div class="group point-rule">
+                <div class="alert alert-danger" role="alert">
+                    提示！<br/>
+                    当规则同时生效时，取获得积分最高的规则。
                 </div>
+                <div class="pit-hd">注册</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>额外积分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{for register}}
+                    <tr>
+                        <td>{{>beginTime}}</td>
+                        <td>{{>endTime}}</td>
+                        <td>{{>total}}</td>
+                    </tr>
+                    {{/for}}
+                    </tbody>
+                </table>
+                <div class="pit-hd">交易</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>交易倍率</th>
+                        <th>额外积分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{for trading}}
+                    <tr>
+                        <td>{{>beginTime}}</td>
+                        <td>{{>endTime}}</td>
+                        <td>{{>rate}}</td>
+                        <td>{{>score}}</td>
+                    </tr>
+                    {{/for}}
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="bar state-bar">积分规则</div>
-        <div class="group point-rule">
-            <div class="alert alert-danger" role="alert">
-                提示！<br/>
-                当规则同时生效时，取获得积分最高的规则。
-            </div>
-            <div class="pit-hd">注册</div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>额外积分</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{for register}}
-                <tr>
-                    <td>{{>beginTime}}</td>
-                    <td>{{>endTime}}</td>
-                    <td>{{>total}}</td>
-                </tr>
-                {{/for}}
-                </tbody>
-            </table>
-            <div class="pit-hd">交易</div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>交易倍率</th>
-                    <th>额外积分</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{for trading}}
-                <tr>
-                    <td>{{>beginTime}}</td>
-                    <td>{{>endTime}}</td>
-                    <td>{{>rate}}</td>
-                    <td>{{>score}}</td>
-                </tr>
-                {{/for}}
-                </tbody>
-            </table>
-        </div>
-    </div>
     </script>
     <script>
         $(function () {
@@ -113,14 +113,13 @@
                     success: function (data) {
                         if (data.status == 'success') {
                             var tmpl = $.templates("#detail");
-                            var html=tmpl.render(data.obj);
-                            console.log(html);
+                            var html = tmpl.render(data.obj);
                             $('.card-detail-wrap').css('right', '0').html(html);
                         }
                     }
                 });
             });
-            $('body').on('click','.close-btn',function(){
+            $('body').on('click', '.close-btn', function () {
                 $('.card-detail-wrap').css('right', '-350px')
             })
         })

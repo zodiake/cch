@@ -20,7 +20,7 @@
 					<a><i class="icon" th:attrappend="class=${' ' + menu.key.name}"></i></a>
 					<ul class="child-nav">
 						<li th:each="m : ${menu.value}" th:class="${m == subMenu}?'active'">
-							<a th:text="${m.name}"></a>
+							<a th:text="${m.name}" th:href="${m.href}"></a>
 						</li>
 					</ul>
 				</li>

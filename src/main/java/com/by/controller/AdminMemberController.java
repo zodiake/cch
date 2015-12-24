@@ -30,13 +30,12 @@ import com.by.service.MemberService;
 import com.by.service.ScoreHistoryService;
 import com.by.service.TradingService;
 import com.by.typeEnum.ScoreHistoryEnum;
-import com.by.utils.PageUtils;
 
 /**
  * Created by yagamai on 15-12-9.
  */
 @Controller
-@RequestMapping("/admin/member")
+@RequestMapping("/admin/members")
 public class AdminMemberController extends BaseController{
     private final int PAGE_SIZE = 10;
     private final int INIT_PAGE = 0;
