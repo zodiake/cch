@@ -25,4 +25,8 @@ public interface TradingService {
     Trading bindMember(Trading trading, String mobile);
 
     Page<TradingJson> findByMember(Member member, Pageable pageable);
+
+    Long sumAmountByMember(Member m);
+
+    Long countByMember(Member m);
 }

@@ -127,4 +127,16 @@ public class TradingServiceImpl implements TradingService {
                 .collect(Collectors.toList());
         return new PageImpl<>(json, pageable, results.getTotalElements());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long sumAmountByMember(Member m) {
+        return repository.sumAmountByMember(m);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long countByMember(Member m){
+        return repository.countByMember(m);
+    }
 }
