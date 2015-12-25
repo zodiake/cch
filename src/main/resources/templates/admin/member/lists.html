@@ -72,12 +72,12 @@
             <div class="hd">
                 <div class="bar base-bar">会员管理</div>
             </div>
-            <form class="form-inline">
+            <form class="form-inline" th:object="${form}">
                 <div class="form-group">
                     <label>会员卡类型</label>
                     <select class="form-control w120" th:field="*{card}" >
                         <option value="">全部</option>
-                        <option th:each="type : ${}" th:value="${type}" th:text="#{${'seedstarter.type.' + type}}">Wireframe</option>
+                        <option th:each="c : ${cards}" th:value="${c.id}" th:text="${c.name}">name</option>
                     </select>
                 </div>
                 <div class="form-group">

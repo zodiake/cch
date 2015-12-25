@@ -1,5 +1,8 @@
 package com.by.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +29,17 @@ import com.by.json.MemberJson;
 import com.by.json.ScoreHistoryJson;
 import com.by.json.TradingJson;
 import com.by.json.UpdateScoreJson;
+import com.by.model.Card;
 import com.by.model.Member;
 import com.by.model.Menu;
 import com.by.model.User;
 import com.by.security.UserContext;
+import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.service.ScoreHistoryService;
 import com.by.service.TradingService;
 import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-9.
@@ -52,6 +58,14 @@ public class AdminMemberController extends BaseController {
 	private ScoreHistoryService scoreHistoryService;
 	@Autowired
 	private UserContext userContext;
+	@Autowired
+	private CardService cardService;
+
+	@ModelAttribute("cards")
+	public List<Card> findAllCard() {
+		return cardService.findAll().stream().filter(i -> i.getValid().equals(ValidEnum.VALID))
+				.collect(Collectors.toList());
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String firstPage(AdminMemberForm form, Model uiModel,
@@ -59,6 +73,7 @@ public class AdminMemberController extends BaseController {
 		Page<MemberJson> members = memberService.findAll(form, pageable);
 		uiModel.addAttribute("lists", members);
 		uiModel.addAttribute("last", computeLastPage(members.getTotalPages()));
+		uiModel.addAttribute("form", new AdminMemberForm());
 		addMenu(uiModel);
 		return "admin/member/lists";
 	}

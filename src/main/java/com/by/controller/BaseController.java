@@ -17,21 +17,29 @@ import com.by.service.MenuCategoryService;
  * Created by yagamai on 15-12-16.
  */
 @Component
-public abstract class BaseController implements UtilContoller{
-    @Autowired
-    protected MenuCategoryService menuCategoryService;
-    @Autowired
-    protected UserContext userContext;
-    protected final String SUCCESS="保存成功";
+public abstract class BaseController implements UtilContoller {
+	@Autowired
+	protected MenuCategoryService menuCategoryService;
+	@Autowired
+	protected UserContext userContext;
+	protected final String SUCCESS = "保存成功";
+	private final int maxSize = 7;
 
-    protected Map<MenuCategory, List<Menu>> menus(User user) {
-        return menuCategoryService.getCategoryAndMenu(user);
-    }
+	protected Map<MenuCategory, List<Menu>> menus(User user) {
+		return menuCategoryService.getCategoryAndMenu(user);
+	}
 
-    protected void addMenu(Model uiModel) {
-        uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
-        uiModel.addAttribute("subMenu", getSubMenu());
-    }
+	protected void addMenu(Model uiModel) {
+		uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
+		uiModel.addAttribute("subMenu", getSubMenu());
+	}
 
-    public abstract Menu getSubMenu();
+	protected int computeLastPage(int totalPages) {
+		if (maxSize > totalPages)
+			return totalPages == 0 ? 1 : totalPages;
+		else
+			return maxSize;
+	}
+
+	public abstract Menu getSubMenu();
 }
