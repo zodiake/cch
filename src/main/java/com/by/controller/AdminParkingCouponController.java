@@ -1,14 +1,7 @@
 package com.by.controller;
 
-import com.by.exception.NotFoundException;
-import com.by.exception.Status;
-import com.by.exception.Success;
-import com.by.form.CouponQueryForm;
-import com.by.json.CouponJson;
-import com.by.json.CouponTemplateJson;
-import com.by.model.ParkingCoupon;
-import com.by.service.ParkingCouponService;
-import com.by.utils.PageUtils;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,16 +10,29 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+import com.by.exception.NotFoundException;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.form.CouponQueryForm;
+import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
+import com.by.model.Menu;
+import com.by.model.ParkingCoupon;
+import com.by.service.ParkingCouponService;
 
 @Controller
 @RequestMapping(value = "/admin/parkingCoupon")
-public class AdminParkingCouponController {
+public class AdminParkingCouponController extends BaseController{
 	private final String CREATE = "admin/parkingCoupon/create";
 	private final String EDIT = "admin/parkingCoupon/edit";
+	private final Menu subMenu=new Menu(7);
 	@Autowired
 	private ParkingCouponService service;
 
@@ -77,7 +83,7 @@ public class AdminParkingCouponController {
 	public String list(Model uiModel) {
 		Page<ParkingCoupon> lists = service.findFirstPage(10);
 		uiModel.addAttribute("lists", lists);
-		uiModel.addAttribute("last", PageUtils.computeLastPage(lists.getTotalPages()));
+		uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
 		return "admin/parkingCoupon/list";
 	}
 
@@ -96,5 +102,10 @@ public class AdminParkingCouponController {
 	public Status validOrNotValid(@PathVariable("id") Long id) {
 		ParkingCoupon coupon = new ParkingCoupon(id);
 		return new Success<CouponJson>(new CouponJson(service.validOrInValid(coupon)));
+	}
+
+	@Override
+	public Menu getSubMenu() {
+		return subMenu;
 	}
 }

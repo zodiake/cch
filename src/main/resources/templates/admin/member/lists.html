@@ -75,9 +75,9 @@
             <form class="form-inline">
                 <div class="form-group">
                     <label>会员卡类型</label>
-                    <select class="form-control w120" name="card" id="card">
+                    <select class="form-control w120" th:field="*{card}" >
                         <option value="">全部</option>
-                        <option value="1">普通</option>
+                        <option th:each="type : ${}" th:value="${type}" th:text="#{${'seedstarter.type.' + type}}">Wireframe</option>
                     </select>
                 </div>
                 <div class="form-group">

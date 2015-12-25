@@ -17,7 +17,7 @@ import com.by.service.MenuCategoryService;
  * Created by yagamai on 15-12-16.
  */
 @Component
-public abstract class BaseController {
+public abstract class BaseController implements UtilContoller{
     @Autowired
     protected MenuCategoryService menuCategoryService;
     @Autowired

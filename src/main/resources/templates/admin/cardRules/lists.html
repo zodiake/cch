@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0" />
+<title>会员卡积分</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
+<link rel="stylesheet" type="text/css" href="/css/base.css"/>
+<link rel="stylesheet" type="text/css" href="/css/template.css"/>
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
+<script type="text/javascript" src="/js/template.js"></script>
+</head>
+
+<body>
+<div class="header clearfix">
+	<div class="logo pull-left">
+		<img src="img/logo.png" width="50" height="60"/>
+	</div>
+	<div class="sidebar-toggle pull-left">
+		<i class="icon icon-toggle"></i>
+	</div>
+	<div class="crm-name pull-left">后台管理系统</div>
+	<div class="username pull-right">
+		<a>admin</a>
+		<a class="signout">
+			<i class="icon icon-sign"></i>
+		</a>
+	</div>
+</div>
+<div class="mainwrapper clearfix">
+	<div class="aside aside-small">
+		<ul class="par-nav">
+			<li class="active top-nav">
+				<a><i class="icon icon-one active"></i>导航</a>
+			</li>
+			<li>
+				<a><i class="icon icon-two"></i></a>
+				<ul class="child-nav">				
+					<li><a>会员卡</a></li>
+					<li><a>会员管理</a></li>
+					<li><a>会员黑名单</a></li>				
+				</ul>
+			</li>
+			<li>
+				<a><i class="icon icon-three"></i></a>
+				<ul class="child-nav">
+					<li><a>会员卡积分规则</a></li>
+					<li><a>店铺积分规则</a></li>
+					<li><a>人工积分</a></li>
+				</ul>
+			</li>
+			<li>
+				<a><i class="icon icon-four"></i></a>
+				<ul class="child-nav">
+					<li><a>停车券</a></li>
+					<li><a>礼品券</a></li>
+					<li><a>店铺券</a></li>
+					<li><a>卡券核销</a></li>
+				</ul>
+			</li>
+			<li>
+				<a><i class="icon icon-five"></i></a>
+				<ul class="child-nav">
+					<li><a>店铺管理</a></li>
+				</ul>
+			</li>
+			<li>
+				<a><i class="icon icon-six"></i></a>
+				<ul class="child-nav">
+					<li><a>注册协议</a></li>
+					<li><a>会员卡使用帮助</a></li>
+					<li><a>会员卡积分规则</a></li>
+				</ul>
+			</li>
+			<li>
+				<a><i class="icon icon-seven"></i></a>
+				<ul class="child-nav">
+					<li><a>权限管理</a></li>
+					<li><a>用户管理</a></li>
+					<li><a>账户设置</a></li>
+				</ul>
+			</li>
+		</ul>	
+	</div>
+
+
+	<div class="mainpanel">
+		<div class="member-jfe-wrap container">
+			<div class="hd clearfix">
+				<div class="bar base-bar short-bar pull-left">会员卡积分规则</div>
+              <button type="button" class="btn btn-info">添加</button>
+			</div>
+			<form class="form-inline">
+           		<div class="form-group">
+            		<label>规则状态</label>
+                    <select class="form-control w120">
+                    	<option>全部</option>
+                    	<option>已过期</option>
+                  		<option>未生效</option>
+                    	<option>已关闭</option>
+                    </select>
+                </div>
+                <div class="form-group">
+            		<label>会员卡类型</label>
+                    <select class="form-control w120">
+                    	<option>全部</option>
+                    	<option>小米</option>
+                  		<option>iphone</option>
+                    	<option>普通</option>
+                    </select>
+                </div>
+                <div class="form-group">
+            		<label>生效时间</label>
+                  <input class="form-control datepicker " placeholder="" type="text"/> -
+                  <input class="form-control datepicker " placeholder="" type="text"/>
+                </div>
+                <button class="btn btn-primary btn-xs" type="submit">查找</button>
+           </form>
+			
+			<table class="table table-striped bg-white">
+           	<thead>
+                <tr>
+                    <th>名称</th>
+                    <th>规则类型</th>
+                    <th>会员卡</th>
+                    <th>发行时间</th>
+                    <th>结束时间</th>
+                    <th>状态</th>
+                </tr>
+              </thead> 
+              <tbody>
+              		<tr>
+	                  	<td><a>2016元旦</a></td>  
+	                  	<td><a>交易</a></td>
+	                  	<td><a>普通</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a class="text-success">使用中</a></td>
+                    </tr>
+                  	<tr>
+	                  	<td><a>2016元旦</a></td>  
+	                  	<td><a>交易</a></td>
+	                  	<td><a>普通</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a class="text-danger">已关闭</a></td>
+                    </tr>
+                    <tr>
+	                  	<td><a>2016元旦</a></td>  
+	                  	<td><a>交易</a></td>
+	                  	<td><a>普通</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a class="text-muted">已过期</a></td>
+                    </tr>
+                    <tr>
+	                  	<td><a>2016元旦</a></td>  
+	                  	<td><a>交易</a></td>
+	                  	<td><a>普通</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a>2015年10月10号</a></td>
+	                  	<td><a class="text-primary">未生效</a></td>
+                    </tr>
+              </tbody>
+           </table>
+           <div class="pagination-wrap">
+              <ul class="pagination">
+                <li>
+                  <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="active">
+                  <a href="#">1</a>
+                </li>
+                <li>
+                  <a href="#">2</a>
+                </li>
+                <li>
+                  <a href="#">3</a>
+                </li>
+                <li>
+                  <a href="#">4</a>
+                </li>
+                <li>
+                  <a href="#">5</a>
+                </li>
+                <li>
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+          </div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('.datepicker').datepicker({
+
+		
+		});
+	})
+</script>
+</body>
+</html>
