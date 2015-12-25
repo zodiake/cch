@@ -50,6 +50,7 @@ public class CardServiceImpl implements CardService {
         source.setUpdatedBy(card.getUpdatedBy());
         source.setName(card.getName());
         source.setImgHref(card.getImgHref());
+        source.setInitScore(card.getInitScore());
         return source;
     }
 

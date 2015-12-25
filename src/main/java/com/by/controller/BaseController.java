@@ -22,6 +22,7 @@ public abstract class BaseController {
     protected MenuCategoryService menuCategoryService;
     @Autowired
     protected UserContext userContext;
+    protected final String SUCCESS="保存成功";
 
     protected Map<MenuCategory, List<Menu>> menus(User user) {
         return menuCategoryService.getCategoryAndMenu(user);

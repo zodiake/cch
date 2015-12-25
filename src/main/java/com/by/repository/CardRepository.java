@@ -12,6 +12,8 @@ public interface CardRepository extends PagingAndSortingRepository<Card, Integer
 	Optional<Card> findById(int id);
 
 	Card findByName(String name);
+	
+	Long countByName(String name);
 
 	Card findByIdAndValid(int id, ValidEnum valid);
 

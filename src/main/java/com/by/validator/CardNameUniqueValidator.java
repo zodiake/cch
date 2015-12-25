@@ -10,8 +10,8 @@ import com.by.model.Card;
 import com.by.repository.CardRepository;
 
 @Component
-@Qualifier("cardNameValidator")
-public class CardNameValidator implements Validator {
+@Qualifier("cardNameUniqueValidator")
+public class CardNameUniqueValidator implements Validator {
 	@Autowired
 	private CardRepository repository;
 
@@ -23,8 +23,8 @@ public class CardNameValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		Card c = (Card) target;
-		Card another = repository.findByName(c.getName());
-		if (c.getId() != another.getId()) {
+		Long count = repository.countByName(c.getName());
+		if (count > 0) {
 			errors.rejectValue("name", "name.unique");
 		}
 	}

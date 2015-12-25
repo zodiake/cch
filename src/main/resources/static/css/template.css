@@ -15,24 +15,25 @@ a:hover{
 }
 .header{
 	height: 60px;
+	line-height: 60px;
 	padding-left: 5px;
-	padding-right: 30px;
+	padding-right: 45px;
+	overflow:hidden;
+	position:relative;
 	background: #fff;
 }
 .crm-name{
 	font-weight: bold;
 	font-size: 30px;
 }
-.username{
-	border:1px solid red;
-	position: relative;
-	width: 250px;
-	line-height: 60px;
-}
-i.icon.icon-sign{
+a.icon.icon-sign{
 	width: 20px;
 	height: 20px;
-	background-position: -72px -17px
+	background:url(../img/icon.png) no-repeat;
+	background-position: -72px -17px;
+	position:absolute;
+	right:23px;
+	top:20px;
 }
 .username a{
 	display: inline-block;
@@ -71,8 +72,13 @@ i.icon.icon-toggle.active{
 }
 .aside .par-nav li.top-nav a{
 	letter-spacing: 2px;
+	color: #7f8ca1;
+}
+.aside .par-nav li.top-nav a:hover{
 	color: #fff;
-	background: #17c3bb;
+}
+.aside .par-nav li.top-nav.on a{
+	color: #fff;
 }
 .aside .par-nav li.active a i.icon{
 	margin-top: -10px;
@@ -151,6 +157,12 @@ i.icon-seven.active{
 .aside-small .par-nav>li{
 	position: relative;
 }
+.aside .par-nav>li.on>a{
+	background:#17c3bb;
+}
+.aside .par-nav>li.on:hover>a{
+	background:#17c3bb;
+}
 .aside-small .par-nav>li:hover a{
 	background: #2c3542;
 } 
@@ -158,11 +170,14 @@ i.icon-seven.active{
 	display: block;
 }
 .aside-small .par-nav li.top-nav a{
-	color: #17c3bb;
+	color: #354052;
 	overflow: hidden;
 }
 .aside-small .par-nav li.top-nav a:hover{
-	color: #354052
+	color: #354052;
+}
+.aside-small .par-nav li.top-nav.on a{
+	color:#17c3bb;
 }
 .aside-small .par-nav>li>a{
 	height: 60px;
@@ -246,7 +261,7 @@ i.icon-seven.active{
 /*main*/
 .mainpanel{
 	float: right;
-	width: 90%;
+	width: 96%;
 	padding: 20px 0 20px 30px;
 	transition: all .2s;
     -webkit-transition: all .2s;
@@ -312,12 +327,8 @@ i.icon-seven.active{
 	border-radius:5px;
 }
 /*会员管理*/
-.mem-manage input.datepicker{
-	background-color:#fff;
-}
 .mem-manage .table{
 	width:97%;
-	border:1px solid #fff;
 }
 .mem-manage .table th{
 	border-bottom:none;
@@ -370,4 +381,69 @@ i.icon-seven.active{
 }
 .modal-sm .modal-footer{
 	padding-top: 0;
+}
+
+/**会员卡积分规则详细*/
+.show-msg div.col-md-3{
+	padding:5px 50px 5px;
+}
+
+/*人工积分*/
+.trade-form {
+	padding-top:30px;
+}
+.trade-form .form-control{
+	width:300px;
+	margin:20px auto;
+	height:30px;
+}
+	
+/**操作成功提示页 **/
+.set-success-wrap .show-msg{
+	width: 350px;
+	padding-top: 60px;
+	text-align: center;
+	margin: 50px auto;
+}
+.set-success-wrap .show-msg .alert{
+	width: 350px;
+	padding: 30px 20px;
+	font-size: 16px;
+}
+.set-success-wrap .show-msg .success-bg{
+	margin-bottom: 40px;
+}
+.success-modal{
+	display:none;
+	width: 400px;
+	height: 205px;
+	padding:20px 0;
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	margin: auto;
+	text-align: center;
+	background: #f1f2f7;
+	border:1px solid #f1f1f1;
+	border-radius: 15px;
+}
+.success-modal .show-msg .alert{
+	width:370px;
+	margin:0 auto 20px;
+}
+.fixed {
+	display:none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 333;
+    left: 0;
+    top: 0;
+    background: #000;
+    opacity: 0.65;
+    filter: alpha(opacity=60.5);
+    /*display: none;*/
 }

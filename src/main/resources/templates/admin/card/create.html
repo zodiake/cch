@@ -58,6 +58,7 @@
                         <label class="col-md-3 control-label">名称：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
+							<p th:each="err : ${#fields.errors('name')}" th:text="${err}" />
                         </div>
                     </div>
                     <div class="form-group">
