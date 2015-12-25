@@ -109,7 +109,7 @@
             $('.mem-list li').click(function (e) {
                 var self = $(this);
                 $.ajax({
-                    url: '/admin/cards/' + self.attr('data-card-id'),
+                    url: '/admin/cards/' + self.attr('data-card-id')+'/json',
                     success: function (data) {
                         if (data.status == 'success') {
                             var tmpl = $.templates("#detail");

@@ -1,13 +1,13 @@
 package com.by.service;
 
-import com.by.json.CardJson;
-import com.by.model.Card;
-import com.by.typeEnum.ValidEnum;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-import java.util.Optional;
+import com.by.json.CardJson;
+import com.by.model.Card;
+import com.by.typeEnum.ValidEnum;
 
 public interface CardService {
     Card findOne(int id);
@@ -20,7 +20,7 @@ public interface CardService {
 
     Card save(CardJson json);
 
-    Optional<Card> update(Card card);
+    Card update(Card card);
 
     Card findByIdAndValid(int id, ValidEnum valid);
 

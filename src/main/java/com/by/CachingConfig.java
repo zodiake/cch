@@ -15,12 +15,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class CachingConfig extends CachingConfigurerSupport {
 	public net.sf.ehcache.CacheManager ehCacheManager() {
-		// card cache config
-		CacheConfiguration cardCacheConfig = new CacheConfiguration();
-		cardCacheConfig.setMemoryStoreEvictionPolicy("LRU");
-		cardCacheConfig.setMaxEntriesLocalHeap(1000);
-		cardCacheConfig.setName("card");
-
 		// rule cache config
 		CacheConfiguration ruleCacheConfig = new CacheConfiguration();
 		ruleCacheConfig.setMemoryStoreEvictionPolicy("LRU");
@@ -64,7 +58,6 @@ public class CachingConfig extends CachingConfigurerSupport {
 		helpCacheConfig.setName("help");
 
 		net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
-		config.addCache(cardCacheConfig);
 		config.addCache(ruleCacheConfig);
 		config.addCache(couponCacheConfig);
 		config.addCache(menuCacheConfig);
