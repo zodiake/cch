@@ -44,9 +44,8 @@ import static com.by.SpringExtension.SpringExtProvider;
  */
 @Controller
 @RequestMapping(value = "/api/parkingCoupons")
-public class ParkingCouponController extends BaseController {
+public class ParkingCouponController implements UtilContoller{
     private final String PASSWORD_ERROR_MESSAGE = "密码错误";
-    private ApplicationContext ctx;
     private CouponService couponService;
     private ParkingCouponService parkingCouponService;
     private ActorSystem system;
@@ -59,13 +58,12 @@ public class ParkingCouponController extends BaseController {
     public ParkingCouponController(ApplicationContext ctx, CouponService couponService,
                                    ParkingCouponService parkingCouponService, ShaPasswordEncoder passwordEncoder, MemberService memberService,
                                    ParkingCouponMemberService parkingCouponMemberService) {
-        this.ctx = ctx;
         this.couponService = couponService;
         this.parkingCouponService = parkingCouponService;
         this.memberService = memberService;
         this.parkingCouponMemberService = parkingCouponMemberService;
         this.passwordEncoder = passwordEncoder;
-        system = this.ctx.getBean(ActorSystem.class);
+        system = ctx.getBean(ActorSystem.class);
         ref = system.actorOf(SpringExtProvider.get(system).props("ParkingCouponActor"), "parkingCouponActor");
     }
 

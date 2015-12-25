@@ -1,18 +1,20 @@
 package com.by;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
 import com.by.converter.StringToCalendar;
 import com.by.converter.StringToCouponAdminStateEnum;
 import com.by.converter.StringToDuplicateEnum;
 import com.by.converter.StringToValidEnumConverter;
 import com.by.interceptor.JWTInterceptor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.servlet.Filter;
 
 @Configuration
 @EnableWebMvc
@@ -69,5 +71,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public StringToDuplicateEnum stringToDuplicateEnum() {
         return new StringToDuplicateEnum();
+    }
+
+    @Bean
+    public Filter hiddenHttpMethodFilter() {
+        HiddenHttpMethodFilter filter = new HiddenHttpMethodFilter();
+        return filter;
     }
 }

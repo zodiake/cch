@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface CardRepository extends PagingAndSortingRepository<Card, Integer> {
 	Optional<Card> findById(int id);
 
-	Long countByName(String name);
+	Card findByName(String name);
 
 	Card findByIdAndValid(int id, ValidEnum valid);
 

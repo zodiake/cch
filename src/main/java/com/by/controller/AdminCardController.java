@@ -8,14 +8,11 @@ import com.by.model.Card;
 import com.by.model.CardRule;
 import com.by.model.Menu;
 import com.by.model.RuleCategory;
-import com.by.security.UserContext;
 import com.by.service.CardRuleService;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
-import com.by.validator.CardNameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -23,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -44,11 +42,6 @@ public class AdminCardController extends BaseController {
 	private MemberService memberService;
 	@Autowired
 	private CardRuleService cardRuleService;
-	@Autowired
-	private UserContext userContext;
-	@Autowired
-	@Qualifier("cardNameValidator")
-	private CardNameValidator validator;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model uiModel,
@@ -57,8 +50,7 @@ public class AdminCardController extends BaseController {
 		List<Card> inValidLists = service.findByValid(ValidEnum.INVALID, pageable);
 		uiModel.addAttribute("valid", validLists);
 		uiModel.addAttribute("inValid", inValidLists);
-		uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
-		uiModel.addAttribute("subMenu", subMenu);
+		addMenu(uiModel);
 		return LISTS;
 	}
 
@@ -67,9 +59,8 @@ public class AdminCardController extends BaseController {
 	public List<CardJson> list(@RequestParam("valid") String valid,
 			@PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		ValidEnum validEnum = ValidEnum.fromString(valid);
-		List<CardJson> cards = service.findByValid(validEnum, pageable).stream().map(i -> {
-			return new CardJson(i);
-		}).collect(Collectors.toList());
+		List<CardJson> cards = service.findByValid(validEnum, pageable).stream().map(CardJson::new)
+				.collect(Collectors.toList());
 		return cards;
 	}
 
@@ -87,20 +78,26 @@ public class AdminCardController extends BaseController {
 	public String getOne(@PathVariable("id") Integer id, Model uiModel) {
 		Card card = service.findOne(id);
 		uiModel.addAttribute("card", card);
-		uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
-		uiModel.addAttribute("subMenu", subMenu);
+		addMenu(uiModel);
 		return DETAIL;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public String update(@PathVariable("id") Integer id, @Valid @ModelAttribute Card card, BindingResult result) {
+	public String update(@PathVariable("id") Integer id, Model uiModel, @Valid @ModelAttribute Card card,
+			BindingResult result, RedirectAttributes redirectAttributes) {
+		card.setId(id);
+		if (result.hasErrors()) {
+			uiModel.addAttribute("card", card);
+			addMenu(uiModel);
+			return DETAIL;
+		}
+		redirectAttributes.addFlashAttribute("status", "success");
 		Card source = service.update(card);
 		return REDIRECT + source.getId();
 	}
 
 	@RequestMapping(params = "form", method = RequestMethod.POST)
 	public String save(@Valid @ModelAttribute Card card, BindingResult result, Model uiModel) {
-		validator.validate(card, result);
 		if (result.hasErrors()) {
 			uiModel.addAttribute("card", card);
 			return CREATE;
@@ -112,8 +109,12 @@ public class AdminCardController extends BaseController {
 	@RequestMapping(params = "form", method = RequestMethod.GET)
 	public String save(Model uiModel) {
 		uiModel.addAttribute("card", new Card());
-		uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
-		uiModel.addAttribute("subMenu", subMenu);
+		addMenu(uiModel);
 		return CREATE;
+	}
+
+	@Override
+	public Menu getSubMenu() {
+		return subMenu;
 	}
 }

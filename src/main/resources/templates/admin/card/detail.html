@@ -53,7 +53,8 @@
                 <div class="bar add-bar">添加会员卡</div>
             </div>
             <div class="row">
-                <form class="form-horizontal" th:object="${card}" th:method="post">
+                <form class="form-horizontal" th:object="${card}" th:method="put">
+                	<div th:if="status!=null" th:text="${status}">success</div>
                     <div class="form-group pt50">
                         <label class="col-md-3 control-label">名称：</label>
                         <div class="col-md-3">

@@ -44,8 +44,7 @@ import static com.by.SpringExtension.SpringExtProvider;
  */
 @Controller
 @RequestMapping(value = "/api/shopCoupons")
-public class ShopCouponController extends BaseController {
-    private ApplicationContext ctx;
+public class ShopCouponController implements UtilContoller{
     private ActorSystem system;
     private ActorRef ref;
     private ShopCouponService shopCouponService;
@@ -57,7 +56,6 @@ public class ShopCouponController extends BaseController {
     @Autowired
     public ShopCouponController(ApplicationContext ctx, ActorSystem system, ShopCouponService shopCouponService,
                                 ShopCouponMemberService shopCouponMemberService, MemberService memberService, CouponService couponService) {
-        this.ctx = ctx;
         this.system = system;
         this.ref = system.actorOf(SpringExtProvider.get(system).props("ShopCouponActor"), "shopCouponActor");
         this.shopCouponService = shopCouponService;

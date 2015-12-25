@@ -53,8 +53,7 @@ public class AdminMemberController extends BaseController {
         Page<MemberJson> members = memberService.findAll(form, pageable);
         uiModel.addAttribute("lists", members);
         uiModel.addAttribute("last", 7);
-        uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
-        uiModel.addAttribute("subMenu", subMenu);
+        addMenu(uiModel);
         return "admin/member/lists";
     }
 
@@ -102,4 +101,9 @@ public class AdminMemberController extends BaseController {
         Member member = memberService.validateOrInValidate(new Member(id), user.getName());
         return new Success<MemberJson>(new MemberJson(member));
     }
+
+	@Override
+	public Menu getSubMenu() {
+		return subMenu;
+	}
 }

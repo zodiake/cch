@@ -5,30 +5,32 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 
-import com.by.model.Member;
 import com.by.model.Menu;
 import com.by.model.MenuCategory;
 import com.by.model.User;
+import com.by.security.UserContext;
 import com.by.service.MenuCategoryService;
-import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-16.
  */
 @Component
-public class BaseController {
-	@Autowired
-	private MenuCategoryService menuCategoryService;
+public abstract class BaseController {
+    @Autowired
+    protected MenuCategoryService menuCategoryService;
+    @Autowired
+    protected UserContext userContext;
 
-	protected boolean isValidMember(Member m) {
-		if (m.getValid().equals(ValidEnum.VALID)) {
-			return true;
-		}
-		return false;
-	}
+    protected Map<MenuCategory, List<Menu>> menus(User user) {
+        return menuCategoryService.getCategoryAndMenu(user);
+    }
 
-	protected Map<MenuCategory, List<Menu>> menus(User user) {
-		return menuCategoryService.getCategoryAndMenu(user);
-	}
+    protected void addMenu(Model uiModel) {
+        uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
+        uiModel.addAttribute("subMenu", getSubMenu());
+    }
+
+    public abstract Menu getSubMenu();
 }

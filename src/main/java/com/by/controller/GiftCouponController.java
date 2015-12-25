@@ -48,9 +48,8 @@ import scala.concurrent.duration.Duration;
 
 @Controller
 @RequestMapping(value = "/api/giftCoupons")
-public class GiftCouponController extends BaseController {
+public class GiftCouponController implements UtilContoller {
     private final String INVALID_MESSAGE = "用户无效";
-    private ApplicationContext ctx;
     private ActorSystem system;
     private ActorRef ref;
     private GiftCouponService giftCouponService;
@@ -63,7 +62,6 @@ public class GiftCouponController extends BaseController {
     public GiftCouponController(ApplicationContext ctx, GiftCouponService giftCouponService,
                                 MemberService memberService, CouponService couponService,
                                 GiftCouponMemberService giftCouponMemberService, ShaPasswordEncoder passwordEncoder) {
-        this.ctx = ctx;
         this.system = ctx.getBean(ActorSystem.class);
         this.ref = system.actorOf(SpringExtProvider.get(system).props("GiftCouponActor"), "giftCouponActor");
         this.giftCouponService = giftCouponService;
