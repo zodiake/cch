@@ -31,7 +31,7 @@ public class LicenseServiceImpl implements LicenseService {
         }
         License l = new License();
         l.setName(licenseName);
-        List<Member> members = new ArrayList<Member>();
+        List<Member> members = new ArrayList<>();
         members.add(member);
         l.setMembers(members);
         repository.save(l);

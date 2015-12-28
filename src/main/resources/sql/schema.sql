@@ -76,7 +76,7 @@ CREATE TABLE by_rule_category (
 CREATE TABLE by_card (
   id           INT NOT NULL AUTO_INCREMENT,
   name         VARCHAR(50),
-  valid        SMALLINT default 1,
+  valid        SMALLINT     DEFAULT 1,
   img_href     VARCHAR(50),
   init_score   INT          DEFAULT 0,
   created_time TIMESTAMP,
@@ -375,6 +375,14 @@ CREATE TABLE by_member_help (
   created_by   VARCHAR(20),
   PRIMARY KEY (id),
   FOREIGN KEY (content_id) REFERENCES by_content (id)
+);
+
+CREATE TABLE by_parking_coupon_count (
+  id        INT NOT NULL AUTO_INCREMENT,
+  total     INT,
+  member_id BIGINT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (member_id) REFERENCES by_member (id)
 );
 
 CREATE UNIQUE INDEX ON by_trading (code);

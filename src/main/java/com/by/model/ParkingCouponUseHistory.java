@@ -31,8 +31,7 @@ public class ParkingCouponUseHistory {
     public ParkingCouponUseHistory() {
     }
 
-    public ParkingCouponUseHistory(ParkingCoupon coupon, Member member, int total, String license) {
-        this.coupon = coupon;
+    public ParkingCouponUseHistory( Member member, int total, String license) {
         this.member = member;
         this.total = total;
         this.license = license;

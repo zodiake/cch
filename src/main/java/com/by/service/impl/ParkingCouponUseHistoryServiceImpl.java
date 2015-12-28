@@ -1,7 +1,6 @@
 package com.by.service.impl;
 
 import com.by.model.Member;
-import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponUseHistory;
 import com.by.repository.ParkingCouponUseHistoryRepository;
 import com.by.service.ParkingCouponUseHistoryService;
@@ -32,8 +31,8 @@ public class ParkingCouponUseHistoryServiceImpl implements ParkingCouponUseHisto
     }
 
     @Override
-    public ParkingCouponUseHistory save(Member member, int total, String license, ParkingCoupon coupon) {
-        return repository.save(new ParkingCouponUseHistory(coupon, member, total, license));
+    public ParkingCouponUseHistory save(Member member, int total, String license) {
+        return repository.save(new ParkingCouponUseHistory(member, total, license));
     }
 
     @Override

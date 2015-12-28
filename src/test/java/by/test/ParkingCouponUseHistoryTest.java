@@ -48,7 +48,6 @@ public class ParkingCouponUseHistoryTest {
         int total = 1;
         String license = "adf";
         ParkingCoupon coupon = new ParkingCoupon(1l);
-        service.save(member, total, license, coupon);
     }
 
     @Test

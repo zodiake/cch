@@ -1,6 +1,5 @@
 package com.by.service.impl;
 
-import com.by.exception.AlreadyExchangeException;
 import com.by.exception.NotFoundException;
 import com.by.exception.NotValidException;
 import com.by.exception.OutOfStorageException;
@@ -20,9 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,43 +77,23 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
             throw new NotValidException();
         couponMember.setTotal(sourceTotal - total);
         licenseService.save(member, license);
-        useHistoryService.save(member, total, license, parkingCoupon);
+        useHistoryService.save(member, total, license);
         return couponMember;
     }
 
     @Override
     public void exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
-        int count = total;
         Member m = em.find(Member.class, member.getId());
         ParkingCoupon sourceCoupon = em.find(ParkingCoupon.class, coupon.getId());
-        ParkingCouponMember pcm = repository.findByMemberAndCoupon(member, coupon);
 
         if (sourceCoupon == null)
             throw new NotFoundException();
         if (couponService.isValidCoupon(coupon)) {
-            // 如果不能重复
-            if (!couponService.isDuplicateCoupon(coupon)) {
-                if (pcm != null)
-                    throw new AlreadyExchangeException();
-                count = 1;
-            }
-            // 判断是否有库存
-            if (!couponService.noStorageLimited(coupon)) {
-                if (outOfStorage(coupon, total))
-                    throw new OutOfStorageException();
-            }
-            save(sourceCoupon, m, count);
-            memberService.minusScore(m, sourceCoupon.getScore() * count, reason, ScoreHistoryEnum.COUPONEXCHANGE);
+            save(sourceCoupon, m, total);
+            memberService.minusScore(m, sourceCoupon.getScore() * total, reason, ScoreHistoryEnum.COUPONEXCHANGE);
         } else {
             throw new NotValidException();
         }
-    }
-
-    private boolean outOfStorage(ParkingCoupon coupon, int count) {
-        Long total = sumTotalGroupByCoupon(coupon);
-        if (total == null)
-            total = new Long(0);
-        return total.intValue() == coupon.getTotal() || total.intValue() + count > coupon.getTotal();
     }
 
     @Override
@@ -145,9 +121,7 @@ public class ParkingCouponMemberServiceImpl implements ParkingCouponMemberServic
         return repository.findByMember(member, pageable)
                 .getContent()
                 .stream()
-                .filter(i ->
-                        couponService.isValidCoupon(i.getCoupon())
-                ).map(i -> {
+                .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setTotal(i.getTotal());
                     return json;

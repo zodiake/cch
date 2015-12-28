@@ -1,10 +1,8 @@
 package com.by.actor;
 
 import akka.actor.UntypedActor;
-import com.by.exception.AlreadyExchangeException;
 import com.by.exception.NotEnoughScoreException;
 import com.by.exception.NotValidException;
-import com.by.exception.OutOfStorageException;
 import com.by.message.ParkingCouponMessage;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
@@ -32,10 +30,6 @@ public class ParkingCouponActor extends UntypedActor {
             try {
                 service.exchangeCoupon(member, coupon, total);
                 sender().tell("success", null);
-            } catch (AlreadyExchangeException e) {
-                sender().tell("alreadyExchanged", null);
-            } catch (OutOfStorageException e) {
-                sender().tell("OutOfStorageException ", null);
             } catch (NotValidException e) {
                 sender().tell("NotValidException ", null);
             } catch (NotEnoughScoreException e) {

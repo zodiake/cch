@@ -52,6 +52,8 @@ public class Member {
     @Enumerated
     private ValidEnum valid;
 
+    private int parkingCouponCount;
+
     // 注册时间
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
@@ -213,6 +215,14 @@ public class Member {
 
     public void setSumScore(int sumScore) {
         this.sumScore = sumScore;
+    }
+
+    public int getParkingCouponCount() {
+        return parkingCouponCount;
+    }
+
+    public void setParkingCouponCount(int parkingCouponCount) {
+        this.parkingCouponCount = parkingCouponCount;
     }
 
     @Override

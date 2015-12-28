@@ -16,7 +16,7 @@ import java.util.List;
 public interface ParkingCouponUseHistoryService {
     ParkingCouponUseHistory save(ParkingCouponUseHistory history);
 
-    ParkingCouponUseHistory save(Member member, int total, String license, ParkingCoupon coupon);
+    ParkingCouponUseHistory save(Member member, int total, String license);
 
     Page<ParkingCouponUseHistory> findByMember(Member member, Pageable pageable);
 
