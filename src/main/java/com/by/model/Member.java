@@ -52,7 +52,7 @@ public class Member {
     @Enumerated
     private ValidEnum valid;
 
-    private int parkingCouponCount;
+    private int totalParkingCoupon;
 
     // 注册时间
     @Temporal(TemporalType.TIMESTAMP)
@@ -217,12 +217,12 @@ public class Member {
         this.sumScore = sumScore;
     }
 
-    public int getParkingCouponCount() {
-        return parkingCouponCount;
+    public int getTotalParkingCoupon() {
+        return totalParkingCoupon;
     }
 
-    public void setParkingCouponCount(int parkingCouponCount) {
-        this.parkingCouponCount = parkingCouponCount;
+    public void setTotalParkingCoupon(int totalParkingCoupon) {
+        this.totalParkingCoupon = totalParkingCoupon;
     }
 
     @Override

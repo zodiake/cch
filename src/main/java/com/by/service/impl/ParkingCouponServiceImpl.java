@@ -1,11 +1,18 @@
 package com.by.service.impl;
 
+import com.by.exception.NotFoundException;
+import com.by.exception.NotValidException;
+import com.by.exception.OutOfStorageException;
 import com.by.form.CouponQueryForm;
 import com.by.json.CouponTemplateJson;
+import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.repository.ParkingCouponRepository;
 import com.by.service.CouponService;
+import com.by.service.LicenseService;
+import com.by.service.MemberService;
 import com.by.service.ParkingCouponService;
+import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +38,14 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     private ParkingCouponRepository repository;
     @Autowired
     private CouponService couponService;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private LicenseService licenseService;
+    @Autowired
+    private ParkingCouponUseHistoryServiceImpl useHistoryService;
+    @Autowired
+    private ParkingCouponExchangeHistoryServiceImpl exchangeHistoryService;
     @Autowired
     private EntityManager em;
 
@@ -126,5 +141,33 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         else
             c.setValid(ValidEnum.VALID);
         return c;
+    }
+
+    @Override
+    public Member useCoupon(Member member, int total, String license) {
+        Member m = memberService.findOne(member.getId());
+        int sourceTotal = m.getTotalParkingCoupon();
+        if (sourceTotal < total)
+            throw new OutOfStorageException();
+        licenseService.save(m, license);
+        useHistoryService.save(m, total, license);
+        m.setTotalParkingCoupon(m.getTotalParkingCoupon() - total);
+        return m;
+    }
+
+    @Override
+    public void exchangeCoupon(Member member, ParkingCoupon coupon, int total) {
+        Member m = em.find(Member.class, member.getId());
+        ParkingCoupon sourceCoupon = em.find(ParkingCoupon.class, coupon.getId());
+
+        if (sourceCoupon == null)
+            throw new NotFoundException();
+        if (couponService.isValidCoupon(coupon)) {
+            memberService.minusScore(m, sourceCoupon.getScore() * total, "", ScoreHistoryEnum.COUPONEXCHANGE);
+            m.setTotalParkingCoupon(m.getTotalParkingCoupon() + total);
+            exchangeHistoryService.save(m, coupon, total);
+        } else {
+            throw new NotValidException();
+        }
     }
 }

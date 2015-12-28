@@ -2,6 +2,7 @@ package com.by.service;
 
 import com.by.form.CouponQueryForm;
 import com.by.json.CouponTemplateJson;
+import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.data.domain.Page;
@@ -32,4 +33,8 @@ public interface ParkingCouponService {
     Page<ParkingCoupon> findFirstPage(int size);
 
     ParkingCoupon validOrInValid(ParkingCoupon coupon);
+
+    void exchangeCoupon(Member member, ParkingCoupon coupon, int total);
+
+    Member useCoupon(Member member, int total, String license);
 }
