@@ -133,16 +133,17 @@ CREATE TABLE by_shop_rule (
 );
 
 CREATE TABLE by_member (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
-  name         CHAR(11) UNIQUE,
-  card_id      INT,
-  score        INT,
-  sumScore     INT,
-  created_time TIMESTAMP,
-  valid        SMALLINT        DEFAULT 1,
-  invalid_time TIMESTAMP,
-  invalid_by   VARCHAR(20),
-  updated_time TIMESTAMP,
+  id                   BIGINT NOT NULL AUTO_INCREMENT,
+  name                 CHAR(11) UNIQUE,
+  card_id              INT,
+  score                INT,
+  sumScore             INT,
+  created_time         TIMESTAMP,
+  valid                SMALLINT        DEFAULT 1,
+  invalid_time         TIMESTAMP,
+  invalid_by           VARCHAR(20),
+  updated_time         TIMESTAMP,
+  total_parking_coupon INT             DEFAULT 0,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   PRIMARY KEY (id)
 );
@@ -208,15 +209,6 @@ CREATE TABLE by_coupon (
   sortOrder       SMALLINT        DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id)
-);
-
-CREATE TABLE by_parking_coupon_member (
-  member_id BIGINT,
-  coupon_id BIGINT,
-  total     INT,
-  PRIMARY KEY (member_id, coupon_id),
-  FOREIGN KEY (member_id) REFERENCES by_member (id),
-  FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
 CREATE TABLE by_gift_coupon_member (

@@ -1,5 +1,6 @@
 package com.by.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -15,4 +16,6 @@ public interface ParkingCouponRepository extends CrudRepository<ParkingCoupon, L
 	Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
 	Page<ParkingCoupon> findAll(Pageable pageable);
+	
+	List<ParkingCoupon> findAll();
 }

@@ -33,9 +33,6 @@ public class Member {
     private MemberDetail memberDetail;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ParkingCouponMember> parkingCoupons;
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<ShopCouponMember> shopCoupons;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
@@ -52,6 +49,7 @@ public class Member {
     @Enumerated
     private ValidEnum valid;
 
+    @Column(name = "total_parking_coupon")
     private int totalParkingCoupon;
 
     // 注册时间
@@ -133,14 +131,6 @@ public class Member {
 
     public void setMemberDetail(MemberDetail memberDetail) {
         this.memberDetail = memberDetail;
-    }
-
-    public List<ParkingCouponMember> getParkingCoupons() {
-        return parkingCoupons;
-    }
-
-    public void setParkingCoupons(List<ParkingCouponMember> parkingCoupons) {
-        this.parkingCoupons = parkingCoupons;
     }
 
     public List<ShopCouponMember> getShopCoupons() {

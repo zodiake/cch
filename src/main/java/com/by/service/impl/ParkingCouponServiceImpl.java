@@ -8,10 +8,7 @@ import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.repository.ParkingCouponRepository;
-import com.by.service.CouponService;
-import com.by.service.LicenseService;
-import com.by.service.MemberService;
-import com.by.service.ParkingCouponService;
+import com.by.service.*;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
@@ -43,9 +40,9 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     @Autowired
     private LicenseService licenseService;
     @Autowired
-    private ParkingCouponUseHistoryServiceImpl useHistoryService;
+    private ParkingCouponUseHistoryService useHistoryService;
     @Autowired
-    private ParkingCouponExchangeHistoryServiceImpl exchangeHistoryService;
+    private ParkingCouponExchangeHistoryService exchangeHistoryService;
     @Autowired
     private EntityManager em;
 
@@ -153,6 +150,32 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         useHistoryService.save(m, total, license);
         m.setTotalParkingCoupon(m.getTotalParkingCoupon() - total);
         return m;
+    }
+
+    @Override
+    @Cacheable(value = "coupon", key = "T(com.by.utils.CalendarUtil).getToday()")
+    public ParkingCoupon findActivate() {
+        List<ParkingCoupon> lists = repository.findAll();
+        Calendar today = Calendar.getInstance();
+        List<ParkingCoupon> results = lists.stream()
+                .filter(i -> i.getValid().equals(ValidEnum.VALID))
+                .filter(i -> {
+                    if (i.getBeginTime() == null && i.getEndTime() == null)
+                        return true;
+                    if (i.getBeginTime() != null && i.getEndTime() != null) {
+                        if (i.getBeginTime().before(today) && i.getEndTime().after(today))
+                            return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+        if (results.size() == 0)
+            return null;
+        results.sort((r1, r2) -> {
+            if (r1.getScore() > r2.getScore())
+                return 1;
+            return -1;
+        });
+        return results.get(0);
     }
 
     @Override

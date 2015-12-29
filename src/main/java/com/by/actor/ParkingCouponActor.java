@@ -1,15 +1,17 @@
 package com.by.actor;
 
-import akka.actor.UntypedActor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.by.exception.NotEnoughScoreException;
 import com.by.exception.NotValidException;
 import com.by.message.ParkingCouponMessage;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
-import com.by.service.ParkingCouponMemberService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import com.by.service.ParkingCouponService;
+
+import akka.actor.UntypedActor;
 
 /**
  * Created by yagamai on 15-11-30.
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class ParkingCouponActor extends UntypedActor {
     @Autowired
-    private ParkingCouponMemberService service;
+    private ParkingCouponService service;
 
     @Override
     public void onReceive(Object message) throws Exception {
