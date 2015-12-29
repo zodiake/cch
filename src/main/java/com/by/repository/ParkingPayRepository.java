@@ -1,11 +1,11 @@
 package com.by.repository;
 
-import com.by.model.Member;
-import com.by.model.ParkingPay;
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 import java.util.Calendar;
 import java.util.List;
+
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import com.by.model.ParkingPay;
 
 /**
  * Created by yagamai on 15-11-25.

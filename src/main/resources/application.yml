@@ -8,20 +8,18 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: ""
+      ddl-auto: ''
   http:
     encoding:
       charset: UTF-8
-
 security:
   enable-csrf: false
   basic:
     enabled: false
-
 server:
   tomcat:
     uri-encoding: UTF-8
-    
+
 ---
 spring:
   profiles: dev
@@ -30,9 +28,12 @@ spring:
   datasource:
     schema: classpath:sql/schema.sql
     data: classpath:sql/data.sql
-
 logging:
   level:
     org.springframework.security: INFO
     org.springframework.web: INFO
     org.hibernate.type: trace
+coupon:
+  amount: 10
+member:
+  invalid: 用户无效

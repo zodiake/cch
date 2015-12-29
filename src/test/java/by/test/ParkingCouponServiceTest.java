@@ -11,6 +11,8 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Calendar;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -29,6 +31,16 @@ public class ParkingCouponServiceTest {
     public void sortTest() {
         ParkingCoupon parkingCoupon = service.findActivate();
         assertEquals(new Long(7), parkingCoupon.getId());
+    }
+
+    @Test
+    public void saveTest() {
+        ParkingCoupon p = new ParkingCoupon();
+        p.setName("test");
+        p.setSummary("haha");
+        p.setEndTime(Calendar.getInstance());
+        ParkingCoupon pc = service.save(p);
+        assertEquals(new Double(10), pc.getAmount());
     }
 
 }

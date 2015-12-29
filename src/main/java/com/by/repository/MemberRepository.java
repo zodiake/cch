@@ -2,11 +2,9 @@ package com.by.repository;
 
 import java.util.Optional;
 
-import com.by.model.Card;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import com.by.model.Card;
 import com.by.model.Member;
 
 public interface MemberRepository extends PagingAndSortingRepository<Member, Long> {

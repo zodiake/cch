@@ -3,18 +3,14 @@ package com.by.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.Valid;
-
-import com.by.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.auth0.jwt.JWTSigner;
-import com.by.model.User;
+import com.by.model.Member;
 import com.by.service.UserService;
 
 @Controller

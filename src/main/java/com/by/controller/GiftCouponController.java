@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -54,101 +55,99 @@ import scala.concurrent.duration.Duration;
 @Controller
 @RequestMapping(value = "/api/giftCoupons")
 public class GiftCouponController implements UtilContoller {
-    private final String INVALID_MESSAGE = "用户无效";
-    private ActorSystem system;
-    private ActorRef ref;
-    private GiftCouponService giftCouponService;
-    private GiftCouponMemberService giftCouponMemberService;
-    private MemberService memberService;
-    private CouponService couponService;
-    private ShaPasswordEncoder passwordEncoder;
+	@Value("${member.invalid}")
+	private String INVALID_MESSAGE;
+	private ActorSystem system;
+	private ActorRef ref;
+	private GiftCouponService giftCouponService;
+	private GiftCouponMemberService giftCouponMemberService;
+	private MemberService memberService;
+	private CouponService couponService;
+	private ShaPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public GiftCouponController(ApplicationContext ctx, GiftCouponService giftCouponService,
-                                MemberService memberService, CouponService couponService,
-                                GiftCouponMemberService giftCouponMemberService, ShaPasswordEncoder passwordEncoder) {
-        this.system = ctx.getBean(ActorSystem.class);
-        this.ref = system.actorOf(SpringExtProvider.get(system).props("GiftCouponActor"), "giftCouponActor");
-        this.giftCouponService = giftCouponService;
-        this.memberService = memberService;
-        this.couponService = couponService;
-        this.giftCouponMemberService = giftCouponMemberService;
-        this.passwordEncoder = passwordEncoder;
-    }
+	@Autowired
+	public GiftCouponController(ApplicationContext ctx, GiftCouponService giftCouponService,
+			MemberService memberService, CouponService couponService, GiftCouponMemberService giftCouponMemberService,
+			ShaPasswordEncoder passwordEncoder) {
+		this.system = ctx.getBean(ActorSystem.class);
+		this.ref = system.actorOf(SpringExtProvider.get(system).props("GiftCouponActor"), "giftCouponActor");
+		this.giftCouponService = giftCouponService;
+		this.memberService = memberService;
+		this.couponService = couponService;
+		this.giftCouponMemberService = giftCouponMemberService;
+		this.passwordEncoder = passwordEncoder;
+	}
 
-    // 可以兑换的卡券列表
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public Status list(HttpServletRequest request,
-                       @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
-        Member m = (Member) request.getAttribute("member");
-        Member member = memberService.findOneCache(m.getId());
-        if(!isValidMember(member)){
-        	throw new MemberNotValidException();
-        }
-        Page<GiftCoupon> coupons = giftCouponService.findByValid(ValidEnum.VALID, pageable);
-        List<CouponTemplateJson> results = coupons.getContent()
-                .stream()
-                .filter(i -> couponService.isValidCoupon(i))
-                .map(CouponTemplateJson::new)
-                .collect(Collectors.toList());
-        return new Success<>(new PageImpl<>(results, pageable, coupons.getTotalElements()));
-    }
+	// 可以兑换的卡券列表
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public Status list(HttpServletRequest request,
+			@PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
+		Member m = (Member) request.getAttribute("member");
+		Member member = memberService.findOneCache(m.getId());
+		if (!isValidMember(member)) {
+			throw new MemberNotValidException();
+		}
+		Page<GiftCoupon> coupons = giftCouponService.findByValid(ValidEnum.VALID, pageable);
+		List<CouponTemplateJson> results = coupons.getContent().stream().filter(i -> couponService.isValidCoupon(i))
+				.map(CouponTemplateJson::new).collect(Collectors.toList());
+		return new Success<>(new PageImpl<>(results, pageable, coupons.getTotalElements()));
+	}
 
-    // 兑换卡券
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public Status exchangeCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json,
-                                 BindingResult result) {
-        Member m = (Member) request.getAttribute("member");
-        if (result.hasErrors()) {
-            return FailBuilder.buildFail(result);
-        }
-        Member member = memberService.findOneCache(m.getId());
-        if (!StringUtils.isEmpty(json.getPassword())) {
-            if (!passwordEncoder.encodePassword(json.getPassword(), null).equals(member.getMemberDetail().getPassword()))
-                throw new PasswordNotMatchException();
-        }
-        GiftCoupon coupon = giftCouponService.findOne(json.getId());
-        if (coupon == null)
-            throw new NotFoundException();
-        GiftCouponMessage message = new GiftCouponMessage(coupon, member, json.getTotal());
+	// 兑换卡券
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseBody
+	public Status exchangeCoupon(HttpServletRequest request, @Valid @RequestBody ExchangeCouponJson json,
+			BindingResult result) {
+		Member m = (Member) request.getAttribute("member");
+		if (result.hasErrors()) {
+			return FailBuilder.buildFail(result);
+		}
+		Member member = memberService.findOneCache(m.getId());
+		if (!StringUtils.isEmpty(json.getPassword())) {
+			if (!passwordEncoder.encodePassword(json.getPassword(), null)
+					.equals(member.getMemberDetail().getPassword()))
+				throw new PasswordNotMatchException();
+		}
+		GiftCoupon coupon = giftCouponService.findOne(json.getId());
+		if (coupon == null)
+			throw new NotFoundException();
+		GiftCouponMessage message = new GiftCouponMessage(coupon, member, json.getTotal());
 
-        final Inbox inbox = Inbox.create(system);
-        inbox.send(ref, message);
-        try {
-            String code = (String) inbox.receive(Duration.create(2, TimeUnit.SECONDS));
-            if (code.equals("success"))
-                return new Success<String>("success");
-            return new Fail(code);
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
-        return new Fail("system error");
-    }
+		final Inbox inbox = Inbox.create(system);
+		inbox.send(ref, message);
+		try {
+			String code = (String) inbox.receive(Duration.create(2, TimeUnit.SECONDS));
+			if (code.equals("success"))
+				return new Success<String>("success");
+			return new Fail(code);
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+		return new Fail("system error");
+	}
 
+	// 用户兑换到的优惠券列表
+	@RequestMapping(value = "/member", method = RequestMethod.GET)
+	@ResponseBody
+	public Status couponList(HttpServletRequest request,
+			@PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
+		Member m = (Member) request.getAttribute("member");
+		Member member = memberService.findOneCache(m.getId());
+		if (!isValidMember(member)) {
+			throw new MemberNotValidException();
+		}
+		List<CouponJson> jsonList = giftCouponMemberService.findByMember(member, pageable);
+		return new Success<>(jsonList);
+	}
 
-    // 用户兑换到的优惠券列表
-    @RequestMapping(value = "/member", method = RequestMethod.GET)
-    @ResponseBody
-    public Status couponList(HttpServletRequest request, 
-                             @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
-        Member m = (Member) request.getAttribute("member");
-        Member member = memberService.findOneCache(m.getId());
-        if(!isValidMember(member)){
-        	throw new MemberNotValidException();
-        }
-        List<CouponJson> jsonList = giftCouponMemberService.findByMember(member, pageable);
-        return new Success<>(jsonList);
-    }
-
-    // 详情
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public Status detail(@PathVariable("id") Long id) {
-        GiftCoupon coupon = giftCouponService.findOneCache(id);
-        if (coupon == null)
-            throw new NotFoundException();
-        return new Success<>(new CouponTemplateJson(coupon));
-    }
+	// 详情
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Status detail(@PathVariable("id") Long id) {
+		GiftCoupon coupon = giftCouponService.findOneCache(id);
+		if (coupon == null)
+			throw new NotFoundException();
+		return new Success<>(new CouponTemplateJson(coupon));
+	}
 }

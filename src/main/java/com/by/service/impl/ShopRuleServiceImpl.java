@@ -1,12 +1,14 @@
 package com.by.service.impl;
 
-import com.by.form.CouponQueryForm;
-import com.by.json.RuleJson;
-import com.by.model.CardRule;
-import com.by.model.GiftCoupon;
-import com.by.model.ShopRule;
-import com.by.service.RuleService;
-import com.by.service.ShopRuleService;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,13 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.form.CouponQueryForm;
+import com.by.json.RuleJson;
+import com.by.model.GiftCoupon;
+import com.by.model.ShopRule;
+import com.by.service.RuleService;
+import com.by.service.ShopRuleService;
 
 /**
  * Created by yagamai on 15-12-22.

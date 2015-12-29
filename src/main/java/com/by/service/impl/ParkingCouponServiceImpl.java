@@ -13,6 +13,7 @@ import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -45,10 +46,13 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     private ParkingCouponExchangeHistoryService exchangeHistoryService;
     @Autowired
     private EntityManager em;
+    @Value(value = "${coupon.amount}")
+    private double amount;
 
     @Override
     public ParkingCoupon save(ParkingCoupon coupon) {
         Calendar time = coupon.getEndTime();
+        coupon.setAmount(amount);
         time.set(Calendar.HOUR, 23);
         time.set(Calendar.MINUTE, 59);
         time.set(Calendar.SECOND, 59);
@@ -157,17 +161,15 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     public ParkingCoupon findActivate() {
         List<ParkingCoupon> lists = repository.findAll();
         Calendar today = Calendar.getInstance();
-        List<ParkingCoupon> results = lists.stream()
-                .filter(i -> i.getValid().equals(ValidEnum.VALID))
-                .filter(i -> {
-                    if (i.getBeginTime() == null && i.getEndTime() == null)
-                        return true;
-                    if (i.getBeginTime() != null && i.getEndTime() != null) {
-                        if (i.getBeginTime().before(today) && i.getEndTime().after(today))
-                            return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
+        List<ParkingCoupon> results = lists.stream().filter(i -> i.getValid().equals(ValidEnum.VALID)).filter(i -> {
+            if (i.getBeginTime() == null && i.getEndTime() == null)
+                return true;
+            if (i.getBeginTime() != null && i.getEndTime() != null) {
+                if (i.getBeginTime().before(today) && i.getEndTime().after(today))
+                    return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
         if (results.size() == 0)
             return null;
         results.sort((r1, r2) -> {

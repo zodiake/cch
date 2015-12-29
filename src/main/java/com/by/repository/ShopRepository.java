@@ -1,9 +1,8 @@
 package com.by.repository;
 
-import com.by.model.Shop;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import com.by.model.Shop;
 
 /**
  * Created by yagamai on 15-12-1.
