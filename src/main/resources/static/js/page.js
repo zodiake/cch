@@ -5,6 +5,7 @@ $(function ($) {
     $.fn.pageable = function (options) {
         var settings = $.extend({
             url: '',
+            pageId: null,
             parameter: function () {
             },
             fn: function () {
@@ -52,7 +53,7 @@ $(function ($) {
 
         this.on('click', 'li a', function (e) {
             var source = $(e.target);
-            var page = Number(source.html())-1;
+            var page = Number(source.html()) - 1;
             var parameter = settings.parameter();
             if (source.attr('aria-label') == 'Previous' && current != null) {
                 page = current - 1;
@@ -71,7 +72,7 @@ $(function ($) {
             }).done(function (data) {
                 settings.fn(data);
                 var pages = getPages(current, 7, data.obj.totalPages);
-                var ul = $('ul.pagination');
+                var ul = settings.pageId == null ? $('ul.pagination') : $('#' + settings.pageId);
                 ul.children().remove();
                 pages.forEach(function (e) {
                     var li = $('<li><a href="#"></a></li>');
@@ -85,6 +86,5 @@ $(function ($) {
                 ul.prepend('<li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>')
             });
         });
-
     };
 }(jQuery));

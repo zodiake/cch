@@ -5,12 +5,14 @@ import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.form.AdminMemberForm;
 import com.by.json.MemberJson;
+import com.by.json.TradingJson;
 import com.by.json.UpdateScoreJson;
 import com.by.model.*;
 import com.by.security.UserContext;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.service.MemberStaticsService;
+import com.by.service.TradingService;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,8 @@ public class AdminMemberController extends BaseController {
     private UserContext userContext;
     @Autowired
     private CardService cardService;
+    @Autowired
+    private TradingService tradingService;
 
     @ModelAttribute("cards")
     public List<Card> findAllCard() {
@@ -105,11 +109,18 @@ public class AdminMemberController extends BaseController {
         return new Success<MemberJson>(new MemberJson(member));
     }
 
-    @RequestMapping(value = "/{id}/consume", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/use", method = RequestMethod.GET)
     @ResponseBody
     public MemberStatics consume(@PathVariable("id") Long id) {
         Member member = new Member(id);
         return staticsService.findOne(member);
+    }
+
+    @RequestMapping(value = "/{id}/trading", method = RequestMethod.GET)
+    @ResponseBody
+    public Status trading(@PathVariable("id") Long id,
+                                     @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new Success<>(tradingService.findByMember(new Member(id), pageable));
     }
 
     @Override

@@ -13,6 +13,7 @@
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/jsRender.js"></script>
+    <script src="/js/page.js"></script>
     <script id="use-tmpl" type="text/x-jsrender">
         <form class="form-horizontal">
             <div class="form-group">
@@ -50,30 +51,101 @@
                 </div>
             </div>
         </form>
+
+    </script>
+    <script id="trading-tmpl" type="text/x-jsrender">
+        <table class="table table-striped bg-white" id='tradingTable'>
+            <thead>
+            <tr>
+                <th>消费时间</th>
+                <th>消费店铺</th>
+                <th>消费金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{for content}}
+            <tr>
+                <td>{{>createdTime}}</td>
+                <td>{{>shopName}}</td>
+                <td>{{>amount}}</td>
+            </tr>
+            {{/for}}
+            </tbody>
+        </table>
+        <div class="pagination-wrap">
+            <ul class="pagination" id="tradingPage">
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                <li class="active"><a >1</a></li>
+                <li><a>2</a></li>
+                <li><a>3</a></li>
+                <li><a>4</a></li>
+                <li><a>5</a></li>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </script>
+    <script id="trading-detail" type="text/x-jsrender">
+        {{for content}}
+            <tr>
+                <td>{{>createdTime}}</td>
+                <td>{{>shopName}}</td>
+                <td>{{>amount}}</td>
+            </tr>
+        {{/for}}
+
     </script>
     <script>
         $(function () {
             var consumeTmpl = {};
 
             var array = [{
-                tab: '#use',
-                tmplName: '#use-tmpl',
-                tabDetail: '#t2',
-                cacheName: 'use',
-                suffix: '/consume'
+                tmpl: 'use',
+                tabDetail: '#t2'
+            }, {
+                tmpl: 'trading',
+                tabDetail: '#t3',
+                pageId: 'tradingPage'
             }];
 
             function init(obj) {
-                $(obj.tab).click(function () {
-                	var self=$(this);
+                var tab = '#' + obj.tmpl + 'Flow',
+                        tmplName = '#' + obj.tmpl + '-tmpl',
+                        cacheName = obj.tmpl,
+                        suffix = '/' + obj.tmpl,
+                        table = '#' + obj.tmpl + 'Table tbody';
+                $(tab).click(function () {
+                    var self = $(this);
                     var id = self.attr('data-id');
                     $.ajax({
-                        url: '/admin/members/' + id + obj.suffix,
+                        url: '/admin/members/' + id + suffix,
                         success: function (data) {
-                            if (consumeTmpl[obj.cacheName] == null)
-                                consumeTmpl[obj.cacheName] = $.templates(obj.tmplName);
-                            var html = consumeTmpl[obj.cacheName].render(data);
+                            if (consumeTmpl[cacheName] == null)
+                                consumeTmpl[cacheName] = $.templates(tmplName);
+                            var html = consumeTmpl[cacheName].render(data);
                             $(obj.tabDetail).html(html);
+                            if (obj.pageId != null)
+                                $('#' + obj.pageId).pageable({
+                                    url: '/admin/members/' + id + '/trading',
+                                    parameter: function () {
+                                        return {};
+                                    },
+                                    fn: function (data) {
+                                        var detail = $.templates('#' + obj.tmpl + '-detail');
+                                        var html = detail.render(data.obj);
+                                        $(table).children().remove();
+                                        $(table).html(html);
+                                    },
+                                    pageId:obj.pageId
+                                });
                         }
                     });
                 });
@@ -101,11 +173,11 @@
                     </a>
                 </li>
                 <li class="use">
-                    <a data-toggle="tab" id="use" href="#t2" th:attr="data-id=${member.id}">使用情况
+                    <a data-toggle="tab" id="useFlow" href="#t2" th:attr="data-id=${member.id}">使用情况
                     </a>
                 </li>
                 <li class="default">
-                    <a data-toggle="tab" id="consumeFlow" href="#t3" th:attr="data-id=${member.id}">消费记录
+                    <a data-toggle="tab" id="tradingFlow" href="#t3" th:attr="data-id=${member.id}">消费记录
                     </a>
                 </li>
                 <li class="default">
@@ -146,59 +218,9 @@
                         </div>
                     </form>
                 </div>
-                <div id="t2" class="tab-pane" >
+                <div id="t2" class="tab-pane">
                 </div>
                 <div id="t3" class="tab-pane">
-                    <table class="table table-striped bg-white">
-                        <thead>
-                        <tr>
-                            <th>消费时间</th>
-                            <th>消费店铺</th>
-                            <th>消费金额</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>长宁店</td>
-                            <td>2000</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>长宁店</td>
-                            <td>2000</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>长宁店</td>
-                            <td>2000</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>长宁店</td>
-                            <td>2000</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="pagination-wrap">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                </a>
-                            </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">»</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div id="t4" class="tab-pane">
                     <table class="table table-striped bg-white">

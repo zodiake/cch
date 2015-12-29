@@ -76,7 +76,7 @@ public class AdminCardController extends BaseController {
 
     @RequestMapping(value = "/{id}/json", method = RequestMethod.GET)
     @ResponseBody
-    public Status get(@PathVariable("id") Integer id, Model uiModel) {
+    public Status get(@PathVariable("id") Integer id) {
         Card card = service.findOne(id);
         Long count = memberService.countByCard(new Card(id));
         List<CardRule> signUpRules = cardRuleService.findByRuleCategoryAndCard(SIGNUP_CATEGORY, card);
