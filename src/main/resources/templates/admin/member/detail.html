@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/jsRender.js"></script>
-    <script id="consume-tmpl" type="text/x-jsrender">
+    <script id="use-tmpl" type="text/x-jsrender">
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="col-md-3 control-label">会员卡：</label>
@@ -56,10 +56,10 @@
             var consumeTmpl = {};
 
             var array = [{
-                tab: '#consumeFlow',
-                tmplName: '#consume-tmpl',
+                tab: '#use',
+                tmplName: '#use-tmpl',
                 tabDetail: '#t2',
-                cacheName: 'consume',
+                cacheName: 'use',
                 suffix: '/consume'
             }];
 
@@ -72,7 +72,7 @@
                         success: function (data) {
                             if (consumeTmpl[obj.cacheName] == null)
                                 consumeTmpl[obj.cacheName] = $.templates(obj.tmplName);
-                            var html = consumeTmpl[cacheName].render(data.obj);
+                            var html = consumeTmpl[obj.cacheName].render(data);
                             $(obj.tabDetail).html(html);
                         }
                     });

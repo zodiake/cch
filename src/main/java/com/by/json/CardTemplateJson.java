@@ -21,14 +21,12 @@ public class CardTemplateJson {
     public CardTemplateJson() {
     }
 
-    public CardTemplateJson(Card card, int total, List<CardRule> registerRules, List<CardRule> tradingRules) {
+    public CardTemplateJson(Card card, int total) {
         this.state = card.getValid().toString();
         this.total = total;
         this.name = card.getName();
         this.initScore = card.getInitScore();
         this.summary = card.getSummary();
-        this.register = registerRules.stream().map(RuleJson::new).collect(Collectors.toList());
-        this.trading = tradingRules.stream().map(RuleJson::new).collect(Collectors.toList());
     }
 
     public String getState() {

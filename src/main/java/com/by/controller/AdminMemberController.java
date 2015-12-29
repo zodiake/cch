@@ -11,7 +11,6 @@ import com.by.security.UserContext;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.service.MemberStaticsService;
-import com.by.service.TradingService;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,6 @@ public class AdminMemberController extends BaseController {
     private final Menu subMenu = new Menu(2);
     @Autowired
     private MemberService memberService;
-    @Autowired
-    private TradingService tradingService;
     @Autowired
     private MemberStaticsService staticsService;
     @Autowired
