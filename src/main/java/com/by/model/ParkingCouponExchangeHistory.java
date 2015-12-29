@@ -64,6 +64,11 @@ public class ParkingCouponExchangeHistory {
         this.coupon = coupon;
     }
 
+    @PrePersist
+    private void prePersist() {
+        this.createdTime = Calendar.getInstance();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o != null && o instanceof ParkingCouponExchangeHistory) {

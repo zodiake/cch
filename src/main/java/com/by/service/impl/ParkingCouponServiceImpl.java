@@ -189,8 +189,8 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
             throw new NotFoundException();
         if (couponService.isValidCoupon(coupon)) {
             memberService.minusScore(m, sourceCoupon.getScore() * total, "", ScoreHistoryEnum.COUPONEXCHANGE);
-            m.setTotalParkingCoupon(m.getTotalParkingCoupon() + total);
             exchangeHistoryService.save(m, coupon, total);
+            m.setTotalParkingCoupon(m.getTotalParkingCoupon() + total);
         } else {
             throw new NotValidException();
         }
