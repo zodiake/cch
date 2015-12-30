@@ -35,6 +35,8 @@ import com.by.security.UserContext;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.service.MemberStaticsService;
+import com.by.service.ParkingHistoryService;
+import com.by.service.ScoreHistoryService;
 import com.by.service.TradingService;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
@@ -59,6 +61,10 @@ public class AdminMemberController extends BaseController {
     private CardService cardService;
     @Autowired
     private TradingService tradingService;
+    @Autowired
+    private ScoreHistoryService scoreHisotryService;
+    @Autowired
+    private ParkingHistoryService parkingHistoryService;
 
     @ModelAttribute("cards")
     public List<Card> findAllCard() {
@@ -131,6 +137,20 @@ public class AdminMemberController extends BaseController {
     public Status trading(@PathVariable("id") Long id,
                                      @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
         return new Success<>(tradingService.findByMember(new Member(id), pageable));
+    }
+
+    @RequestMapping(value = "/{id}/score", method = RequestMethod.GET)
+    @ResponseBody
+    public Status score(@PathVariable("id") Long id,
+                                     @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
+    	return new Success<>(scoreHisotryService.findByMemberJson(new Member(id), pageable));
+    }
+
+    @RequestMapping(value = "/{id}/parking", method = RequestMethod.GET)
+    @ResponseBody
+    public Status parking(@PathVariable("id") Long id,
+                                     @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
+    	return new Success<>(parkingHistoryService.findByMember(new Member(id), pageable));
     }
 
     @Override

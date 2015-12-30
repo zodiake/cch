@@ -85,6 +85,75 @@
             </tr>
         {{/for}}
     </script>
+    <script id="score-tmpl" type="text/x-jsrender">
+		<table class="table table-striped bg-white" id="scoreTable">
+			<thead>
+			<tr>
+				<th>变更时间</th>
+				<th>积分变动</th>
+				<th>描述</th>
+			</tr>
+			</thead>
+			<tbody>
+			{{for content}}
+			<tr>
+				<td>{{>createdTime}}</td>
+				<td>{{>amount}}</td>
+				<td>{{>summary}}</td>
+			</tr>
+			{{/for}}
+			</tbody>
+		</table>
+		<div class="pagination-wrap">
+			<ul class="pagination" id='scorePage'>
+			</ul>
+		</div>
+    </script>
+    <script id="score-row" type="text/x-jsrender">
+        {{for content}}
+            <tr>
+                <td>{{>createdTime}}</td>
+                <td>{{>shopName}}</td>
+                <td>{{>amount}}</td>
+            </tr>
+        {{/for}}
+    </script>
+    <script id="parking-tmpl" type="text/x-jsrender">
+		<table class="table table-striped bg-white" id="parkingTable">
+			<thead>
+			<tr>
+				<th>进场时间</th>
+				<th>出场时间</th>
+				<th>支付车牌</th>
+				<th>金额</th>
+			</tr>
+			</thead>
+			<tbody>
+			{{for content}}
+			<tr>
+				<td>2015年10月10号</td>
+				<td>2015年10月10号</td>
+				<td>沪A25112</td>
+				<td>100</td>
+			</tr>
+			{{/for}}
+			</tbody>
+		</table>
+		<div class="pagination-wrap">
+			<ul class="pagination" id="parkingPage">
+			</ul>
+		</div>
+	</script>
+    <script id="parking-row" type="text/x-jsrender">
+		{{for content}}
+		<tr>
+			<td>2015年10月10号</td>
+			<td>2015年10月10号</td>
+			<td>沪A25112</td>
+			<td>100</td>
+		</tr>
+		{{/for}}
+	</script>
     <script id="page-row" type="text/x-jsrender">
 		<li>
 			<a  aria-label="Previous">
@@ -112,6 +181,14 @@
                 tmpl: 'trading',
                 tabDetail: '#t3',
                 pageId: 'tradingPage'
+            },{
+            	tmpl:'score',
+            	tabDetail:'#t4',
+            	pageId:'scorePage'
+            },{
+            	tmpl:'parking',
+            	tabDetail:'#t5',
+            	pageId:'parkingPage'
             }];
 
             function init(obj) {
@@ -132,7 +209,7 @@
                             $(obj.tabDetail).html(html);
                             if (obj.pageId != null) {
                                 $('#' + obj.pageId).pageable({
-                                    url: '/admin/members/' + id + '/trading',
+                                    url: '/admin/members/' + id + '/'+obj.tmpl,
                                     parameter: function () {
                                         return {};
                                     },
@@ -223,108 +300,8 @@
                 <div id="t3" class="tab-pane">
                 </div>
                 <div id="t4" class="tab-pane">
-                    <table class="table table-striped bg-white">
-                        <thead>
-                        <tr>
-                            <th>变更时间</th>
-                            <th>积分变动</th>
-                            <th>描述</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>-10</td>
-                            <td>描述描述描述描述描述描述描述</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>-10</td>
-                            <td>描述描述描述描述描述描述描述</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>-10</td>
-                            <td>描述描述描述描述描述描述描述</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="pagination-wrap">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                </a>
-                            </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">»</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div id="t5" class="tab-pane">
-                    <table class="table table-striped bg-white">
-                        <thead>
-                        <tr>
-                            <th>进场时间</th>
-                            <th>出场时间</th>
-                            <th>支付车牌</th>
-                            <th>金额</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>沪A25112</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>沪A25112</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>沪A25112</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>沪A25112</td>
-                            <td>100</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="pagination-wrap">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                </a>
-                            </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">»</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div id="t6" class="tab-pane">
                     <table class="table table-striped bg-white">
