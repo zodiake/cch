@@ -1,5 +1,5 @@
 $(function() {
-	$('.modal-footer .confirm').click(function() {
+	$('button.confirm').click(function() {
 		$('.success-modal,.fixed').show().delay(2000).fadeOut(500);
 	})
 
