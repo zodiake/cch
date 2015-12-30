@@ -29,31 +29,28 @@ import com.by.service.ShopRuleService;
 @Service
 @Transactional
 public class ShopRuleServiceImpl implements ShopRuleService {
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private RuleService ruleService;
+	@Autowired
+	private EntityManager em;
+	@Autowired
+	private RuleService ruleService;
 
-    @Override
-    public Page<RuleJson> findAll(CouponQueryForm form, Pageable pageable) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ShopRule> c = cb.createQuery(ShopRule.class);
-        Root<ShopRule> root = c.from(ShopRule.class);
-        c.select(root);
-        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(GiftCoupon.class)));
-        if (form != null) {
-            Predicate[] predicates = ruleService.getPredicateList(form, root, cb);
-            c.where(predicates);
-            cq.where(predicates);
-        }
+	@Override
+	public Page<RuleJson> findAll(CouponQueryForm form, Pageable pageable) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<ShopRule> c = cb.createQuery(ShopRule.class);
+		Root<ShopRule> root = c.from(ShopRule.class);
+		c.select(root);
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		cq.select(cb.count(cq.from(GiftCoupon.class)));
+		List<Predicate> ls = ruleService.getPredicateList(form, root, cb);
+		Predicate[] predicates = ls.toArray(new Predicate[0]);
+		c.where(predicates);
+		cq.where(predicates);
 
-        List<ShopRule> lists = em.createQuery(c)
-                .setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
-                .setMaxResults(pageable.getPageSize()).getResultList();
-        Long count = em.createQuery(cq).getSingleResult();
-        List<RuleJson> results = lists.stream().map(RuleJson::new)
-                .collect(Collectors.toList());
-        return new PageImpl<>(results, pageable, count);
-    }
+		List<ShopRule> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
+				.setMaxResults(pageable.getPageSize()).getResultList();
+		Long count = em.createQuery(cq).getSingleResult();
+		List<RuleJson> results = lists.stream().map(RuleJson::new).collect(Collectors.toList());
+		return new PageImpl<>(results, pageable, count);
+	}
 }

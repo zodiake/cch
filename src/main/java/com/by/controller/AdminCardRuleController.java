@@ -1,5 +1,7 @@
 package com.by.controller;
 
+import com.by.exception.Success;
+import com.by.form.CouponQueryForm;
 import com.by.json.RuleJson;
 import com.by.model.Card;
 import com.by.model.CardRule;
@@ -10,14 +12,13 @@ import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/cardRules")
 public class AdminCardRuleController extends BaseController {
+    private final int INIT_PAGE = 0;
     private final int PAGE_SIZE = 10;
     private final Menu subMenu = new Menu(4);
     private final String CREATE = "admin/cardRules/create";
@@ -81,12 +83,23 @@ public class AdminCardRuleController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Model uiModel) {
-        Page<RuleJson> lists = service.findAll(null, new PageRequest(0, PAGE_SIZE, Sort.Direction.DESC, "beginTime"));
+    public String list(CouponQueryForm form, Model uiModel) {
+        Page<RuleJson> lists = service.findAll(form, new PageRequest(0, PAGE_SIZE, Sort.Direction.DESC, "beginTime"));
         int pages = computeLastPage(lists.getTotalPages());
         uiModel.addAttribute("lists", lists);
         uiModel.addAttribute("pages", pages);
+        uiModel.addAttribute("last", pages);
+        uiModel.addAttribute("form", form);
+        addMenu(uiModel);
         return LIST;
+    }
+
+    @RequestMapping(value = "/json", method = RequestMethod.GET)
+    @ResponseBody
+    public Success<Page<RuleJson>> list(CouponQueryForm form,
+                                        @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<RuleJson> lists = service.findAll(form, new PageRequest(0, PAGE_SIZE, Sort.Direction.DESC, "beginTime"));
+        return new Success<>(lists);
     }
 
     @Override

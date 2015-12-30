@@ -36,70 +36,69 @@ import com.by.typeEnum.ValidEnum;
 @Service
 @Transactional
 public class CardRuleServiceImpl implements CardRuleService {
-    @Autowired
-    private CardRuleRepository repository;
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private RuleService ruleService;
+	@Autowired
+	private CardRuleRepository repository;
+	@Autowired
+	private EntityManager em;
+	@Autowired
+	private RuleService ruleService;
 
-    @Override
-    @Cacheable(value = "cardRule", key = "#category.id")
-    public List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid) {
-        return repository.findByRuleCategoryAndCardAndValid(category, card, ValidEnum.VALID);
-    }
+	@Override
+	@Cacheable(value = "cardRule", key = "#category.id")
+	public List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid) {
+		return repository.findByRuleCategoryAndCardAndValid(category, card, ValidEnum.VALID);
+	}
 
-    @Override
-    public List<CardRule> findByRuleCategoryAndCard(RuleCategory category, Card card) {
-        return repository.findByRuleCategoryAndCard(category, card);
-    }
+	@Override
+	public List<CardRule> findByRuleCategoryAndCard(RuleCategory category, Card card) {
+		return repository.findByRuleCategoryAndCard(category, card);
+	}
 
-    @Override
-    public CardRule save(CardRule rule) {
-        return repository.save(rule);
-    }
+	@Override
+	public CardRule save(CardRule rule) {
+		return repository.save(rule);
+	}
 
-    @Override
-    public CardRule findOne(int id) {
-        return repository.findOne(id);
-    }
+	@Override
+	public CardRule findOne(int id) {
+		return repository.findOne(id);
+	}
 
-    @Override
-    @CachePut(value = "rule", key = "#cardRule.id")
-    public CardRule update(CardRule cardRule) {
-        CardRule rule = repository.findOne(cardRule.getId());
-        if (!ruleService.withinValidDate(rule)) {
-            throw new NotValidException();
-        }
-        rule.setCard(cardRule.getCard());
-        rule.setName(cardRule.getName());
-        rule.setRuleCategory(cardRule.getRuleCategory());
-        rule.setBeginTime(cardRule.getBeginTime());
-        rule.setEndTime(cardRule.getEndTime());
-        return rule;
-    }
+	@Override
+	@CachePut(value = "rule", key = "#cardRule.id")
+	public CardRule update(CardRule cardRule) {
+		CardRule rule = repository.findOne(cardRule.getId());
+		if (!ruleService.withinValidDate(rule)) {
+			throw new NotValidException();
+		}
+		rule.setCard(cardRule.getCard());
+		rule.setName(cardRule.getName());
+		rule.setRuleCategory(cardRule.getRuleCategory());
+		rule.setBeginTime(cardRule.getBeginTime());
+		rule.setEndTime(cardRule.getEndTime());
+		return rule;
+	}
 
-    @Override
-    public Page<RuleJson> findAll(CouponQueryForm form, Pageable pageable) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<CardRule> c = cb.createQuery(CardRule.class);
-        Root<CardRule> root = c.from(CardRule.class);
-        c.select(root);
-        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(GiftCoupon.class)));
-        if (form != null) {
-            Predicate[] predicates = ruleService.getPredicateList(form, root, cb);
-            c.where(predicates);
-            cq.where(predicates);
-        }
+	@Override
+	public Page<RuleJson> findAll(CouponQueryForm form, Pageable pageable) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<CardRule> c = cb.createQuery(CardRule.class);
+		Root<CardRule> root = c.from(CardRule.class);
+		c.select(root);
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		cq.select(cb.count(cq.from(CardRule.class)));
+		List<Predicate> ls = ruleService.getPredicateList(form, root, cb);
+		if (form.getCard() != null)
+			ls.add(cb.equal(root.get("card"), form.getCard()));
+		Predicate[] predicates = ls.toArray(new Predicate[0]);
+		c.where(predicates);
+		cq.where(predicates);
 
-        List<CardRule> lists = em.createQuery(c)
-                .setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
-                .setMaxResults(pageable.getPageSize()).getResultList();
-        Long count = em.createQuery(cq).getSingleResult();
-        List<RuleJson> results = lists.stream().map(RuleJson::new)
-                .collect(Collectors.toList());
-        return new PageImpl<>(results, pageable, count);
-    }
+		List<CardRule> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
+				.setMaxResults(pageable.getPageSize()).getResultList();
+		Long count = em.createQuery(cq).getSingleResult();
+		List<RuleJson> results = lists.stream().map(i -> new RuleJson(i)).collect(Collectors.toList());
+		return new PageImpl<>(results, pageable, count);
+	}
 
 }

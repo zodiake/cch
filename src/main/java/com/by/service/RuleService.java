@@ -24,5 +24,5 @@ public interface RuleService {
 
     boolean withinValidDate(Rule rule);
 
-    <T extends Rule> Predicate[] getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb);
+    <T extends Rule> List<Predicate> getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb);
 }
