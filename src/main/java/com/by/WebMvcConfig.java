@@ -16,69 +16,76 @@ import javax.servlet.Filter;
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/META-INF/resources/",
-            "classpath:/resources/", "classpath:/static/", "classpath:/public/"};
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
+			"classpath:/resources/", "classpath:/static/", "classpath:/public/" };
 
-    private static final String[] RESOURCE_LOCATIONS = {"classpath:/src/main/app/", "classpath:/src/main/app/"};
+	private static final String[] RESOURCE_LOCATIONS = { "classpath:/src/main/app/", "classpath:/src/main/app/" };
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JWTInterceptor()).addPathPatterns("/api/**");
-    }
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new JWTInterceptor()).addPathPatterns("/api/**");
+	}
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        if (!registry.hasMappingForPattern("/webjars/**")) {
-            registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        }
+		if (!registry.hasMappingForPattern("/webjars/**")) {
+			registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+		}
 
-        if (!registry.hasMappingForPattern("/**")) {
-            registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS).setCachePeriod(0);
-        }
+		if (!registry.hasMappingForPattern("/**")) {
+			registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS).setCachePeriod(0);
+		}
 
-        if (!registry.hasMappingForPattern("/app/**")) {
-            registry.addResourceHandler("/app/**").addResourceLocations(RESOURCE_LOCATIONS).setCachePeriod(0);
-        }
-    }
+		if (!registry.hasMappingForPattern("/app/**")) {
+			registry.addResourceHandler("/app/**").addResourceLocations(RESOURCE_LOCATIONS).setCachePeriod(0);
+		}
+	}
 
-    @Override
-    public void addFormatters(FormatterRegistry formatterRegistry) {
-        formatterRegistry.addConverter(stringToValidEnumConverter());
-        formatterRegistry.addConverter(stringToCalendar());
-        formatterRegistry.addConverter(stringToCouponAdminStateEnum());
-        formatterRegistry.addConverter(stringToDuplicateEnum());
-        formatterRegistry.addConverter(calendarToString());
-    }
+	@Override
+	public void addFormatters(FormatterRegistry formatterRegistry) {
+		formatterRegistry.addConverter(stringToValidEnumConverter());
+		formatterRegistry.addConverter(stringToCalendar());
+		formatterRegistry.addConverter(stringToCouponAdminStateEnum());
+		formatterRegistry.addConverter(stringToDuplicateEnum());
+		formatterRegistry.addConverter(calendarToString());
+		formatterRegistry.addConverter(stringToRuleCategory());
+	}
 
-    @Bean
-    public StringToValidEnumConverter stringToValidEnumConverter() {
-        return new StringToValidEnumConverter();
-    }
+	@Bean
+	public StringToValidEnumConverter stringToValidEnumConverter() {
+		return new StringToValidEnumConverter();
+	}
 
-    @Bean
-    public StringToCalendar stringToCalendar() {
-        return new StringToCalendar();
-    }
+	@Bean
+	public StringToCalendar stringToCalendar() {
+		return new StringToCalendar();
+	}
 
-    @Bean
-    public StringToCouponAdminStateEnum stringToCouponAdminStateEnum() {
-        return new StringToCouponAdminStateEnum();
-    }
+	@Bean
+	public StringToCouponAdminStateEnum stringToCouponAdminStateEnum() {
+		return new StringToCouponAdminStateEnum();
+	}
 
-    @Bean
-    public StringToDuplicateEnum stringToDuplicateEnum() {
-        return new StringToDuplicateEnum();
-    }
+	@Bean
+	public StringToDuplicateEnum stringToDuplicateEnum() {
+		return new StringToDuplicateEnum();
+	}
 
-    @Bean
-    public CalendarToString calendarToString() {
-        return new CalendarToString();
-    }
+	@Bean
+	public CalendarToString calendarToString() {
+		return new CalendarToString();
+	}
 
-    @Bean
-    public Filter hiddenHttpMethodFilter() {
-        HiddenHttpMethodFilter filter = new HiddenHttpMethodFilter();
-        return filter;
-    }
+	@Bean
+	public StringToRuleCategory stringToRuleCategory() {
+		return new StringToRuleCategory();
+	}
+
+	@Bean
+	public Filter hiddenHttpMethodFilter() {
+		HiddenHttpMethodFilter filter = new HiddenHttpMethodFilter();
+		return filter;
+	}
+
 }
