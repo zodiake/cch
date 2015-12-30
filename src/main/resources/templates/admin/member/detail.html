@@ -51,7 +51,6 @@
                 </div>
             </div>
         </form>
-
     </script>
     <script id="trading-tmpl" type="text/x-jsrender">
         <table class="table table-striped bg-white" id='tradingTable'>
@@ -74,26 +73,10 @@
         </table>
         <div class="pagination-wrap">
             <ul class="pagination" id="tradingPage">
-                <li>
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">«</span>
-                    </a>
-                </li>
-                <li class="active"><a >1</a></li>
-                <li><a>2</a></li>
-                <li><a>3</a></li>
-                <li><a>4</a></li>
-                <li><a>5</a></li>
-                <li>
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true">»</span>
-                    </a>
-                </li>
             </ul>
         </div>
-
     </script>
-    <script id="trading-detail" type="text/x-jsrender">
+    <script id="trading-row" type="text/x-jsrender">
         {{for content}}
             <tr>
                 <td>{{>createdTime}}</td>
@@ -101,11 +84,26 @@
                 <td>{{>amount}}</td>
             </tr>
         {{/for}}
-
+    </script>
+    <script id="page-row" type="text/x-jsrender">
+		<li>
+			<a  aria-label="Previous">
+				<span aria-hidden="true">«</span>
+			</a>
+		</li>
+		{{for pages}}
+		<li ><a >{{:text}}</a></li>
+		{{/for}}
+		<li>
+			<a  aria-label="Next">
+				<span aria-hidden="true">»</span>
+			</a>
+		</li>
     </script>
     <script>
         $(function () {
             var consumeTmpl = {};
+            consumeTmpl.page = $.templates('#page-row');
 
             var array = [{
                 tmpl: 'use',
@@ -130,22 +128,24 @@
                         success: function (data) {
                             if (consumeTmpl[cacheName] == null)
                                 consumeTmpl[cacheName] = $.templates(tmplName);
-                            var html = consumeTmpl[cacheName].render(data);
+                            var html = consumeTmpl[cacheName].render(data.obj);
                             $(obj.tabDetail).html(html);
-                            if (obj.pageId != null)
+                            if (obj.pageId != null) {
                                 $('#' + obj.pageId).pageable({
                                     url: '/admin/members/' + id + '/trading',
                                     parameter: function () {
                                         return {};
                                     },
                                     fn: function (data) {
-                                        var detail = $.templates('#' + obj.tmpl + '-detail');
+                                        var detail = $.templates('#' + obj.tmpl + '-row');
                                         var html = detail.render(data.obj);
                                         $(table).children().remove();
                                         $(table).html(html);
                                     },
-                                    pageId:obj.pageId
+                                    totalPages: data.obj.totalPages,
+                                    tmpl: consumeTmpl.page
                                 });
+                            }
                         }
                     });
                 });

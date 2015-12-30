@@ -51,9 +51,18 @@ $(function ($) {
 
         var current;
 
+        if (settings.totalPages) {
+            this.children().remove();
+            var pages = getPages(1, 7, settings.totalPages);
+            var temp={};
+            temp.pages=pages;
+            var html = settings.tmpl.render(temp);
+            this.html(html);
+        }
+
         this.on('click', 'li a', function (e) {
             var source = $(e.target);
-            var page = Number(source.html()) - 1;
+            var page = Number(source.html()) ;
             var parameter = settings.parameter();
             if (source.attr('aria-label') == 'Previous' && current != null) {
                 page = current - 1;
@@ -63,7 +72,7 @@ $(function ($) {
                 page = current + 1;
             }
 
-            parameter.page = page;
+            parameter.page = page-1;
             current = page;
             parameter.size = 10;
             $.ajax({
@@ -72,18 +81,18 @@ $(function ($) {
             }).done(function (data) {
                 settings.fn(data);
                 var pages = getPages(current, 7, data.obj.totalPages);
-                var ul = settings.pageId == null ? $('ul.pagination') : $('#' + settings.pageId);
-                ul.children().remove();
+                self.children().remove();
+                console.log(pages);
                 pages.forEach(function (e) {
-                    var li = $('<li><a href="#"></a></li>');
+                    var li = $('<li><a ></a></li>');
                     var a = li.find('a').html(e.text);
                     if (e.active) {
                         li.addClass('active');
                     }
-                    ul.append(li);
+                    self.append(li);
                 });
-                ul.append('<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>');
-                ul.prepend('<li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>')
+                self.append('<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>');
+                self.prepend('<li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>')
             });
         });
     };
