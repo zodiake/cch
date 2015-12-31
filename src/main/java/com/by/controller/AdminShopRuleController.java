@@ -30,11 +30,18 @@ public class AdminShopRuleController extends BaseController {
 	private final Menu subMenu = new Menu(5);
 	private final String LISTS = "admin/shopRules/lists";
 	private final String EDIT = "admin/shopRules/edit";
+	private final String CREATE = "admin/shopRules/create";
 	private final String REDIRECT = "redirect:/admin/shopRules/";
 	@Autowired
 	private ShopRuleService service;
 	@Autowired
 	private ShopService shopService;
+
+	@ModelAttribute("shops")
+	public List<Shop> shops() {
+		List<Shop> shops = shopService.findAll(new Sort(Sort.Direction.ASC, "name"));
+		return shops;
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(BaseCouponForm form, Model uiModel,
@@ -43,16 +50,32 @@ public class AdminShopRuleController extends BaseController {
 		uiModel.addAttribute("lists", lists);
 		uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
 		uiModel.addAttribute("form", form);
+		addMenu(uiModel);
 		return LISTS;
+	}
+
+	@RequestMapping(params = "form", method = RequestMethod.GET)
+	public String form(Model uiModel) {
+		uiModel.addAttribute("rule", new ShopRule());
+		return CREATE;
+	}
+
+	@RequestMapping(params = "form", method = RequestMethod.POST)
+	public String save(@ModelAttribute("rule") ShopRule rule, BindingResult result, Model uiModel) {
+		if (result.hasErrors()) {
+			uiModel.addAttribute("rule", rule);
+			return CREATE;
+		}
+		ShopRule r = service.save(rule);
+		return REDIRECT + r.getId();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String edit(@PathVariable("id") int id, Model uiModel) {
 		ShopRule rule = service.findOne(id);
-		List<Shop> shops = shopService.findAll(new Sort(Sort.Direction.ASC, "name"));
 		uiModel.addAttribute("rule", rule);
-		uiModel.addAttribute("shops", shops);
 		addClass(rule, uiModel);
+		addMenu(uiModel);
 		return EDIT;
 	}
 

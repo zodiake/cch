@@ -7,6 +7,8 @@ import com.by.model.ShopRule;
 import com.by.repository.ShopRuleRepository;
 import com.by.service.RuleService;
 import com.by.service.ShopRuleService;
+import com.by.typeEnum.ValidEnum;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -68,5 +70,11 @@ public class ShopRuleServiceImpl implements ShopRuleService {
         rule.setBeginTime(r.getBeginTime());
         rule.setShops(r.getShops());
         return rule;
+    }
+
+    @Override
+    public ShopRule save(ShopRule r) {
+    	r.setValid(ValidEnum.VALID);
+        return repository.save(r);
     }
 }
