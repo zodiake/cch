@@ -107,15 +107,15 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, b
 VALUES (6, 2.0, 1, 2, 1, 100, 'rule6', 'c', NULL, NULL);
 
 -- test shop
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (1, 'shop1', 'abc1', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (2, '光明', 'abc2', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (3, '哈根达斯', 'abc3', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (4, 'h&m', 'abc4', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (5, '索尼', 'abc5', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (6, '三星', 'abc6', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (7, 'java', 'abc7', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (8, 'scala', 'abc8', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (9, 'csharp', 'abc9', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (1, 'shop1', 'abc1', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (2, '光明', 'abc2', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (3, '哈根达斯', 'abc3', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (4, 'h&m', 'abc4', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (5, '索尼', 'abc5', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (6, '三星', 'abc6', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (7, 'java', 'abc7', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (8, 'scala', 'abc8', 2,'2012-12-30','2012-12-30','/img/1.png');
+INSERT INTO by_shop (id, name, shop_key, user_id,created_time,updated_time,img_href) VALUES (9, 'csharp', 'abc9', 2,'2012-12-30','2012-12-30','/img/1.png');
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);

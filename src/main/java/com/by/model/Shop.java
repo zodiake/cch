@@ -1,6 +1,10 @@
 package com.by.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,6 +18,8 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull
+	@Length(max = 225, min = 1)
     private String name;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -24,6 +30,8 @@ public class Shop {
     @JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private List<Menu> menus;
 
+    @NotNull
+    @Length(max = 225, min = 1)
     @Column(name="shop_key")
     private String shopKey;
 
@@ -47,6 +55,9 @@ public class Shop {
 
     @Column(name = "updated_by")
     private String updatedBy;
+    
+    @Column(name="img_href")
+    private String imgHref;
 
     public Shop() {
     }
@@ -153,7 +164,15 @@ public class Shop {
         this.updatedTime=Calendar.getInstance();
     }
 
-    @Override
+    public String getImgHref() {
+		return imgHref;
+	}
+
+	public void setImgHref(String imgHref) {
+		this.imgHref = imgHref;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

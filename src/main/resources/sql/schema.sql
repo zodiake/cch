@@ -36,6 +36,7 @@ CREATE TABLE by_shop (
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   shop_key     VARCHAR(225),
+  img_href     VARCHAR(50),	   
   FOREIGN KEY (user_id) REFERENCES by_user (id),
   PRIMARY KEY (id)
 );
