@@ -1,22 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Insert title here</title>
-    <script src="/javascript/jquery-1.11.3.min.js"></script>
+	<meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
+    <title>店铺信息</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/js/template.js"></script>
+    <script type="text/javascript" src="/js/fileUpload.js"></script>
     <script>
+    $(function(){
+    	var url="http://cchdev.b0.upaiyun.com/test/";
+    	$('div.col-md-2 input').change(function (event) {
+            var source = $(event.target);
+            var id = source.attr('id');
+            $.ajaxFileUpload({
+                    url: '/admin/upload',
+                    secureuri: false,
+                    fileElementId: source.attr('id'),
+                    dataType: 'json',
+                    success: function (data, status) {
+                    	if(status=='success'){
+                    		$('div.col-md-3 img').attr('src',url+data.responseText);
+                    		$('#imgHref').val(url+data.responseText);
+                    	}
+                    	console.log(data);
+                    },
+                    error: function (data, status, e) {
+                        alert(e);
+                    }
+                }
+            );
+            return false;
+        });
+    })
     </script>
 </head>
 <body>
-<form th:object="${shop}" th:method="put">
-	<input type="text" th:field="*{name}" />
-	<ul>
-        <li th:each="menu : ${menus}">
-            <input type="checkbox" th:field="*{menus}" th:value="${menu.id}"/>
-            <label th:text="${menu.name}">Heating</label>
-        </li>
-    </ul>
-    <input type="submit"/>
-</form>
+<div class="header clearfix">
+    <div th:replace="admin/layout/header::header"></div>
+</div>
+<div class="mainwrapper clearfix">
+	<div th:replace="admin/layout/menu::menu"></div>
+	<div class="mainpanel">
+		<div class="add-giftquan-wrap">
+			<div class="hd">
+				<div class="bar edit-bar">店铺设置</div>
+			</div>
+           <div class="row" >
+           		<form class="form-horizontal pt50" th:object="${shop}" th:method="put">
+	                <div class="form-group">
+                  		<label class="col-md-4 control-label">名称：</label>
+                      	<div class="col-md-3">
+                      		<input type="text" class="form-control" th:field="*{name}"/>
+                      		<i class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" >必填</i>
+                      	</div>
+                  	</div>
+                  	<div class="form-group">
+                  		<label class="col-md-4 control-label">Logo：</label>
+                      	<div class="col-md-3">
+	                      	<img th:src="${shop.imgHref}" height="100" style="background:#FFF; width:100%;" />
+	                      	<input type="hidden" th:field="*{imgHref}"/>
+                      	</div>
+                        <div class="col-md-2 mt40">
+                         	<input type="file" id="imageUp"/>
+                        </div>
+                 	</div>                  	
+                    <div class="form-group">
+                  		<label class="col-md-4 control-label">Pos - Key：</label>
+                      	<div class="col-md-3">
+	                      	<input type="text" class="form-control" th:field="*{shopKey}"/>
+	                      	<i class="error" th:if="${#fields.hasErrors('shopKey')}" th:errors="*{shopKey}" >必填</i>
+                      	</div>
+                    </div>                 
+                    <div class="group-ft col-xs-offset-4 mt50">
+                 		<a th:href="@{/admin/shops}"><button type="button" class="btn btn-default ml40">取消</button></a>
+                        <button type="submit" class="btn btn-success ml40">确认</button>
+                    </div>
+                 </form>
+           </div>
+		</div>
+	</div>
+</div>
 </body>
 </html>
