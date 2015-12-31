@@ -96,11 +96,11 @@ public class RuleServiceImpl implements RuleService {
 		}
 		if (form.getBeginTime() != null) {
 			criteria.add(cb.or(cb.lessThanOrEqualTo(root.get("beginTime"), form.getBeginTime()),
-					cb.and(cb.isNull(root.get("beginTime"))), cb.isNull(root.get("endTime"))));
+					cb.isNull(root.get("endTime"))));
 		}
 		if (form.getEndTime() != null) {
 			criteria.add(cb.or(cb.greaterThanOrEqualTo(root.get("endTime"), form.getEndTime()),
-					cb.and(cb.isNull(root.get("beginTime"))), cb.isNull(root.get("endTime"))));
+					cb.isNull(root.get("endTime"))));
 		}
 		return criteria;
 	}

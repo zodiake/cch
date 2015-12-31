@@ -45,7 +45,7 @@ public class AdminShopController {
 	@RequestMapping(value="/all",method=RequestMethod.GET)
 	@ResponseBody
 	public Status all(){
-		return new Success<>(service.findAll());
+		return new Success<>(service.findAllJson());
 	}
 
 	// 店铺列表json
@@ -82,7 +82,7 @@ public class AdminShopController {
 
 	// 查看店铺详情
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String view(Model uiModel, @PathVariable("id") Long id) {
+	public String view(Model uiModel, @PathVariable("id") int id) {
 		Shop shop = service.findOne(id);
 		if (shop == null)
 			throw new NotFoundException();
@@ -92,7 +92,7 @@ public class AdminShopController {
 
 	// 修改店铺信息
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public String edit(Shop shop, @PathVariable("id") Long id) {
+	public String edit(Shop shop, @PathVariable("id") int id) {
 		shop.setId(id);
 		service.update(shop);
 		return "redirect:/admin/shop/" + id;
@@ -101,7 +101,7 @@ public class AdminShopController {
 	// 绑定用户
 	@RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
 	@ResponseBody
-	public Status bindUser(@PathVariable("id") Long id, @RequestBody ShopBindUserForm form) {
+	public Status bindUser(@PathVariable("id") int id, @RequestBody ShopBindUserForm form) {
 		form.setId(id);
 		return new Success<>(service.bindUser(form));
 	}

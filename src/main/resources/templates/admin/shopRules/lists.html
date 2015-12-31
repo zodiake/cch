@@ -66,8 +66,6 @@
                 <thead>
                 <tr>
                     <th>名称</th>
-                    <th>规则类型</th>
-                    <th>会员卡</th>
                     <th>发行时间</th>
                     <th>结束时间</th>
                     <th>状态</th>
@@ -76,8 +74,6 @@
                 <tbody>
                 <tr th:each="r:${lists.content}">
                     <td><a th:text="${r.name}"></a></td>
-                    <td><a th:text="${r.category}"></a></td>
-                    <td><a th:text="${r.cardName}">普通</a></td>
                     <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
                     <td><a th:text="${r.endTime}">2015年10月10号</a></td>
                     <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>

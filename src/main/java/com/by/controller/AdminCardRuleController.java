@@ -101,8 +101,9 @@ public class AdminCardRuleController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(CouponQueryForm form, Model uiModel) {
-        Page<RuleJson> lists = service.findAll(form, new PageRequest(0, PAGE_SIZE, Sort.Direction.DESC, "beginTime"));
+    public String list(CouponQueryForm form, Model uiModel,
+                       @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<RuleJson> lists = service.findAll(form, pageable);
         int pages = computeLastPage(lists.getTotalPages());
         uiModel.addAttribute("lists", lists);
         uiModel.addAttribute("pages", pages);

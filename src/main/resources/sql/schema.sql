@@ -28,7 +28,7 @@ CREATE TABLE by_user (
 );
 
 CREATE TABLE by_shop (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
+  id           int NOT NULL AUTO_INCREMENT,
   name         VARCHAR(225),
   user_id      BIGINT,
   created_by   VARCHAR(20),
@@ -125,7 +125,7 @@ CREATE TABLE by_rule (
 );
 
 CREATE TABLE by_shop_rule (
-  shop_id BIGINT,
+  shop_id INT,
   rule_id BIGINT,
   PRIMARY KEY (shop_id, rule_id),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id),
@@ -205,7 +205,7 @@ CREATE TABLE by_coupon (
   cover_img       VARCHAR(50),
   content_img     VARCHAR(50),
   summary         VARCHAR(255),
-  shop_id         BIGINT,
+  shop_id         INT,
   sortOrder       SMALLINT        DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id)
@@ -265,7 +265,7 @@ CREATE TABLE REVINFO (
 );
 
 CREATE TABLE by_shop_menu (
-  shop_id BIGINT,
+  shop_id INT,
   menu_id INT,
   FOREIGN KEY (shop_id) REFERENCES by_shop (id),
   FOREIGN KEY (menu_id) REFERENCES by_menu (id),
@@ -324,7 +324,7 @@ CREATE TABLE by_consumption_history (
 
 CREATE TABLE by_trading (
   id           BIGINT NOT NULL AUTO_INCREMENT,
-  shop_id      BIGINT,
+  shop_id      INT,
   member_id    BIGINT,
   created_time TIMESTAMP,
   amount       DOUBLE,

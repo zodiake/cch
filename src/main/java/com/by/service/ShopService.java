@@ -5,6 +5,7 @@ import com.by.json.ShopJson;
 import com.by.model.Shop;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public interface ShopService {
     Shop findByKey(String code);
 
-    Page<Shop> findAll(String name,Pageable pageable);
+    Page<Shop> findAll(String name, Pageable pageable);
 
     Page<Shop> findFirstPage(int size);
 
@@ -22,13 +23,15 @@ public interface ShopService {
 
     Shop save(ShopJson shop);
 
-    Shop findOne(Long id);
+    Shop findOne(int id);
 
     Shop update(ShopJson shop);
-    
+
     Shop update(Shop shop);
 
     Shop bindUser(ShopBindUserForm form);
 
-    List<ShopJson> findAll();
+    List<ShopJson> findAllJson();
+
+    List<Shop> findAll(Sort sort);
 }

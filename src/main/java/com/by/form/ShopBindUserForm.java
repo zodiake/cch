@@ -4,18 +4,18 @@ package com.by.form;
  * Created by yagamai on 15-12-11.
  */
 public class ShopBindUserForm {
-    private Long id;
+    private int id;
     private String useName;
 
-    public Long getId() {
-        return id;
-    }
+    public int getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getUseName() {
+	public String getUseName() {
         return useName;
     }
 
