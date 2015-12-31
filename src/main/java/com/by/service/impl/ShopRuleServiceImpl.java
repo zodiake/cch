@@ -67,6 +67,6 @@ public class ShopRuleServiceImpl implements ShopRuleService {
         rule.setName(r.getName());
         rule.setBeginTime(r.getBeginTime());
         rule.setShops(r.getShops());
-        return null;
+        return rule;
     }
 }

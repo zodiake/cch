@@ -30,8 +30,7 @@ public class Shop {
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<ShopCoupon> coupons;
 
-    @ManyToMany
-    @JoinTable(name = "by_shop_rule", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "rule_id"))
+    @ManyToMany(mappedBy = "shops")
     private List<ShopRule> rules;
 
     @Temporal(TemporalType.TIMESTAMP)
