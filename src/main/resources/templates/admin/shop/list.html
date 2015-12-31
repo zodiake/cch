@@ -1,0 +1,103 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0" />
+<title>店铺管理列表</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
+<link rel="stylesheet" type="text/css" href="/css/base.css"/>
+<link rel="stylesheet" type="text/css" href="/css/template.css"/>
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
+<script type="text/javascript" src="/js/template.js"></script>
+<script type="text/javascript" src="/js/jsRender.js"></script>
+<script src="/js/page.js"></script>
+<script id="detail" type="text/x-jsrender">
+		{{for content}}
+		<tr>
+		    <td><a href="/admin/shops/{{>id}}">{{>name}}</a></td>  
+		    <td>{{>key}}</td>  
+		    <td>{{>updateTime}}</td>
+        </tr>	
+		{{/for}}
+</script>
+<script>
+        $(function () {
+            var submitFn = function (data) {
+                var tmpl = $.templates("#detail");
+                var html = tmpl.render(data.obj);
+                $('table tbody').children().remove();
+                $('table tbody').html(html);
+            };
+
+             var parameterFn = function () {
+                return {}
+            };
+
+            $('ul.pagination').pageable({
+                url: '/admin/shops/json',
+                parameter: parameterFn,
+                fn: submitFn
+            });
+
+            $('.datepicker').datepicker();
+            $('.datepicker').datepicker("option", "dateFormat", 'yy-mm-dd');
+        });
+    </script>
+</head>
+
+<body>
+<div class="header clearfix">
+    <div th:replace="admin/layout/header::header"></div>
+</div>
+<div class="mainwrapper clearfix">
+	<div th:replace="admin/layout/menu::menu"></div>
+	<div class="mainpanel">
+		<div class="shop-wrap container">
+			<div class="hd clearfix">
+				<div class="bar base-bar short-bar pull-left">店铺管理</div>
+                <a th:href="@{/admin/shops?form}"><button type="button" class="btn btn-info">添加</button></a>
+			</div>
+			<table class="table table-striped bg-white mt20">
+           	  <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>Pos - Key</th>
+                    <th>最后修改时间</th>        
+                </tr>
+              </thead> 
+              <tbody>
+              		<tr th:each="shop:${lists.content}">
+		                <td><a th:text="${shop.name}" th:href="@{/admin/shops/__${shop.id}__}"></a></td>  
+		                <td th:text="${shop.shopKey}"></td>  
+		                <td th:text="${#dates.format(shop.updatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+              </tbody>
+           </table>
+		   <div class="pagination-wrap">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="i:${#numbers.sequence(1,last)}" th:class="${i==1}?active"><a th:text="${i}">1</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('.datepicker').datepicker();
+	})
+</script>
+</body>
+</html>
