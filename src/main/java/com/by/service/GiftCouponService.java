@@ -7,6 +7,8 @@ import com.by.typeEnum.ValidEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Calendar;
+
 /**
  * Created by yagamai on 15-12-3.
  */
@@ -22,4 +24,6 @@ public interface GiftCouponService {
     Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
     Page<CouponTemplateJson> findAll(CouponQueryForm form, Pageable pageable);
+
+    Page<GiftCoupon> findAllByValidAndDateBetween(ValidEnum VALID, Calendar calendar, Pageable pageable);
 }

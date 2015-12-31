@@ -20,6 +20,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,11 @@ public class GiftCouponServiceImpl implements GiftCouponService {
     @Transactional(readOnly = true)
     public Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable) {
         return repository.findByValid(valid, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<GiftCoupon> findAllByValidAndDateBetween(ValidEnum VALID, Calendar calendar, Pageable pageable) {
+        return repository.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
     }
 
     @Override

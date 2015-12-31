@@ -143,6 +143,16 @@ public class Shop {
         this.rules = rules;
     }
 
+    @PrePersist
+    private void prePersist(){
+        this.createdTime=Calendar.getInstance();
+    }
+
+    @PreUpdate
+    private void preUpdate(){
+        this.updatedTime=Calendar.getInstance();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

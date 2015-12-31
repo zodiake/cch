@@ -219,7 +219,7 @@ CREATE TABLE by_gift_coupon_member (
   code           CHAR(17),
   state          SMALLINT,
   exchanged_time TIMESTAMP,
-  used_time      TIMESTAMP,
+  used_time      TIMESTAMP NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
@@ -340,11 +340,11 @@ CREATE TABLE by_sequence (
 );
 
 CREATE TABLE by_shop_coupon_member (
-  id             BIGINT NOT NULL AUTO_INCREMENT,
+  id             BIGINT    NOT NULL AUTO_INCREMENT,
   member_id      BIGINT,
   coupon_id      BIGINT,
   exchanged_time TIMESTAMP,
-  used_time      TIMESTAMP,
+  used_time      TIMESTAMP NULL,
   code           CHAR(17),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id),

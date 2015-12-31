@@ -6,6 +6,7 @@ import com.by.model.*;
 import com.by.repository.GiftCouponMemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -93,8 +94,7 @@ public class GiftCouponMemberServiceImpl implements GiftCouponMemberService {
     @Override
     @Transactional(readOnly = true)
     public List<CouponJson> findByMember(Member member, Pageable pageable) {
-        return repository.findByMember(member, pageable).getContent().stream()
-                .filter(i -> i.getUsedTime() == null && couponService.isValidCoupon(i.getCoupon()))
+        return repository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable).getContent().stream()
                 .map(i -> {
                     Coupon c = i.getCoupon();
                     return new CouponJson(c);

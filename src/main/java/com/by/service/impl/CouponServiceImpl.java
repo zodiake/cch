@@ -6,8 +6,7 @@ import com.by.model.*;
 import com.by.repository.CouponRepository;
 import com.by.repository.GiftCouponMemberRepository;
 import com.by.repository.ShopCouponMemberRepository;
-import com.by.service.CouponService;
-import com.by.service.ParkingCouponService;
+import com.by.service.*;
 import com.by.typeEnum.CouponAdminStateEnum;
 import com.by.typeEnum.DuplicateEnum;
 import com.by.typeEnum.ValidEnum;
@@ -37,6 +36,12 @@ public class CouponServiceImpl implements CouponService {
     private ShopCouponMemberRepository shopCouponMemberRepository;
     @Autowired
     private ParkingCouponService parkingCouponService;
+    @Autowired
+    private GiftCouponService giftCouponService;
+    @Autowired
+    private ShopCouponService shopCouponService;
+    @Autowired
+    private MemberService memberService;
 
     @Override
     public boolean isValidCoupon(Coupon coupon) {
@@ -121,42 +126,54 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional(readOnly = true)
     public Page<CouponJson> findAll(Pageable pageable) {
-        Page<Coupon> coupons = repository.findByValid(ValidEnum.VALID, pageable);
-        List<CouponJson> results = coupons.getContent().stream().map(i -> {
+        Page<GiftCoupon> giftCoupons = giftCouponService.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
+        Page<ShopCoupon> shopCoupons = shopCouponService.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
+        List<CouponJson> results = new ArrayList<>();
+        List<CouponJson> giftJson = giftCoupons.getContent().stream().map(i -> {
             CouponJson json = new CouponJson(i);
-            if (i instanceof ShopCoupon) {
-                json.setType("s");
-            } else if (i instanceof ParkingCoupon) {
-                json.setType("p");
-            } else if (i instanceof GiftCoupon) {
-                json.setType("g");
-            }
+            json.setType("g");
             return json;
         }).collect(Collectors.toList());
-        return new PageImpl<>(results, pageable, coupons.getTotalElements());
+        List<CouponJson> shopJson = shopCoupons.getContent().stream().map(i -> {
+            CouponJson json = new CouponJson(i);
+            json.setType("s");
+            return json;
+        }).collect(Collectors.toList());
+        results.addAll(giftJson);
+        results.addAll(shopJson);
+        results.sort((o1, o2) -> {
+            if (o1.getCouponTime().before(o2.getCouponTime()))
+                return 1;
+            return -1;
+        });
+        if (pageable.getPageNumber() == 0) {
+            ParkingCoupon parkingCoupon = parkingCouponService.findActivate();
+            CouponJson json = new CouponJson(parkingCoupon);
+            json.setType("p");
+            results.add(0, json);
+        }
+        Long max = Math.max(giftCoupons.getTotalElements(), shopCoupons.getTotalElements());
+        return new PageImpl<>(results.stream().limit(15).collect(Collectors.toList()), pageable, max);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<CouponJson> findByMember(Member member, Pageable pageable) {
-        Page<GiftCouponMember> giftCouponList = giftCouponMemberRepository.findByMember(member, pageable);
-        Page<ShopCouponMember> shopCouponMemberList = shopCouponMemberRepository.findByMember(member, pageable);
+        Page<GiftCouponMember> giftCouponList = giftCouponMemberRepository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable);
+        Page<ShopCouponMember> shopCouponMemberList = shopCouponMemberRepository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable);
         List<CouponJson> results = new ArrayList<>();
         List<CouponJson> preferentialJson = giftCouponList.getContent().stream()
-                .filter(i -> i.getCoupon().getValid().equals(ValidEnum.VALID) && i.getUsedTime() == null).map(i -> {
+                .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setType("g");
                     return json;
                 }).collect(Collectors.toList());
         List<CouponJson> shopJson = shopCouponMemberList.getContent().stream()
-                .filter(i -> i.getCoupon().getValid().equals(ValidEnum.VALID) && i.getUsedTime() == null).map(i -> {
+                .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setType("s");
                     return json;
                 }).collect(Collectors.toList());
-        CouponJson parkingJson = new CouponJson(parkingCouponService.findActivate());
-        parkingJson.setType("p");
-        results.add(parkingJson);
         results.addAll(preferentialJson);
         results.addAll(shopJson);
         results.sort((o1, o2) -> {
@@ -164,6 +181,14 @@ public class CouponServiceImpl implements CouponService {
                 return 1;
             return -1;
         });
+        if (pageable.getPageNumber() == 0) {
+            Member m = memberService.findOne(member.getId());
+            int total = m.getTotalParkingCoupon();
+            CouponJson json = new CouponJson();
+            json.setTotal(total);
+            json.setType("p");
+            results.add(0, json);
+        }
         Long max = Math.max(shopCouponMemberList.getTotalElements(), giftCouponList.getTotalElements());
         return new PageImpl<>(results.stream().limit(15).collect(Collectors.toList()), pageable, max);
     }

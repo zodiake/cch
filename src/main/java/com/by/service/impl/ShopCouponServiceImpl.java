@@ -20,6 +20,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,5 +83,10 @@ public class ShopCouponServiceImpl implements ShopCouponService {
         List<CouponTemplateJson> results = lists.stream().map(i -> new CouponTemplateJson(i))
                 .collect(Collectors.toList());
         return new PageImpl<>(results, pageable, count);
+    }
+
+    @Override
+    public Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable) {
+        return repository.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
     }
 }

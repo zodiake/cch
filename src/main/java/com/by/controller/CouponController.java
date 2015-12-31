@@ -34,20 +34,20 @@ public class CouponController {
     // 可以兑换的优惠券
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Status couponnList(HttpServletRequest request,
-                              @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Success<Page<CouponJson>> couponList(HttpServletRequest request,
+                                                @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
         Member m = memberService.findOne(member.getId());
         if (m.getValid().equals(ValidEnum.INVALID))
             throw new NotValidException();
-        return new Success<Page<CouponJson>>(couponService.findAll(pageable));
+        return new Success<>(couponService.findAll(pageable));
     }
 
     // 兑换到的优惠券
     @RequestMapping(value = "/member", method = RequestMethod.GET)
     @ResponseBody
     public Status list(HttpServletRequest request,
-                       @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
+                       @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
         Member member = (Member) request.getAttribute("member");
         Member m = memberService.findOne(member.getId());
         if (m.getValid().equals(ValidEnum.INVALID))

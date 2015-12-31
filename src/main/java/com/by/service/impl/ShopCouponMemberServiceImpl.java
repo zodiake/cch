@@ -9,6 +9,7 @@ import com.by.model.ShopCouponMember;
 import com.by.repository.ShopCouponMemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -109,11 +110,12 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
 
     @Override
     public List<CouponJson> findByMember(Member member, Pageable pageable) {
-        return repository.findByMember(member, pageable).getContent().stream().filter(i -> {
-            return i.getUsedTime() == null && couponService.isValidCoupon(i.getCoupon());
-        }).map(i -> {
-            ShopCoupon c = i.getCoupon();
-            return new CouponJson(c);
-        }).collect(Collectors.toList());
+        return repository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable)
+                .getContent()
+                .stream()
+                .map(i -> {
+                    ShopCoupon c = i.getCoupon();
+                    return new CouponJson(c);
+                }).collect(Collectors.toList());
     }
 }
