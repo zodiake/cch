@@ -1,131 +1,150 @@
 package com.by.json;
 
-import com.by.model.Coupon;
-import com.by.typeEnum.CouponAdminStateEnum;
-import com.by.typeEnum.ValidEnum;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import com.by.model.Coupon;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-3.
  */
 public class CouponTemplateJson {
-    private Long id;
+	private Long id;
 
-    private String name;
+	private String name;
 
-    private String couponEndTime;
+	private String couponEndTime;
 
-    private int score;
+	private int score;
 
-    private String beginTime;
+	private String beginTime;
 
-    private String endTime;
+	private String endTime;
 
-    private String summary;
+	private String summary;
 
-    private String shopName;
+	private String shopName;
 
-    private CouponAdminStateEnum state;
+	private String state;
 
-    public CouponTemplateJson() {
-    }
+	private String cssClass;
 
-    public CouponTemplateJson(Coupon coupon) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar today = Calendar.getInstance();
+	public CouponTemplateJson() {
+	}
 
-        this.id = coupon.getId();
-        this.name = coupon.getName();
-        this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
-        this.score = coupon.getScore();
-        this.beginTime = format.format(coupon.getBeginTime().getTime());
-        this.endTime = format.format(coupon.getEndTime().getTime());
-        this.summary = coupon.getSummary();
+	public CouponTemplateJson(Coupon coupon) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar today = Calendar.getInstance();
 
-        if (coupon.getBeginTime() != null && coupon.getEndTime() != null) {
-            if (coupon.getValid().equals(ValidEnum.INVALID)) {
-                this.state = CouponAdminStateEnum.CLOSED;
-            } else if (coupon.getBeginTime().after(today)) {
-                this.state = CouponAdminStateEnum.NOEXPIRE;
-            } else if (coupon.getBeginTime().before(today) && coupon.getEndTime().after(today)) {
-                this.state = CouponAdminStateEnum.USING;
-            } else {
-                this.state = CouponAdminStateEnum.EXPIRE;
-            }
-        }
-    }
+		if (coupon.getBeginTime() == null && coupon.getEndTime() == null) {
+			this.cssClass = "text-success";
+			this.state = "使用中";
+		} else if (coupon.getBeginTime() != null && coupon.getEndTime() != null) {
+			if (coupon.getBeginTime().before(today) && coupon.getEndTime().after(today)) {
+				this.cssClass = "text-success";
+				this.state = "使用中";
+			} else if (coupon.getBeginTime().after(today)) {
+				this.cssClass = "text-primary";
+				this.state = "未生效";
+			} else if (coupon.getEndTime().before(today)) {
+				this.cssClass = "text-muted";
+				this.state = "已过期";
+			}
+			this.beginTime = format.format(coupon.getBeginTime().getTime());
+			this.endTime = format.format(coupon.getEndTime().getTime());
+		}
+		if (coupon.getValid().equals(ValidEnum.INVALID)) {
+			this.cssClass = "text-danger";
+			this.state = "已关闭";
+		}
+		this.id = coupon.getId();
+		this.name = coupon.getName();
+		this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
+		this.score = coupon.getScore();
+		this.beginTime = format.format(coupon.getBeginTime().getTime());
+		this.endTime = format.format(coupon.getEndTime().getTime());
+		this.summary = coupon.getSummary();
 
-    public Long getId() {
-        return id;
-    }
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getCouponEndTime() {
-        return couponEndTime;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setCouponEndTime(String couponEndTime) {
-        this.couponEndTime = couponEndTime;
-    }
+	public String getCouponEndTime() {
+		return couponEndTime;
+	}
 
-    public int getScore() {
-        return score;
-    }
+	public void setCouponEndTime(String couponEndTime) {
+		this.couponEndTime = couponEndTime;
+	}
 
-    public void setScore(int score) {
-        this.score = score;
-    }
+	public int getScore() {
+		return score;
+	}
 
-    public String getBeginTime() {
-        return beginTime;
-    }
+	public void setScore(int score) {
+		this.score = score;
+	}
 
-    public void setBeginTime(String beginTime) {
-        this.beginTime = beginTime;
-    }
+	public String getBeginTime() {
+		return beginTime;
+	}
 
-    public String getEndTime() {
-        return endTime;
-    }
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
+	}
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
+	public String getEndTime() {
+		return endTime;
+	}
 
-    public String getSummary() {
-        return summary;
-    }
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
+	public String getSummary() {
+		return summary;
+	}
 
-    public String getShopName() {
-        return shopName;
-    }
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
-    }
+	public String getShopName() {
+		return shopName;
+	}
 
-    public CouponAdminStateEnum getState() {
-        return state;
-    }
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
 
-    public void setState(CouponAdminStateEnum state) {
-        this.state = state;
-    }
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCssClass() {
+		return cssClass;
+	}
+
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
+	}
 }

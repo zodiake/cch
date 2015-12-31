@@ -111,16 +111,16 @@
         var parameterFn = function () {
             var beginTime = $('#beginTime').val();
             var endTime = $('#endTime').val();
-            var card = $('#card').val();
+            var state=$('#state').val();
             return {
                 beginTime: beginTime,
                 endTime: endTime,
-                card: card
+                state:state
             }
         };
 
         $('ul.pagination').pageable({
-            url: '/admin/cardRules/json',
+            url: '/admin/parkingCoupons/json',
             parameter: parameterFn,
             fn: submitFn
         });

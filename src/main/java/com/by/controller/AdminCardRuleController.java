@@ -104,7 +104,6 @@ public class AdminCardRuleController extends BaseController {
         Page<RuleJson> lists = service.findAll(form, pageable);
         int pages = computeLastPage(lists.getTotalPages());
         uiModel.addAttribute("lists", lists);
-        uiModel.addAttribute("pages", pages);
         uiModel.addAttribute("last", pages);
         uiModel.addAttribute("form", form);
         addMenu(uiModel);

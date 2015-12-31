@@ -1,6 +1,6 @@
 package com.by.service.impl;
 
-import com.by.form.CouponQueryForm;
+import com.by.form.BaseCouponForm;
 import com.by.json.CouponJson;
 import com.by.model.*;
 import com.by.repository.CouponRepository;
@@ -94,7 +94,7 @@ public class CouponServiceImpl implements CouponService {
         return couponSummary.getBeginTime() == null && couponSummary.getEndTime() == null;
     }
 
-    public <T extends Coupon> Predicate[] getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb) {
+    public <T extends Coupon> Predicate[] getPredicateList(BaseCouponForm form, Root<T> root, CriteriaBuilder cb) {
         List<Predicate> criteria = new ArrayList<>();
         if (form.getState() != null) {
             Calendar today = Calendar.getInstance();
@@ -103,17 +103,21 @@ public class CouponServiceImpl implements CouponService {
             } else if (form.getState().equals(CouponAdminStateEnum.NOEXPIRE)) {
                 criteria.add(cb.greaterThan(root.get("beginTime"), today));
             } else if (form.getState().equals(CouponAdminStateEnum.USING)) {
-                criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), today));
-                criteria.add(cb.greaterThanOrEqualTo(root.get("endTime"), today));
+                criteria.add(cb.or(
+                        cb.and(cb.lessThanOrEqualTo(root.get("beginTime"), today),
+                                cb.greaterThanOrEqualTo(root.get("endTime"), today)),
+                        cb.and(cb.isNull(root.get("beginTime"))), cb.isNull(root.get("endTime"))));
             } else if (form.getState().equals(CouponAdminStateEnum.EXPIRE)) {
                 criteria.add(cb.lessThan(root.get("endTime"), today));
             }
         }
         if (form.getBeginTime() != null) {
-            criteria.add(cb.greaterThanOrEqualTo(root.get("beginTime"), form.getBeginTime()));
+            criteria.add(cb.or(cb.lessThanOrEqualTo(root.get("beginTime"), form.getBeginTime()),
+                    cb.isNull(root.get("endTime"))));
         }
         if (form.getEndTime() != null)
-            criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), form.getEndTime()));
+            criteria.add(cb.or(cb.greaterThanOrEqualTo(root.get("endTime"), form.getEndTime()),
+                    cb.isNull(root.get("endTime"))));
         return criteria.toArray(new Predicate[0]);
     }
 

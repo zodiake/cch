@@ -1,5 +1,6 @@
 package com.by.service;
 
+import com.by.form.BaseCouponForm;
 import com.by.form.CouponQueryForm;
 import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
@@ -26,7 +27,7 @@ public interface ParkingCouponService {
 
 	Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-	Page<CouponTemplateJson> findAll(CouponQueryForm from, Pageable pageable);
+	Page<CouponTemplateJson> findAll(BaseCouponForm from, Pageable pageable);
 
 	Page<ParkingCoupon> findAll(Pageable pageable);
 

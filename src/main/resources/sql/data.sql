@@ -150,7 +150,7 @@ VALUES (5, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shopC
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
 VALUES (6, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 0, 20, 'shopCoupon2', 1);
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (7, 'p', '2015-12-1', '2016-12-30', 9, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon3');
+VALUES (7, 'p', '2015-12-1', '2016-12-30', 9, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon7');
 
 -- test preferentialCoupon
 INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 3, 20);

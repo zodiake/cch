@@ -3,7 +3,7 @@ package com.by.service.impl;
 import com.by.exception.NotFoundException;
 import com.by.exception.NotValidException;
 import com.by.exception.OutOfStorageException;
-import com.by.form.CouponQueryForm;
+import com.by.form.BaseCouponForm;
 import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
@@ -114,7 +114,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CouponTemplateJson> findAll(CouponQueryForm form, Pageable pageable) {
+    public Page<CouponTemplateJson> findAll(BaseCouponForm form, Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<ParkingCoupon> c = cb.createQuery(ParkingCoupon.class);
         Root<ParkingCoupon> root = c.from(ParkingCoupon.class);

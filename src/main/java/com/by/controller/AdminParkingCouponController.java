@@ -4,7 +4,6 @@ import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.form.BaseCouponForm;
-import com.by.form.CouponQueryForm;
 import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.model.Menu;
@@ -24,10 +23,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(value = "/admin/parkingCoupon")
+@RequestMapping(value = "/admin/parkingCoupons")
 public class AdminParkingCouponController extends BaseController {
     private final String CREATE = "admin/parkingCoupon/create";
     private final String EDIT = "admin/parkingCoupon/edit";
+    private final String LIST = "admin/parkingCoupon/lists";
     private final Menu subMenu = new Menu(7);
     @Autowired
     private ParkingCouponService service;
@@ -74,20 +74,21 @@ public class AdminParkingCouponController extends BaseController {
         return "redirect:/admin/parkingCoupon/" + id;
     }
 
-    // 第一页列表
     @RequestMapping(method = RequestMethod.GET)
     public String list(BaseCouponForm form, Model uiModel,
                        @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<ParkingCoupon> lists = service.findFirstPage(10);
+        Page<CouponTemplateJson> lists = service.findAll(form, pageable);
         uiModel.addAttribute("lists", lists);
         uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
-        return "admin/parkingCoupon/list";
+        uiModel.addAttribute("form", form);
+        addMenu(uiModel);
+        return LIST;
     }
 
     // 页数使用json
     @RequestMapping(value = "/json", method = RequestMethod.GET)
     @ResponseBody
-    public Status list(CouponQueryForm form,
+    public Status list(BaseCouponForm form,
                        @PageableDefault(page = 0, size = 10, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CouponTemplateJson> json = service.findAll(form, pageable);
         return new Success<>(json);

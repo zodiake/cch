@@ -1,5 +1,6 @@
 package com.by.service;
 
+import com.by.form.BaseCouponForm;
 import com.by.form.CouponQueryForm;
 import com.by.json.CouponJson;
 import com.by.model.Coupon;
@@ -32,5 +33,5 @@ public interface CouponService {
 
 	Page<CouponJson> findByMember(Member member, Pageable pageable);
 
-	<T extends Coupon> Predicate[] getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb);
+	<T extends Coupon> Predicate[] getPredicateList(BaseCouponForm form, Root<T> root, CriteriaBuilder cb);
 }
