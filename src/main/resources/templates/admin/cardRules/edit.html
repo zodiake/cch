@@ -30,12 +30,12 @@
             <div class="hd clearfix">
                 <div class="bar state-bar pull-left">使用情况</div>
                 <button id="valid-button" type="button" class="btn btn-success confirm" data-toggle="modal" data-target=".modal"
-                        th:if="${message.canValid}" th:text="${rule.valid.toString()=='VALID'}?关闭:开启">开启
+                        th:if="${message.canValid}" th:text="${rule.valid.toString()=='VALID'}?关闭:开启" th:attr="data-id=${rule.id}">开启
                 </button>
             </div>
             <div class="form-group padd30">
                 <label class="col-md-4 control-label text-right">状态：</label>
-                <div class="col-md-3 pl50 pt3 text-primary" th:text="${message.state}">
+                <div class="col-md-3 pl50 pt3 text-primary" th:text="${message.state}" id="state-text">
                     未生效
                 </div>
             </div>

@@ -37,17 +37,27 @@ $(function () {
         }
     });
 
-    $('#valid-button').click(function () {
+    $('#valid-button').click(function (e) {
+        var self = $(e.target);
+        var id = self.attr('data-id');
         $("#dialog-confirm").dialog({
             resizable: false,
             height: 140,
             modal: true,
             buttons: {
-                "Delete all items": function () {
+                "取消": function () {
                     $(this).dialog("close");
                 },
-                Cancel: function () {
-                    $(this).dialog("close");
+                "确认": function () {
+                    $.ajax({
+                        url: '/admin/cardRules/' + id + '/valid',
+                        type: 'put',
+                        success: function (data) {
+                            if (data.status == 'success') {
+                                $('#state-text').html('132')
+                            }
+                        }
+                    });
                 }
             }
         });

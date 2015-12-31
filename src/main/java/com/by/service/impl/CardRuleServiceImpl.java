@@ -1,6 +1,9 @@
 package com.by.service.impl;
 
+import com.by.exception.Fail;
 import com.by.exception.NotValidException;
+import com.by.exception.Status;
+import com.by.exception.Success;
 import com.by.form.CouponQueryForm;
 import com.by.json.RuleJson;
 import com.by.model.Card;
@@ -81,6 +84,19 @@ public class CardRuleServiceImpl implements CardRuleService {
         rule.setBeginTime(cardRule.getBeginTime());
         rule.setEndTime(cardRule.getEndTime());
         return rule;
+    }
+
+    @Override
+    public Status valid(int id) {
+        CardRule r = repository.findOne(id);
+        Calendar today = Calendar.getInstance();
+        if (r.getEndTime() != null && !r.getEndTime().before(today))
+            return new Fail("not within valid data");
+        if (r.getValid().equals(ValidEnum.INVALID))
+            r.setValid(ValidEnum.VALID);
+        else
+            r.setValid(ValidEnum.INVALID);
+        return new Success<String>("success");
     }
 
     @Override
