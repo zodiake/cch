@@ -25,8 +25,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/shopRules")
 public class AdminShopRuleController extends BaseController {
-	private final int INIT_PAGE = 0;
-	private final int PAGE_SIZE = 10;
 	private final Menu subMenu = new Menu(5);
 	private final String LISTS = "admin/shopRules/lists";
 	private final String EDIT = "admin/shopRules/edit";

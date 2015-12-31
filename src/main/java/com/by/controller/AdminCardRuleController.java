@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/cardRules")
 public class AdminCardRuleController extends BaseController {
-    private final int INIT_PAGE = 0;
-    private final int PAGE_SIZE = 10;
     private final Menu subMenu = new Menu(4);
     private final String CREATE = "admin/cardRules/create";
     private final String EDIT = "admin/cardRules/edit";
