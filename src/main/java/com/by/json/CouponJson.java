@@ -38,13 +38,6 @@ public class CouponJson {
 		this.total = coupon.getTotal();
 	}
 
-	public CouponJson(Long id, String name, Calendar endTime, String shopName) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		this.id = id;
-		this.name = name;
-		this.couponEndTime = format.format(endTime.getTime());
-	}
-
 	public Long getId() {
 		return id;
 	}
