@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.by.form.BaseCouponForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -76,7 +77,7 @@ public class RuleServiceImpl implements RuleService {
 	}
 
 	@Override
-	public <T extends Rule> List<Predicate> getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb) {
+	public <T extends Rule> List<Predicate> getPredicateList(BaseCouponForm form, Root<T> root, CriteriaBuilder cb) {
 		List<Predicate> criteria = new ArrayList<>();
 		if (form.getState() != null) {
 			Calendar today = Calendar.getInstance();

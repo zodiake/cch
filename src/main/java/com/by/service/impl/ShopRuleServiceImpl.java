@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.by.form.BaseCouponForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.by.form.CouponQueryForm;
 import com.by.json.RuleJson;
 import com.by.model.GiftCoupon;
 import com.by.model.ShopRule;
@@ -35,7 +35,7 @@ public class ShopRuleServiceImpl implements ShopRuleService {
 	private RuleService ruleService;
 
 	@Override
-	public Page<RuleJson> findAll(CouponQueryForm form, Pageable pageable) {
+	public Page<RuleJson> findAll(BaseCouponForm form, Pageable pageable) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<ShopRule> c = cb.createQuery(ShopRule.class);
 		Root<ShopRule> root = c.from(ShopRule.class);

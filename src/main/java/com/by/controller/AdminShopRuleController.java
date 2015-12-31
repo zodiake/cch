@@ -1,5 +1,6 @@
 package com.by.controller;
 
+import com.by.form.BaseCouponForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,8 +22,8 @@ public class AdminShopRuleController extends BaseController {
 	private ShopRuleService service;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model uiModel) {
-		Page<RuleJson> lists = service.findAll(null, new PageRequest(0, 10, Sort.Direction.DESC, "beginTime"));
+	public String list(BaseCouponForm form, Model uiModel) {
+		Page<RuleJson> lists = service.findAll(form, new PageRequest(0, 10, Sort.Direction.DESC, "beginTime"));
 		uiModel.addAttribute("lists", lists);
 		uiModel.addAttribute("pages", computeLastPage(lists.getTotalPages()));
 		return "admin/shopRule/lists";

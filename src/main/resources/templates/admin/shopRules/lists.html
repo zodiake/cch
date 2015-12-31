@@ -1,0 +1,138 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
+    <title>会员卡积分</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
+    <script type="text/javascript" src="/js/template.js"></script>
+    <script type="text/javascript" src="/js/jsRender.js"></script>
+    <script src="/js/page.js"></script>
+    <script id="detail" type="text/x-jsrender">
+		{{for content}}
+		<tr>
+			<td><a>{{>name}}</a></td>
+			<td><a>{{>category}}</a></td>
+			<td><a>{{>cardName}}</a></td>
+			<td><a>{{>beginTime}}</a></td>
+			<td><a>{{>endTime}}</a></td>
+            <td><a class="{{>cssClass}}">{{>state}}</a></td>
+		</tr>
+		{{/for}}
+
+    </script>
+</head>
+
+<body>
+<div class="header clearfix">
+    <div th:replace="admin/layout/header::header"></div>
+</div>
+<div class="mainwrapper clearfix">
+    <div th:replace="admin/layout/menu::menu"></div>
+
+    <div class="mainpanel">
+        <div class="member-jfe-wrap container">
+            <div class="hd clearfix">
+                <div class="bar base-bar short-bar pull-left">店铺积分规则</div>
+                <button type="button" class="btn btn-info">添加</button>
+            </div>
+            <form class="form-inline" th:object="${form}">
+                <div class="form-group">
+                    <label>规则状态</label>
+                    <select class="form-control w120" th:field="*{state}">
+                        <option value="">全部</option>
+                        <option value="USING">使用中</option>
+                        <option value="CLOSED">已关闭</option>
+                        <option value="EXPIRE">过期</option>
+                        <option value="NOEXPIRE">未生效</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>生效时间</label>
+                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/> -
+                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
+                </div>
+                <button class="btn btn-primary btn-xs" type="submit">查找</button>
+            </form>
+
+            <table class="table table-striped bg-white">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>规则类型</th>
+                    <th>会员卡</th>
+                    <th>发行时间</th>
+                    <th>结束时间</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="r:${lists.content}">
+                    <td><a th:text="${r.name}"></a></td>
+                    <td><a th:text="${r.category}"></a></td>
+                    <td><a th:text="${r.cardName}">普通</a></td>
+                    <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
+                    <td><a th:text="${r.endTime}">2015年10月10号</a></td>
+                    <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination-wrap">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="i:${#numbers.sequence(1,last)}"><a th:text="${i}">1</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        var submitFn = function (data) {
+            var tmpl = $.templates("#detail");
+            var html = tmpl.render(data.obj);
+            $('table tbody').children().remove();
+            $('table tbody').html(html);
+        };
+
+        var parameterFn = function () {
+            var beginTime = $('#beginTime').val();
+            var endTime = $('#endTime').val();
+            var card = $('#card').val();
+            return {
+                beginTime: beginTime,
+                endTime: endTime,
+                card: card
+            }
+        };
+
+        $('ul.pagination').pageable({
+            url: '/admin/cardRules/json',
+            parameter: parameterFn,
+            fn: submitFn
+        });
+
+        $('.datepicker').datepicker({
+        	dateFormat:'yy-mm-dd',
+        });
+    })
+</script>
+</body>
+</html>
