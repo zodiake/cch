@@ -12,6 +12,7 @@ import java.util.Calendar;
  * Created by yagamai on 15-12-10.
  */
 public class RuleJson {
+	private int id;
     private String beginTime;
     private String endTime;
     private String cardName;
@@ -24,6 +25,7 @@ public class RuleJson {
     }
 
     public RuleJson(CardRule rule) {
+    	this.id = rule.getId();
         Calendar today = Calendar.getInstance();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         if (rule.getBeginTime() == null && rule.getEndTime() == null) {
@@ -53,6 +55,7 @@ public class RuleJson {
     }
 
     public RuleJson(ShopRule rule) {
+    	this.id = rule.getId();
         Calendar today = Calendar.getInstance();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         if (rule.getBeginTime() == null && rule.getEndTime() == null) {
@@ -79,7 +82,15 @@ public class RuleJson {
         this.name = rule.getName();
     }
 
-    public String getEndTime() {
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getEndTime() {
         return endTime;
     }
 

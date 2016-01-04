@@ -11,6 +11,7 @@ import com.by.model.RuleCategory;
 import com.by.service.CardRuleService;
 import com.by.service.CardService;
 import com.by.typeEnum.ValidEnum;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +69,7 @@ public class AdminCardRuleController extends BaseController {
     public String create(Model uiModel) {
         CardRule cardRule = new CardRule();
         uiModel.addAttribute("rule", cardRule);
+        addMenu(uiModel);
         return CREATE;
     }
 

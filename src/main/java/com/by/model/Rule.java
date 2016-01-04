@@ -1,10 +1,15 @@
 package com.by.model;
 
 import com.by.typeEnum.ValidEnum;
+
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import java.util.Calendar;
 
 @Entity
@@ -21,15 +26,19 @@ public abstract class Rule {
 
     private String summary;
 
+    @NotEmpty(message="名称不能为空")
+    @Length(max = 20,message = "名称最长为20个位")
     private String name;
 
     @Enumerated
     private ValidEnum valid;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message="开始时间不能为空")
     private Calendar beginTime;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message="结束时间不能为空")
     private Calendar endTime;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -46,6 +55,7 @@ public abstract class Rule {
     @Column(name="updated_by")
     private String updatedBy;
 
+    @NotNull
     private int Score;
 
     public int getId() {
