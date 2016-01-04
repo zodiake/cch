@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.by.typeEnum.ValidEnum;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -30,6 +31,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty(message="card.name.notnull")
     private String name;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)

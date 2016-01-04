@@ -3,22 +3,27 @@ package com.by.controller;
 import com.by.form.ShopCouponForm;
 import com.by.json.ShopCouponJson;
 import com.by.model.Menu;
+import com.by.model.Message;
 import com.by.model.Shop;
 import com.by.model.ShopCoupon;
 import com.by.service.ShopCouponService;
 import com.by.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by yagamai on 16-1-4.
@@ -35,6 +40,8 @@ public class AdminShopCouponController extends BaseController {
     private ShopCouponService service;
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private MessageSource messageSource;
 
     @ModelAttribute("shops")
     public List<Shop> shops() {
@@ -58,6 +65,18 @@ public class AdminShopCouponController extends BaseController {
         uiModel.addAttribute("coupon", new ShopCoupon());
         addMenu(uiModel);
         return CREATE;
+    }
+
+    @RequestMapping(params = "form", method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute("coupon") ShopCoupon shopCoupon, BindingResult result, Model uiModel) {
+        if (result.hasErrors()) {
+            uiModel.addAttribute("coupon", shopCoupon);
+            uiModel.addAttribute("message", new Message("fail", messageSource.getMessage("save.fail", new Object[]{}, Locale.CHINA)));
+            addMenu(uiModel);
+            return CREATE;
+        }
+        ShopCoupon coupon = service.save(shopCoupon);
+        return REDIRECT + coupon.getId();
     }
 
     @Override
