@@ -64,40 +64,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><a>2016元旦</a></td>
-                    <td><a>2</a></td>
-                    <td><a>1000</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>10</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a class="text-success">使用中</a></td>
-                </tr>
-                <tr>
-                    <td><a>2016元旦</a></td>
-                    <td><a>2</a></td>
-                    <td><a>1000</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>10</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a class="text-danger">已关闭</a></td>
-                </tr>
-                <tr>
-                    <td><a>2016元旦</a></td>
-                    <td><a>2</a></td>
-                    <td><a>1000</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>10</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a class="text-muted">已过期</a></td>
-                </tr>
                 <tr th:each="r:${lists.content}">
-                    <td><a th:text="${r.name}"></a></td>
-                    <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
-                    <td><a th:text="${r.endTime}">2015年10月10号</a></td>
+                    <td><a th:text="${r.name}">名称</a></td>
+                    <td><a th:text="${r.amount}">金额</a></td>
+                    <td><a th:text="${r.score}">积分</a></td>
+                    <td><a th:text="${r.beginTime}">发行时间</a></td>
+                    <td><a th:text="${r.endTime}">结束时间</a></td>
+                    <td><a th:text="${r.total}">数量</a></td>
+                    <td><a th:text="${r.couponEndTime}">核销截止日期</a></td>
                     <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
                 </tr>
                 </tbody>

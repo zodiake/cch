@@ -109,7 +109,7 @@ CREATE TABLE by_rule (
   score        INT             DEFAULT 0,
   card_id      INT,
   summary      VARCHAR(50),
-  valid        SMALLINT,
+  valid        SMALLINT        DEFAULT 1,
   beginTime    TIMESTAMP,
   endTime      TIMESTAMP,
   category_id  INT,

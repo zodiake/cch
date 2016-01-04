@@ -5,6 +5,7 @@ import com.by.exception.Success;
 import com.by.form.BaseCouponForm;
 import com.by.form.CouponQueryForm;
 import com.by.json.CouponTemplateJson;
+import com.by.json.GiftCouponJson;
 import com.by.model.Menu;
 import com.by.service.GiftCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class AdminGiftCouponController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(BaseCouponForm form, Model uiModel,
                        @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<CouponTemplateJson> lists = service.findAll(form,
+        Page<GiftCouponJson> lists = service.findAll(form,
                 new PageRequest(0, PAGE_SIZE, Sort.Direction.DESC, "beginTime"));
         uiModel.addAttribute("lists", lists);
         uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));

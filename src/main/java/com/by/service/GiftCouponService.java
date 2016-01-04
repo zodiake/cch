@@ -2,6 +2,7 @@ package com.by.service;
 
 import java.util.Calendar;
 
+import com.by.json.GiftCouponJson;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,7 +25,7 @@ public interface GiftCouponService {
 
     Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-    Page<CouponTemplateJson> findAll(BaseCouponForm form, Pageable pageable);
+    Page<GiftCouponJson> findAll(BaseCouponForm form, Pageable pageable);
 
     Page<GiftCoupon> findAllByValidAndDateBetween(ValidEnum VALID, Calendar calendar, Pageable pageable);
 }

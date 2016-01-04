@@ -50,6 +50,9 @@ public class GiftCouponJson {
         this.name = coupon.getName();
         if (coupon.getCouponEndTime() != null)
             this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
+        this.amount=coupon.getAmount();
+        this.score=coupon.getScore();
+        this.total=coupon.getTotal();
     }
 
     public int getId() {
