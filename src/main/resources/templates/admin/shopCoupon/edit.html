@@ -15,38 +15,38 @@
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/fileUpload.js"></script>
     <script>
-    $(function(){
-    	var url="http://cchdev.b0.upaiyun.com/test/";
-    	$('div.imgUp').change(function (event) {
-            var source = $(event.target);
-            var id = source.attr('id');
-            var img=source.parent().parent().find('img');
-            var input=source.siblings().first();
-            $.ajaxFileUpload({
-                    url: '/admin/upload',
-                    secureuri: false,
-                    fileElementId: source.attr('id'),
-                    dataType: 'json',
-                    success: function (data, status) {
-                    	if(status=='success'){
-                    		img.attr('src',url+data.responseText);
-                    		input.val(url+data.responseText);
-                    	}
-                    	console.log(data);
-                    },
-                    error: function (data, status, e) {
-                        alert(e);
-                    }
-                }
-            );
-            return false;
-        });
+        $(function () {
+            var url = "http://cchdev.b0.upaiyun.com/test/";
+            $('div.imgUp').change(function (event) {
+                var source = $(event.target);
+                var id = source.attr('id');
+                var img = source.parent().parent().find('img');
+                var input = source.siblings().first();
+                $.ajaxFileUpload({
+                            url: '/admin/upload',
+                            secureuri: false,
+                            fileElementId: source.attr('id'),
+                            dataType: 'json',
+                            success: function (data, status) {
+                                if (status == 'success') {
+                                    img.attr('src', url + data.responseText);
+                                    input.val(url + data.responseText);
+                                }
+                                console.log(data);
+                            },
+                            error: function (data, status, e) {
+                                alert(e);
+                            }
+                        }
+                );
+                return false;
+            });
 
-        $('.datepicker').datepicker({
-            dateFormat:'yy-mm-dd'
-        });
+            $('.datepicker').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
 
-    })
+        })
     </script>
 </head>
 
@@ -63,12 +63,12 @@
                 <div class="bar add-bar">添加店铺券</div>
             </div>
             <div class="row">
-                <form class="form-horizontal pt50" th:method="post" th:object="${coupon}">
+                <form class="form-horizontal pt50" th:method="put" th:object="${coupon}">
                     <div class="form-group">
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
-							<p th:each="err : ${#fields.errors('name')}" th:text="${err}" />
+                            <p th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -78,7 +78,7 @@
                                 <option value="">--请选择--</option>
                                 <option th:each="s : ${shops}" th:value="${s.id}" th:text="${s.name}">name</option>
                             </select>
-							<p th:each="err : ${#fields.errors('shop')}" th:text="${err}" />
+                            <p th:each="err : ${#fields.errors('shop')}" th:text="${err}"/>
                         </div>
                     </div>
                     <div class="form-group imgUp">
@@ -104,7 +104,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">描述：</label>
                         <div class="col-md-3">
-                            <textarea class="form-control" rows="6" th:field="*{summary}"></textarea>
+                            <textarea class="form-control" rows="6" th:text="*{summary}"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
