@@ -44,14 +44,14 @@ public class ShopCouponServiceImpl implements ShopCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public ShopCoupon findOne(Long id) {
+    public ShopCoupon findOne(int id) {
         return repository.findOne(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     @Cacheable("coupon")
-    public ShopCoupon findOneCache(Long id) {
+    public ShopCoupon findOneCache(int id) {
         return repository.findOne(id);
     }
 

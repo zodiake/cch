@@ -11,7 +11,7 @@ import java.util.Calendar;
  * Created by yagamai on 15-12-7.
  */
 public class CouponJson {
-	private Long id;
+	private int id;
 
 	private String name;
 
@@ -38,11 +38,11 @@ public class CouponJson {
 		this.total = coupon.getTotal();
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

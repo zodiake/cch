@@ -1,25 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Insert title here</title>
-    <script src="/javascript/jquery-1.11.3.min.js"></script>
-    <script src="/javascript/page.js"></script>
-    <script>
-        $(function () {
-        });
-    </script>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
+    <title>礼品券列表</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
+    <script type="text/javascript" src="/js/template.js"></script>
+    <script type="text/javascript" src="/js/jsRender.js"></script>
+    <script src="/js/page.js"></script>
 </head>
+
 <body>
-	<table>
-		<tr th:each="l:${lists.content}">
-			<td th:switch="${l.state.toString()}">
-				<span th:case="'USING'">使用中</span>
-				<span th:case="'EXPIRE'">已过期</span>
-				<span th:case="'CLOSED'">已关闭</span>
-				<span th:case="'NOEXPIRED'" >未生效</span>
-			</td>
-		</tr>
-	</table>
+<div class="header clearfix">
+    <div th:replace="admin/layout/header::header"></div>
+</div>
+<div class="mainwrapper clearfix">
+    <div th:replace="admin/layout/menu::menu"></div>
+
+    <div class="mainpanel">
+        <div class="gift-wrap container">
+            <div class="hd clearfix">
+                <div class="bar base-bar short-bar pull-left">礼品券</div>
+                <button type="button" class="btn btn-info">添加</button>
+            </div>
+            <form class="form-inline" th:object="${form}">
+                <div class="form-group">
+                    <label>规则状态</label>
+                    <select class="form-control w120" th:field="*{state}">
+                        <option value="">全部</option>
+                        <option value="USING">使用中</option>
+                        <option value="CLOSED">已关闭</option>
+                        <option value="EXPIRE">过期</option>
+                        <option value="NOEXPIRE">未生效</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>生效时间</label>
+                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/> -
+                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
+                </div>
+                <button class="btn btn-primary btn-xs" type="submit">查找</button>
+            </form>
+
+            <table class="table table-striped bg-white">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>卡券金额</th>
+                    <th>兑换积分</th>
+                    <th>发行时间</th>
+                    <th>结束时间</th>
+                    <th>数量</th>
+                    <th>核销截止日期</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><a>2016元旦</a></td>
+                    <td><a>2</a></td>
+                    <td><a>1000</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a>10</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a class="text-success">使用中</a></td>
+                </tr>
+                <tr>
+                    <td><a>2016元旦</a></td>
+                    <td><a>2</a></td>
+                    <td><a>1000</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a>10</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a class="text-danger">已关闭</a></td>
+                </tr>
+                <tr>
+                    <td><a>2016元旦</a></td>
+                    <td><a>2</a></td>
+                    <td><a>1000</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a>10</a></td>
+                    <td><a>2015年10月10号</a></td>
+                    <td><a class="text-muted">已过期</a></td>
+                </tr>
+                <tr th:each="r:${lists.content}">
+                    <td><a th:text="${r.name}"></a></td>
+                    <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
+                    <td><a th:text="${r.endTime}">2015年10月10号</a></td>
+                    <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination-wrap">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="i:${#numbers.sequence(1,last)}"><a th:text="${i}">1</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        var submitFn = function (data) {
+            var tmpl = $.templates("#detail");
+            var html = tmpl.render(data.obj);
+            $('table tbody').children().remove();
+            $('table tbody').html(html);
+        };
+
+        var parameterFn = function () {
+            var beginTime = $('#beginTime').val();
+            var endTime = $('#endTime').val();
+            var state = $('#state').val();
+            return {
+                beginTime: beginTime,
+                endTime: endTime,
+                state: state
+            }
+        };
+
+        $('ul.pagination').pageable({
+            url: '/admin/parkingCoupons/json',
+            parameter: parameterFn,
+            fn: submitFn
+        });
+
+        $('.datepicker').datepicker({
+            dateFormat: 'yy-mm-dd',
+        });
+    })
+</script>
 </body>
 </html>

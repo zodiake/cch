@@ -56,7 +56,7 @@ public class AdminParkingCouponController extends BaseController {
 
 	// 获取修改
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String edit(@PathVariable("id") Long id, Model uiModel) {
+	public String edit(@PathVariable("id") int id, Model uiModel) {
 		ParkingCoupon coupon = service.findOne(id);
 		if (coupon == null)
 			throw new NotFoundException();
@@ -98,7 +98,7 @@ public class AdminParkingCouponController extends BaseController {
 	// 有效无效
 	@RequestMapping(value = "/{id}/valid", method = RequestMethod.PUT)
 	@ResponseBody
-	public Status validOrNotValid(@PathVariable("id") Long id) {
+	public Status validOrNotValid(@PathVariable("id") int id) {
 		ParkingCoupon coupon = new ParkingCoupon(id);
 		return new Success<CouponJson>(new CouponJson(service.validOrInValid(coupon)));
 	}

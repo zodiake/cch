@@ -80,19 +80,19 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ParkingCoupon> findById(Long id) {
+    public Optional<ParkingCoupon> findById(int id) {
         return repository.findById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ParkingCoupon findOne(Long id) {
+    public ParkingCoupon findOne(int id) {
         return repository.findOne(id);
     }
 
     @Override
     @Cacheable("coupon")
-    public ParkingCoupon findOneCache(Long id) {
+    public ParkingCoupon findOneCache(int id) {
         return repository.findOne(id);
     }
 

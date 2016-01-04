@@ -9,6 +9,6 @@ import org.springframework.core.convert.converter.Converter;
 public class StringToParkingCouponConverter implements Converter<String, ParkingCoupon> {
     @Override
     public ParkingCoupon convert(String source) {
-        return new ParkingCoupon(Long.valueOf(source));
+        return new ParkingCoupon(Integer.valueOf(source));
     }
 }

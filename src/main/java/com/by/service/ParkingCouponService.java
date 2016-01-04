@@ -19,11 +19,11 @@ public interface ParkingCouponService {
 
 	List<ParkingCoupon> findAll();
 
-	Optional<ParkingCoupon> findById(Long id);
+	Optional<ParkingCoupon> findById(int id);
 
-	ParkingCoupon findOne(Long id);
+	ParkingCoupon findOne(int id);
 
-	ParkingCoupon findOneCache(Long id);
+	ParkingCoupon findOneCache(int id);
 
 	Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable);
 

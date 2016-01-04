@@ -15,9 +15,9 @@ import java.util.Calendar;
 public interface ShopCouponService {
     ShopCoupon save(ShopCoupon coupon);
 
-    ShopCoupon findOne(Long id);
+    ShopCoupon findOne(int id);
 
-    ShopCoupon findOneCache(Long id);
+    ShopCoupon findOneCache(int id);
 
     Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
 

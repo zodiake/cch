@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 @DiscriminatorValue("p")
 public class ParkingCoupon extends Coupon {
 
-    public ParkingCoupon() {
-        super();
-    }
+	public ParkingCoupon() {
+		super();
+	}
 
-    public ParkingCoupon(Long id) {
-        setId(id);
-    }
+	public ParkingCoupon(int id) {
+		setId(id);
+	}
 }

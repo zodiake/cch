@@ -1,6 +1,6 @@
 package com.by.service.impl;
 
-import com.by.form.CouponQueryForm;
+import com.by.form.BaseCouponForm;
 import com.by.json.CouponTemplateJson;
 import com.by.model.GiftCoupon;
 import com.by.repository.GiftCouponRepository;
@@ -45,19 +45,19 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public GiftCoupon findOne(Long id) {
+    public GiftCoupon findOne(int id) {
         return repository.findOne(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     @Cacheable("coupon")
-    public GiftCoupon findOneCache(Long id) {
+    public GiftCoupon findOneCache(int id) {
         return repository.findOne(id);
     }
 
     @Override
-    public GiftCoupon findByIdAndValid(Long id, ValidEnum valid) {
+    public GiftCoupon findByIdAndValid(int id, ValidEnum valid) {
         return repository.findByIdAndValid(id, valid);
     }
 
@@ -74,7 +74,7 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CouponTemplateJson> findAll(CouponQueryForm form, Pageable pageable) {
+    public Page<CouponTemplateJson> findAll(BaseCouponForm form, Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GiftCoupon> c = cb.createQuery(GiftCoupon.class);
         Root<GiftCoupon> root = c.from(GiftCoupon.class);
@@ -91,7 +91,7 @@ public class GiftCouponServiceImpl implements GiftCouponService {
                 .setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
                 .setMaxResults(pageable.getPageSize()).getResultList();
         Long count = em.createQuery(cq).getSingleResult();
-        List<CouponTemplateJson> results = lists.stream().map(CouponTemplateJson::new)
+        List<CouponTemplateJson> results = lists.stream().map(i->new CouponTemplateJson(i))
                 .collect(Collectors.toList());
         return new PageImpl<>(results, pageable, count);
     }

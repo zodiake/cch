@@ -10,8 +10,8 @@ import org.springframework.data.repository.CrudRepository;
 import com.by.model.ParkingCoupon;
 import com.by.typeEnum.ValidEnum;
 
-public interface ParkingCouponRepository extends CrudRepository<ParkingCoupon, Long> {
-	Optional<ParkingCoupon> findById(Long id);
+public interface ParkingCouponRepository extends CrudRepository<ParkingCoupon, Integer> {
+	Optional<ParkingCoupon> findById(Integer id);
 
 	Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable);
 

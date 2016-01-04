@@ -138,7 +138,7 @@ public class ShopCouponController implements UtilContoller{
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Status detail(@PathVariable("id") Long id) {
+    public Status detail(@PathVariable("id") int id) {
         ShopCoupon shopCoupon = shopCouponService.findOneCache(id);
         if (shopCoupon == null)
             throw new NotFoundException();

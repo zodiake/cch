@@ -28,7 +28,7 @@ import com.by.typeEnum.ValidEnum;
 public abstract class Coupon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 
 	// 有效期开始
 	@Temporal(TemporalType.TIMESTAMP)
@@ -79,11 +79,11 @@ public abstract class Coupon {
 	@Column(name = "created_by")
 	private String createdBy;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -208,7 +208,7 @@ public abstract class Coupon {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -221,10 +221,7 @@ public abstract class Coupon {
 		if (getClass() != obj.getClass())
 			return false;
 		Coupon other = (Coupon) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		return true;
 	}

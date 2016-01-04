@@ -28,7 +28,7 @@ CREATE TABLE by_user (
 );
 
 CREATE TABLE by_shop (
-  id           int NOT NULL AUTO_INCREMENT,
+  id           INT NOT NULL AUTO_INCREMENT,
   name         VARCHAR(225),
   user_id      BIGINT,
   created_by   VARCHAR(20),
@@ -189,24 +189,24 @@ CREATE TABLE by_member_license (
 );
 
 CREATE TABLE by_coupon (
-  id              BIGINT NOT NULL AUTO_INCREMENT,
+  id              INT NOT NULL AUTO_INCREMENT,
   type            CHAR(1),
   name            VARCHAR(50),
   begin_time      TIMESTAMP,
   end_time        TIMESTAMP,
   created_time    TIMESTAMP,
   created_by      VARCHAR(20),
-  score           INT             DEFAULT 0,
+  score           INT          DEFAULT 0,
   coupon_end_time TIMESTAMP,
-  valid           SMALLINT        DEFAULT 1,
-  total           SMALLINT        DEFAULT 0,
-  duplicate       SMALLINT        DEFAULT 1,
-  amount          DOUBLE          DEFAULT 0,
+  valid           SMALLINT     DEFAULT 1,
+  total           SMALLINT     DEFAULT 0,
+  duplicate       SMALLINT     DEFAULT 1,
+  amount          DOUBLE       DEFAULT 0,
   cover_img       VARCHAR(74),
   content_img     VARCHAR(74),
   summary         VARCHAR(255),
   shop_id         INT,
-  sortOrder       SMALLINT        DEFAULT 0,
+  sortOrder       SMALLINT     DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id)
 );
@@ -214,7 +214,7 @@ CREATE TABLE by_coupon (
 CREATE TABLE by_gift_coupon_member (
   id             BIGINT AUTO_INCREMENT,
   member_id      BIGINT,
-  coupon_id      BIGINT,
+  coupon_id      INT,
   total          INT,
   code           CHAR(17),
   state          SMALLINT,
@@ -227,7 +227,7 @@ CREATE TABLE by_gift_coupon_member (
 
 CREATE TABLE by_parking_coupon_exchange_history (
   member_id    BIGINT,
-  coupon_id    BIGINT,
+  coupon_id    INT,
   created_time TIMESTAMP,
   created_by   VARCHAR(20),
   total        INT,
@@ -238,7 +238,7 @@ CREATE TABLE by_parking_coupon_exchange_history (
 
 CREATE TABLE by_parking_coupon_use_history (
   member_id         BIGINT,
-  parking_coupon_id BIGINT,
+  parking_coupon_id INT,
   created_time      TIMESTAMP,
   total             INT,
   license           VARCHAR(10),
@@ -342,7 +342,7 @@ CREATE TABLE by_sequence (
 CREATE TABLE by_shop_coupon_member (
   id             BIGINT    NOT NULL AUTO_INCREMENT,
   member_id      BIGINT,
-  coupon_id      BIGINT,
+  coupon_id      INT,
   exchanged_time TIMESTAMP,
   used_time      TIMESTAMP NULL,
   code           CHAR(17),
