@@ -1,21 +1,21 @@
 package com.by.service;
 
-import java.util.Calendar;
-
+import com.by.form.BaseCouponForm;
 import com.by.json.GiftCouponJson;
+import com.by.model.GiftCoupon;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.by.form.BaseCouponForm;
-import com.by.json.CouponTemplateJson;
-import com.by.model.GiftCoupon;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
 
 /**
  * Created by yagamai on 15-12-3.
  */
 public interface GiftCouponService {
     GiftCoupon save(GiftCoupon coupon);
+
+    GiftCoupon update(GiftCoupon coupon);
 
     GiftCoupon findOne(int id);
 

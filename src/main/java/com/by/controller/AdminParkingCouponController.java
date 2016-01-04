@@ -38,6 +38,7 @@ public class AdminParkingCouponController extends BaseController {
 	public String form(Model uiModel) {
 		ParkingCoupon coupon = new ParkingCoupon();
 		uiModel.addAttribute("coupon", coupon);
+		addMenu(uiModel);
 		return CREATE;
 	}
 

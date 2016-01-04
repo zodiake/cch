@@ -202,6 +202,7 @@ public abstract class Coupon {
 	@PrePersist
 	private void prePersist() {
 		this.createdTime = Calendar.getInstance();
+		this.valid = ValidEnum.VALID;
 	}
 
 	@Override

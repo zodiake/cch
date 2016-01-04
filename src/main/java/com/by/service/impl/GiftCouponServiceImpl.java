@@ -24,75 +24,94 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 /**
  * Created by yagamai on 15-12-4.
  */
 @Service
 @Transactional
 public class GiftCouponServiceImpl implements GiftCouponService {
-    @Autowired
-    private GiftCouponRepository repository;
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private CouponService couponService;
+	@Autowired
+	private GiftCouponRepository repository;
+	@Autowired
+	private EntityManager em;
+	@Autowired
+	private CouponService couponService;
 
-    @Override
-    public GiftCoupon save(GiftCoupon coupon) {
-        return repository.save(coupon);
-    }
+	@Override
+	public GiftCoupon save(GiftCoupon coupon) {
+		Calendar endTime = coupon.getEndTime();
+		Calendar couponEndTime = coupon.getCouponEndTime();
+		if (endTime != null) {
+			endTime.set(Calendar.HOUR, 23);
+			endTime.set(Calendar.MINUTE, 59);
+			endTime.set(Calendar.SECOND, 59);
+		}
+		if (couponEndTime != null) {
+			couponEndTime.set(Calendar.HOUR, 23);
+			couponEndTime.set(Calendar.MINUTE, 59);
+			couponEndTime.set(Calendar.SECOND, 59);
+		}
+		return repository.save(coupon);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public GiftCoupon findOne(int id) {
-        return repository.findOne(id);
-    }
+	@Override
+	public GiftCoupon update(GiftCoupon coupon) {
+		GiftCoupon c = findOne(coupon.getId());
+		c.setAmount(coupon.getAmount());
+		c.setContentImg(coupon.getContentImg());
+		c.setCoverImg(coupon.getCoverImg());
+		c.setName(coupon.getName());
+		return c;
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    @Cacheable("coupon")
-    public GiftCoupon findOneCache(int id) {
-        return repository.findOne(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public GiftCoupon findOne(int id) {
+		return repository.findOne(id);
+	}
 
-    @Override
-    public GiftCoupon findByIdAndValid(int id, ValidEnum valid) {
-        return repository.findByIdAndValid(id, valid);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	@Cacheable("coupon")
+	public GiftCoupon findOneCache(int id) {
+		return repository.findOne(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable) {
-        return repository.findByValid(valid, pageable);
-    }
+	@Override
+	public GiftCoupon findByIdAndValid(int id, ValidEnum valid) {
+		return repository.findByIdAndValid(id, valid);
+	}
 
-    @Transactional(readOnly = true)
-    public Page<GiftCoupon> findAllByValidAndDateBetween(ValidEnum VALID, Calendar calendar, Pageable pageable) {
-        return repository.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable) {
+		return repository.findByValid(valid, pageable);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<GiftCouponJson> findAll(BaseCouponForm form, Pageable pageable) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<GiftCoupon> c = cb.createQuery(GiftCoupon.class);
-        Root<GiftCoupon> root = c.from(GiftCoupon.class);
-        c.select(root);
-        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(GiftCoupon.class)));
-        if (form != null) {
-            Predicate[] predicates = couponService.getPredicateList(form, root, cb);
-            c.where(predicates);
-            cq.where(predicates);
-        }
+	@Transactional(readOnly = true)
+	public Page<GiftCoupon> findAllByValidAndDateBetween(ValidEnum VALID, Calendar calendar, Pageable pageable) {
+		return repository.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
+	}
 
-        List<GiftCoupon> lists = em.createQuery(c)
-                .setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
-                .setMaxResults(pageable.getPageSize()).getResultList();
-        Long count = em.createQuery(cq).getSingleResult();
-        List<GiftCouponJson> results = lists.stream().map(i -> new GiftCouponJson(i))
-                .collect(Collectors.toList());
-        return new PageImpl<>(results, pageable, count);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public Page<GiftCouponJson> findAll(BaseCouponForm form, Pageable pageable) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<GiftCoupon> c = cb.createQuery(GiftCoupon.class);
+		Root<GiftCoupon> root = c.from(GiftCoupon.class);
+		c.select(root);
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		cq.select(cb.count(cq.from(GiftCoupon.class)));
+		if (form != null) {
+			Predicate[] predicates = couponService.getPredicateList(form, root, cb);
+			c.where(predicates);
+			cq.where(predicates);
+		}
+
+		List<GiftCoupon> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
+				.setMaxResults(pageable.getPageSize()).getResultList();
+		Long count = em.createQuery(cq).getSingleResult();
+		List<GiftCouponJson> results = lists.stream().map(i -> new GiftCouponJson(i)).collect(Collectors.toList());
+		return new PageImpl<>(results, pageable, count);
+	}
 }

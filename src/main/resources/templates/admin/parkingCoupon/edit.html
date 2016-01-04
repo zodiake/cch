@@ -62,6 +62,7 @@
             <div class="hd">
                 <div class="bar add-bar">添加停车券</div>
             </div>
+            <div th:class="${status.status}" th:text="${status.message}"></div>
             <div class="row">
                 <form class="form-horizontal pt50" th:object="${coupon}" th:method="put">
                     <div class="form-group">
