@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
-    <title>礼品券列表</title>
+    <title>店铺券列表</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
@@ -16,6 +16,18 @@
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/jsRender.js"></script>
     <script src="/js/page.js"></script>
+    <script id="detail" type="text/x-jsrender">
+		{{for content}}
+		<tr>
+			<td><a>{{>name}}</a></td>
+			<td><a>{{>beginTime}}</a></td>
+			<td><a>{{>endTime}}</a></td>
+            <td><a class="{{>cssClass}}">{{>state}}</a></td>
+		</tr>
+		{{/for}}
+
+
+    </script>
 </head>
 
 <body>
@@ -26,28 +38,36 @@
     <div th:replace="admin/layout/menu::menu"></div>
 
     <div class="mainpanel">
-        <div class="gift-wrap container">
+        <div class="shop-wrap container">
             <div class="hd clearfix">
                 <div class="bar base-bar short-bar pull-left">礼品券</div>
                 <button type="button" class="btn btn-info">添加</button>
             </div>
             <form class="form-inline" th:object="${form}">
                 <div class="form-group">
-                    <label>规则状态</label>
-                    <select class="form-control w120" th:field="*{state}">
-                        <option value="">全部</option>
-                        <option value="USING">使用中</option>
-                        <option value="CLOSED">已关闭</option>
-                        <option value="EXPIRE">过期</option>
-                        <option value="NOEXPIRE">未生效</option>
+                    <label>状态</label>
+                    <select class="form-control w120">
+                        <option>全部</option>
+                        <option>已过期</option>
+                        <option>未生效</option>
+                        <option>已关闭</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>店铺</label>
+                    <select class="form-control w120">
+                        <option>全部</option>
+                        <option>店铺1</option>
+                        <option>店铺1</option>
+                        <option>店铺1</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>生效时间</label>
-                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/> -
-                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
+                    <input class="form-control datepicker " placeholder="" type="text"/> -
+                    <input class="form-control datepicker " placeholder="" type="text"/>
                 </div>
-                <button class="btn btn-primary btn-xs" type="submit">查找</button>
+                <input type="submit" class="btn btn-primary btn-xs" value="查找"/>
             </form>
 
             <table class="table table-striped bg-white">
@@ -56,23 +76,23 @@
                     <th>名称</th>
                     <th>卡券金额</th>
                     <th>兑换积分</th>
-                    <th>发行时间</th>
+                    <th>生效时间</th>
                     <th>结束时间</th>
                     <th>数量</th>
-                    <th>核销截止日期</th>
+                    <th>所属店铺</th>
                     <th>状态</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="r:${lists.content}">
-                    <td><a th:text="${r.name}">名称</a></td>
-                    <td><a th:text="${r.amount}">金额</a></td>
-                    <td><a th:text="${r.score}">积分</a></td>
-                    <td><a th:text="${r.beginTime}">发行时间</a></td>
-                    <td><a th:text="${r.endTime}">结束时间</a></td>
-                    <td><a th:text="${r.total}">数量</a></td>
-                    <td><a th:text="${r.couponEndTime}">核销截止日期</a></td>
-                    <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
+                <tr th:each="c:${lists.content}">
+                    <td><a th:text="${c.name}">2016元旦</a></td>
+                    <td><a th:text="${c.amount}">2</a></td>
+                    <td><a th:text="${c.score}">1000</a></td>
+                    <td><a th:text="${c.beginTime}">2015年10月10号</a></td>
+                    <td><a th:text="${c.endTime}">2015年10月10号</a></td>
+                    <td><a th:text="${c.total}">10</a></td>
+                    <td><a th:text="${c.shopName}">aaaaaa</a></td>
+                    <td><a th:class="${c.cssClass}" th:text="${c.state}">使用中</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -96,7 +116,6 @@
 </div>
 <script type="text/javascript">
     $(function () {
-
         var submitFn = function (data) {
             var tmpl = $.templates("#detail");
             var html = tmpl.render(data.obj);

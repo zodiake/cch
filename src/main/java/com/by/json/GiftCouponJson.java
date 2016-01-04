@@ -1,34 +1,27 @@
 package com.by.json;
 
-import com.by.model.Coupon;
+import com.by.model.GiftCoupon;
 import com.by.typeEnum.ValidEnum;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Created by yagamai on 15-12-3.
+ * Created by yagamai on 16-1-4.
  */
-public class CouponTemplateJson extends CouponJson {
+public class GiftCouponJson {
+    private int id;
+    private String name;
+    private double amount;
     private int score;
-
     private String beginTime;
-
     private String endTime;
-
-    private String summary;
-
+    private int total;
+    private String couponEndTime;
     private String state;
-
     private String cssClass;
 
-    private double amount;
-
-    public CouponTemplateJson() {
-    }
-
-    public CouponTemplateJson(Coupon coupon) {
-        super(coupon);
+    public GiftCouponJson(GiftCoupon coupon) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar today = Calendar.getInstance();
 
@@ -53,11 +46,37 @@ public class CouponTemplateJson extends CouponJson {
             this.cssClass = "text-danger";
             this.state = "已关闭";
         }
-        this.score = coupon.getScore();
-        this.beginTime = format.format(coupon.getBeginTime().getTime());
-        this.endTime = format.format(coupon.getEndTime().getTime());
-        this.summary = coupon.getSummary();
-        this.amount = coupon.getAmount();
+        this.id = coupon.getId();
+        this.name = coupon.getName();
+        if (coupon.getCouponEndTime() != null)
+            this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
+        this.amount=coupon.getAmount();
+        this.score=coupon.getScore();
+        this.total=coupon.getTotal();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public int getScore() {
@@ -84,12 +103,20 @@ public class CouponTemplateJson extends CouponJson {
         this.endTime = endTime;
     }
 
-    public String getSummary() {
-        return summary;
+    public int getTotal() {
+        return total;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public String getCouponEndTime() {
+        return couponEndTime;
+    }
+
+    public void setCouponEndTime(String couponEndTime) {
+        this.couponEndTime = couponEndTime;
     }
 
     public String getState() {
@@ -106,13 +133,5 @@ public class CouponTemplateJson extends CouponJson {
 
     public void setCssClass(String cssClass) {
         this.cssClass = cssClass;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 }

@@ -5,49 +5,14 @@
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
     <title>添加停车券</title>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
-    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
-    <script type="text/javascript" src="/js/template.js"></script>
-    <script type="text/javascript" src="/js/fileUpload.js"></script>
-    <script>
-    $(function(){
-    	var url="http://cchdev.b0.upaiyun.com/test/";
-    	$('div.imgUp').change(function (event) {
-            var source = $(event.target);
-            var id = source.attr('id');
-            var img=source.parent().parent().find('img');
-            var input=source.siblings().first();
-            $.ajaxFileUpload({
-                    url: '/admin/upload',
-                    secureuri: false,
-                    fileElementId: source.attr('id'),
-                    dataType: 'json',
-                    success: function (data, status) {
-                    	if(status=='success'){
-                    		img.attr('src',url+data.responseText);
-                    		input.val(url+data.responseText);
-                    	}
-                    	console.log(data);
-                    },
-                    error: function (data, status, e) {
-                        alert(e);
-                    }
-                }
-            );
-            return false;
-        });
-
-        $('.datepicker').datepicker({
-            dateFormat:'yy-mm-dd'
-        });
-
-    })
-    </script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-override.css"/>
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.3.css"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/template.css"/>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.3.min.js"></script>
+    <script type="text/javascript" src="js/template.js"></script>
 </head>
 
 <body>
@@ -70,23 +35,23 @@
                             <input type="text" class="form-control" th:field="*{name}"/>
                         </div>
                     </div>
-                    <div class="form-group imgUp">
+                    <div class="form-group">
                         <label class="col-md-4 control-label">列表图：</label>
                         <div class="col-md-3">
                             <img src="" height="100" style="background:#FFF; width:100%;"/>
-                        </div>
-                        <div class="col-md-2 mt40">
-                            <input type="file" id="imgUp1"/>
                             <input type="hidden" th:field="*{coverImg}"/>
                         </div>
+                        <div class="col-md-2 mt40">
+                            <input type="file" id="imgUp"/>
+                        </div>
                     </div>
-                    <div class="form-group imgUp">
+                    <div class="form-group">
                         <label class="col-md-4 control-label">背景图：</label>
                         <div class="col-md-3">
                             <img src="" height="100" style="background:#FFF; width:100%;"/>
                         </div>
                         <div class="col-md-2 mt40">
-                            <input type="file" id="imgUp2"/>
+                            <input type="file"/>
                             <input type="hidden" th:field="*{contentImg}"/>
                         </div>
                     </div>
@@ -128,5 +93,10 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker();
+    })
+</script>
 </body>
 </html>

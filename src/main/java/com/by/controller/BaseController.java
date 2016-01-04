@@ -17,6 +17,8 @@ import java.util.Map;
  */
 @Component
 public abstract class BaseController implements UtilContoller {
+    protected final int INIT_PAGE = 0;
+    protected final int PAGE_SIZE = 10;
     protected final String SUCCESS = "保存成功";
     private final int maxSize = 7;
     @Autowired

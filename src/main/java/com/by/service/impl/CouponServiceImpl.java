@@ -1,15 +1,14 @@
 package com.by.service.impl;
 
-import com.by.form.CouponQueryForm;
-import com.by.json.CouponJson;
-import com.by.model.*;
-import com.by.repository.CouponRepository;
-import com.by.repository.GiftCouponMemberRepository;
-import com.by.repository.ShopCouponMemberRepository;
-import com.by.service.*;
-import com.by.typeEnum.CouponAdminStateEnum;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,18 +17,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.form.BaseCouponForm;
+import com.by.json.CouponJson;
+import com.by.model.Coupon;
+import com.by.model.GiftCoupon;
+import com.by.model.GiftCouponMember;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.model.ShopCoupon;
+import com.by.model.ShopCouponMember;
+import com.by.repository.GiftCouponMemberRepository;
+import com.by.repository.ShopCouponMemberRepository;
+import com.by.service.CouponService;
+import com.by.service.GiftCouponService;
+import com.by.service.MemberService;
+import com.by.service.ParkingCouponService;
+import com.by.service.ShopCouponService;
+import com.by.typeEnum.CouponAdminStateEnum;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 
 @Service
 public class CouponServiceImpl implements CouponService {
-    @Autowired
-    private CouponRepository repository;
     @Autowired
     private GiftCouponMemberRepository giftCouponMemberRepository;
     @Autowired
@@ -94,7 +103,8 @@ public class CouponServiceImpl implements CouponService {
         return couponSummary.getBeginTime() == null && couponSummary.getEndTime() == null;
     }
 
-    public <T extends Coupon> Predicate[] getPredicateList(CouponQueryForm form, Root<T> root, CriteriaBuilder cb) {
+    @Override
+    public <T extends Coupon> List<Predicate> getPredicateList(BaseCouponForm form, Root<T> root, CriteriaBuilder cb) {
         List<Predicate> criteria = new ArrayList<>();
         if (form.getState() != null) {
             Calendar today = Calendar.getInstance();
@@ -103,18 +113,22 @@ public class CouponServiceImpl implements CouponService {
             } else if (form.getState().equals(CouponAdminStateEnum.NOEXPIRE)) {
                 criteria.add(cb.greaterThan(root.get("beginTime"), today));
             } else if (form.getState().equals(CouponAdminStateEnum.USING)) {
-                criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), today));
-                criteria.add(cb.greaterThanOrEqualTo(root.get("endTime"), today));
+                criteria.add(cb.or(
+                        cb.and(cb.lessThanOrEqualTo(root.get("beginTime"), today),
+                                cb.greaterThanOrEqualTo(root.get("endTime"), today)),
+                        cb.and(cb.isNull(root.get("beginTime"))), cb.isNull(root.get("endTime"))));
             } else if (form.getState().equals(CouponAdminStateEnum.EXPIRE)) {
                 criteria.add(cb.lessThan(root.get("endTime"), today));
             }
         }
         if (form.getBeginTime() != null) {
-            criteria.add(cb.greaterThanOrEqualTo(root.get("beginTime"), form.getBeginTime()));
+            criteria.add(cb.or(cb.lessThanOrEqualTo(root.get("beginTime"), form.getBeginTime()),
+                    cb.isNull(root.get("endTime"))));
         }
         if (form.getEndTime() != null)
-            criteria.add(cb.lessThanOrEqualTo(root.get("beginTime"), form.getEndTime()));
-        return criteria.toArray(new Predicate[0]);
+            criteria.add(cb.or(cb.greaterThanOrEqualTo(root.get("endTime"), form.getEndTime()),
+                    cb.isNull(root.get("endTime"))));
+        return criteria;
     }
 
     @Override

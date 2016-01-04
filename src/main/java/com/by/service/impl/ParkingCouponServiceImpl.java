@@ -1,33 +1,44 @@
 package com.by.service.impl;
 
-import com.by.exception.NotFoundException;
-import com.by.exception.NotValidException;
-import com.by.exception.OutOfStorageException;
-import com.by.form.CouponQueryForm;
-import com.by.json.CouponTemplateJson;
-import com.by.model.Member;
-import com.by.model.ParkingCoupon;
-import com.by.repository.ParkingCouponRepository;
-import com.by.service.*;
-import com.by.typeEnum.ScoreHistoryEnum;
-import com.by.typeEnum.ValidEnum;
-import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.by.exception.NotFoundException;
+import com.by.exception.NotValidException;
+import com.by.exception.OutOfStorageException;
+import com.by.form.BaseCouponForm;
+import com.by.json.CouponTemplateJson;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.repository.ParkingCouponRepository;
+import com.by.service.CouponService;
+import com.by.service.LicenseService;
+import com.by.service.MemberService;
+import com.by.service.ParkingCouponExchangeHistoryService;
+import com.by.service.ParkingCouponService;
+import com.by.service.ParkingCouponUseHistoryService;
+import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
+import com.google.common.collect.Lists;
 
 @Service
 @Transactional
@@ -56,6 +67,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         time.set(Calendar.HOUR, 23);
         time.set(Calendar.MINUTE, 59);
         time.set(Calendar.SECOND, 59);
+        coupon.setValid(ValidEnum.VALID);
         return repository.save(coupon);
     }
 
@@ -65,6 +77,8 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
             i.setAmount(coupon.getAmount());
             i.setName(coupon.getName());
             i.setScore(coupon.getScore());
+            i.setContentImg(coupon.getContentImg());
+            i.setCoverImg(coupon.getCoverImg());
             return i;
         });
     }
@@ -77,19 +91,19 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ParkingCoupon> findById(Long id) {
+    public Optional<ParkingCoupon> findById(int id) {
         return repository.findById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ParkingCoupon findOne(Long id) {
+    public ParkingCoupon findOne(int id) {
         return repository.findOne(id);
     }
 
     @Override
     @Cacheable("coupon")
-    public ParkingCoupon findOneCache(Long id) {
+    public ParkingCoupon findOneCache(int id) {
         return repository.findOne(id);
     }
 
@@ -114,14 +128,14 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CouponTemplateJson> findAll(CouponQueryForm form, Pageable pageable) {
+    public Page<CouponTemplateJson> findAll(BaseCouponForm form, Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<ParkingCoupon> c = cb.createQuery(ParkingCoupon.class);
         Root<ParkingCoupon> root = c.from(ParkingCoupon.class);
         c.select(root);
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         cq.select(cb.count(cq.from(ParkingCoupon.class)));
-        Predicate[] predicates = couponService.getPredicateList(form, root, cb);
+        Predicate[] predicates = couponService.getPredicateList(form, root, cb).toArray(new Predicate[0]);
         c.where(predicates);
         cq.where(predicates);
 

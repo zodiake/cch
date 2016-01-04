@@ -47,8 +47,6 @@ import com.by.typeEnum.ValidEnum;
 @Controller
 @RequestMapping("/admin/members")
 public class AdminMemberController extends BaseController {
-    private final int PAGE_SIZE = 10;
-    private final int INIT_PAGE = 0;
     private final String DETAIL = "admin/member/detail";
     private final Menu subMenu = new Menu(2);
     @Autowired

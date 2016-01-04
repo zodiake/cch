@@ -1,7 +1,7 @@
 package com.by.service;
 
-import com.by.form.CouponQueryForm;
-import com.by.json.CouponTemplateJson;
+import com.by.form.BaseCouponForm;
+import com.by.json.GiftCouponJson;
 import com.by.model.GiftCoupon;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.data.domain.Page;
@@ -15,15 +15,17 @@ import java.util.Calendar;
 public interface GiftCouponService {
     GiftCoupon save(GiftCoupon coupon);
 
-    GiftCoupon findOne(Long id);
+    GiftCoupon update(GiftCoupon coupon);
 
-    GiftCoupon findOneCache(Long id);
+    GiftCoupon findOne(int id);
 
-    GiftCoupon findByIdAndValid(Long id, ValidEnum valid);
+    GiftCoupon findOneCache(int id);
+
+    GiftCoupon findByIdAndValid(int id, ValidEnum valid);
 
     Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-    Page<CouponTemplateJson> findAll(CouponQueryForm form, Pageable pageable);
+    Page<GiftCouponJson> findAll(BaseCouponForm form, Pageable pageable);
 
     Page<GiftCoupon> findAllByValidAndDateBetween(ValidEnum VALID, Calendar calendar, Pageable pageable);
 }

@@ -13,8 +13,8 @@ import java.util.Calendar;
 /**
  * Created by yagamai on 15-12-3.
  */
-public interface GiftCouponRepository extends PagingAndSortingRepository<GiftCoupon, Long> {
-    GiftCoupon findByIdAndValid(Long id, ValidEnum valid);
+public interface GiftCouponRepository extends PagingAndSortingRepository<GiftCoupon, Integer> {
+    GiftCoupon findByIdAndValid(int id, ValidEnum valid);
 
     Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable);
 

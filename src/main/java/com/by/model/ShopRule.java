@@ -1,19 +1,14 @@
 package com.by.model;
 
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
-
 import java.util.List;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue("s")
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class ShopRule extends Rule {
-	@ManyToMany(mappedBy = "rules")
+	@ManyToMany
+	@JoinTable(name = "by_shop_rule", joinColumns = @JoinColumn(name = "rule_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"))
 	private List<Shop> shops;
 
 	public List<Shop> getShops() {

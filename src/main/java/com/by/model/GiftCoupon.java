@@ -19,7 +19,7 @@ public class GiftCoupon extends Coupon {
         super();
     }
 
-    public GiftCoupon(Long id) {
+    public GiftCoupon(int id) {
         setId(id);
     }
 

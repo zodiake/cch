@@ -25,50 +25,72 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/shopRules")
 public class AdminShopRuleController extends BaseController {
-    private final int INIT_PAGE = 0;
-    private final int PAGE_SIZE = 10;
-    private final Menu subMenu = new Menu(5);
-    private final String LISTS = "admin/shopRules/lists";
-    private final String EDIT = "admin/shopRules/edit";
-    private final String REDIRECT = "redirect:/admin/shopRules/";
-    @Autowired
-    private ShopRuleService service;
-    @Autowired
-    private ShopService shopService;
+	private final Menu subMenu = new Menu(5);
+	private final String LISTS = "admin/shopRules/lists";
+	private final String EDIT = "admin/shopRules/edit";
+	private final String CREATE = "admin/shopRules/create";
+	private final String REDIRECT = "redirect:/admin/shopRules/";
+	@Autowired
+	private ShopRuleService service;
+	@Autowired
+	private ShopService shopService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String list(BaseCouponForm form, Model uiModel,
-                       @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<RuleJson> lists = service.findAll(form, pageable);
-        uiModel.addAttribute("lists", lists);
-        uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
-        uiModel.addAttribute("form", form);
-        return LISTS;
-    }
+	@ModelAttribute("shops")
+	public List<Shop> shops() {
+		List<Shop> shops = shopService.findAll(new Sort(Sort.Direction.ASC, "name"));
+		return shops;
+	}
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable("id") int id, Model uiModel) {
-        ShopRule rule = service.findOne(id);
-        List<Shop> shops = shopService.findAll(new Sort(Sort.Direction.ASC, "name"));
-        uiModel.addAttribute("rule", rule);
-        uiModel.addAttribute("shops", shops);
-        addClass(rule, uiModel);
-        return EDIT;
-    }
+	@RequestMapping(method = RequestMethod.GET)
+	public String list(BaseCouponForm form, Model uiModel,
+			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<RuleJson> lists = service.findAll(form, pageable);
+		uiModel.addAttribute("lists", lists);
+		uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
+		uiModel.addAttribute("form", form);
+		addMenu(uiModel);
+		return LISTS;
+	}
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public String update(@PathVariable("id") int id, @ModelAttribute("rule") ShopRule rule, BindingResult result, Model uiModel) {
-        rule.setId(id);
-        if (result.hasErrors()) {
-            uiModel.addAttribute("rule", rule);
-            return EDIT;
-        }
-        ShopRule r = service.update(rule);
-        return REDIRECT + r.getId();
-    }
+	@RequestMapping(params = "form", method = RequestMethod.GET)
+	public String form(Model uiModel) {
+		uiModel.addAttribute("rule", new ShopRule());
+		return CREATE;
+	}
 
-    @Override
-    public Menu getSubMenu() {
-        return subMenu;
-    }
+	@RequestMapping(params = "form", method = RequestMethod.POST)
+	public String save(@ModelAttribute("rule") ShopRule rule, BindingResult result, Model uiModel) {
+		if (result.hasErrors()) {
+			uiModel.addAttribute("rule", rule);
+			return CREATE;
+		}
+		ShopRule r = service.save(rule);
+		return REDIRECT + r.getId();
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String edit(@PathVariable("id") int id, Model uiModel) {
+		ShopRule rule = service.findOne(id);
+		uiModel.addAttribute("rule", rule);
+		addClass(rule, uiModel);
+		addMenu(uiModel);
+		return EDIT;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public String update(@PathVariable("id") int id, @ModelAttribute("rule") ShopRule rule, BindingResult result,
+			Model uiModel) {
+		rule.setId(id);
+		if (result.hasErrors()) {
+			uiModel.addAttribute("rule", rule);
+			return EDIT;
+		}
+		ShopRule r = service.update(rule);
+		return REDIRECT + r.getId();
+	}
+
+	@Override
+	public Menu getSubMenu() {
+		return subMenu;
+	}
 }

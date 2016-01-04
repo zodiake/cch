@@ -11,86 +11,88 @@ import java.util.Calendar;
  * Created by yagamai on 15-12-7.
  */
 public class CouponJson {
-	private Long id;
+    private int id;
 
-	private String name;
+    private String name;
 
-	private String couponEndTime;
+    private String couponEndTime;
 
-	private Calendar couponTime;
+    private Calendar couponTime;
 
-	private ValidEnum valid;
+    private ValidEnum valid;
 
-	private String type;
+    private String type;
 
-	private int total;
+    private int total;
 
-	public CouponJson() {
-	}
+    public CouponJson() {
+    }
 
-	public CouponJson(Coupon coupon) {
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		this.id = coupon.getId();
-		this.name = coupon.getName();
-		this.valid = coupon.getValid();
-		this.couponTime = coupon.getCouponEndTime();
-		this.couponEndTime = format.format(this.couponTime.getTime());
-		this.total = coupon.getTotal();
-	}
+    public CouponJson(Coupon coupon) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        this.id = coupon.getId();
+        this.name = coupon.getName();
+        this.valid = coupon.getValid();
+        if (coupon.getCouponEndTime() != null) {
+            this.couponTime = coupon.getCouponEndTime();
+            this.couponEndTime = format.format(this.couponTime.getTime());
+        }
+        this.total = coupon.getTotal();
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getCouponEndTime() {
-		return couponEndTime;
-	}
+    public String getCouponEndTime() {
+        return couponEndTime;
+    }
 
-	public void setCouponEndTime(String couponEndTime) {
-		this.couponEndTime = couponEndTime;
-	}
+    public void setCouponEndTime(String couponEndTime) {
+        this.couponEndTime = couponEndTime;
+    }
 
-	public ValidEnum getValid() {
-		return valid;
-	}
+    public ValidEnum getValid() {
+        return valid;
+    }
 
-	public void setValid(ValidEnum valid) {
-		this.valid = valid;
-	}
+    public void setValid(ValidEnum valid) {
+        this.valid = valid;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public Calendar getCouponTime() {
-		return couponTime;
-	}
+    public Calendar getCouponTime() {
+        return couponTime;
+    }
 
-	public void setCouponTime(Calendar couponTime) {
-		this.couponTime = couponTime;
-	}
+    public void setCouponTime(Calendar couponTime) {
+        this.couponTime = couponTime;
+    }
 
-	public int getTotal() {
-		return total;
-	}
+    public int getTotal() {
+        return total;
+    }
 
-	public void setTotal(int total) {
-		this.total = total;
-	}
+    public void setTotal(int total) {
+        this.total = total;
+    }
 }

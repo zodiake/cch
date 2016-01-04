@@ -110,7 +110,7 @@ public class ParkingCouponController implements UtilContoller {
     // 停车券详情
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Status detail(@PathVariable("id") Long id) {
+    public Status detail(@PathVariable("id") int id) {
         ParkingCoupon coupon = service.findOneCache(id);
         if (coupon == null)
             throw new NotFoundException();

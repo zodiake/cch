@@ -1,5 +1,6 @@
 package com.by.service;
 
+import com.by.form.BaseCouponForm;
 import com.by.form.CouponQueryForm;
 import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
@@ -18,15 +19,15 @@ public interface ParkingCouponService {
 
 	List<ParkingCoupon> findAll();
 
-	Optional<ParkingCoupon> findById(Long id);
+	Optional<ParkingCoupon> findById(int id);
 
-	ParkingCoupon findOne(Long id);
+	ParkingCoupon findOne(int id);
 
-	ParkingCoupon findOneCache(Long id);
+	ParkingCoupon findOneCache(int id);
 
 	Page<ParkingCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-	Page<CouponTemplateJson> findAll(CouponQueryForm from, Pageable pageable);
+	Page<CouponTemplateJson> findAll(BaseCouponForm from, Pageable pageable);
 
 	Page<ParkingCoupon> findAll(Pageable pageable);
 

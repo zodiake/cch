@@ -1,7 +1,14 @@
 package com.by.controller;
 
-import javax.validation.Valid;
-
+import com.by.exception.NotFoundException;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.form.BaseCouponForm;
+import com.by.json.CouponJson;
+import com.by.json.CouponTemplateJson;
+import com.by.model.Menu;
+import com.by.model.ParkingCoupon;
+import com.by.service.ParkingCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,29 +17,19 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.by.exception.NotFoundException;
-import com.by.exception.Status;
-import com.by.exception.Success;
-import com.by.form.CouponQueryForm;
-import com.by.json.CouponJson;
-import com.by.json.CouponTemplateJson;
-import com.by.model.Menu;
-import com.by.model.ParkingCoupon;
-import com.by.service.ParkingCouponService;
+import javax.validation.Valid;
 
 @Controller
-@RequestMapping(value = "/admin/parkingCoupon")
-public class AdminParkingCouponController extends BaseController{
+@RequestMapping(value = "/admin/parkingCoupons")
+public class AdminParkingCouponController extends BaseController {
 	private final String CREATE = "admin/parkingCoupon/create";
 	private final String EDIT = "admin/parkingCoupon/edit";
-	private final Menu subMenu=new Menu(7);
+	private final String LIST = "admin/parkingCoupon/lists";
+	private final String REDIRECT = "redirect:/admin/parkingCoupons/";
+	private final Menu subMenu = new Menu(7);
 	@Autowired
 	private ParkingCouponService service;
 
@@ -41,6 +38,7 @@ public class AdminParkingCouponController extends BaseController{
 	public String form(Model uiModel) {
 		ParkingCoupon coupon = new ParkingCoupon();
 		uiModel.addAttribute("coupon", coupon);
+		addMenu(uiModel);
 		return CREATE;
 	}
 
@@ -54,12 +52,12 @@ public class AdminParkingCouponController extends BaseController{
 		}
 		ParkingCoupon source = service.save(coupon);
 		redirectAttributes.addFlashAttribute("status", "success");
-		return "redirect:/admin/parkingCoupon/" + source.getId();
+		return REDIRECT + source.getId();
 	}
 
 	// 获取修改
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String edit(@PathVariable("id") Long id, Model uiModel) {
+	public String edit(@PathVariable("id") int id, Model uiModel) {
 		ParkingCoupon coupon = service.findOne(id);
 		if (coupon == null)
 			throw new NotFoundException();
@@ -75,22 +73,25 @@ public class AdminParkingCouponController extends BaseController{
 			return EDIT;
 		}
 		service.update(coupon);
-		return "redirect:/admin/parkingCoupon/" + id;
+		return REDIRECT + id;
 	}
 
-	// 第一页列表
+	// 列表页
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model uiModel) {
-		Page<ParkingCoupon> lists = service.findFirstPage(10);
+	public String list(BaseCouponForm form, Model uiModel,
+			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<CouponTemplateJson> lists = service.findAll(form, pageable);
 		uiModel.addAttribute("lists", lists);
 		uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
-		return "admin/parkingCoupon/list";
+		uiModel.addAttribute("form", form);
+		addMenu(uiModel);
+		return LIST;
 	}
 
 	// 页数使用json
 	@RequestMapping(value = "/json", method = RequestMethod.GET)
 	@ResponseBody
-	public Status list(CouponQueryForm form,
+	public Status list(BaseCouponForm form,
 			@PageableDefault(page = 0, size = 10, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<CouponTemplateJson> json = service.findAll(form, pageable);
 		return new Success<>(json);
@@ -99,7 +100,7 @@ public class AdminParkingCouponController extends BaseController{
 	// 有效无效
 	@RequestMapping(value = "/{id}/valid", method = RequestMethod.PUT)
 	@ResponseBody
-	public Status validOrNotValid(@PathVariable("id") Long id) {
+	public Status validOrNotValid(@PathVariable("id") int id) {
 		ParkingCoupon coupon = new ParkingCoupon(id);
 		return new Success<CouponJson>(new CouponJson(service.validOrInValid(coupon)));
 	}

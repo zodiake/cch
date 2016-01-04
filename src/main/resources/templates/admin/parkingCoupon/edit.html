@@ -43,7 +43,7 @@
         });
 
         $('.datepicker').datepicker({
-            dateFormat:'yy-mm-dd'
+            dateFormat:'yy-mm-dd',
         });
 
     })
@@ -62,8 +62,9 @@
             <div class="hd">
                 <div class="bar add-bar">添加停车券</div>
             </div>
+            <div th:class="${status.status}" th:text="${status.message}"></div>
             <div class="row">
-                <form class="form-horizontal pt50" th:object="${coupon}" th:method="post">
+                <form class="form-horizontal pt50" th:object="${coupon}" th:method="put">
                     <div class="form-group">
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
@@ -73,7 +74,7 @@
                     <div class="form-group imgUp">
                         <label class="col-md-4 control-label">列表图：</label>
                         <div class="col-md-3">
-                            <img src="" height="100" style="background:#FFF; width:100%;"/>
+                            <img th:src="@{*{coverImg}}" height="100" style="background:#FFF; width:100%;"/>
                         </div>
                         <div class="col-md-2 mt40">
                             <input type="file" id="imgUp1"/>
@@ -83,7 +84,7 @@
                     <div class="form-group imgUp">
                         <label class="col-md-4 control-label">背景图：</label>
                         <div class="col-md-3">
-                            <img src="" height="100" style="background:#FFF; width:100%;"/>
+                            <img th:src="@{*{contentImg}}" height="100" style="background:#FFF; width:100%;"/>
                         </div>
                         <div class="col-md-2 mt40">
                             <input type="file" id="imgUp2"/>

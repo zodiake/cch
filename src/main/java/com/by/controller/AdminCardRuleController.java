@@ -35,8 +35,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/cardRules")
 public class AdminCardRuleController extends BaseController {
-    private final int INIT_PAGE = 0;
-    private final int PAGE_SIZE = 10;
     private final Menu subMenu = new Menu(4);
     private final String CREATE = "admin/cardRules/create";
     private final String EDIT = "admin/cardRules/edit";
@@ -109,7 +107,6 @@ public class AdminCardRuleController extends BaseController {
         Page<RuleJson> lists = service.findAll(form, pageable);
         int pages = computeLastPage(lists.getTotalPages());
         uiModel.addAttribute("lists", lists);
-        uiModel.addAttribute("pages", pages);
         uiModel.addAttribute("last", pages);
         uiModel.addAttribute("form", form);
         addMenu(uiModel);

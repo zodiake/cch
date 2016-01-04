@@ -15,4 +15,6 @@ public interface ShopRuleService {
     ShopRule findOne(int id);
 
     ShopRule update(ShopRule r);
+
+    ShopRule save(ShopRule r);
 }

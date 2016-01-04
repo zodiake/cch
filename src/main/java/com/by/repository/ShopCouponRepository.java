@@ -13,7 +13,7 @@ import java.util.Calendar;
 /**
  * Created by yagamai on 15-12-8.
  */
-public interface ShopCouponRepository extends CrudRepository<ShopCoupon, Long> {
+public interface ShopCouponRepository extends CrudRepository<ShopCoupon, Integer> {
     Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
     @Query("select g from ShopCoupon g where g.valid=:valid and g.beginTime<:today and :today<g.endTime ")

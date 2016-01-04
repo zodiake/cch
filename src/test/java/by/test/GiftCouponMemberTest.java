@@ -38,8 +38,8 @@ public class GiftCouponMemberTest {
 
     @Test(expected = NotEnoughScoreException.class)
     public void exchangeTest() {
-        service.exchangeCoupon(new GiftCoupon(3l), new Member(1l), 50);
-        List<GiftCouponMember> list = service.findByCouponAndMember(new GiftCoupon(3l), new Member(1l));
+        service.exchangeCoupon(new GiftCoupon(3), new Member(1l), 50);
+        List<GiftCouponMember> list = service.findByCouponAndMember(new GiftCoupon(3), new Member(1l));
         assertEquals(0, list.size());
     }
 
