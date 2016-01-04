@@ -69,7 +69,7 @@ INSERT INTO by_license (id, name) VALUES (1, '沪A54321');
 INSERT INTO by_license (id, name) VALUES (2, '沪A14321');
 
 -- test card
-INSERT INTO by_card (id, name, valid, init_score) VALUES (1, 'low', 1, 100);
+INSERT INTO by_card (id, name, valid, init_score,img_href) VALUES (1, 'low', 1, 100,'/img/1.png');
 
 -- test member
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
