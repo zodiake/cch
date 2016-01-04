@@ -56,6 +56,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         time.set(Calendar.HOUR, 23);
         time.set(Calendar.MINUTE, 59);
         time.set(Calendar.SECOND, 59);
+        coupon.setValid(ValidEnum.VALID);
         return repository.save(coupon);
     }
 
@@ -65,6 +66,8 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
             i.setAmount(coupon.getAmount());
             i.setName(coupon.getName());
             i.setScore(coupon.getScore());
+            i.setContentImg(coupon.getContentImg());
+            i.setCoverImg(coupon.getCoverImg());
             return i;
         });
     }

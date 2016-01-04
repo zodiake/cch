@@ -60,7 +60,8 @@ public class CouponTemplateJson {
 		}
 		this.id = coupon.getId();
 		this.name = coupon.getName();
-		this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
+		if (coupon.getCouponEndTime() != null)
+			this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
 		this.score = coupon.getScore();
 		this.beginTime = format.format(coupon.getBeginTime().getTime());
 		this.endTime = format.format(coupon.getEndTime().getTime());
