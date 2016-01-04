@@ -54,7 +54,7 @@
             </div>
             <div class="row">
                 <form class="form-horizontal" th:object="${card}" th:method="put">
-                	<div th:if="${status}!=null" th:text="${status.message}" th:class="${status.status}">success</div>
+                	<div th:if="${message}!=null" th:text="${message.message}" th:class="${message.status}">success</div>
                     <div class="form-group pt50">
                         <label class="col-md-3 control-label">名称：</label>
                         <div class="col-md-3">
