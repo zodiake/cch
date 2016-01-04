@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,7 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,12 @@ public class AdminShopController extends BaseController {
 	private MenuService menuService;
 	@Autowired
 	private UserContext userContext;
+	@Autowired
+	@Qualifier("shopKeyUniqueValidator")
+	private Validator shopKeyUniqueValidator;
+	@Autowired
+	@Qualifier("shopKeyValidator")
+	private Validator shopKeyValidator;
 
 	private final Menu subMenu = new Menu(1);
 
@@ -90,12 +97,8 @@ public class AdminShopController extends BaseController {
 	@RequestMapping(params = "form", method = RequestMethod.POST)
 	public String add(@Valid @ModelAttribute("shop") Shop shop,
 			BindingResult result, Model uiModel) {
+		shopKeyUniqueValidator.validate(shop, result);
 		if (result.hasErrors()) {
-			uiModel.addAttribute("shop", shop);
-			addMenu(uiModel);
-			return "admin/shop/create";
-		} else if (service.findByPos(shop.getShopKey()) != null) {
-			result.addError(new FieldError("shop", "shopKey", "该Pos - key已存在"));
 			uiModel.addAttribute("shop", shop);
 			addMenu(uiModel);
 			return "admin/shop/create";
@@ -122,18 +125,12 @@ public class AdminShopController extends BaseController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public String edit(@Valid @ModelAttribute("shop") Shop shop,
 			BindingResult result, Model uiModel, @PathVariable("id") int id) {
+		shopKeyValidator.validate(shop, result);
 		if (result.hasErrors()) {
 			uiModel.addAttribute("shop", shop);
 			addMenu(uiModel);
 			return "admin/shop/detail";
 		} 
-		Shop source = service.findByPos(shop.getShopKey());
-		if (source != null && source.getId() != id) {
-			result.addError(new FieldError("shop", "shopKey", "该Pos - key已存在"));
-			uiModel.addAttribute("shop", shop);
-			addMenu(uiModel);
-			return "admin/shop/detail";
-		}
 		shop.setId(id);
 		shop.setUpdatedBy(userContext.getCurrentUser().getName());
 		service.update(shop);

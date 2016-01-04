@@ -9,4 +9,5 @@ import com.by.model.Shop;
  */
 public interface ShopRepository extends PagingAndSortingRepository<Shop, Integer> {
     Shop findByShopKey(String code);
+    Long countByShopKey(String code);
 }
