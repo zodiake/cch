@@ -31,9 +31,9 @@ INSERT INTO by_menu (id, name, category_id, href) VALUES (15, '用户管理', 6,
 INSERT INTO by_menu (id, name, category_id, href) VALUES (16, '账户设置', 6, '');
 
 -- test authority
-INSERT INTO by_authority (id, name) VALUES (1, 'ROLE_ADMIN');
-INSERT INTO by_authority (id, name) VALUES (2, 'ROLE_USER');
-INSERT INTO by_authority (id, name) VALUES (3, 'ROLE_SHOP');
+INSERT INTO by_authority (id, name,valid) VALUES (1, 'ROLE_ADMIN',1);
+INSERT INTO by_authority (id, name,valid) VALUES (2, 'ROLE_USER',1);
+INSERT INTO by_authority (id, name,valid) VALUES (3, 'ROLE_SHOP',1);
 
 -- test user_auth
 INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 1);

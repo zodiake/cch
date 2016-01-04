@@ -41,25 +41,26 @@ CREATE TABLE by_shop (
 );
 
 CREATE TABLE by_authority (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
+  id           INT NOT NULL AUTO_INCREMENT,
   name         VARCHAR(30),
   created_by   VARCHAR(20),
   updated_by   VARCHAR(20),
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
+  valid smallint default 1,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE by_user_auth (
   user_id BIGINT NOT NULL,
-  auth_id BIGINT NOT NULL,
+  auth_id INT NOT NULL,
   PRIMARY KEY (user_id, auth_id),
   FOREIGN KEY (user_id) REFERENCES by_user (id),
   FOREIGN KEY (auth_id) REFERENCES by_authority (id)
 );
 
 CREATE TABLE by_auth_menu (
-  auth_id BIGINT,
+  auth_id INT,
   menu_id INT,
   FOREIGN KEY (auth_id) REFERENCES by_authority (id),
   FOREIGN KEY (menu_id) REFERENCES by_menu (id),

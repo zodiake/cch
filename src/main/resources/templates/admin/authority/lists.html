@@ -4,13 +4,14 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
-    <title>会员卡积分</title>
+    <title>权限管理列表</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/template.css"/>
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-timepicker.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/jsRender.js"></script>
@@ -35,45 +36,24 @@
     <div th:replace="admin/layout/menu::menu"></div>
 
     <div class="mainpanel">
-        <div class="member-jfe-wrap container">
+        <div class="power-wrap container">
             <div class="hd clearfix">
-                <div class="bar base-bar short-bar pull-left">店铺积分规则</div>
+                <div class="bar base-bar short-bar pull-left">权限管理</div>
                 <button type="button" class="btn btn-info">添加</button>
             </div>
-            <form class="form-inline" th:object="${form}">
-                <div class="form-group">
-                    <label>规则状态</label>
-                    <select class="form-control w120" th:field="*{state}">
-                        <option value="">全部</option>
-                        <option value="USING">使用中</option>
-                        <option value="CLOSED">已关闭</option>
-                        <option value="EXPIRE">过期</option>
-                        <option value="NOEXPIRE">未生效</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>生效时间</label>
-                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/> -
-                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
-                </div>
-                <button class="btn btn-primary btn-xs" type="submit">查找</button>
-            </form>
-
-            <table class="table table-striped bg-white">
+            <table class="table table-striped bg-white mt20">
                 <thead>
                 <tr>
                     <th>名称</th>
-                    <th>发行时间</th>
-                    <th>结束时间</th>
                     <th>状态</th>
+                    <th>最后修改时间</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="r:${lists.content}">
-                    <td><a th:text="${r.name}"></a></td>
-                    <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
-                    <td><a th:text="${r.endTime}">2015年10月10号</a></td>
-                    <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
+                <tr th:each="a:${lists.content}">
+                    <td><a th:text="${a.name}">2016元旦</a></td>
+                    <td><a th:text="${a.valid.toString()=='VALID'?'使用中':'无效'}">使用中</a></td>
+                    <td><a th:text="${a.updatedTime}">2015年10月10号 10:00</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -105,24 +85,13 @@
         };
 
         var parameterFn = function () {
-            var beginTime = $('#beginTime').val();
-            var endTime = $('#endTime').val();
-            var state=$('#state').val();
-            return {
-                beginTime: beginTime,
-                endTime: endTime,
-                state:state
-            }
+            return {};
         };
 
         $('ul.pagination').pageable({
             url: '/admin/parkingCoupons/json',
             parameter: parameterFn,
             fn: submitFn
-        });
-
-        $('.datepicker').datepicker({
-        	dateFormat:'yy-mm-dd',
         });
     })
 </script>
