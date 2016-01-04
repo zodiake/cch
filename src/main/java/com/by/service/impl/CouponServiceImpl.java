@@ -1,15 +1,14 @@
 package com.by.service.impl;
 
-import com.by.form.BaseCouponForm;
-import com.by.json.CouponJson;
-import com.by.model.*;
-import com.by.repository.CouponRepository;
-import com.by.repository.GiftCouponMemberRepository;
-import com.by.repository.ShopCouponMemberRepository;
-import com.by.service.*;
-import com.by.typeEnum.CouponAdminStateEnum;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,18 +17,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.form.BaseCouponForm;
+import com.by.json.CouponJson;
+import com.by.model.Coupon;
+import com.by.model.GiftCoupon;
+import com.by.model.GiftCouponMember;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.model.ShopCoupon;
+import com.by.model.ShopCouponMember;
+import com.by.repository.GiftCouponMemberRepository;
+import com.by.repository.ShopCouponMemberRepository;
+import com.by.service.CouponService;
+import com.by.service.GiftCouponService;
+import com.by.service.MemberService;
+import com.by.service.ParkingCouponService;
+import com.by.service.ShopCouponService;
+import com.by.typeEnum.CouponAdminStateEnum;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 
 @Service
 public class CouponServiceImpl implements CouponService {
-    @Autowired
-    private CouponRepository repository;
     @Autowired
     private GiftCouponMemberRepository giftCouponMemberRepository;
     @Autowired
@@ -94,7 +103,8 @@ public class CouponServiceImpl implements CouponService {
         return couponSummary.getBeginTime() == null && couponSummary.getEndTime() == null;
     }
 
-    public <T extends Coupon> Predicate[] getPredicateList(BaseCouponForm form, Root<T> root, CriteriaBuilder cb) {
+    @Override
+    public <T extends Coupon> List<Predicate> getPredicateList(BaseCouponForm form, Root<T> root, CriteriaBuilder cb) {
         List<Predicate> criteria = new ArrayList<>();
         if (form.getState() != null) {
             Calendar today = Calendar.getInstance();
@@ -118,7 +128,7 @@ public class CouponServiceImpl implements CouponService {
         if (form.getEndTime() != null)
             criteria.add(cb.or(cb.greaterThanOrEqualTo(root.get("endTime"), form.getEndTime()),
                     cb.isNull(root.get("endTime"))));
-        return criteria.toArray(new Predicate[0]);
+        return criteria;
     }
 
     @Override

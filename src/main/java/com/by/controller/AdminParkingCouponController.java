@@ -76,6 +76,7 @@ public class AdminParkingCouponController extends BaseController {
 		return REDIRECT + id;
 	}
 
+	// 列表页
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(BaseCouponForm form, Model uiModel,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {

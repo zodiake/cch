@@ -1,5 +1,27 @@
 package com.by.service.impl;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.by.exception.NotFoundException;
 import com.by.exception.NotValidException;
 import com.by.exception.OutOfStorageException;
@@ -8,26 +30,15 @@ import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.repository.ParkingCouponRepository;
-import com.by.service.*;
+import com.by.service.CouponService;
+import com.by.service.LicenseService;
+import com.by.service.MemberService;
+import com.by.service.ParkingCouponExchangeHistoryService;
+import com.by.service.ParkingCouponService;
+import com.by.service.ParkingCouponUseHistoryService;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -124,7 +135,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         c.select(root);
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         cq.select(cb.count(cq.from(ParkingCoupon.class)));
-        Predicate[] predicates = couponService.getPredicateList(form, root, cb);
+        Predicate[] predicates = couponService.getPredicateList(form, root, cb).toArray(new Predicate[0]);
         c.where(predicates);
         cq.where(predicates);
 

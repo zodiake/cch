@@ -1,12 +1,15 @@
 package com.by.service.impl;
 
-import com.by.form.BaseCouponForm;
-import com.by.json.GiftCouponJson;
-import com.by.model.GiftCoupon;
-import com.by.repository.GiftCouponRepository;
-import com.by.service.CouponService;
-import com.by.service.GiftCouponService;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -15,14 +18,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.form.BaseCouponForm;
+import com.by.json.GiftCouponJson;
+import com.by.model.GiftCoupon;
+import com.by.repository.GiftCouponRepository;
+import com.by.service.CouponService;
+import com.by.service.GiftCouponService;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-4.
@@ -102,11 +104,9 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 		c.select(root);
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		cq.select(cb.count(cq.from(GiftCoupon.class)));
-		if (form != null) {
-			Predicate[] predicates = couponService.getPredicateList(form, root, cb);
-			c.where(predicates);
-			cq.where(predicates);
-		}
+		Predicate[] predicates = couponService.getPredicateList(form, root, cb).toArray(new Predicate[0]);
+		c.where(predicates);
+		cq.where(predicates);
 
 		List<GiftCoupon> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
 				.setMaxResults(pageable.getPageSize()).getResultList();
