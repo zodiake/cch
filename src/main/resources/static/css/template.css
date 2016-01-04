@@ -496,7 +496,6 @@ ul.par-nav li.active i.icon-seven {
 }
 
 .success-modal {
-    display: none;
     width: 400px;
     height: 205px;
     padding: 20px 0;
@@ -519,7 +518,6 @@ ul.par-nav li.active i.icon-seven {
 }
 
 .fixed {
-    display: none;
     width: 100%;
     height: 100%;
     position: fixed;

@@ -54,7 +54,6 @@
             </div>
             <div class="row">
                 <form class="form-horizontal" th:object="${card}" th:method="put">
-                	<div th:if="${status}!=null" th:text="${status.message}" th:class="${status.status}">success</div>
                     <div class="form-group pt50">
                         <label class="col-md-3 control-label">名称：</label>
                         <div class="col-md-3">
@@ -84,12 +83,21 @@
                     </div>
                     <div class="group-ft col-xs-offset-3 mt50">
                         <a th:href="@{/admin/cards}"><button class="btn btn-default" type="button">取消</button></a>
-                        <input type="submit" class="btn btn-success col-xs-offset-2" value="确定"/>
+                        <button type="submit" class="btn btn-success col-xs-offset-2" >确定</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</div>
+<div id="alert" th:if="${status}!=null" th:class="${status.status}">
+	<div class="success-modal">
+		<div class="show-msg">
+			<div class="alert alert-success" role="alert" th:text="${status.message}">用户创建成功</div>		
+			<div class="success-bg"><img th:src="@{/img/icon-success.jpg}" /></div>
+		</div>
+	</div>
+<div class="fixed"></div>
 </div>
 </body>
 </html>

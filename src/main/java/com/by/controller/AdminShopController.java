@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.form.ShopBindUserForm;
 import com.by.json.ShopJson;
+import com.by.message.SuccessMessage;
 import com.by.model.Menu;
 import com.by.model.Shop;
 import com.by.model.User;
@@ -96,7 +98,7 @@ public class AdminShopController extends BaseController {
 	// 增加一个店铺
 	@RequestMapping(params = "form", method = RequestMethod.POST)
 	public String add(@Valid @ModelAttribute("shop") Shop shop,
-			BindingResult result, Model uiModel) {
+			BindingResult result, Model uiModel,RedirectAttributes redirectAttributes) {
 		shopKeyUniqueValidator.validate(shop, result);
 		if (result.hasErrors()) {
 			uiModel.addAttribute("shop", shop);
@@ -107,6 +109,7 @@ public class AdminShopController extends BaseController {
 		shop.setCreatedBy(user.getName());
 		shop.setUpdatedBy(user.getName());
 		Shop s = service.save(shop);
+		redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
 		return "redirect:/admin/shops/" + s.getId();
 	}
 
@@ -124,7 +127,8 @@ public class AdminShopController extends BaseController {
 	// 修改店铺信息
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public String edit(@Valid @ModelAttribute("shop") Shop shop,
-			BindingResult result, Model uiModel, @PathVariable("id") int id) {
+			BindingResult result, Model uiModel, @PathVariable("id") int id
+			,RedirectAttributes redirectAttributes) {
 		shopKeyValidator.validate(shop, result);
 		if (result.hasErrors()) {
 			uiModel.addAttribute("shop", shop);
@@ -134,6 +138,7 @@ public class AdminShopController extends BaseController {
 		shop.setId(id);
 		shop.setUpdatedBy(userContext.getCurrentUser().getName());
 		service.update(shop);
+		redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
 		return "redirect:/admin/shops/" + id;
 	}
 

@@ -86,5 +86,14 @@
 		</div>
 	</div>
 </div>
+<div id="alert" th:if="${status}!=null" th:class="${status.status}">
+	<div class="success-modal">
+		<div class="show-msg">
+			<div class="alert alert-success" role="alert" th:text="${status.message}">用户创建成功</div>		
+			<div class="success-bg"><img th:src="@{/img/icon-success.jpg}" /></div>
+		</div>
+	</div>
+<div class="fixed"></div>
+</div>
 </body>
 </html>

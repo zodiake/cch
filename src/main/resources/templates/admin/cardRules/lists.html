@@ -82,7 +82,7 @@
                 </thead>
                 <tbody>
 	                <tr th:each="r:${lists.content}">
-	                    <td><a th:text="${r.name}" th:href="@{/admin/cardRules/__${r.id}__}"></a></td>
+	                    <td><a th:text="${r.name}"></a></td>
 	                    <td><a th:text="${r.category}"></a></td>
 	                    <td><a th:text="${r.cardName}">普通</a></td>
 	                    <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
