@@ -1,9 +1,5 @@
 package com.by.controller;
 
-import com.by.form.ShopCouponForm;
-import com.by.json.CouponTemplateJson;
-import com.by.model.Menu;
-import com.by.service.ShopCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.by.form.ShopCouponForm;
+import com.by.json.ShopCouponJson;
+import com.by.model.Menu;
+import com.by.service.ShopCouponService;
 
 /**
  * Created by yagamai on 16-1-4.
@@ -32,7 +33,7 @@ public class AdminShopCouponController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(ShopCouponForm form, Model uiModel,
                        @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<CouponTemplateJson> lists = service.findAll(form, pageable);
+        Page<ShopCouponJson> lists = service.findAll(form, pageable);
         uiModel.addAttribute("lists", lists);
         uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
         uiModel.addAttribute("form", form);

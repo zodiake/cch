@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.by.form.ShopCouponForm;
-import com.by.json.CouponTemplateJson;
+import com.by.json.ShopCouponJson;
 import com.by.model.ShopCoupon;
 import com.by.repository.ShopCouponRepository;
 import com.by.service.CouponService;
@@ -67,7 +67,7 @@ public class ShopCouponServiceImpl implements ShopCouponService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<CouponTemplateJson> findAll(ShopCouponForm form, Pageable pageable) {
+	public Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<ShopCoupon> c = cb.createQuery(ShopCoupon.class);
 		Root<ShopCoupon> root = c.from(ShopCoupon.class);
@@ -85,7 +85,7 @@ public class ShopCouponServiceImpl implements ShopCouponService {
 		List<ShopCoupon> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
 				.setMaxResults(pageable.getPageSize()).getResultList();
 		Long count = em.createQuery(cq).getSingleResult();
-		List<CouponTemplateJson> results = lists.stream().map(i -> new CouponTemplateJson(i))
+		List<ShopCouponJson> results = lists.stream().map(i -> new ShopCouponJson(i))
 				.collect(Collectors.toList());
 		return new PageImpl<>(results, pageable, count);
 	}

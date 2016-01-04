@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.by.form.ShopCouponForm;
-import com.by.json.CouponTemplateJson;
+import com.by.json.ShopCouponJson;
 import com.by.model.ShopCoupon;
 import com.by.typeEnum.ValidEnum;
 
@@ -22,7 +22,7 @@ public interface ShopCouponService {
 
     Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-    Page<CouponTemplateJson> findAll(ShopCouponForm form, Pageable pageable);
+    Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable);
 
     Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable);
 }

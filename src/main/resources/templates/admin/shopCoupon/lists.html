@@ -26,6 +26,7 @@
 		</tr>
 		{{/for}}
 
+
     </script>
 </head>
 
@@ -83,45 +84,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><a>2016元旦</a></td>
-                    <td><a>2</a></td>
-                    <td><a>1000</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>10</a></td>
-                    <td><a>aaaaaa</a></td>
-                    <td><a class="text-success">使用中</a></td>
-                </tr>
-                <tr>
-                    <td><a>2016元旦</a></td>
-                    <td><a>2</a></td>
-                    <td><a>1000</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>10</a></td>
-                    <td><a>43fsfdgdgdfgd</a></td>
-                    <td><a class="text-danger">已关闭</a></td>
-                </tr>
-                <tr>
-                    <td><a>2016元旦</a></td>
-                    <td><a>2</a></td>
-                    <td><a>1000</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>10</a></td>
-                    <td><a>ffffffff</a></td>
-                    <td><a class="text-muted">已过期</a></td>
-                </tr>
-                <tr>
-                    <td><a>2016元旦</a></td>
-                    <td><a>2</a></td>
-                    <td><a>1000</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>10</a></td>
-                    <td><a>ababvavavav</a></td>
-                    <td><a class="text-primary">未生效</a></td>
+                <tr th:each="c:${lists.content}">
+                    <td><a th:text="${c.name}">2016元旦</a></td>
+                    <td><a th:text="${c.amount}">2</a></td>
+                    <td><a th:text="${c.score}">1000</a></td>
+                    <td><a th:text="${c.beginTime}">2015年10月10号</a></td>
+                    <td><a th:text="${c.endTime}">2015年10月10号</a></td>
+                    <td><a th:text="${c.total}">10</a></td>
+                    <td><a th:text="${c.shopName}">aaaaaa</a></td>
+                    <td><a th:class="${c.cssClass}" th:text="${c.state}">使用中</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -155,11 +126,11 @@
         var parameterFn = function () {
             var beginTime = $('#beginTime').val();
             var endTime = $('#endTime').val();
-            var state=$('#state').val();
+            var state = $('#state').val();
             return {
                 beginTime: beginTime,
                 endTime: endTime,
-                state:state
+                state: state
             }
         };
 
@@ -170,7 +141,7 @@
         });
 
         $('.datepicker').datepicker({
-            dateFormat:'yy-mm-dd',
+            dateFormat: 'yy-mm-dd',
         });
     })
 </script>
