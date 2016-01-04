@@ -14,6 +14,19 @@
     <script type="text/javascript" src="/js/bootstrap-timepicker.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
+    <script type="text/javascript" src="/js/jsRender.js"></script>
+    <script src="/js/page.js"></script>
+    <script id="detail" type="text/x-jsrender">
+		{{for content}}
+		<tr>
+			<td><a>{{>name}}</a></td>
+			<td><a>{{>beginTime}}</a></td>
+			<td><a>{{>endTime}}</a></td>
+            <td><a class="{{>cssClass}}">{{>state}}</a></td>
+		</tr>
+		{{/for}}
+
+    </script>
 </head>
 
 <body>
@@ -119,21 +132,7 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="#">1</a>
-                    </li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                    <li>
-                        <a href="#">4</a>
-                    </li>
-                    <li>
-                        <a href="#">5</a>
-                    </li>
+                    <li th:each="i:${#numbers.sequence(1,last)}"><a th:text="${i}">1</a></li>
                     <li>
                         <a href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
@@ -146,7 +145,33 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        $('.datepicker').datepicker();
+        var submitFn = function (data) {
+            var tmpl = $.templates("#detail");
+            var html = tmpl.render(data.obj);
+            $('table tbody').children().remove();
+            $('table tbody').html(html);
+        };
+
+        var parameterFn = function () {
+            var beginTime = $('#beginTime').val();
+            var endTime = $('#endTime').val();
+            var state=$('#state').val();
+            return {
+                beginTime: beginTime,
+                endTime: endTime,
+                state:state
+            }
+        };
+
+        $('ul.pagination').pageable({
+            url: '/admin/parkingCoupons/json',
+            parameter: parameterFn,
+            fn: submitFn
+        });
+
+        $('.datepicker').datepicker({
+            dateFormat:'yy-mm-dd',
+        });
     })
 </script>
 </body>

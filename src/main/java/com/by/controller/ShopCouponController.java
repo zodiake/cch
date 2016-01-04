@@ -44,7 +44,7 @@ import static com.by.SpringExtension.SpringExtProvider;
  */
 @Controller
 @RequestMapping(value = "/api/shopCoupons")
-public class ShopCouponController implements UtilContoller{
+public class ShopCouponController implements UtilContoller {
     private ActorSystem system;
     private ActorRef ref;
     private ShopCouponService shopCouponService;
@@ -75,9 +75,7 @@ public class ShopCouponController implements UtilContoller{
             throw new MemberNotValidException();
         }
         Page<ShopCoupon> coupons = shopCouponService.findByValid(ValidEnum.VALID, pageable);
-        List<CouponTemplateJson> results = coupons.getContent().stream().filter(i ->
-                couponService.isValidCoupon(i)
-        ).map(i -> {
+        List<CouponTemplateJson> results = coupons.getContent().stream().map(i -> {
             CouponTemplateJson json = new CouponTemplateJson(i);
             json.setShopName(i.getShop().getName());
             return json;

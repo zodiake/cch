@@ -9,13 +9,7 @@ import com.by.typeEnum.ValidEnum;
 /**
  * Created by yagamai on 15-12-3.
  */
-public class CouponTemplateJson {
-	private int id;
-
-	private String name;
-
-	private String couponEndTime;
-
+public class CouponTemplateJson extends CouponJson{
 	private int score;
 
 	private String beginTime;
@@ -34,6 +28,7 @@ public class CouponTemplateJson {
 	}
 
 	public CouponTemplateJson(Coupon coupon) {
+		super(coupon);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar today = Calendar.getInstance();
 
@@ -58,39 +53,10 @@ public class CouponTemplateJson {
 			this.cssClass = "text-danger";
 			this.state = "已关闭";
 		}
-		this.id = coupon.getId();
-		this.name = coupon.getName();
-		if (coupon.getCouponEndTime() != null)
-			this.couponEndTime = format.format(coupon.getCouponEndTime().getTime());
 		this.score = coupon.getScore();
 		this.beginTime = format.format(coupon.getBeginTime().getTime());
 		this.endTime = format.format(coupon.getEndTime().getTime());
 		this.summary = coupon.getSummary();
-
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCouponEndTime() {
-		return couponEndTime;
-	}
-
-	public void setCouponEndTime(String couponEndTime) {
-		this.couponEndTime = couponEndTime;
 	}
 
 	public int getScore() {
