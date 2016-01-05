@@ -68,6 +68,9 @@ public class ShopRuleServiceImpl implements ShopRuleService {
         ShopRule rule = repository.findOne(r.getId());
         rule.setName(r.getName());
         rule.setBeginTime(r.getBeginTime());
+        rule.setEndTime(r.getEndTime());
+        rule.setRate(r.getRate());
+        rule.setScore(r.getScore());
         rule.setShops(r.getShops());
         return rule;
     }
