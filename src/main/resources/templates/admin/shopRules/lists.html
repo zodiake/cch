@@ -19,8 +19,6 @@
 		{{for content}}
 		<tr>
 			<td><a>{{>name}}</a></td>
-			<td><a>{{>category}}</a></td>
-			<td><a>{{>cardName}}</a></td>
 			<td><a>{{>beginTime}}</a></td>
 			<td><a>{{>endTime}}</a></td>
             <td><a class="{{>cssClass}}">{{>state}}</a></td>
@@ -41,7 +39,7 @@
         <div class="member-jfe-wrap container">
             <div class="hd clearfix">
                 <div class="bar base-bar short-bar pull-left">店铺积分规则</div>
-                <button type="button" class="btn btn-info">添加</button>
+                <a href="/admin/shopRules?form"><button type="button" class="btn btn-info">添加</button></a>
             </div>
             <form class="form-inline" th:object="${form}">
                 <div class="form-group">
