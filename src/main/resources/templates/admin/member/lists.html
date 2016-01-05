@@ -19,9 +19,8 @@
     <script id="detail" type="text/x-jsrender">
 		{{for content}}
 		<tr>
-			<td><a>{{>mobile}}</a></td>
-			<td><a>{{>name}}</a></td>
-			<td><a>{{>card}}</a></td>
+			<td><a href="/admin/members/{{>id}}">{{>mobile}}</a></td>
+			<td><a>{{>cardName}}</a></td>
 			<td><a>{{>createdTime}}</a></td>
 			<td><a>{{>score}}</a></td>
 		</tr>
@@ -95,7 +94,6 @@
             <table class="table table-striped bg-white">
                 <thead>
                 <tr>
-                    <th>姓名</th>
                     <th>手机号</th>
                     <th>会员卡</th>
                     <th>注册日期</th>
@@ -105,10 +103,9 @@
                 <tbody>
                 <tr th:each="m:${lists.content}">
                     <td><a th:text="${m.mobile}" th:href="@{'/admin/members/'+${m.id}}">Jessica Foster</a></td>
-                    <td><a>12334556677</a></td>
-                    <td><a>普通</a></td>
-                    <td><a>2015年10月10号</a></td>
-                    <td><a>1234</a></td>
+                    <td><a th:text="${m.cardName}"></a></td>
+                    <td><a th:text="${m.createdTime}"></a></td>
+                    <td><a th:text="${m.score}"></a></td>
                 </tr>
                 </tbody>
             </table>

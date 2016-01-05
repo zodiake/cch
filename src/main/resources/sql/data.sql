@@ -82,7 +82,7 @@ INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingP
 VALUES (1, 1, '2015-11-25 13:14:22', 'p', '沪A54321', 15, 0);
 
 -- test member_detail
-INSERT INTO by_member_detail (id, member_id) VALUES (1, 1);
+INSERT INTO by_member_detail (id, member_id, real_name, address, birthday) VALUES (1, 1, '张三' ,'上海市长宁区万航渡路2170号A1室', '1990-01-01');
 
 -- test category
 INSERT INTO by_rule_category (id, name) VALUES (1, 'register rule'); -- register
@@ -133,8 +133,8 @@ INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (7, 2, 3,
 INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (8, 2, 4, 'h');
 
 -- test by_trading
-INSERT INTO by_trading (id, member_id, code, amount) VALUES (1, 1, '321', 100);
-INSERT INTO by_trading (id, member_id, code, amount) VALUES (2, NULL, '123', 100);
+INSERT INTO by_trading (id, member_id, code, amount, shop_id,created_time) VALUES (1, 1, '321', 100,1,'2015-12-25 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id,created_time) VALUES (2, 1, '123', 100,1,'2015-12-26 12:34:22');
 
 -- test coupon
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)

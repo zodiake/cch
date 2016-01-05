@@ -26,6 +26,12 @@
 			</div>
            <div class="row">
             	<form class="form-horizontal pt50" th:object="${member}" method = "post">
+            		<div class="form-group">
+                    	<label class="col-md-4 control-label">姓名：</label>
+                    	<div class="col-md-3">
+                        	<input type="text" class="form-control" th:field="*{memberDetail.realName}"/>
+                    	</div>
+                    </div>
                     <div class="form-group">
                     	<label class="col-md-4 control-label">手机号：</label>
                     	<div class="col-md-3">
