@@ -6,6 +6,7 @@ import java.util.Locale;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +51,9 @@ public class AdminUserController extends BaseController {
 	private AuthorityService authorityService;
 	@Autowired
 	private MessageSource messageSource;
+	@Autowired
+	@Qualifier("userNameValidator")
+	private Validator validator;
 
 	@ModelAttribute("authorities")
 	public List<Authority> authorities() {
@@ -83,6 +88,7 @@ public class AdminUserController extends BaseController {
 	@RequestMapping(params = "form", method = RequestMethod.POST)
 	public String save(@Valid @ModelAttribute("user") User user, BindingResult result, Model uiModel,
 			RedirectAttributes redirectAttributes) {
+		validator.validate(user, result);
 		if (result.hasErrors()) {
 			uiModel.addAttribute("user", user);
 			addMenu(uiModel);
@@ -102,6 +108,13 @@ public class AdminUserController extends BaseController {
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<User> users = service.findAll(null, pageable);
 		return users;
+	}
+
+	@RequestMapping(value = "/{id}/validate", method = RequestMethod.PUT)
+	@ResponseBody
+	public Status validate(@PathVariable("id") int id) {
+		service.validate(id);
+		return new Success<String>("asdf");
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

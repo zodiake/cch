@@ -45,6 +45,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
+    @Cacheable(value="auth")
     public Authority save(Authority authority) {
         authority.setValid(ValidEnum.VALID);
         return repository.save(authority);

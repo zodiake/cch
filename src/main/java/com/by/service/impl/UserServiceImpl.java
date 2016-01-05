@@ -1,22 +1,31 @@
 package com.by.service.impl;
 
-import com.by.form.UserQueryForm;
-import com.by.model.Menu;
-import com.by.model.User;
-import com.by.repository.UserRepository;
-import com.by.service.UserService;
-import com.by.typeEnum.ValidEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.by.form.UserQueryForm;
+import com.by.model.Menu;
+import com.by.model.User;
+import com.by.repository.UserRepository;
+import com.by.service.UserService;
+import com.by.typeEnum.ValidEnum;
 
 @Service
 @Transactional
@@ -25,6 +34,8 @@ public class UserServiceImpl implements UserService {
 	private UserRepository repository;
 	@Autowired
 	private EntityManager em;
+	@Autowired
+	private ShaPasswordEncoder encoder;
 
 	@Transactional(readOnly = true)
 	public User findByName(String name) {
@@ -87,12 +98,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User save(User user){
+	public User save(User user) {
+		user.setPassword(encoder.encodePassword(user.getPassword(), null));
+		user.setValid(ValidEnum.VALID);
+		user.setUserAuthority("ROLE_ADMIN");
 		return repository.save(user);
 	}
 
 	@Override
 	public Long countByName(String name) {
 		return repository.countByName(name);
+	}
+
+	public User validate(int id) {
+		User user = repository.findOne(id);
+		if (user.getValid().equals(ValidEnum.VALID)) {
+			user.setValid(ValidEnum.INVALID);
+		} else {
+			user.setValid(ValidEnum.VALID);
+		}
+		return user;
 	}
 }

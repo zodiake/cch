@@ -11,17 +11,19 @@ import com.by.model.Menu;
 import com.by.model.User;
 
 public interface UserService {
-    Optional<User> findId(int id);
-    
-    User findOne(int id);
+	Optional<User> findId(int id);
 
-    User findByName(String name);
+	User findOne(int id);
 
-    Set<Menu> getMenus(User user);
+	User findByName(String name);
 
-    Page<User> findAll(UserQueryForm form, Pageable pageable);
+	Set<Menu> getMenus(User user);
 
-    User save(User user);
-    
-    Long countByName(String name);
+	Page<User> findAll(UserQueryForm form, Pageable pageable);
+
+	User save(User user);
+
+	Long countByName(String name);
+
+	User validate(int id);
 }
