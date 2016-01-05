@@ -1,6 +1,5 @@
 package com.by.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -13,6 +12,8 @@ import com.by.model.User;
 
 public interface UserService {
     Optional<User> findId(int id);
+    
+    User findOne(int id);
 
     User findByName(String name);
 
@@ -20,5 +21,7 @@ public interface UserService {
 
     Page<User> findAll(UserQueryForm form, Pageable pageable);
 
-    List<User> findFirstPage(int size);
+    User save(User user);
+    
+    Long countByName(String name);
 }

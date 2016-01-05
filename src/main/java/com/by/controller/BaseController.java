@@ -33,6 +33,7 @@ public abstract class BaseController implements UtilContoller {
     protected void addMenu(Model uiModel) {
         uiModel.addAttribute("menus", menus(userContext.getCurrentUser()));
         uiModel.addAttribute("subMenu", getSubMenu());
+        uiModel.addAttribute("userName",userContext.getCurrentUser().getName());
     }
 
     protected int computeLastPage(int totalPages) {

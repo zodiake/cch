@@ -26,8 +26,8 @@ INSERT INTO by_menu (id, name, category_id, href) VALUES (10, '店铺管理', 4,
 INSERT INTO by_menu (id, name, category_id, href) VALUES (11, '注册协议', 5, '');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (12, '会员卡使用帮助', 5, '');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (13, '会员卡积分规则', 5, '');
-INSERT INTO by_menu (id, name, category_id, href) VALUES (14, '权限管理', 6, '');
-INSERT INTO by_menu (id, name, category_id, href) VALUES (15, '用户管理', 6, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (14, '权限管理', 6, '/admin/authorities');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (15, '用户管理', 6, '/admin/users');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (16, '账户设置', 6, '');
 
 -- test authority

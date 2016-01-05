@@ -36,7 +36,7 @@ public class CachingConfig extends CachingConfigurerSupport {
         menuCacheConfig.setTimeToIdleSeconds(30 * 60 * 1000);
         menuCacheConfig.setName("menu");
 
-        // rule cache config
+        // card cache config
         CacheConfiguration cardRuleCacheConfig = new CacheConfiguration();
         cardRuleCacheConfig.setMemoryStoreEvictionPolicy("LRU");
         cardRuleCacheConfig.setMaxEntriesLocalHeap(1000);
@@ -71,6 +71,12 @@ public class CachingConfig extends CachingConfigurerSupport {
         licenseCacheConfig.setTimeToIdleSeconds(30 * 60 * 1000);
         licenseCacheConfig.setName("license");
 
+        CacheConfiguration authCacheConfig = new CacheConfiguration();
+        authCacheConfig.setMemoryStoreEvictionPolicy("LRU");
+        authCacheConfig.setMaxEntriesLocalHeap(1000);
+        authCacheConfig.setTimeToIdleSeconds(30 * 60 * 1000);
+        authCacheConfig.setName("auth");
+
 
         net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
         config.addCache(ruleCacheConfig);
@@ -81,6 +87,7 @@ public class CachingConfig extends CachingConfigurerSupport {
         config.addCache(memberCacheConfig);
         config.addCache(helpCacheConfig);
         config.addCache(licenseCacheConfig);
+        config.addCache(authCacheConfig);
 
         return net.sf.ehcache.CacheManager.newInstance(config);
     }
