@@ -6,6 +6,7 @@ import com.by.model.Card;
 import com.by.model.Member;
 import com.by.model.ScoreAddHistory;
 import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,9 +32,7 @@ public interface MemberService {
 
     List<ScoreAddHistory> extractScoreHistory(List<ScoreAddHistory> allList, int total);
 
-    Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable);
-
-    Page<Member> findFirstPage(int size);
+    Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable, ValidEnum valid);
 
     boolean isValidMember(Member member);
 

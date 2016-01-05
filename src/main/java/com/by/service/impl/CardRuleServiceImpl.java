@@ -1,5 +1,24 @@
 package com.by.service.impl;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.by.exception.Fail;
 import com.by.exception.NotValidException;
 import com.by.exception.Status;
@@ -13,23 +32,6 @@ import com.by.repository.CardRuleRepository;
 import com.by.service.CardRuleService;
 import com.by.service.RuleService;
 import com.by.typeEnum.ValidEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by yagamai on 15-12-15.
@@ -63,6 +65,7 @@ public class CardRuleServiceImpl implements CardRuleService {
             endTime.set(Calendar.MINUTE, 59);
             endTime.set(Calendar.SECOND, 59);
         }
+        rule.setValid(ValidEnum.VALID);
         return repository.save(rule);
     }
 
@@ -120,5 +123,10 @@ public class CardRuleServiceImpl implements CardRuleService {
         List<RuleJson> results = lists.stream().map(i -> new RuleJson(i)).collect(Collectors.toList());
         return new PageImpl<>(results, pageable, count);
     }
+
+	@Override
+	public Long countByName(String name) {
+		return repository.countByName(name);
+	}
 
 }

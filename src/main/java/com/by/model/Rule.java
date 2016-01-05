@@ -1,5 +1,22 @@
 package com.by.model;
 
+import java.util.Calendar;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
 import com.by.typeEnum.ValidEnum;
 
 import org.hibernate.envers.Audited;
@@ -7,11 +24,6 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import java.util.Calendar;
 
 @Entity
 @Table(name = "by_rule")
@@ -57,7 +69,6 @@ public abstract class Rule {
     @Column(name="updated_by")
     private String updatedBy;
 
-    @Min(value = 0, message = "rule.score.notnull")
     private int Score;
 
     public int getId() {

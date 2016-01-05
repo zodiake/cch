@@ -10,4 +10,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 	User findByName(String name);
 
 	Optional<User> findById(Integer id);
+	
+	Long countByName(String name);
 }

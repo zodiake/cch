@@ -24,6 +24,7 @@ CREATE TABLE by_user (
   name     VARCHAR(20),
   password CHAR(64),
   valid    SMALLINT        DEFAULT 1,
+  user_authority varchar(10),
   PRIMARY KEY (id)
 );
 
@@ -100,6 +101,29 @@ CREATE TABLE by_card_aud (
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   summary      VARCHAR(500),
+  REV          INTEGER NOT NULL,
+  REVTYPE      TINYINT,
+  PRIMARY KEY (id, REV)
+);
+
+CREATE TABLE by_rule_aud (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  rate         DOUBLE,
+  score        INT             DEFAULT 0,
+  card_id      INT,
+  summary      VARCHAR(50),
+  valid        SMALLINT        DEFAULT 1,
+  beginTime    TIMESTAMP,
+  endTime      TIMESTAMP,
+  category_id  INT,
+  name         VARCHAR(20),
+  type         CHAR(1),
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
+  FOREIGN KEY (card_id) REFERENCES by_card (id),
+  FOREIGN KEY (category_id) REFERENCES by_rule_category (id),
   REV          INTEGER NOT NULL,
   REVTYPE      TINYINT,
   PRIMARY KEY (id, REV)

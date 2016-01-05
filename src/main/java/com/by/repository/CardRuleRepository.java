@@ -13,4 +13,6 @@ public interface CardRuleRepository extends PagingAndSortingRepository<CardRule,
 	List<CardRule> findByRuleCategoryAndCardAndValid(RuleCategory category, Card card, ValidEnum valid);
 
 	List<CardRule> findByRuleCategoryAndCard(RuleCategory category, Card card);
+	
+	Long countByName(String name);
 }

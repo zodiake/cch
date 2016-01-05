@@ -4,13 +4,27 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
-    <title>权限详情</title>
+    <title>用户详情</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/template.css"/>
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
+    <script>
+    	$(function(){
+			$('#validate-button').click(function(){
+				var self=$(this);
+				$.ajax({
+					url:'/admin/user/'+self.attr('data-id')+'/validate',
+					type:'put',
+					success:function(data){
+						console.log(data);
+					}
+				})
+			});
+    	});
+    </script>
 </head>
 
 <body>
@@ -21,10 +35,10 @@
     <div th:replace="admin/layout/menu::menu"></div>
 
     <div class="mainpanel">
-        <div class="power-datil-wrap container">
+        <div class="user-datil-wrap container">
             <div class="hd clearfix">
-                <div class="bar state-bar short-bar pull-left">权限状态</div>
-                <button type="button" class="btn btn-danger">关闭</button>
+                <div class="bar state-bar short-bar pull-left">用户状态</div>
+                <button id='validate-button' type="button" class="btn btn-danger" th:attr="data-id=${user.id}">关闭</button>
             </div>
             <div class="form-group padd30">
                 <label class="col-md-4 control-label text-right">状态：</label>
@@ -33,23 +47,28 @@
                 </div>
             </div>
             <div class="hd">
-                <div class="bar edit-bar">权限设置</div>
+                <div class="bar edit-bar">用户设置</div>
             </div>
             <div class="show-msg">
-                <form class="form-horizontal pt50" th:object="${authority}" th:method="put">
+                <form class="form-horizontal pt50" th:object="${user}" th:method="put">
                     <div class="form-group">
-                        <label class="col-md-4 control-label">名称：</label>
+                        <label class="col-md-4 control-label">用户名：</label>
+                        <div class="col-md-3" th:text="*{name}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">密码：</label>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" th:field="*{name}"/>
+                            <input type="text" class="form-control" name="password" id="password"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">权限配置：</label>
                         <div class="col-md-3">
-                            <div class="checkbox" th:each="m:${authMenus}">
+                            <div class="checkbox" th:each="a:${authorities}">
                                 <label>
-                                    <input type="checkbox" value="" th:field="*{menus}" th:value="${m.id}"/>
-                                    <span th:text="${m.name}"></span>
+                                    <input type="checkbox" th:field="*{userAuthorities}" th:value="${a.id}"/>
+                                    <span th:text="${a.name}"></span>
                                 </label>
                             </div>
                         </div>

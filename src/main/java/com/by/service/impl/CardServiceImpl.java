@@ -10,6 +10,8 @@ import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,12 +47,20 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    @Cacheable("card")
+    public List<Card> findAllCache() {
+        return Lists.newArrayList(repository.findAll());
+    }
+
+    @Override
     public Card update(Card card) {
         Card source = repository.findOne(card.getId());
         source.setUpdatedBy(card.getUpdatedBy());
         source.setName(card.getName());
         source.setImgHref(card.getImgHref());
         source.setInitScore(card.getInitScore());
+        source.setSummary(card.getSummary());
         return source;
     }
 
@@ -61,12 +71,14 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @CachePut(value="card",key="#card.id")
     public Card save(Card card) {
         card.setValid(ValidEnum.VALID);
         return repository.save(card);
     }
 
     @Override
+    @CachePut(value="card",key="#card.id")
     public Card save(CardJson json) {
         Card card = new Card();
         card.setName(json.getName());

@@ -29,4 +29,6 @@ public interface CardRuleService {
     CardRule update(CardRule cardRule);
 
     Status valid(int id);
+    
+    Long countByName(String name);
 }

@@ -1,8 +1,7 @@
 package com.by.security;
 
-import com.by.model.User;
-import com.by.service.UserService;
-import com.by.typeEnum.ValidEnum;
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,8 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import com.by.model.User;
+import com.by.service.UserService;
+import com.by.typeEnum.ValidEnum;
 
 @Service
 public class DefaultUserService implements UserDetailsService {
@@ -33,14 +33,14 @@ public class DefaultUserService implements UserDetailsService {
             setId(user.getId());
             setName(user.getName());
             setUserAuthorities(user.getUserAuthorities());
+            setUserAuthority(user.getUserAuthority());
             setPassword(user.getPassword());
             setValid(user.getValid());
         }
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return getUserAuthorities().stream().flatMap(i -> AuthorityUtil.createAuthority(i.getName()).stream())
-                    .collect(Collectors.toList());
+            return AuthorityUtil.createAuthority(getUserAuthority());
         }
 
         @Override

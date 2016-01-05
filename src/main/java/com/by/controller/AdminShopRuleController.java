@@ -73,7 +73,7 @@ public class AdminShopRuleController extends BaseController {
 		return REDIRECT + r.getId();
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
 	public String edit(@PathVariable("id") int id, Model uiModel) {
 		ShopRule rule = service.findOne(id);
 		uiModel.addAttribute("rule", rule);
@@ -82,8 +82,8 @@ public class AdminShopRuleController extends BaseController {
 		return EDIT;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public String update(@PathVariable("id") int id, @Valid @ModelAttribute("rule") ShopRule rule, BindingResult result,
+	@RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.PUT)
+	public String update(@PathVariable("id") int id, @ModelAttribute("rule") ShopRule rule, BindingResult result,
 			Model uiModel) {
 		rule.setId(id);
 		if (result.hasErrors()) {

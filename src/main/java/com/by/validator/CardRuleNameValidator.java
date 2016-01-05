@@ -6,25 +6,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.by.model.Card;
-import com.by.repository.CardRepository;
+import com.by.model.CardRule;
+import com.by.service.CardRuleService;
 
 @Component
-@Qualifier("cardNameValidator")
-public class CardNameValidator implements Validator {
+@Qualifier("cardRuleNameValidator")
+public class CardRuleNameValidator implements Validator {
 	@Autowired
-	private CardRepository repository;
+	private CardRuleService service;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return Card.class.equals(clazz);
+		return CardRule.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		Card c = (Card) target;
-		Card another = repository.findByName(c.getName());
-		if (another != null && c.getId() != another.getId()) {
+		CardRule rule = (CardRule) target;
+		Long count = service.countByName(rule.getName());
+		if (count > 0) {
 			errors.rejectValue("name", "name.unique");
 		}
 	}
