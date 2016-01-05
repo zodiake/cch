@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import java.util.Calendar;
@@ -21,24 +22,25 @@ public abstract class Rule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    
+    @NotNull(message = "rule.rate.notnull")
     private double rate;
 
     private String summary;
 
-    @NotEmpty(message="名称不能为空")
-    @Length(max = 20,message = "名称最长为20个位")
+    @NotEmpty(message="rule.name.notnull")
+    @Length(max = 20,message = "rule.name.maxlength")
     private String name;
 
     @Enumerated
     private ValidEnum valid;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull(message="开始时间不能为空")
+    @NotNull(message="rule.beginTime.notnull")
     private Calendar beginTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull(message="结束时间不能为空")
+    @NotNull(message="rule.endTime.notnull")
     private Calendar endTime;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -55,7 +57,7 @@ public abstract class Rule {
     @Column(name="updated_by")
     private String updatedBy;
 
-    @NotNull
+    @Min(value = 0, message = "rule.score.notnull")
     private int Score;
 
     public int getId() {

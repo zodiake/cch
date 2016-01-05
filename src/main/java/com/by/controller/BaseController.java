@@ -101,6 +101,7 @@ public abstract class BaseController implements UtilContoller {
         message.setCanValid(canValid);
         message.setCanUpdate(false);
         message.setState("已关闭");
+        System.out.println(message.isCanValid());
         return message;
     }
 }

@@ -102,7 +102,7 @@ VALUES (3, 2.0, 1, 2, 1, 100, 'rule3', 'c', '2015-12-01', '2015-12-31 23:59:59')
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
 VALUES (4, 2.0, 1, 2, 1, 100, 'rule4', 'c', '2015-12-01', '2015-12-7 23:59:59');
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
-VALUES (5, 2.0, 1, 2, 1, 100, 'rule5', 'c', '2015-12-10', '2015-12-20 23:59:59');
+VALUES (5, 2.0, 1, 2, 1, 100, 'rule5', 'c', '2016-12-10', '2016-12-20 23:59:59');
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
 VALUES (6, 2.0, 1, 2, 1, 100, 'rule6', 'c', NULL, NULL);
 

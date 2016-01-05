@@ -21,6 +21,11 @@
         		if(rate.val().trim() == "")
         			rate.val("0.0");
         	});
+        	$("#score").blur(function(){
+        		var score = $(this);
+        		if(score.val().trim() == "")
+        			score.val("0");
+        	});
         });
     </script>
 </head>

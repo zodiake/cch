@@ -16,6 +16,20 @@
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/jsRender.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
+    <script>
+        $(function () {
+        	$("#rate").blur(function(){
+        		var rate = $(this);
+        		if(rate.val().trim() == "")
+        			rate.val("0.0");
+        	});
+        	$("#score").blur(function(){
+        		var score = $(this);
+        		if(score.val().trim() == "")
+        			score.val("0");
+        	});
+        });
+    </script>
 </head>
 
 <body>

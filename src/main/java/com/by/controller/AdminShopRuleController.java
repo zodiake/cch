@@ -7,6 +7,8 @@ import com.by.model.Shop;
 import com.by.model.ShopRule;
 import com.by.service.ShopRuleService;
 import com.by.service.ShopService;
+import com.by.typeEnum.ValidEnum;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/shopRules")
@@ -55,11 +59,12 @@ public class AdminShopRuleController extends BaseController {
 	@RequestMapping(params = "form", method = RequestMethod.GET)
 	public String form(Model uiModel) {
 		uiModel.addAttribute("rule", new ShopRule());
+		addMenu(uiModel);
 		return CREATE;
 	}
 
 	@RequestMapping(params = "form", method = RequestMethod.POST)
-	public String save(@ModelAttribute("rule") ShopRule rule, BindingResult result, Model uiModel) {
+	public String save(@Valid @ModelAttribute("rule") ShopRule rule, BindingResult result, Model uiModel) {
 		if (result.hasErrors()) {
 			uiModel.addAttribute("rule", rule);
 			return CREATE;
@@ -78,11 +83,12 @@ public class AdminShopRuleController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public String update(@PathVariable("id") int id, @ModelAttribute("rule") ShopRule rule, BindingResult result,
+	public String update(@PathVariable("id") int id, @Valid @ModelAttribute("rule") ShopRule rule, BindingResult result,
 			Model uiModel) {
 		rule.setId(id);
 		if (result.hasErrors()) {
 			uiModel.addAttribute("rule", rule);
+			addMenu(uiModel);
 			return EDIT;
 		}
 		ShopRule r = service.update(rule);
