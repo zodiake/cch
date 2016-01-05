@@ -82,8 +82,8 @@ public class AdminCardController extends BaseController {
         List<CardRule> signUpRules = cardRuleService.findByRuleCategoryAndCard(SIGNUP_CATEGORY, card);
         List<CardRule> tradingRules = cardRuleService.findByRuleCategoryAndCard(TRADING_CATEGORY, card);
         CardTemplateJson json = new CardTemplateJson(card, count.intValue());
-        json.setRegister(signUpRules.stream().map(RuleJson::new).collect(Collectors.toList()));
-        json.setTrading(tradingRules.stream().map(RuleJson::new).collect(Collectors.toList()));
+        json.setRegister(signUpRules.stream().map(r->new RuleJson(r)).collect(Collectors.toList()));
+        json.setTrading(tradingRules.stream().map(r->new RuleJson(r)).collect(Collectors.toList()));
         return new Success<>(json);
     }
 

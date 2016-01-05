@@ -73,7 +73,7 @@ public class AdminMemberController extends BaseController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String firstPage(AdminMemberForm form, Model uiModel,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<MemberJson> members = memberService.findAll(form, pageable);
+		Page<MemberJson> members = memberService.findAll(form, pageable, ValidEnum.VALID);
 		uiModel.addAttribute("lists", members);
 		uiModel.addAttribute("last", computeLastPage(members.getTotalPages()));
 		uiModel.addAttribute("form", form);
@@ -92,7 +92,7 @@ public class AdminMemberController extends BaseController {
 	@ResponseBody
 	public Status list(AdminMemberForm form, Model uiModel,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<MemberJson> results = memberService.findAll(form, pageable);
+		Page<MemberJson> results = memberService.findAll(form, pageable, ValidEnum.VALID);
 		uiModel.addAttribute("results", results);
 		return new Success<>(results);
 	}

@@ -1,47 +1,32 @@
 package com.by.service.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.by.exception.NotEnoughScoreException;
+import com.by.exception.NotValidException;
+import com.by.form.AdminMemberForm;
+import com.by.json.MemberJson;
+import com.by.model.*;
+import com.by.repository.MemberRepository;
+import com.by.service.*;
+import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
-import com.by.exception.NotEnoughScoreException;
-import com.by.exception.NotValidException;
-import com.by.form.AdminMemberForm;
-import com.by.json.MemberJson;
-import com.by.model.Card;
-import com.by.model.CardRule;
-import com.by.model.Member;
-import com.by.model.RuleCategory;
-import com.by.model.ScoreAddHistory;
-import com.by.repository.MemberRepository;
-import com.by.service.CardRuleService;
-import com.by.service.CardService;
-import com.by.service.MemberService;
-import com.by.service.RuleService;
-import com.by.service.ScoreAddHistoryService;
-import com.by.service.ScoreHistoryService;
-import com.by.typeEnum.ScoreHistoryEnum;
-import com.by.typeEnum.ValidEnum;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -175,7 +160,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable) {
+    public Page<MemberJson> findAll(AdminMemberForm form, Pageable pageable, ValidEnum valid) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Member> c = cb.createQuery(Member.class);
         Root<Member> root = c.from(Member.class);
@@ -192,6 +177,8 @@ public class MemberServiceImpl implements MemberService {
             criteria.add(cb.greaterThanOrEqualTo(root.get("createdTime"), form.getBeginTime()));
         if (form.getEndTime() != null)
             criteria.add(cb.lessThanOrEqualTo(root.get("createdTime"), form.getEndTime()));
+        if (valid != null)
+            criteria.add(cb.equal(root.get("valid"), valid));
         c.where(criteria.toArray(new Predicate[0]));
         cq.where(criteria.toArray(new Predicate[0]));
 
@@ -201,12 +188,6 @@ public class MemberServiceImpl implements MemberService {
 
         List<MemberJson> results = lists.stream().map(i -> new MemberJson(i)).collect(Collectors.toList());
         return new PageImpl<>(results, pageable, count);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<Member> findFirstPage(int size) {
-        return repository.findAll(new PageRequest(0, size, Sort.Direction.DESC, "createdTime"));
     }
 
     @Override

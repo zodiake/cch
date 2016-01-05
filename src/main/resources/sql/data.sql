@@ -15,7 +15,7 @@ INSERT INTO by_menu_category (id, name) VALUES (6, 'icon-seven');
 -- test menu
 INSERT INTO by_menu (id, name, category_id, href) VALUES (1, '会员卡', 1, '/admin/cards');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (2, '会员管理', 1, '/admin/members');
-INSERT INTO by_menu (id, name, category_id, href) VALUES (3, '会员黑名单', 1, '/admin/members');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (3, '会员黑名单', 1, '/admin/blackList');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (4, '会员卡积分', 2, '/admin/cardRules');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (5, '店铺积分', 2, '/admin/shopRules');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (6, '人工积分', 2, '');
