@@ -24,6 +24,7 @@ CREATE TABLE by_user (
   name     VARCHAR(20),
   password CHAR(64),
   valid    SMALLINT        DEFAULT 1,
+  user_authority varchar(10),
   PRIMARY KEY (id)
 );
 

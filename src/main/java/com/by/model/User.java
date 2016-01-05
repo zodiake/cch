@@ -25,6 +25,9 @@ public class User {
     private Shop shop;
 
 	private ValidEnum valid;
+	
+	@Column(name="user_authority")
+	private String userAuthority;
 
 	public User() {
 	}
@@ -81,6 +84,14 @@ public class User {
     public void setShop(Shop shop) {
         this.shop = shop;
     }
+    
+	public String getUserAuthority() {
+		return userAuthority;
+	}
+
+	public void setUserAuthority(String userAuthority) {
+		this.userAuthority = userAuthority;
+	}
 
 	@Override
 	public boolean equals(Object o) {

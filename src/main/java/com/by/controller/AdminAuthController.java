@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -29,65 +30,67 @@ import java.util.Locale;
 @Controller
 @RequestMapping(value = "/admin/authorities")
 public class AdminAuthController extends BaseController {
-	private final Menu subMenu = new Menu(14);
-	private final String LIST = "admin/authority/lists";
-	private final String EDIT = "admin/authority/edit";
-	private final String CREATE = "admin/authority/create";
-	private final String REDIRECT = "redirect:/admin/authorities/";
-	@Autowired
-	private AuthorityService service;
-	@Autowired
-	private MenuService menuService;
-	@Autowired
-	private MessageSource messageSource;
+    private final Menu subMenu = new Menu(14);
+    private final String LIST = "admin/authority/lists";
+    private final String EDIT = "admin/authority/edit";
+    private final String CREATE = "admin/authority/create";
+    private final String REDIRECT = "redirect:/admin/authorities/";
+    @Autowired
+    private AuthorityService service;
+    @Autowired
+    private MenuService menuService;
+    @Autowired
+    private MessageSource messageSource;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model uiModel,
-			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<Authority> lists = service.findAll(pageable);
-		uiModel.addAttribute("lists", lists);
-		uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
-		addMenu(uiModel);
-		return LIST;
-	}
+    @ModelAttribute("authMenus")
+    public List<Menu> allMenus() {
+        return menuService.findAll();
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String edit(@PathVariable("id") int id, Model uiModel) {
-		Authority authority = service.findOne(id);
-		uiModel.addAttribute("authority", authority);
-		uiModel.addAttribute("authMenus", menuService.findAll());
-		addMenu(uiModel);
-		return EDIT;
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public String list(Model uiModel,
+                       @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Authority> lists = service.findAll(pageable);
+        uiModel.addAttribute("lists", lists);
+        uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
+        addMenu(uiModel);
+        return LIST;
+    }
 
-	@RequestMapping(params = "form", method = RequestMethod.GET)
-	public String form(Model uiModel) {
-		Authority authority = new Authority();
-		uiModel.addAttribute("authority", authority);
-		uiModel.addAttribute("authMenus", menuService.findAll());
-		addMenu(uiModel);
-		return CREATE;
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String edit(@PathVariable("id") int id, Model uiModel) {
+        Authority authority = service.findOne(id);
+        uiModel.addAttribute("authority", authority);
+        addMenu(uiModel);
+        return EDIT;
+    }
 
-	@RequestMapping(params = "form", method = RequestMethod.POST)
-	public String save(@Valid @ModelAttribute("authority") Authority authority, BindingResult result, Model uiModel,
-			RedirectAttributes redirectAttributes) {
-		if (result.hasErrors()) {
-			uiModel.addAttribute("authority", authority);
-			uiModel.addAttribute("authMenus", menuService.findAll());
-			uiModel.addAttribute("message",
-					new Message("fail", messageSource.getMessage("save.fail", new Object[] {}, Locale.CHINESE)));
-			addMenu(uiModel);
-			return CREATE;
-		}
-		Authority a = service.save(authority);
-		redirectAttributes.addFlashAttribute("message",
-				new Message("success", messageSource.getMessage("save.success", new Object[] {}, Locale.CHINESE)));
-		return REDIRECT + a.getId();
-	}
+    @RequestMapping(params = "form", method = RequestMethod.GET)
+    public String form(Model uiModel) {
+        Authority authority = new Authority();
+        uiModel.addAttribute("authority", authority);
+        addMenu(uiModel);
+        return CREATE;
+    }
 
-	@Override
-	public Menu getSubMenu() {
-		return subMenu;
-	}
+    @RequestMapping(params = "form", method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute("authority") Authority authority, BindingResult result, Model uiModel,
+                       RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            uiModel.addAttribute("authority", authority);
+            uiModel.addAttribute("message",
+                    new Message("fail", messageSource.getMessage("save.fail", new Object[]{}, Locale.CHINESE)));
+            addMenu(uiModel);
+            return CREATE;
+        }
+        Authority a = service.save(authority);
+        redirectAttributes.addFlashAttribute("message",
+                new Message("success", messageSource.getMessage("save.success", new Object[]{}, Locale.CHINESE)));
+        return REDIRECT + a.getId();
+    }
+
+    @Override
+    public Menu getSubMenu() {
+        return subMenu;
+    }
 }

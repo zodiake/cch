@@ -1,31 +1,22 @@
 package com.by.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import com.by.form.UserQueryForm;
+import com.by.model.Menu;
+import com.by.model.User;
+import com.by.repository.UserRepository;
+import com.by.service.UserService;
+import com.by.typeEnum.ValidEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.by.form.UserQueryForm;
-import com.by.model.Menu;
-import com.by.model.User;
-import com.by.repository.UserRepository;
-import com.by.service.UserService;
+import java.util.*;
 
 @Service
 @Transactional
@@ -50,9 +41,11 @@ public class UserServiceImpl implements UserService {
         if (user.getShop() != null) {
             menus.addAll(u.getShop().getMenus());
         } else {
-            u.getUserAuthorities().stream().forEach(i -> {
-                menus.addAll(i.getMenus());
-            });
+            u.getUserAuthorities().stream()
+                    .filter(a -> a.getValid().equals(ValidEnum.VALID))
+                    .forEach(i -> {
+                        menus.addAll(i.getMenus());
+                    });
         }
         return menus;
     }

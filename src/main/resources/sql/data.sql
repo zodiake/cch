@@ -1,8 +1,8 @@
 -- test user
-INSERT INTO by_user (id, name, password, valid)
-VALUES (1, 'tom', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1);
-INSERT INTO by_user (id, name, password, valid)
-VALUES (2, 'mary', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1);
+INSERT INTO by_user (id, name, password, valid, user_authority)
+VALUES (1, 'tom', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1, 'ROLE_ADMIN');
+INSERT INTO by_user (id, name, password, valid,user_authority)
+VALUES (2, 'mary', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1, 'ROLE_SHOP');
 
 -- test menu_category
 INSERT INTO by_menu_category (id, name) VALUES (1, 'icon-two');
@@ -31,18 +31,14 @@ INSERT INTO by_menu (id, name, category_id, href) VALUES (15, '用户管理', 6,
 INSERT INTO by_menu (id, name, category_id, href) VALUES (16, '账户设置', 6, '');
 
 -- test authority
-INSERT INTO by_authority (id, name,valid) VALUES (1, 'ROLE_ADMIN',1);
-INSERT INTO by_authority (id, name,valid) VALUES (2, 'ROLE_USER',1);
-INSERT INTO by_authority (id, name,valid) VALUES (3, 'ROLE_SHOP',1);
+INSERT INTO by_authority (id, name, valid) VALUES (1, '管理员', 1);
+INSERT INTO by_authority (id, name, valid) VALUES (2, '普通用户', 1);
+INSERT INTO by_authority (id, name, valid) VALUES (3, '门店管理员', 1);
 
 -- test user_auth
 INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 1);
---tom role_admin
-INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 2);
---tom role_user
-INSERT INTO by_user_auth (user_id, auth_id) VALUES (2, 3);
-
--- mary role_shop
+-- mary role shop
+insert into by_user_auth(user_id,auth_id) values(2,2);
 
 -- test auth_menu
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 1);
@@ -108,14 +104,14 @@ VALUES (6, 2.0, 1, 2, 1, 100, 'rule6', 'c', NULL, NULL);
 
 -- test shop
 INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (1, 'shop1', 'abc1', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (2, '光明', 'abc2', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (3, '哈根达斯', 'abc3', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (4, 'h&m', 'abc4', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (5, '索尼', 'abc5', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (6, '三星', 'abc6', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (7, 'java', 'abc7', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (8, 'scala', 'abc8', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (9, 'csharp', 'abc9', 2);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (2, '光明', 'abc2', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (3, '哈根达斯', 'abc3', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (4, 'h&m', 'abc4', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (5, '索尼', 'abc5', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (6, '三星', 'abc6', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (7, 'java', 'abc7', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (8, 'scala', 'abc8', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (9, 'csharp', 'abc9', NULL);
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
