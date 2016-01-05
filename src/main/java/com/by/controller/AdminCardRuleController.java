@@ -1,17 +1,14 @@
 package com.by.controller;
 
-import com.by.exception.Status;
-import com.by.exception.Success;
-import com.by.form.CouponQueryForm;
-import com.by.json.RuleJson;
-import com.by.model.Card;
-import com.by.model.CardRule;
-import com.by.model.Menu;
-import com.by.model.RuleCategory;
-import com.by.service.CardRuleService;
-import com.by.service.CardService;
-import com.by.typeEnum.ValidEnum;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +17,25 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.form.CouponQueryForm;
+import com.by.json.RuleJson;
+import com.by.model.Card;
+import com.by.model.CardRule;
+import com.by.model.Menu;
+import com.by.model.Message;
+import com.by.model.RuleCategory;
+import com.by.service.CardRuleService;
+import com.by.service.CardService;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-21.
@@ -42,6 +52,8 @@ public class AdminCardRuleController extends BaseController {
     private CardRuleService service;
     @Autowired
     private CardService cardService;
+    @Autowired
+    private MessageSource messageSource;
 
     @ModelAttribute("cards")
     public List<Card> findAllCard() {
@@ -69,12 +81,15 @@ public class AdminCardRuleController extends BaseController {
     }
 
     @RequestMapping(params = "form", method = RequestMethod.POST)
-    public String form(@Valid @ModelAttribute("rule") CardRule rule, BindingResult result, Model uiModel) {
+    public String form(@Valid @ModelAttribute("rule") CardRule rule, BindingResult result, Model uiModel,RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             uiModel.addAttribute("rule", rule);
+            addMenu(uiModel);
+            uiModel.addAttribute("message",new Message("fail",messageSource.getMessage("save.fail", new Object[]{}, Locale.CHINESE)));
             return CREATE;
         }
         CardRule r = service.save(rule);
+        redirectAttributes.addFlashAttribute("message",new Message("fail",messageSource.getMessage("save.fail", new Object[]{}, Locale.CHINESE)));
         return REDIRECT + r.getId();
     }
 

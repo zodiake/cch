@@ -71,7 +71,31 @@ INSERT INTO by_card (id, name, valid, init_score) VALUES (1, 'low', 1, 100);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
 VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12');
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (2, '13811738422', 1, 200, 0, 10, '2012-12-12');
+VALUES (2, '13811738422', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (3, '13811738423', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (4, '13811738424', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (5, '13811738425', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (6, '13811738426', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (7, '13811738427', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (8, '13811738428', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (9, '13811738429', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (10, '13811738410', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (11, '13811738412', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (12, '13811738432', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (13, '13811738442', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
+VALUES (14, '13811738452', 1, 200, 1, 10, '2012-12-12');
 
 -- test pay
 INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)

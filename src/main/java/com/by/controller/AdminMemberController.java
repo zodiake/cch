@@ -66,7 +66,7 @@ public class AdminMemberController extends BaseController {
 
 	@ModelAttribute("cards")
 	public List<Card> findAllCard() {
-		return cardService.findAll().stream().filter(i -> i.getValid().equals(ValidEnum.VALID))
+		return cardService.findAllCache().stream().filter(i -> i.getValid().equals(ValidEnum.VALID))
 				.collect(Collectors.toList());
 	}
 

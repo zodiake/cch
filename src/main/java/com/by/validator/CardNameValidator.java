@@ -24,7 +24,7 @@ public class CardNameValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Card c = (Card) target;
 		Card another = repository.findByName(c.getName());
-		if (c.getId() != another.getId()) {
+		if (another != null && c.getId() != another.getId()) {
 			errors.rejectValue("name", "name.unique");
 		}
 	}
