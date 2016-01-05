@@ -17,7 +17,7 @@
                 <a class="close-btn">
                     <img src="/img/icon-close.png" width="20" height="20"/>
                 </a>
-                <button type="button" class="btn btn-info pull-right">添加成员</button>
+                <a class="btn btn-info pull-right" href="/admin/members?form">添加成员</a>
             </div>
             <div class="bar state-bar">使用情况</div>
             <div class="group use-state">
@@ -138,13 +138,13 @@
         <div class="member-wrap container">
             <div class="hd clearfix">
                 <div class="bar using-bar short-bar pull-left">使用中</div>
-                <button type="button" class="btn btn-info">添加</button>
+                <a href="/admin/cards?form" class="btn btn-info">添加</a>
             </div>
             <div class="list mem-list">
                 <ul class="clearfix">
                     <li th:each="c:${valid}" th:attr="data-card-id=${c.id}">
                         <a>
-                            <img src="/img/1.png" width="300" height="210"/>
+                            <img th:src="@{${c.imgHref}}" width="300" height="210"/>
                         </a>
                     </li>
                 </ul>

@@ -38,7 +38,7 @@ import com.by.service.UserService;
  * Created by yagamai on 15-12-11.
  */
 @Controller
-@RequestMapping(value = "/admin/user")
+@RequestMapping(value = "/admin/users")
 public class AdminUserController extends BaseController {
 	private final String LISTS = "admin/user/lists";
 	private final String EDIT = "admin/user/edit";
