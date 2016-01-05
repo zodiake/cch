@@ -1,6 +1,7 @@
 package com.by.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ public class ShopCoupon extends Coupon {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
+    @NotNull(message="{NotNull.shopCoupon.shop}")
     private Shop shop;
 
     public Shop getShop() {

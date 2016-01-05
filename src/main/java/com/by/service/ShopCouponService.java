@@ -1,20 +1,21 @@
 package com.by.service;
 
-import java.util.Calendar;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.by.form.ShopCouponForm;
 import com.by.json.ShopCouponJson;
 import com.by.model.ShopCoupon;
 import com.by.typeEnum.ValidEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Calendar;
 
 /**
  * Created by yagamai on 15-12-8.
  */
 public interface ShopCouponService {
     ShopCoupon save(ShopCoupon coupon);
+
+    ShopCoupon update(ShopCoupon coupon);
 
     ShopCoupon findOne(int id);
 

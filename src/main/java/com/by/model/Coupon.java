@@ -51,7 +51,7 @@ public abstract class Coupon {
 	private Double amount;
 
 	// 名称
-	@NotEmpty(message = "not null")
+	@NotEmpty(message = "coupon.name.notEmpty")
 	private String name;
 
 	// 是否有效

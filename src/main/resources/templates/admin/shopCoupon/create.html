@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
-    <title>添加停车券</title>
+    <title>添加店铺券</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
@@ -58,22 +58,33 @@
     <div th:replace="admin/layout/menu::menu"></div>
 
     <div class="mainpanel">
-        <div class="add-carquan-wrap">
+        <div class="add-shopquan-wrap">
             <div class="hd">
-                <div class="bar add-bar">添加停车券</div>
+                <div class="bar add-bar">添加店铺券</div>
             </div>
             <div class="row">
-                <form class="form-horizontal pt50" th:object="${coupon}" th:method="post">
+                <form class="form-horizontal pt50" th:method="post" th:object="${coupon}">
                     <div class="form-group">
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
+							<p th:each="err : ${#fields.errors('name')}" th:text="${err}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">所属店铺</label>
+                        <div class="col-md-3">
+                            <select class="form-control" th:field="*{shop}">
+                                <option value="">--请选择--</option>
+                                <option th:each="s : ${shops}" th:value="${s.id}" th:text="${s.name}">name</option>
+                            </select>
+							<p th:each="err : ${#fields.errors('shop')}" th:text="${err}" />
                         </div>
                     </div>
                     <div class="form-group imgUp">
                         <label class="col-md-4 control-label">列表图：</label>
                         <div class="col-md-3">
-                            <img src="@{*{coverImg}}" height="100" style="background:#FFF; width:100%;"/>
+                            <img src="" height="100" style="background:#FFF; width:100%;"/>
                         </div>
                         <div class="col-md-2 mt40">
                             <input type="file" id="imgUp1"/>
@@ -83,7 +94,7 @@
                     <div class="form-group imgUp">
                         <label class="col-md-4 control-label">背景图：</label>
                         <div class="col-md-3">
-                            <img src="@{*{contentImg}}" height="100" style="background:#FFF; width:100%;"/>
+                            <img src="" height="100" style="background:#FFF; width:100%;"/>
                         </div>
                         <div class="col-md-2 mt40">
                             <input type="file" id="imgUp2"/>
@@ -119,14 +130,41 @@
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">发行数量：</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" th:field="*{total}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">重复领取：</label>
+                        <div class="col-md-3 btn-change text-center">
+                            <div class="checkbox">
+                                <input type="checkbox"/>
+                                <label></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">核销截止日期：</label>
+                        <div class="col-md-3">
+                            <input class="form-control datepicker " placeholder="" type="text"
+                                   th:field="*{couponEndTime}"/>
+                        </div>
+                    </div>
                     <div class="group-ft col-xs-offset-4 mt50">
-                        <input type="submit" class="btn btn-default ml40" value="确认"/>
                         <button type="button" class="btn btn-default ml40">取消</button>
+                        <input type="submit" class="btn btn-success ml40" value="确认"/>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker();
+    })
+</script>
 </body>
 </html>

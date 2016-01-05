@@ -3,15 +3,32 @@ package com.by.model;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.by.typeEnum.ValidEnum;
 
 @Table(name = "by_authority")
 @Entity
 public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
+    @NotEmpty
     private String name;
 
     @ManyToMany
@@ -31,19 +48,17 @@ public class Authority {
 
     @Column(name = "updated_by")
     private String updatedBy;
+    
+    private ValidEnum valid;
 
     public Authority() {
     }
 
-    public Authority(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -94,8 +109,16 @@ public class Authority {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
+    
+	public ValidEnum getValid() {
+		return valid;
+	}
 
-    @PrePersist
+	public void setValid(ValidEnum valid) {
+		this.valid = valid;
+	}
+
+	@PrePersist
     private void prePersist() {
         this.createdTime = Calendar.getInstance();
     }
@@ -106,27 +129,18 @@ public class Authority {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Authority authority = (Authority) o;
+
+        return id == authority.id;
+
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Authority other = (Authority) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+    public int hashCode() {
+        return id;
     }
 }

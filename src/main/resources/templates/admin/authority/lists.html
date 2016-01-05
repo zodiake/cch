@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
-    <title>店铺券列表</title>
+    <title>权限管理列表</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
@@ -36,60 +36,24 @@
     <div th:replace="admin/layout/menu::menu"></div>
 
     <div class="mainpanel">
-        <div class="shop-wrap container">
+        <div class="power-wrap container">
             <div class="hd clearfix">
-                <div class="bar base-bar short-bar pull-left">礼品券</div>
+                <div class="bar base-bar short-bar pull-left">权限管理</div>
                 <button type="button" class="btn btn-info">添加</button>
             </div>
-            <form class="form-inline" th:object="${form}">
-                <div class="form-group">
-                    <label>状态</label>
-                    <select class="form-control w120" th:field="*{state}">
-                        <option value="">全部</option>
-                        <option value="USING">使用中</option>
-                        <option value="CLOSED">已关闭</option>
-                        <option value="EXPIRE">过期</option>
-                        <option value="NOEXPIRE">未生效</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>店铺</label>
-                    <select class="form-control w120" th:field="*{shop}">
-                        <option value="">全部</option>
-                        <option th:each="s : ${shops}" th:value="${s.id}" th:text="${s.name}">name</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>生效时间</label>
-                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/> -
-                    <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
-                </div>
-                <input type="submit" class="btn btn-primary btn-xs" value="查找"/>
-            </form>
-
-            <table class="table table-striped bg-white">
+            <table class="table table-striped bg-white mt20">
                 <thead>
                 <tr>
                     <th>名称</th>
-                    <th>卡券金额</th>
-                    <th>兑换积分</th>
-                    <th>生效时间</th>
-                    <th>结束时间</th>
-                    <th>数量</th>
-                    <th>所属店铺</th>
                     <th>状态</th>
+                    <th>最后修改时间</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="c:${lists.content}">
-                    <td><a th:text="${c.name}">2016元旦</a></td>
-                    <td><a th:text="${c.amount}">2</a></td>
-                    <td><a th:text="${c.score}">1000</a></td>
-                    <td><a th:text="${c.beginTime}">2015年10月10号</a></td>
-                    <td><a th:text="${c.endTime}">2015年10月10号</a></td>
-                    <td><a th:text="${c.total}">10</a></td>
-                    <td><a th:text="${c.shopName}">aaaaaa</a></td>
-                    <td><a th:class="${c.cssClass}" th:text="${c.state}">使用中</a></td>
+                <tr th:each="a:${lists.content}">
+                    <td><a th:text="${a.name}">2016元旦</a></td>
+                    <td><a th:text="${a.valid.toString()=='VALID'?'使用中':'无效'}">使用中</a></td>
+                    <td><a th:text="${a.updatedTime}">2015年10月10号 10:00</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -121,24 +85,13 @@
         };
 
         var parameterFn = function () {
-            var beginTime = $('#beginTime').val();
-            var endTime = $('#endTime').val();
-            var state = $('#state').val();
-            return {
-                beginTime: beginTime,
-                endTime: endTime,
-                state: state
-            }
+            return {};
         };
 
         $('ul.pagination').pageable({
             url: '/admin/parkingCoupons/json',
             parameter: parameterFn,
             fn: submitFn
-        });
-
-        $('.datepicker').datepicker({
-            dateFormat: 'yy-mm-dd',
         });
     })
 </script>
