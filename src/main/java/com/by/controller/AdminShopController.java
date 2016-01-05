@@ -54,7 +54,7 @@ public class AdminShopController extends BaseController {
 	@Qualifier("shopKeyValidator")
 	private Validator shopKeyValidator;
 
-	private final Menu subMenu = new Menu(1);
+	private final Menu subMenu = new Menu(10);
 
 	@ModelAttribute("menus")
 	public List<Menu> menus() {
@@ -83,6 +83,7 @@ public class AdminShopController extends BaseController {
 		uiModel.addAttribute("lists", pages);
 		uiModel.addAttribute("last", computeLastPage(pages.getTotalPages()));
 		addMenu(uiModel);
+		
 		return "admin/shop/list";
 	}
 

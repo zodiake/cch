@@ -75,6 +75,7 @@ public class AdminCardRuleController extends BaseController {
     public String form(@Valid @ModelAttribute("rule") CardRule rule, BindingResult result, Model uiModel) {
         if (result.hasErrors()) {
             uiModel.addAttribute("rule", rule);
+            addMenu(uiModel);
             return CREATE;
         }
         CardRule r = service.save(rule);
