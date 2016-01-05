@@ -92,13 +92,11 @@ public class AdminUserController extends BaseController {
 		if (result.hasErrors()) {
 			uiModel.addAttribute("user", user);
 			addMenu(uiModel);
-			uiModel.addAttribute("message",
-					new Message("fail", messageSource.getMessage("save.fail", new Object[] {}, Locale.CHINESE)));
+			uiModel.addAttribute("message", failMessage(messageSource));
 			return CREATE;
 		}
 		User u = service.save(user);
-		redirectAttributes.addFlashAttribute("message",
-				new Message("fail", messageSource.getMessage("save.success", new Object[] {}, Locale.CHINESE)));
+		redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
 		return REDIRECT + u.getId();
 	}
 
