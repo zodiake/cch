@@ -50,21 +50,21 @@
     <div class="mainpanel">
         <div class="add－cart-wrap">
             <div class="hd">
-                <div class="bar add-bar">添加会员卡</div>
+                <div class="bar edit-bar">会员卡基本信息设置</div>
             </div>
             <div class="row">
-                <form class="form-horizontal" th:object="${card}" th:method="post">
+                <form class="form-horizontal" th:object="${card}" th:method="put">
                     <div class="form-group pt50">
                         <label class="col-md-3 control-label">名称：</label>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" th:field="*{name}"/>
+                            <input type="text" class="form-control" th:field="*{name}" readonly="readonly"/>
+                            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</p>
                         </div>
-						<p class="error" th:each="err : ${#fields.errors('name')}" th:text="${err}" />
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">背景图：</label>
                         <div class="col-md-5">
-                            <img src="/img/1.png" width="300" height="210"/>
+                            <img th:src="@{*{imgHref}}" width="300" height="210"/>
                             <input type="file" id="imageUp"/>
                             <input type="hidden" th:field="*{imgHref}"/>
                         </div>
@@ -90,6 +90,15 @@
             </div>
         </div>
     </div>
+</div>
+<div id="alert" th:if="${status}!=null" th:class="${status.status}">
+	<div class="success-modal">
+		<div class="show-msg">
+			<div class="alert alert-success" role="alert" th:text="${status.message}">用户创建成功</div>		
+			<div class="success-bg"><img th:src="@{/img/icon-success.jpg}" /></div>
+		</div>
+	</div>
+<div class="fixed"></div>
 </div>
 </body>
 </html>

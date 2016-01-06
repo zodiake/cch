@@ -38,7 +38,7 @@
         <div class="member-jfe-wrap container">
             <div class="hd clearfix">
                 <div class="bar base-bar short-bar pull-left">店铺积分规则</div>
-                <button type="button" class="btn btn-info">添加</button>
+                <a class="btn btn-info" href="/admin/parkingCoupons?form">添加</a>
             </div>
             <form class="form-inline" th:object="${form}">
                 <div class="form-group">
@@ -70,7 +70,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="r:${lists.content}">
-                    <td><a th:text="${r.name}"></a></td>
+                    <td><a th:text="${r.name}" th:href="@{/admin/parkingCoupons/__${r.id}__?edit}"></a></td>
                     <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
                     <td><a th:text="${r.endTime}">2015年10月10号</a></td>
                     <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
