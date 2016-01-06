@@ -7,7 +7,6 @@ import com.by.model.Shop;
 import com.by.model.ShopRule;
 import com.by.service.ShopRuleService;
 import com.by.service.ShopService;
-import com.by.typeEnum.ValidEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -67,10 +66,11 @@ public class AdminShopRuleController extends BaseController {
 	public String save(@Valid @ModelAttribute("rule") ShopRule rule, BindingResult result, Model uiModel) {
 		if (result.hasErrors()) {
 			uiModel.addAttribute("rule", rule);
+			addMenu(uiModel);
 			return CREATE;
 		}
 		ShopRule r = service.save(rule);
-		return REDIRECT + r.getId();
+		return REDIRECT + r.getId() + "?edit";
 	}
 
 	@RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
@@ -83,7 +83,7 @@ public class AdminShopRuleController extends BaseController {
 	}
 
 	@RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.PUT)
-	public String update(@PathVariable("id") int id, @ModelAttribute("rule") ShopRule rule, BindingResult result,
+	public String update(@PathVariable("id") int id, @Valid @ModelAttribute("rule") ShopRule rule, BindingResult result,
 			Model uiModel) {
 		rule.setId(id);
 		if (result.hasErrors()) {
@@ -92,7 +92,7 @@ public class AdminShopRuleController extends BaseController {
 			return EDIT;
 		}
 		ShopRule r = service.update(rule);
-		return REDIRECT + r.getId();
+		return REDIRECT + r.getId() + "?edit";
 	}
 
 	@Override

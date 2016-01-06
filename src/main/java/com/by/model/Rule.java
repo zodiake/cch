@@ -41,7 +41,6 @@ public abstract class Rule {
     private String summary;
 
     @NotEmpty(message="rule.name.notnull")
-    @Length(max = 20,message = "rule.name.maxlength")
     private String name;
 
     @Enumerated
