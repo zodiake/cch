@@ -127,15 +127,15 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, b
 VALUES (6, 2.0, 1, 2, 1, 100, 'rule6', 'c', NULL, NULL);
 
 -- test shop
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (1, 'shop1', 'abc1', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (2, '光明', 'abc2', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (3, '哈根达斯', 'abc3', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (4, 'h&m', 'abc4', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (5, '索尼', 'abc5', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (6, '三星', 'abc6', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (7, 'java', 'abc7', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (8, 'scala', 'abc8', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (9, 'csharp', 'abc9', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (1, 'shop1', 'abc1', 2,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (2, '光明', 'abc2', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (3, '哈根达斯', 'abc3', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (4, 'h&m', 'abc4', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (5, '索尼', 'abc5', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (6, '三星', 'abc6', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (7, 'java', 'abc7', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (8, 'scala', 'abc8', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (9, 'csharp', 'abc9', NULL,'2012-01-01');
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
