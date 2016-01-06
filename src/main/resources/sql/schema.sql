@@ -252,23 +252,25 @@ CREATE TABLE by_gift_coupon_member (
 );
 
 CREATE TABLE by_parking_coupon_exchange_history (
+  id  int auto_increment,
   member_id    BIGINT,
   coupon_id    INT,
   created_time TIMESTAMP,
   created_by   VARCHAR(20),
   total        INT,
-  PRIMARY KEY (member_id, coupon_id),
+  PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
 CREATE TABLE by_parking_coupon_use_history (
+id int auto_increment,
   member_id         BIGINT,
   parking_coupon_id INT,
   created_time      TIMESTAMP,
   total             INT,
   license           VARCHAR(10),
-  PRIMARY KEY (member_id, parking_coupon_id),
+  PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id)
 );

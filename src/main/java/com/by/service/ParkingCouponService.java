@@ -1,16 +1,17 @@
 package com.by.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import com.by.json.ParkingCouponHistoryJson;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.by.form.BaseCouponForm;
-import com.by.form.CouponQueryForm;
 import com.by.json.CouponTemplateJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.typeEnum.ValidEnum;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface ParkingCouponService {
 	ParkingCoupon save(ParkingCoupon coupon);
@@ -40,4 +41,6 @@ public interface ParkingCouponService {
 	Member useCoupon(Member member, int total, String license);
 
 	ParkingCoupon findActivate();
+
+	Page<ParkingCouponHistoryJson> findByMemberHistory(Member member, Pageable pageable);
 }

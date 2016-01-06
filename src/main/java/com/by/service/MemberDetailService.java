@@ -5,10 +5,9 @@ import com.by.model.Member;
 import com.by.model.MemberDetail;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MemberDetailService {
-    MemberDetail update(Long memberId, MemberDetailJson detail);
+    Member update(Long memberId, MemberDetailJson detail);
 
     MemberDetail findByMember(Member m);
 

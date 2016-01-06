@@ -5,11 +5,11 @@ import com.by.model.Member;
 import com.by.model.MemberDetail;
 import com.by.repository.MemberDetailRepository;
 import com.by.service.MemberDetailService;
+import com.by.service.MemberService;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,20 +25,23 @@ public class MemberDetailServiceImpl implements MemberDetailService {
     @Autowired
     private MemberDetailRepository repository;
     @Autowired
+    private MemberService memberService;
+    @Autowired
     private ShaPasswordEncoder encoder;
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    @CachePut(value = "member", key = "memberId")
-    public MemberDetail update(Long memberId, MemberDetailJson detail) {
-        MemberDetail memberDetail = repository.findOne(memberId);
-        String newPassword = encoder.encodePassword(detail.getPassword(), null);
-        memberDetail.setAddress(detail.getAddress());
-        memberDetail.setPassword(newPassword);
-        memberDetail.setRealName(detail.getRealName());
-        memberDetail.setBirthday(detail.getBirthday());
-        return memberDetail;
+    @CachePut(value = "member", key = "#memberId")
+    public Member update(Long memberId, MemberDetailJson detail) {
+        Member member = memberService.findOne(memberId);
+        MemberDetail d = member.getMemberDetail();
+        d.setAddress(detail.getAddress());
+        d.setBirthday(detail.getBirthday());
+        d.setRealName(detail.getRealName());
+        String password = encoder.encodePassword(detail.getPassword(), null);
+        d.setPassword(password);
+        return member;
     }
 
     @Override

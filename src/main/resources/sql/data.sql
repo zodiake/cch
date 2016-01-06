@@ -1,7 +1,7 @@
 -- test user
 INSERT INTO by_user (id, name, password, valid, user_authority)
 VALUES (1, 'tom', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1, 'ROLE_ADMIN');
-INSERT INTO by_user (id, name, password, valid,user_authority)
+INSERT INTO by_user (id, name, password, valid, user_authority)
 VALUES (2, 'mary', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1, 'ROLE_SHOP');
 
 -- test menu_category
@@ -38,7 +38,7 @@ INSERT INTO by_authority (id, name, valid) VALUES (3, '门店管理员', 1);
 -- test user_auth
 INSERT INTO by_user_auth (user_id, auth_id) VALUES (1, 1);
 -- mary role shop
-insert into by_user_auth(user_id,auth_id) values(2,2);
+INSERT INTO by_user_auth (user_id, auth_id) VALUES (2, 2);
 
 -- test auth_menu
 INSERT INTO by_auth_menu (auth_id, menu_id) VALUES (1, 1);
@@ -65,14 +65,14 @@ INSERT INTO by_license (id, name) VALUES (1, '沪A54321');
 INSERT INTO by_license (id, name) VALUES (2, '沪A14321');
 
 -- test card
-INSERT INTO by_card (id, name, valid, init_score,img_href) VALUES (1, 'low', 1, 100,'/img/1.png');
+INSERT INTO by_card (id, name, valid, init_score, img_href) VALUES (1, 'low', 1, 100, '/img/1.png');
 
 -- test member_detail
-INSERT INTO by_member_detail (id,  real_name, address, birthday) VALUES (1,  '张三' ,'上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (1, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
 
 -- test member
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time,member_id)
-VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12',1);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12', 1);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
 VALUES (2, '13811738422', 1, 200, 1, 10, '2012-12-12');
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
@@ -127,15 +127,15 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, b
 VALUES (6, 2.0, 1, 2, 1, 100, 'rule6', 'c', NULL, NULL);
 
 -- test shop
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (1, 'shop1', 'abc1', 2,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (2, '光明', 'abc2', NULL,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (3, '哈根达斯', 'abc3', NULL,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (4, 'h&m', 'abc4', NULL,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (5, '索尼', 'abc5', NULL,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (6, '三星', 'abc6', NULL,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (7, 'java', 'abc7', NULL,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (8, 'scala', 'abc8', NULL,'2012-01-01');
-INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (9, 'csharp', 'abc9', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (1, 'shop1', 'abc1', 2, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (2, '光明', 'abc2', NULL, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (3, '哈根达斯', 'abc3', NULL, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (4, 'h&m', 'abc4', NULL, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (5, '索尼', 'abc5', NULL, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (6, '三星', 'abc6', NULL, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (7, 'java', 'abc7', NULL, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (8, 'scala', 'abc8', NULL, '2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (9, 'csharp', 'abc9', NULL, '2012-01-01');
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
@@ -153,8 +153,10 @@ INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (7, 2, 3,
 INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (8, 2, 4, 'h');
 
 -- test by_trading
-INSERT INTO by_trading (id, member_id, code, amount, shop_id,created_time) VALUES (1, 1, '321', 100,1,'2015-12-25 12:34:22');
-INSERT INTO by_trading (id, member_id, code, amount, shop_id,created_time) VALUES (2, 1, '123', 100,1,'2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (1, 1, '321', 100, 1, '2015-12-25 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (2, 1, '123', 100, 1, '2015-12-26 12:34:22');
 
 -- test coupon
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
@@ -185,11 +187,11 @@ INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, v
 VALUES (13, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shopCoupon13', 1);
 
 -- test giftCoupon
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id,exchanged_time) VALUES (1, 1, 3,'2012-12-12');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id,exchanged_time) VALUES (2, 1, 4,'2014-12-31');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time) VALUES (1, 1, 3, '2012-12-12');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time) VALUES (2, 1, 4, '2014-12-31');
 
 -- test shop coupon
-INSERT INTO by_shop_coupon_member (member_id, coupon_id,exchanged_time) VALUES (1, 5,'2015-1-2');
+INSERT INTO by_shop_coupon_member (member_id, coupon_id, exchanged_time) VALUES (1, 5, '2015-1-2');
 
 -- test score_history
 INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
@@ -221,3 +223,15 @@ INSERT INTO by_member_help (content_id, title, id) VALUES (3, '会员卡积分�
 INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (1, 7);
 INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (2, 7);
 INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (3, 7);
+
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-1', 2);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-2', 3);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-2', 3);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-2', 3);
+
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-2', 1);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-3', 1);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4', 1);

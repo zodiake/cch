@@ -56,6 +56,8 @@ public class AdminMemberController extends BaseController {
     private GiftCouponMemberService giftCouponMemberService;
     @Autowired
     private ShopCouponMemberService shopCouponMemberService;
+    @Autowired
+    private ParkingCouponService parkingCouponService;
 
     @ModelAttribute("cards")
     public List<Card> findAllCard() {
@@ -174,6 +176,14 @@ public class AdminMemberController extends BaseController {
     public Status shopCoupons(@PathVariable("id") Long id,
                               @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "exchangedTime", direction = Sort.Direction.DESC) Pageable pageable) {
         return new Success<>(shopCouponMemberService.findByMember(new Member(id), pageable));
+    }
+
+    @RequestMapping(value = "/{id}/parkingCoupons", method = RequestMethod.GET)
+    @ResponseBody
+    public Status parkingCoupons(@PathVariable("id") Long id,
+                                 @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE) Pageable pageable) {
+
+        return new Success<>(parkingCouponService.findByMemberHistory(new Member(id), pageable));
     }
 
     @RequestMapping(value = "/duplicate", method = RequestMethod.GET)

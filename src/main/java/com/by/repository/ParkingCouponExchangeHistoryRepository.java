@@ -8,6 +8,6 @@ import com.by.model.Member;
 import com.by.model.ParkingCouponExchangeHistory;
 
 public interface ParkingCouponExchangeHistoryRepository
-		extends PagingAndSortingRepository<ParkingCouponExchangeHistory, Long> {
+		extends PagingAndSortingRepository<ParkingCouponExchangeHistory, Integer> {
 	Page<ParkingCouponExchangeHistory> findByMember(Member member, Pageable pageable);
 }
