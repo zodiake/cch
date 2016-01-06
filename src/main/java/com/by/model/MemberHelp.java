@@ -1,6 +1,7 @@
 package com.by.model;
 
 import javax.persistence.*;
+
 import java.util.Calendar;
 
 /**
@@ -15,7 +16,7 @@ public class MemberHelp {
 
     private String title;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     @JoinColumn(name = "content_id")
     private Content content;
 

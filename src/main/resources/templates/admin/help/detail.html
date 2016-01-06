@@ -1,0 +1,44 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
+    <title th:text="${help.title}"></title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/js/template.js"></script>
+</head>
+
+<body>
+<div class="header clearfix">
+    <div th:replace="admin/layout/header::header"></div>
+</div>
+<div class="mainwrapper clearfix">
+    <div th:replace="admin/layout/menu::menu"></div>
+	<div class="mainpanel">
+		<div class="resg-txt-wrap">
+			<div class="hd">
+				<div class="bar edit-bar" th:text="${help.title}"></div>
+			</div>
+           <div class="row">
+               <form class="form-horizontal pt50" th:object="${help}" th:method = "put">
+                 	<div class="form-group">
+                      	<div class="col-md-9 col-xs-offset-1">
+                      		<textarea class="form-control" rows="30" th:field="*{content.summary}">
+                      		</textarea> 
+                      	</div>
+                  	</div>               
+                    <div class="col-xs-offset-4 mt50">
+                        <button type="submit" class="btn btn-success ml40">确认</button>
+                    </div>
+               </form>
+           </div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
