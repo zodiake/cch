@@ -143,7 +143,7 @@
             </div>
             <div class="list mem-list">
                 <ul class="clearfix">
-                    <li th:each="c:${valid}" th:attr="data-card-id=${c.id}">
+                    <li th:each="c:${valid.content}" th:attr="data-card-id=${c.id}">
                         <a>
                             <img th:src="${c.imgHref}" width="300" height="210"/>
                         </a>
@@ -155,7 +155,7 @@
             </div>
             <div class="list mem-list">
                 <ul class="clearfix">
-                    <li th:each="c:${inValid}" th:attr="data-card-id=${c.id}">
+                    <li th:each="c:${inValid.content}" th:attr="data-card-id=${c.id}">
                         <a>
                             <img src="/img/1.png" width="300" height="210"/>
                         </a>

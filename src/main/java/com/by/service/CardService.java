@@ -26,7 +26,7 @@ public interface CardService {
 
     List<Card> findAllAuditRevision(Long id);
 
-    List<Card> findByValid(ValidEnum valid, Pageable pageable);
+    Page<Card> findByValid(ValidEnum valid, Pageable pageable);
 
     List<Card> findAllCache();
 }

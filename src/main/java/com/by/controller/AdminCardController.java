@@ -1,5 +1,29 @@
 package com.by.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.json.CardJson;
@@ -13,22 +37,6 @@ import com.by.service.CardRuleService;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/cards")
@@ -58,8 +66,8 @@ public class AdminCardController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model uiModel,
                        @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        List<Card> validLists = service.findByValid(ValidEnum.VALID, pageable);
-        List<Card> inValidLists = service.findByValid(ValidEnum.INVALID, pageable);
+        Page<Card> validLists = service.findByValid(ValidEnum.VALID, pageable);
+        Page<Card> inValidLists = service.findByValid(ValidEnum.INVALID, pageable);
         uiModel.addAttribute("valid", validLists);
         uiModel.addAttribute("inValid", inValidLists);
         addMenu(uiModel);
@@ -71,7 +79,7 @@ public class AdminCardController extends BaseController {
     public List<CardJson> list(@RequestParam("valid") String valid,
                                @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
         ValidEnum validEnum = ValidEnum.fromString(valid);
-        List<CardJson> cards = service.findByValid(validEnum, pageable).stream().map(CardJson::new)
+        List<CardJson> cards = service.findByValid(validEnum, pageable).getContent().stream().map(CardJson::new)
                 .collect(Collectors.toList());
         return cards;
     }
