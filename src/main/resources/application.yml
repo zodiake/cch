@@ -28,6 +28,7 @@ spring:
   datasource:
     schema: classpath:sql/schema.sql
     data: classpath:sql/data.sql
+    sql-script-encoding: UTF-8
 logging:
   level:
     org.springframework.security: INFO

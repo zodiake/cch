@@ -33,14 +33,13 @@ import com.by.exception.NotFoundException;
 import com.by.exception.PasswordNotMatchException;
 import com.by.exception.Status;
 import com.by.exception.Success;
-import com.by.json.CouponJson;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
 import com.by.json.ShopCouponJson;
+import com.by.json.ShopCouponMemberJson;
 import com.by.message.ShopCouponMessage;
 import com.by.model.Member;
 import com.by.model.ShopCoupon;
-import com.by.service.CouponService;
 import com.by.service.MemberService;
 import com.by.service.ShopCouponMemberService;
 import com.by.service.ShopCouponService;
@@ -63,18 +62,16 @@ public class ShopCouponController implements UtilContoller {
 	private ShopCouponService shopCouponService;
 	private ShopCouponMemberService shopCouponMemberService;
 	private MemberService memberService;
-	private CouponService couponService;
 	private ShaPasswordEncoder passwordEncoder;
 
 	@Autowired
 	public ShopCouponController(ApplicationContext ctx, ActorSystem system, ShopCouponService shopCouponService,
-			ShopCouponMemberService shopCouponMemberService, MemberService memberService, CouponService couponService) {
+			ShopCouponMemberService shopCouponMemberService, MemberService memberService) {
 		this.system = system;
 		this.ref = system.actorOf(SpringExtProvider.get(system).props("ShopCouponActor"), "shopCouponActor");
 		this.shopCouponService = shopCouponService;
 		this.shopCouponMemberService = shopCouponMemberService;
 		this.memberService = memberService;
-		this.couponService = couponService;
 	}
 
 	// 可以兑换的卡券列表
@@ -106,7 +103,7 @@ public class ShopCouponController implements UtilContoller {
 		if (!isValidMember(m)) {
 			throw new MemberNotValidException();
 		}
-		List<CouponJson> list = shopCouponMemberService.findByMember(member, pageable);
+		Page<ShopCouponMemberJson> list = shopCouponMemberService.findByMemberAndValid(member, pageable);
 		return new Success<>(list);
 	}
 
