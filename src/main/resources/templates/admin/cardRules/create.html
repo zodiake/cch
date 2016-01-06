@@ -37,8 +37,8 @@
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
-                            <p th:each="err : ${#fields.errors('name')}" th:text="${err}"></p>
                         </div>
+                        <p class="error" th:each="err : ${#fields.errors('name')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">所属会员卡：</label>
@@ -47,8 +47,8 @@
                                 <option value="">--请选择--</option>
                                 <option th:each="c : ${cards}" th:value="${c.id}" th:text="${c.name}">name</option>
                             </select>
-                        	<p th:each="err : ${#fields.errors('card')}" th:text="${err}"></p>
                         </div>
+                        <p class="error" th:each="err : ${#fields.errors('card')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">积分类型：</label>
@@ -57,20 +57,22 @@
                                 <option value="">--请选择--</option>
                                 <option th:each="c : ${category}" th:value="${c.id}" th:text="${c.name}">name</option>
                             </select>
-                        	<p th:each="err : ${#fields.errors('ruleCategory')}" th:text="${err}"></p>
                         </div>
+                       	<p class="error" th:each="err : ${#fields.errors('ruleCategory')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">生效时间：</label>
                         <div class="col-md-3">
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/>
                         </div>
+                        <p class="error" th:each="err : ${#fields.errors('beginTime')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">结束时间：</label>
                         <div class="col-md-3">
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
                         </div>
+                        <p class="error" th:each="err : ${#fields.errors('endTime')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">额外积分：</label>
@@ -84,7 +86,7 @@
                             <input type="text" class="form-control" th:field="*{rate}"/>
                         </div>
                     </div>
-                    <div class="group-ft col-xs-offset-5 mt50">
+                    <div class="group-ft col-xs-offset-4 mt50">
                     	<a href="/admin/cardRules"><button type="button" class="btn btn-default">取消</button></a>
                         <button type="submit" class="btn btn-success col-xs-offset-1">提交</button>
                     </div>
@@ -93,11 +95,5 @@
         </div>
     </div>
 </div>
-<div id="dialog-confirm" title="Empty the recycle bin?">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be
-        permanently deleted and cannot be recovered. Are you sure?</p>
-</div>
-<script type="text/javascript" src="/js/cardRule/edit.js">
-</script>
 </body>
 </html>

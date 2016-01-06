@@ -36,39 +36,39 @@
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
-                            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</p>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">生效时间：</label>
                         <div class="col-md-3">
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/>
-                            <p th:if="${#fields.hasErrors('beginTime')}" th:errors="*{beginTime}">Incorrect date</p>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('beginTime')}" th:errors="*{beginTime}">Incorrect date</p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">结束时间：</label>
                         <div class="col-md-3">
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
-                            <p th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}">Incorrect date</p>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}">Incorrect date</p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">额外积分：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{score}"/>
-                            <p th:if="${#fields.hasErrors('score')}" th:errors="*{score}">Incorrect date</p>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('score')}" th:errors="*{score}">Incorrect date</p>
                     </div>
                     <div class="form-group" id="rate-div">
                         <label class="col-md-4 control-label">交易倍率：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{rate}"/>
-                            <p th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}">Incorrect date</p>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}">Incorrect date</p>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">活动店铺：</label>
+                        <label class="col-md-4 control-label">活动店铺：</label>
                         <div class="col-md-3">
                             <div class="checkbox" th:each="s:${shops}">
                                 <label>
@@ -78,8 +78,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="group-ft col-xs-offset-5 mt50">
-                        <input type="submit" class="btn btn-success col-xs-offset-1" value="提交"/>
+                    <div class="group-ft col-xs-offset-3 mt50">
+                    	<a th:href="@{/admin/shopRules}"><button type="button" class="btn btn-default ml40">返回</button></a>
+                        <button type="submit" class="btn btn-success col-xs-offset-1">提交</button>
                     </div>
                 </form>
             </div>

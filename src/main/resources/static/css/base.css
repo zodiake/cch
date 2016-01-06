@@ -319,3 +319,7 @@ span.item-amount i.icon-plus{
 	letter-spacing: 5px;
 	margin: auto;
 }
+.error{
+	color: red;
+	margin-top: 5px;
+}
