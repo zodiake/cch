@@ -23,7 +23,7 @@
             <div class="group use-state">
                 <div class="group-list">
                     <label>状态</label>
-                    <div class="succees">{{:state}}</div>
+                    <div class="succees">{{if state=='VALID'}}有效{{else}}无效{{/if}}</div>
                 </div>
                 <div class="group-list">
                     <label>当前会员数</label>
@@ -39,7 +39,7 @@
                 <div class="group-list">
                     <label>背景图</label>
                     <div class="ml">
-                        <img src="img/1.png" width="300" height="210"/>
+                        <img src="{{:imgHref}}" width="300" height="210"/>
                     </div>
                 </div>
                 <div class="group-list">

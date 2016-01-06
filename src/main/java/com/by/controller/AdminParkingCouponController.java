@@ -103,7 +103,7 @@ public class AdminParkingCouponController extends BaseController {
 	}
 
 	// 页数使用json
-	@RequestMapping(value = "/json", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/json", method = RequestMethod.GET)
 	@ResponseBody
 	public Status list(BaseCouponForm form,
 			@PageableDefault(page = 0, size = 10, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {

@@ -5,7 +5,6 @@ import com.by.exception.Success;
 import com.by.json.CardJson;
 import com.by.json.CardTemplateJson;
 import com.by.json.RuleJson;
-import com.by.message.SuccessMessage;
 import com.by.model.Card;
 import com.by.model.CardRule;
 import com.by.model.Menu;
@@ -16,6 +15,7 @@ import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -35,10 +35,10 @@ import java.util.stream.Collectors;
 public class AdminCardController extends BaseController {
     private final String CREATE = "admin/card/create";
     private final String REDIRECT = "redirect:/admin/cards/";
-    private final String DETAIL = "admin/card/detail";
+    private final String EDIT = "admin/card/edit";
+    private final String LISTS = "admin/card/lists";
     private final RuleCategory SIGNUP_CATEGORY = new RuleCategory(1);
     private final RuleCategory TRADING_CATEGORY = new RuleCategory(2);
-    private final String LISTS = "admin/card/lists";
     private final Menu subMenu = new Menu(1);
     @Autowired
     private CardService service;
@@ -52,6 +52,8 @@ public class AdminCardController extends BaseController {
     @Autowired
     @Qualifier("cardNameUniqueValidator")
     private Validator cardNameUniqueValidator;
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model uiModel,
@@ -82,32 +84,33 @@ public class AdminCardController extends BaseController {
         List<CardRule> signUpRules = cardRuleService.findByRuleCategoryAndCard(SIGNUP_CATEGORY, card);
         List<CardRule> tradingRules = cardRuleService.findByRuleCategoryAndCard(TRADING_CATEGORY, card);
         CardTemplateJson json = new CardTemplateJson(card, count.intValue());
-        json.setRegister(signUpRules.stream().map(r->new RuleJson(r)).collect(Collectors.toList()));
-        json.setTrading(tradingRules.stream().map(r->new RuleJson(r)).collect(Collectors.toList()));
+        json.setRegister(signUpRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
+        json.setTrading(tradingRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
         return new Success<>(json);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
     public String getOne(@PathVariable("id") Integer id, Model uiModel) {
         Card card = service.findOne(id);
         uiModel.addAttribute("card", card);
         addMenu(uiModel);
-        return DETAIL;
+        return EDIT;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.PUT)
     public String update(@PathVariable("id") Integer id, Model uiModel, @Valid @ModelAttribute Card card,
                          BindingResult result, RedirectAttributes redirectAttributes) {
         card.setId(id);
         cardNameValidator.validate(card, result);
         if (result.hasErrors()) {
             uiModel.addAttribute("card", card);
+            uiModel.addAttribute("message", failMessage(messageSource));
             addMenu(uiModel);
-            return DETAIL;
+            return EDIT;
         }
-        redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
         Card source = service.update(card);
-        return REDIRECT + source.getId();
+        return REDIRECT + source.getId() + "?edit";
     }
 
     @RequestMapping(params = "form", method = RequestMethod.POST)
@@ -116,12 +119,13 @@ public class AdminCardController extends BaseController {
         cardNameUniqueValidator.validate(card, result);
         if (result.hasErrors()) {
             uiModel.addAttribute("card", card);
+            uiModel.addAttribute("message", failMessage(messageSource));
             addMenu(uiModel);
             return CREATE;
         }
         Card source = service.save(card);
-        redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
-        return REDIRECT + source.getId();
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+        return REDIRECT + source.getId() + "?edit";
     }
 
     @RequestMapping(params = "form", method = RequestMethod.GET)
