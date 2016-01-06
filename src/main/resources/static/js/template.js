@@ -17,4 +17,9 @@ $(function () {
 
     var detail_h = $('.mainpanel').height();
     $('.card-detail-wrap').css('height', detail_h);
+    
+	var alert = $("#alert");
+	if(alert){
+		setTimeout('$("#alert").hide()',2000);
+	}
 });

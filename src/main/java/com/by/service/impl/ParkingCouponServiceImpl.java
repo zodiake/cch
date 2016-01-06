@@ -77,6 +77,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
             i.setAmount(coupon.getAmount());
             i.setName(coupon.getName());
             i.setScore(coupon.getScore());
+            i.setSummary(coupon.getSummary());
             i.setContentImg(coupon.getContentImg());
             i.setCoverImg(coupon.getCoverImg());
             return i;

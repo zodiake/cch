@@ -1,5 +1,18 @@
 package com.by.controller;
 
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.form.CouponQueryForm;
+import com.by.json.RuleJson;
+import com.by.model.Card;
+import com.by.model.CardRule;
+import com.by.model.Menu;
+import com.by.model.Message;
+import com.by.model.RuleCategory;
+import com.by.service.CardRuleService;
+import com.by.service.CardService;
+import com.by.typeEnum.ValidEnum;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -24,18 +37,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.by.exception.Status;
-import com.by.exception.Success;
-import com.by.form.CouponQueryForm;
-import com.by.json.RuleJson;
-import com.by.model.Card;
-import com.by.model.CardRule;
-import com.by.model.Menu;
-import com.by.model.Message;
-import com.by.model.RuleCategory;
-import com.by.service.CardRuleService;
-import com.by.service.CardService;
-import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-21.
@@ -77,6 +78,7 @@ public class AdminCardRuleController extends BaseController {
     public String create(Model uiModel) {
         CardRule cardRule = new CardRule();
         uiModel.addAttribute("rule", cardRule);
+        addMenu(uiModel);
         return CREATE;
     }
 

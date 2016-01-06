@@ -33,14 +33,14 @@
         <li class="active top-nav">
             <a>
                 <i class="icon icon-one active"></i>
-                导航
+               	 导航
             </a>
         </li>
         <li th:each="menu:${menus}" th:class="${#lists.contains(menu.value,subMenu)}?'active'">
             <a><i class="icon" th:attrappend="class=${' ' + menu.key.name}"></i></a>
             <ul class="child-nav">
                 <li th:each="m : ${menu.value}" th:class="${m == subMenu}?'active'">
-                    <a th:text="${m.name}"></a>
+                    <a th:text="${m.name}" th:href="@{${m.href}}"></a>
                 </li>
             </ul>
         </li>

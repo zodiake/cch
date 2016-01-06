@@ -18,7 +18,7 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="col-md-3 control-label">会员卡：</label>
-                <div class="col-md-3 padd5 text-center">{{:name}}</div>
+                <div class="col-md-3 padd5 text-center">{{:cardName}}</div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">注册日期：</label>
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">消费金额：</label>
-                <div class="col-md-3 padd5 text-center">{{:sum}}</div>
+                <div class="col-md-3 padd5 text-center">{{:amount}}</div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">消费次数：</label>
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">总积分：</label>
-                <div class="col-md-3 padd5 text-center">{{:totalScore}}</div>
+                <div class="col-md-3 padd5 text-center">{{:sumScore}}</div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">可用积分：</label>
@@ -43,7 +43,7 @@
                     <a class="minus">
                         <i class="icon icon-miuns"></i>
                     </a>
-                    <input type="text" value="1234"/>
+                    <input type="text" value="{{:availableScore}}"/>
                     <a class="plus">
                         <i class="icon icon-plus"></i>
                     </a>
@@ -98,8 +98,8 @@
 			{{for content}}
 			<tr>
 				<td>{{>createdTime}}</td>
-				<td>{{>amount}}</td>
-				<td>{{>summary}}</td>
+				<td>{{>deposit}}</td>
+				<td>{{>reason}}</td>
 			</tr>
 			{{/for}}
 			</tbody>
@@ -131,9 +131,9 @@
 			<tbody>
 			{{for content}}
 			<tr>
-				<td>2015年10月10号</td>
-				<td>2015年10月10号</td>
-				<td>沪A25112</td>
+				<td>{{>startTime}}</td>
+				<td>{{>endTIme}}</td>
+				<td>{{>license}}</td>
 				<td>100</td>
 			</tr>
 			{{/for}}
@@ -272,26 +272,26 @@
             </ul>
             <div class="tab-content">
                 <div id="t1" class="tab-pane active">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" >
                         <div class="clearfix mr50">
                             <input id="validate" type="button" class="pull-right btn btn-danger" data-toggle="modal"
                                    data-target=".modal" value="加入黑名单" th:attr="member=${member.id}"/>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">姓名：</label>
-                            <div class="col-md-3 padd5 text-center">Jessica Foster</div>
+                            <div class="col-md-3 padd5 text-center" th:text="${member.memberDetail.realName}">Jessica Foster</div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">手机号：</label>
-                            <div class="col-md-3 padd5 text-center">13454672334</div>
+                            <div class="col-md-3 padd5 text-center" th:text="${member.name}">13454672334</div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">出生年月：</label>
-                            <div class="col-md-3 padd5 text-center">1992/01/01</div>
+                            <label class="col-md-3 control-label" >出生年月：</label>
+                            <div class="col-md-3 padd5 text-center" th:text="${#dates.format(member.memberDetail.birthday, 'yyyy-MM-dd')}">1992/01/01</div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">详细地址：</label>
-                            <div class="col-md-3 padd5 text-center">上海市黄浦区建国西路</div>
+                            <div class="col-md-3 padd5 text-center" th:text="${member.memberDetail.address}">上海市黄浦区建国西路</div>
                         </div>
                     </form>
                 </div>
@@ -313,41 +313,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>普通卡券</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>普通卡券</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>普通卡券</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>普通卡券</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>普通卡券</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>普通卡券</td>
-                        </tr>
-                        <tr>
-                            <td>2015年10月10号</td>
-                            <td>2015年10月10号</td>
-                            <td>普通卡券</td>
-                        </tr>
                         <tr>
                             <td>2015年10月10号</td>
                             <td>2015年10月10号</td>
@@ -407,17 +372,19 @@
         </div>
     </div>
 </div>
-<div class="success-modal">
-    <div class="show-msg">
-        <div class="alert alert-success" role="alert">
-            设置成功
-        </div>
-        <div class="success-bg">
-            <img src="img/icon-success.jpg"/>
-        </div>
-    </div>
+<div id="alert" th:if="${status}!=null" >
+	<div  class="success-modal">
+	    <div class="show-msg">
+	        <div class="alert alert-success" role="alert">
+	            设置成功
+	        </div>
+	        <div class="success-bg">
+	            <img src="/img/icon-success.jpg"/>
+	        </div>
+	    </div>
+	</div>
+	<div class="fixed"></div>
 </div>
-<div class="fixed"></div>
 <script type="text/javascript">
     $(function () {
         // $('.modal-one').on('hide.bs.modal', function () {

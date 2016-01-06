@@ -18,7 +18,7 @@
     <script id="detail" type="text/x-jsrender">
 		{{for content}}
 		<tr>
-			<td><a>{{>name}}</a></td>
+			<td><a href="/admin/cardRules/{{>id}}">{{>name}}</a></td>
 			<td><a>{{>category}}</a></td>
 			<td><a>{{>cardName}}</a></td>
 			<td><a>{{>beginTime}}</a></td>
@@ -80,14 +80,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="r:${lists.content}">
-                    <td><a th:text="${r.name}"></a></td>
-                    <td><a th:text="${r.category}"></a></td>
-                    <td><a th:text="${r.cardName}">普通</a></td>
-                    <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
-                    <td><a th:text="${r.endTime}">2015年10月10号</a></td>
-                    <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
-                </tr>
+	                <tr th:each="r:${lists.content}">
+	                    <td><a th:text="${r.name}" th:href="@{/admin/cardRules/__${r.id}__}"></a></td>
+	                    <td><a th:text="${r.category}"></a></td>
+	                    <td><a th:text="${r.cardName}">普通</a></td>
+	                    <td><a th:text="${r.beginTime}">2015年10月10号</a></td>
+	                    <td><a th:text="${r.endTime}">2015年10月10号</a></td>
+	                    <td><a th:class="${r.cssClass}" th:text="${r.state}">使用中</a></td>
+	                </tr>
                 </tbody>
             </table>
             <div class="pagination-wrap">

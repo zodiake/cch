@@ -15,10 +15,15 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import com.by.typeEnum.ValidEnum;
+
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 @Entity
 @Table(name = "by_rule")
@@ -29,20 +34,25 @@ public abstract class Rule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    
+    @NotNull(message = "rule.rate.notnull")
     private double rate;
 
     private String summary;
 
+    @NotEmpty(message="rule.name.notnull")
+    @Length(max = 20,message = "rule.name.maxlength")
     private String name;
 
     @Enumerated
     private ValidEnum valid;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message="rule.beginTime.notnull")
     private Calendar beginTime;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message="rule.endTime.notnull")
     private Calendar endTime;
 
     @Temporal(TemporalType.TIMESTAMP)

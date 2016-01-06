@@ -30,7 +30,7 @@
                     <div class="succees">{{:total}}</div>
                 </div>
             </div>
-            <div class="bar edit-bar">基本信息</div>
+            <a href="/admin/cards/{{:id}}"><div class="bar edit-bar">基本信息</div></a>
             <div class="group base-info">
                 <div class="group-list">
                     <label>名称</label>
@@ -111,6 +111,7 @@
                 $.ajax({
                     url: '/admin/cards/' + self.attr('data-card-id')+'/json',
                     success: function (data) {
+                    	data.obj.id = self.attr('data-card-id');
                         if (data.status == 'success') {
                             var tmpl = $.templates("#detail");
                             var html = tmpl.render(data.obj);
@@ -144,7 +145,7 @@
                 <ul class="clearfix">
                     <li th:each="c:${valid}" th:attr="data-card-id=${c.id}">
                         <a>
-                            <img th:src="@{${c.imgHref}}" width="300" height="210"/>
+                            <img th:src="${c.imgHref}" width="300" height="210"/>
                         </a>
                     </li>
                 </ul>

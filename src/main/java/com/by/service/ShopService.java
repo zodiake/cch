@@ -16,6 +16,8 @@ public interface ShopService {
     Shop findByKey(String code);
 
     Page<Shop> findAll(String name, Pageable pageable);
+    
+    Page<ShopJson> findAll(Pageable pageable);
 
     Page<Shop> findFirstPage(int size);
 
@@ -34,4 +36,6 @@ public interface ShopService {
     List<ShopJson> findAllJson();
 
     List<Shop> findAll(Sort sort);
+    
+    Shop findByPos(String code);
 }

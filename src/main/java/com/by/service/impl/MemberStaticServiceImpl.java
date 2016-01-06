@@ -38,6 +38,7 @@ public class MemberStaticServiceImpl implements MemberStaticsService {
 			statics.setCount(count.intValue());
 		else
 			statics.setCount(0);
+		statics.setCreatedTime(member.getCreatedTime());
 		statics.setAvailableScore(member.getScore());
 		statics.setSumScore(member.getSumScore());
 		statics.setCardName(member.getCard().getName());
