@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
@@ -28,6 +31,7 @@ import com.by.json.MemberJson;
 import com.by.json.UpdateScoreJson;
 import com.by.model.Card;
 import com.by.model.Member;
+import com.by.model.MemberDetail;
 import com.by.model.MemberStatics;
 import com.by.model.Menu;
 import com.by.model.User;
@@ -47,7 +51,8 @@ import com.by.typeEnum.ValidEnum;
 @Controller
 @RequestMapping("/admin/members")
 public class AdminMemberController extends BaseController {
-	private final String DETAIL = "admin/member/detail";
+	private final String EDIT = "admin/member/edit";
+	private final String CREATE = "admin/member/create";
 	private final Menu subMenu = new Menu(2);
 	@Autowired
 	private MemberService memberService;
@@ -63,6 +68,8 @@ public class AdminMemberController extends BaseController {
 	private ScoreHistoryService scoreHisotryService;
 	@Autowired
 	private ParkingHistoryService parkingHistoryService;
+	@Autowired
+	private MessageSource messageSource;
 
 	@ModelAttribute("cards")
 	public List<Card> findAllCard() {
@@ -70,6 +77,7 @@ public class AdminMemberController extends BaseController {
 				.collect(Collectors.toList());
 	}
 
+	// 列表界面
 	@RequestMapping(method = RequestMethod.GET)
 	public String firstPage(AdminMemberForm form, Model uiModel,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -81,11 +89,27 @@ public class AdminMemberController extends BaseController {
 		return "admin/member/lists";
 	}
 
-	@RequestMapping(value = "/{card}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{card}/member", params = "form", method = RequestMethod.GET)
+	public String cardForm(@PathVariable("card") int cardId, Model uiModel) {
+		Member member = new Member();
+		member.setMemberDetail(new MemberDetail());
+		uiModel.addAttribute("member", member);
+		return CREATE;
+	}
+
+	@RequestMapping(value = "/{card}/member", params = "form", method = RequestMethod.POST)
 	public String create(@PathVariable("card") int card, @Valid @ModelAttribute("member") Member member,
-			BindingResult result) {
-		//// TODO: 15-12-24
-		return null;
+			BindingResult result, Model uiModel, RedirectAttributes redirectAttributes) {
+		if (result.hasErrors()) {
+			uiModel.addAttribute("card", card);
+			uiModel.addAttribute("message", failMessage(messageSource));
+			addMenu(uiModel);
+		}
+		member.setCard(new Card(card));
+		Member m = memberService.save(member);
+		redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+		addMenu(uiModel);
+		return "redirect:/admin/members/" + m.getId() + "?edit";
 	}
 
 	@RequestMapping(value = "/json", method = RequestMethod.GET)
@@ -97,14 +121,14 @@ public class AdminMemberController extends BaseController {
 		return new Success<>(results);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
 	public String edit(@PathVariable("id") Long id, Model uiModel) {
 		Member member = memberService.findOne(id);
 		if (member == null)
 			throw new NotFoundException();
 		uiModel.addAttribute("member", member);
 		addMenu(uiModel);
-		return DETAIL;
+		return EDIT;
 	}
 
 	@RequestMapping(value = "/score", method = RequestMethod.PUT)
@@ -149,6 +173,17 @@ public class AdminMemberController extends BaseController {
 	public Status parking(@PathVariable("id") Long id,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		return new Success<>(parkingHistoryService.findByMember(new Member(id), pageable));
+	}
+
+	@RequestMapping(value = "/duplicate", method = RequestMethod.GET)
+	@ResponseBody
+	public String duplicate(@RequestParam("name") String name) {
+		Long count = memberService.countByName(name);
+		if (count > 0) {
+			return "false";
+		} else {
+			return "true";
+		}
 	}
 
 	@Override

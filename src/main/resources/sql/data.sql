@@ -67,9 +67,12 @@ INSERT INTO by_license (id, name) VALUES (2, '沪A14321');
 -- test card
 INSERT INTO by_card (id, name, valid, init_score,img_href) VALUES (1, 'low', 1, 100,'/img/1.png');
 
+-- test member_detail
+INSERT INTO by_member_detail (id,  real_name, address, birthday) VALUES (1,  '张三' ,'上海市长宁区万航渡路2170号A1室', '1990-01-01');
+
 -- test member
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time,member_id)
+VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12',1);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
 VALUES (2, '13811738422', 1, 200, 1, 10, '2012-12-12');
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
@@ -100,9 +103,6 @@ VALUES (14, '13811738452', 1, 200, 1, 10, '2012-12-12');
 -- test pay
 INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)
 VALUES (1, 1, '2015-11-25 13:14:22', 'p', '沪A54321', 15, 0);
-
--- test member_detail
-INSERT INTO by_member_detail (id, member_id, real_name, address, birthday) VALUES (1, 1, '张三' ,'上海市长宁区万航渡路2170号A1室', '1990-01-01');
 
 -- test category
 INSERT INTO by_rule_category (id, name) VALUES (1, 'register rule'); -- register

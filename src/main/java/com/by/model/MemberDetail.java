@@ -38,8 +38,7 @@ public class MemberDetail {
     @Column(name = "created_by")
     private String createdBy;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "memberDetail")
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Member member;
 

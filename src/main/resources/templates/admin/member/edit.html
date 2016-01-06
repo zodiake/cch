@@ -215,7 +215,7 @@
                                     },
                                     fn: function (data) {
                                         var detail = $.templates('#' + obj.tmpl + '-row');
-                                        var html = detail.render(data.obj);
+                                        var html = edit.render(data.obj);
                                         $(table).children().remove();
                                         $(table).html(html);
                                     },
