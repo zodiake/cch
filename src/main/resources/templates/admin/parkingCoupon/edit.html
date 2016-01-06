@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
-    <title>添加停车券</title>
+    <title>设置停车券</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.10.3.css"/>
@@ -60,7 +60,7 @@
     <div class="mainpanel">
         <div class="add-carquan-wrap">
             <div class="hd">
-                <div class="bar add-bar">添加停车券</div>
+                <div class="bar edit-bar">设置停车券</div>
             </div>
             <div th:if="${message!=null}" th:class="${message.status}" th:text="${message.message}"></div>
             <div class="row">
@@ -121,8 +121,8 @@
                         </div>
                     </div>
                     <div class="group-ft col-xs-offset-4 mt50">
-                        <input type="submit" class="btn btn-default ml40" value="确认"/>
-                        <button type="button" class="btn btn-default ml40">取消</button>
+                        <a href="/admin/parkingCoupons"><button type="button" class="btn btn-default ml40">取消</button></a>
+                        <button type="submit" class="btn btn-success ml40">确认</button>
                     </div>
                 </form>
             </div>

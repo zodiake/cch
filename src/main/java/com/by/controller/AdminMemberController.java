@@ -107,12 +107,12 @@ public class AdminMemberController extends BaseController {
 		return DETAIL;
 	}
 
-	@RequestMapping(value = "/score", method = RequestMethod.PUT)
+	@RequestMapping(value = "/score", method = RequestMethod.POST)
 	@ResponseBody
-	public Status updateScore(@RequestBody UpdateScoreJson json) {
+	public Status updateScore(@ModelAttribute UpdateScoreJson json) {
 		Member member = memberService.addScore(new Member(json.getId()), json.getScore(), "admin",
 				ScoreHistoryEnum.ADMIN);
-		return new Success<>(member);
+		return new Success<>(staticsService.findOne(member));
 	}
 
 	@RequestMapping(value = "/{id}/validate", method = RequestMethod.PUT)

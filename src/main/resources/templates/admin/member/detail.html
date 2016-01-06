@@ -41,11 +41,11 @@
                 <div class="col-md-3 padd5 text-center">
                   <span class="item-amount ">
                     <a class="minus">
-                        <i class="icon icon-miuns"></i>
+                        <i class="icon icon-miuns" data-toggle="modal" data-target=".modal-jf-miuns"></i>
                     </a>
                     <input type="text" value="{{:availableScore}}"/>
                     <a class="plus">
-                        <i class="icon icon-plus"></i>
+                        <i class="icon icon-plus" data-toggle="modal" data-target=".modal-jf-plus"></i>
                     </a>
                   </span>
                 </div>
@@ -231,6 +231,52 @@
             array.forEach(function (e) {
                 init(e);
             });
+            
+            $("#btn-miuns").click(function(){
+            	var miuns_value = $("#miuns-val").val();
+            	if(miuns_value == null || miuns_value.trim() == "")
+            		return;
+            	var id = $(this).attr("member");
+            	$.ajax({
+            		url : "/admin/members/score",
+            		type : 'POST',
+            		data:{
+            			'id':id,
+            			'score':"-"+miuns_value
+            		},
+            		success:function(data){
+            			var tmpl = $.templates("#use-tmpl");
+                        var html = tmpl.render(data.obj);
+                        $("#t2").children().remove();
+                        $("#t2").html(html);
+            		},error : function(data){
+            			console.log(data);
+            		}
+            	});
+            });
+            
+            $("#btn-plus").click(function(){
+            	var plus_value = $("#plus-val").val();
+            	if(plus_value == null || plus_value.trim() == "")
+            		return;
+            	var id = $(this).attr("member");
+            	$.ajax({
+            		url : "/admin/members/score",
+            		type : 'POST',
+            		data:{
+            			'id':id,
+            			'score':plus_value
+            		},
+            		success:function(data){
+            			var tmpl = $.templates("#use-tmpl");
+                        var html = tmpl.render(data.obj);
+                        $("#t2").children().remove();
+                        $("#t2").html(html);
+            		},error : function(data){
+            			console.log(data);
+            		}
+            	});
+            });
         });
     </script>
 </head>
@@ -361,14 +407,61 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                             <button type="button" class="btn btn-danger confirm" data-toggle="modal"
-                                    data-target=".modal-two" data-dismiss="modal">确认
+                                    data-target=".modal-two" data-dismiss="modal" >确认
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
             <!--modal end-->
-
+			<!--modal 积分加 start-->
+        
+		      <div class="modal modal-jf-plus fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+		        <div class="modal-dialog modal-sm">
+		          <div class="modal-content">
+		            <div class="modal-header">
+		              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+		            </div>
+		            <div class="modal-body text-center">
+		              <div class="alert alert-info" role="alert">请输入您需要增加的积分数。</div>
+		              <div class="nums-input">
+		              	<input type="text" id="plus-val" placeholder = "0"/>
+		              </div>
+		            </div>
+		            <div class="modal-footer" style="text-align:center">
+		              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		              <button type="button" id="btn-plus" class="btn btn-success confirm" th:attr="member=${member.id}" data-toggle="modal" data-target=".modal-two" data-dismiss="modal">确认</button>
+		            </div>
+		          </div>
+		        </div>
+		      </div>
+      <!--modal 积分 end-->
+      
+      
+       <!--modal 积分减 start-->
+        
+		      <div class="modal modal-jf-miuns fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+		        <div class="modal-dialog modal-sm">
+		          <div class="modal-content">
+		            <div class="modal-header">
+		              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+		            </div>
+		            <div class="modal-body text-center">
+		              <div class="alert alert-danger" role="alert">
+		               请输入您需要扣除的积分数。
+		              </div>
+		              <div class="nums-input">
+		              	<input type="text" id = "miuns-val"  placeholder = "0"/>
+		              </div>
+		            </div>
+		            <div class="modal-footer" style="text-align:center">
+		              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		              <button type="button" id="btn-miuns" class="btn btn-success confirm" th:attr="member=${member.id}" data-toggle="modal" data-target=".modal-two" data-dismiss="modal">确认</button>
+		            </div>
+		          </div>
+		        </div>
+		      </div>
+      <!--modal 积分 end-->
         </div>
     </div>
 </div>
