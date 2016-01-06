@@ -15,6 +15,7 @@ public class CardTemplateJson {
     private String name;
     private int initScore;
     private String summary;
+    private String imgHref;
     private List<RuleJson> register;
     private List<RuleJson> trading;
 
@@ -27,6 +28,7 @@ public class CardTemplateJson {
         this.name = card.getName();
         this.initScore = card.getInitScore();
         this.summary = card.getSummary();
+        this.imgHref=card.getImgHref();
     }
 
     public String getState() {
@@ -83,5 +85,13 @@ public class CardTemplateJson {
 
     public void setTrading(List<RuleJson> trading) {
         this.trading = trading;
+    }
+
+    public String getImgHref() {
+        return imgHref;
+    }
+
+    public void setImgHref(String imgHref) {
+        this.imgHref = imgHref;
     }
 }

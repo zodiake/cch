@@ -1,44 +1,37 @@
 package com.by.service.impl;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.by.exception.NotFoundException;
+import com.by.exception.NotValidException;
+import com.by.exception.OutOfStorageException;
+import com.by.form.BaseCouponForm;
+import com.by.json.CouponTemplateJson;
+import com.by.json.ParkingCouponHistoryJson;
+import com.by.model.Member;
+import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponExchangeHistory;
+import com.by.model.ParkingCouponUseHistory;
+import com.by.repository.ParkingCouponRepository;
+import com.by.service.*;
+import com.by.typeEnum.ScoreHistoryEnum;
+import com.by.typeEnum.ValidEnum;
+import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.by.exception.NotFoundException;
-import com.by.exception.NotValidException;
-import com.by.exception.OutOfStorageException;
-import com.by.form.BaseCouponForm;
-import com.by.json.CouponTemplateJson;
-import com.by.model.Member;
-import com.by.model.ParkingCoupon;
-import com.by.repository.ParkingCouponRepository;
-import com.by.service.CouponService;
-import com.by.service.LicenseService;
-import com.by.service.MemberService;
-import com.by.service.ParkingCouponExchangeHistoryService;
-import com.by.service.ParkingCouponService;
-import com.by.service.ParkingCouponUseHistoryService;
-import com.by.typeEnum.ScoreHistoryEnum;
-import com.by.typeEnum.ValidEnum;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -209,5 +202,26 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         } else {
             throw new NotValidException();
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ParkingCouponHistoryJson> findByMemberHistory(Member member, Pageable pageable) {
+        Page<ParkingCouponUseHistory> useHistory = useHistoryService.findByMember(member, pageable);
+        Page<ParkingCouponExchangeHistory> exchangeHistory = exchangeHistoryService.findByMember(member, pageable);
+        List<ParkingCouponHistoryJson> results = new ArrayList<>();
+        List<ParkingCouponHistoryJson> useJson = useHistory.getContent().stream().map(i ->
+                new ParkingCouponHistoryJson(i)
+        ).collect(Collectors.toList());
+        List<ParkingCouponHistoryJson> exchangeJson = exchangeHistory.getContent().stream().map(i -> new ParkingCouponHistoryJson(i)).collect(Collectors.toList());
+        results.addAll(useJson);
+        results.addAll(exchangeJson);
+        results.sort((o1, o2) -> {
+            if (o1.getCreatedTime().before(o2.getCreatedTime()))
+                return 1;
+            return -1;
+        });
+        Long max = Math.max(useHistory.getTotalElements(), exchangeHistory.getTotalElements());
+        return new PageImpl<>(results, pageable, max);
     }
 }

@@ -1,11 +1,34 @@
 package com.by.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.json.CardJson;
 import com.by.json.CardTemplateJson;
 import com.by.json.RuleJson;
-import com.by.message.SuccessMessage;
 import com.by.model.Card;
 import com.by.model.CardRule;
 import com.by.model.Menu;
@@ -14,31 +37,16 @@ import com.by.service.CardRuleService;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/cards")
 public class AdminCardController extends BaseController {
     private final String CREATE = "admin/card/create";
     private final String REDIRECT = "redirect:/admin/cards/";
-    private final String DETAIL = "admin/card/detail";
+    private final String EDIT = "admin/card/edit";
+    private final String LISTS = "admin/card/lists";
     private final RuleCategory SIGNUP_CATEGORY = new RuleCategory(1);
     private final RuleCategory TRADING_CATEGORY = new RuleCategory(2);
-    private final String LISTS = "admin/card/lists";
     private final Menu subMenu = new Menu(1);
     @Autowired
     private CardService service;
@@ -52,12 +60,14 @@ public class AdminCardController extends BaseController {
     @Autowired
     @Qualifier("cardNameUniqueValidator")
     private Validator cardNameUniqueValidator;
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model uiModel,
                        @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        List<Card> validLists = service.findByValid(ValidEnum.VALID, pageable);
-        List<Card> inValidLists = service.findByValid(ValidEnum.INVALID, pageable);
+        Page<Card> validLists = service.findByValid(ValidEnum.VALID, pageable);
+        Page<Card> inValidLists = service.findByValid(ValidEnum.INVALID, pageable);
         uiModel.addAttribute("valid", validLists);
         uiModel.addAttribute("inValid", inValidLists);
         addMenu(uiModel);
@@ -69,7 +79,7 @@ public class AdminCardController extends BaseController {
     public List<CardJson> list(@RequestParam("valid") String valid,
                                @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
         ValidEnum validEnum = ValidEnum.fromString(valid);
-        List<CardJson> cards = service.findByValid(validEnum, pageable).stream().map(CardJson::new)
+        List<CardJson> cards = service.findByValid(validEnum, pageable).getContent().stream().map(CardJson::new)
                 .collect(Collectors.toList());
         return cards;
     }
@@ -82,32 +92,33 @@ public class AdminCardController extends BaseController {
         List<CardRule> signUpRules = cardRuleService.findByRuleCategoryAndCard(SIGNUP_CATEGORY, card);
         List<CardRule> tradingRules = cardRuleService.findByRuleCategoryAndCard(TRADING_CATEGORY, card);
         CardTemplateJson json = new CardTemplateJson(card, count.intValue());
-        json.setRegister(signUpRules.stream().map(r->new RuleJson(r)).collect(Collectors.toList()));
-        json.setTrading(tradingRules.stream().map(r->new RuleJson(r)).collect(Collectors.toList()));
+        json.setRegister(signUpRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
+        json.setTrading(tradingRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
         return new Success<>(json);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
     public String getOne(@PathVariable("id") Integer id, Model uiModel) {
         Card card = service.findOne(id);
         uiModel.addAttribute("card", card);
         addMenu(uiModel);
-        return DETAIL;
+        return EDIT;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.PUT)
     public String update(@PathVariable("id") Integer id, Model uiModel, @Valid @ModelAttribute Card card,
                          BindingResult result, RedirectAttributes redirectAttributes) {
         card.setId(id);
         cardNameValidator.validate(card, result);
         if (result.hasErrors()) {
             uiModel.addAttribute("card", card);
+            uiModel.addAttribute("message", failMessage(messageSource));
             addMenu(uiModel);
-            return DETAIL;
+            return EDIT;
         }
-        redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
         Card source = service.update(card);
-        return REDIRECT + source.getId();
+        return REDIRECT + source.getId() + "?edit";
     }
 
     @RequestMapping(params = "form", method = RequestMethod.POST)
@@ -116,12 +127,13 @@ public class AdminCardController extends BaseController {
         cardNameUniqueValidator.validate(card, result);
         if (result.hasErrors()) {
             uiModel.addAttribute("card", card);
+            uiModel.addAttribute("message", failMessage(messageSource));
             addMenu(uiModel);
             return CREATE;
         }
         Card source = service.save(card);
-        redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
-        return REDIRECT + source.getId();
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+        return REDIRECT + source.getId() + "?edit";
     }
 
     @RequestMapping(params = "form", method = RequestMethod.GET)

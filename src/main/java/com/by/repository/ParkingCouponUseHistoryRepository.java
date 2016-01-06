@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by yagamai on 15-11-23.
  */
-public interface ParkingCouponUseHistoryRepository extends PagingAndSortingRepository<ParkingCouponUseHistory, Long> {
+public interface ParkingCouponUseHistoryRepository extends PagingAndSortingRepository<ParkingCouponUseHistory, Integer> {
     Page<ParkingCouponUseHistory> findByMember(Member member, Pageable pageable);
 
     List<ParkingCouponUseHistory> findByLicenseAndCreatedTimeBetween(String license, Calendar startTime, Calendar endTime);

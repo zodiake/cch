@@ -1,0 +1,18 @@
+package com.by.json;
+
+import com.by.model.GiftCouponMember;
+
+/**
+ * Created by yagamai on 16-1-6.
+ */
+public class ShopCouponMemberJson extends CouponMemberJson {
+    private String shopName;
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+}

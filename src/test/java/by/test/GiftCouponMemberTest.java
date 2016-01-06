@@ -52,7 +52,7 @@ public class GiftCouponMemberTest {
 
     @Test
     public void other() {
-        Page<GiftCouponMember> lists = repository.findByMember(new Member(1l), ValidEnum.VALID, Calendar.getInstance(), new PageRequest(0, 10));
+        Page<GiftCouponMember> lists = repository.findByMemberAndValid(new Member(1l), ValidEnum.VALID, Calendar.getInstance(), new PageRequest(0, 10));
         assertEquals(2, lists.getContent().size());
     }
 }

@@ -20,11 +20,11 @@ CREATE TABLE by_license (
 );
 
 CREATE TABLE by_user (
-  id       BIGINT NOT NULL AUTO_INCREMENT,
-  name     VARCHAR(20),
-  password CHAR(64),
-  valid    SMALLINT        DEFAULT 1,
-  user_authority varchar(10),
+  id             BIGINT NOT NULL AUTO_INCREMENT,
+  name           VARCHAR(20),
+  password       CHAR(64),
+  valid          SMALLINT        DEFAULT 1,
+  user_authority VARCHAR(10),
   PRIMARY KEY (id)
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE by_shop (
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   shop_key     VARCHAR(225),
-  img_href     VARCHAR(50),	   
+  img_href     VARCHAR(50),
   FOREIGN KEY (user_id) REFERENCES by_user (id),
   PRIMARY KEY (id)
 );
@@ -49,13 +49,13 @@ CREATE TABLE by_authority (
   updated_by   VARCHAR(20),
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
-  valid smallint default 1,
+  valid        SMALLINT     DEFAULT 1,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE by_user_auth (
   user_id BIGINT NOT NULL,
-  auth_id INT NOT NULL,
+  auth_id INT    NOT NULL,
   PRIMARY KEY (user_id, auth_id),
   FOREIGN KEY (user_id) REFERENCES by_user (id),
   FOREIGN KEY (auth_id) REFERENCES by_authority (id)
@@ -107,12 +107,12 @@ CREATE TABLE by_card_aud (
 );
 
 CREATE TABLE by_rule_aud (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
+  id           BIGINT  NOT NULL AUTO_INCREMENT,
   rate         DOUBLE,
-  score        INT             DEFAULT 0,
+  score        INT              DEFAULT 0,
   card_id      INT,
   summary      VARCHAR(50),
-  valid        SMALLINT        DEFAULT 1,
+  valid        SMALLINT         DEFAULT 1,
   beginTime    TIMESTAMP,
   endTime      TIMESTAMP,
   category_id  INT,
@@ -158,6 +158,19 @@ CREATE TABLE by_shop_rule (
   FOREIGN KEY (rule_id) REFERENCES by_rule (id)
 );
 
+CREATE TABLE by_member_detail (
+  id           BIGINT NOT NULL AUTO_INCREMENT,
+  real_name    VARCHAR(10),
+  address      VARCHAR(225),
+  password     CHAR(64),
+  birthday     TIMESTAMP,
+  created_time TIMESTAMP,
+  updated_time TIMESTAMP,
+  updated_by   VARCHAR(20),
+  created_by   VARCHAR(20),
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE by_member (
   id                   BIGINT NOT NULL AUTO_INCREMENT,
   name                 CHAR(11) UNIQUE,
@@ -170,24 +183,12 @@ CREATE TABLE by_member (
   invalid_by           VARCHAR(20),
   updated_time         TIMESTAMP,
   total_parking_coupon INT             DEFAULT 0,
+  member_id            BIGINT,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
+  FOREIGN KEY (member_id) REFERENCES by_member_detail (id),
   PRIMARY KEY (id)
 );
 
-CREATE TABLE by_member_detail (
-  id           BIGINT NOT NULL AUTO_INCREMENT,
-  real_name    VARCHAR(10),
-  address      VARCHAR(225),
-  password     CHAR(64),
-  birthday     TIMESTAMP,
-  member_id    BIGINT,
-  created_time TIMESTAMP,
-  updated_time TIMESTAMP,
-  updated_by   VARCHAR(20),
-  created_by   VARCHAR(20),
-  FOREIGN KEY (member_id) REFERENCES by_member (id),
-  PRIMARY KEY (id)
-);
 
 CREATE TABLE by_member_detail_aud (
   id           BIGINT  NOT NULL AUTO_INCREMENT,
@@ -241,7 +242,6 @@ CREATE TABLE by_gift_coupon_member (
   id             BIGINT AUTO_INCREMENT,
   member_id      BIGINT,
   coupon_id      INT,
-  total          INT,
   code           CHAR(17),
   state          SMALLINT,
   exchanged_time TIMESTAMP,
@@ -252,23 +252,25 @@ CREATE TABLE by_gift_coupon_member (
 );
 
 CREATE TABLE by_parking_coupon_exchange_history (
+  id  int auto_increment,
   member_id    BIGINT,
   coupon_id    INT,
   created_time TIMESTAMP,
   created_by   VARCHAR(20),
   total        INT,
-  PRIMARY KEY (member_id, coupon_id),
+  PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (coupon_id) REFERENCES by_coupon (id)
 );
 
 CREATE TABLE by_parking_coupon_use_history (
+id int auto_increment,
   member_id         BIGINT,
   parking_coupon_id INT,
   created_time      TIMESTAMP,
   total             INT,
   license           VARCHAR(10),
-  PRIMARY KEY (member_id, parking_coupon_id),
+  PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   FOREIGN KEY (parking_coupon_id) REFERENCES by_coupon (id)
 );

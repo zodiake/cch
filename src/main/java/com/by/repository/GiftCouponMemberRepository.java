@@ -23,7 +23,9 @@ public interface GiftCouponMemberRepository extends PagingAndSortingRepository<G
     Long countByCoupon(@Param("coupon") GiftCoupon coupon);
 
     @Query("select gc from GiftCouponMember gc where gc.usedTime is null and gc.member=:member and gc.coupon.valid=:valid and gc.coupon.beginTime<:today and :today<gc.coupon.endTime order by gc.coupon.couponEndTime")
-    Page<GiftCouponMember> findByMember(@Param("member") Member member, @Param("valid") ValidEnum valid, @Param("today") Calendar today, Pageable pageable);
+    Page<GiftCouponMember> findByMemberAndValid(@Param("member") Member member, @Param("valid") ValidEnum valid, @Param("today") Calendar today, Pageable pageable);
+
+    Page<GiftCouponMember> findByMember(Member member, Pageable pageable);
 
     GiftCouponMember findByCode(String code);
 }

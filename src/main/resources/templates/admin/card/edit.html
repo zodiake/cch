@@ -1,60 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Insert title here</title>
-    <script src="/javascript/jquery-1.11.3.min.js"></script>
-    <script id="registerTemplate" type="application/template">
-        <div class="registerTemplate">
-            <input type="text" name="beginTime"/>
-            <input type="text" name="endTime"/>
-            <input type="text" name="rate"/>
-            <input type="button" class="delete" value="delete"/>
-        </div>
-    </script>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
+    <title>添加会员卡</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/js/template.js"></script>
+    <script type="text/javascript" src="/js/fileUpload.js"></script>
     <script>
         $(function () {
-            $('#add').click(function (e) {
-                var template = $('#registerTemplate');
-                $('#register').append($(template.html()));
+            var url = "http://cchdev.b0.upaiyun.com/test/";
+            $('div.col-md-5 input').change(function (event) {
+                var source = $(event.target);
+                var id = source.attr('id');
+                $.ajaxFileUpload({
+                            url: '/admin/upload',
+                            secureuri: false,
+                            fileElementId: source.attr('id'),
+                            dataType: 'json',
+                            success: function (data, status) {
+                                if (status == 'success') {
+                                    $('div.col-md-5 img').attr('src', url + data.responseText);
+                                    $('#imgHref').val(url + data.responseText);
+                                }
+                                console.log(data);
+                            },
+                            error: function (data, status, e) {
+                                alert(e);
+                            }
+                        }
+                );
+                return false;
             });
-
-            $('#register').on('click', '.confirm', function () {
-                var self = $(this);
-                var array = self.siblings('input[type="text"]');
-                var obj = {};
-                array.each(function (i, e) {
-                    var name = $(this).attr('name');
-                    if (name == 'beginTime') {
-                        obj.beginTime = $(this).val();
-                    } else if (name == 'endTime') {
-                        obj.endTime = $(this).val();
-                    } else if (name == 'rate') {
-                        obj.rate = $(this).val();
-                    }
-                });
-            });
-
-
-            $('#register').on('click', '.delete', function () {
-                var self = $(this);
-                self.parent().remove();
-            });
-        });
+        })
     </script>
 </head>
+
 <body>
-<form th:object="${card}">
-    <input type="text" th:field="*{name}"/>
-    <input type="button" id="add" value="add"/>
-    <div id="register">
-        <div class="registerTemplate" th:each="rule : ${card.rules}">
-            <input type="text" th:value="${rule.name}"/>
-            <input type="button" class="confirm" value="confirm" data-th-parent="2"/>
-            <input type="button" class="delete" value="delete" data-th-parent="2"/>
+<div class="header clearfix">
+    <div th:replace="admin/layout/header::header"></div>
+</div>
+<div class="mainwrapper clearfix">
+    <div th:replace="admin/layout/menu::menu"></div>
+    <div class="mainpanel">
+        <div class="add－cart-wrap">
+            <div class="hd">
+                <div class="bar add-bar">添加会员卡</div>
+            </div>
+            <div th:if="${message!=null}" th:class="${message.status}" th:text="${message.message}"></div>
+            <div class="row">
+                <form class="form-horizontal" th:object="${card}" th:method="put">
+                    <div class="form-group pt50">
+                        <label class="col-md-3 control-label">名称：</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" th:field="*{name}"/>
+                            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">背景图：</label>
+                        <div class="col-md-5">
+                            <img th:src="@{*{imgHref}}" width="300" height="210"/>
+                            <input type="file" id="imageUp"/>
+                            <input type="hidden" th:field="*{imgHref}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">初始积分：</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" th:field="*{initScore}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">描述：</label>
+                        <div class="col-md-3">
+                            <textarea class="form-control" rows="8" th:field="*{summary}"></textarea>
+                        </div>
+                    </div>
+                    <div class="group-ft col-xs-offset-3 mt50">
+                        <button class="btn btn-default" type="reset">取消</button>
+                        <input type="submit" class="btn btn-success col-xs-offset-2" value="确定"/>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <input type="submit"/>
-</form>
+</div>
 </body>
 </html>

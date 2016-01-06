@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.by.model.Member;
 import com.by.model.MemberDetail;
 
 public class MemberDetailJson {
@@ -34,6 +35,10 @@ public class MemberDetailJson {
 			this.birth = formate.format(detail.getBirthday().getTime());
 			this.birthday = detail.getBirthday();
 		}
+	}
+	
+	public MemberDetailJson(Member member){
+		this(member.getMemberDetail());
 	}
 
 	public String getRealName() {

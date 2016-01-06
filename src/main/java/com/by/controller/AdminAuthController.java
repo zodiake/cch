@@ -2,7 +2,6 @@ package com.by.controller;
 
 import com.by.model.Authority;
 import com.by.model.Menu;
-import com.by.model.Message;
 import com.by.service.AuthorityService;
 import com.by.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by yagamai on 16-1-4.
@@ -57,7 +55,7 @@ public class AdminAuthController extends BaseController {
         return LIST;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
     public String edit(@PathVariable("id") int id, Model uiModel) {
         Authority authority = service.findOne(id);
         uiModel.addAttribute("authority", authority);
@@ -78,15 +76,13 @@ public class AdminAuthController extends BaseController {
                        RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             uiModel.addAttribute("authority", authority);
-            uiModel.addAttribute("message",
-                    new Message("fail", messageSource.getMessage("save.fail", new Object[]{}, Locale.CHINESE)));
+            uiModel.addAttribute("message", failMessage(messageSource));
             addMenu(uiModel);
             return CREATE;
         }
         Authority a = service.save(authority);
-        redirectAttributes.addFlashAttribute("message",
-                new Message("success", messageSource.getMessage("save.success", new Object[]{}, Locale.CHINESE)));
-        return REDIRECT + a.getId();
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+        return REDIRECT + a.getId() + "?edit";
     }
 
     @Override

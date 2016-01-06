@@ -5,82 +5,91 @@ import java.util.Calendar;
 
 @Entity
 @Table(name = "by_parking_coupon_exchange_history")
-@IdClass(MemberCouponId.class)
 public class ParkingCouponExchangeHistory {
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id")
-    private ParkingCoupon coupon;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private Member member;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_time")
-    private Calendar createdTime;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "coupon_id")
+	private ParkingCoupon coupon;
 
-    private Integer total;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_time")
+	private Calendar createdTime;
 
-    public ParkingCouponExchangeHistory() {
-    }
+	private Integer total;
 
-    public ParkingCouponExchangeHistory(Member member, ParkingCoupon coupon, int total) {
-        this.member = member;
-        this.total = total;
-        this.coupon = coupon;
-    }
+	public ParkingCouponExchangeHistory() {
+	}
 
-    public Member getMember() {
-        return member;
-    }
+	public ParkingCouponExchangeHistory(Member member, ParkingCoupon coupon, int total) {
+		this.member = member;
+		this.total = total;
+		this.coupon = coupon;
+	}
+	
+	public int getId() {
+		return id;
+	}
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public Calendar getCreatedTime() {
-        return createdTime;
-    }
+	public Member getMember() {
+		return member;
+	}
 
-    public void setCreatedTime(Calendar createdTime) {
-        this.createdTime = createdTime;
-    }
+	public void setMember(Member member) {
+		this.member = member;
+	}
 
-    public Integer getTotal() {
-        return total;
-    }
+	public Calendar getCreatedTime() {
+		return createdTime;
+	}
 
-    public void setTotal(Integer total) {
-        this.total = total;
-    }
+	public void setCreatedTime(Calendar createdTime) {
+		this.createdTime = createdTime;
+	}
 
-    public ParkingCoupon getCoupon() {
-        return coupon;
-    }
+	public Integer getTotal() {
+		return total;
+	}
 
-    public void setCoupon(ParkingCoupon coupon) {
-        this.coupon = coupon;
-    }
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
 
-    @PrePersist
-    private void prePersist() {
-        this.createdTime = Calendar.getInstance();
-    }
+	public ParkingCoupon getCoupon() {
+		return coupon;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (o != null && o instanceof ParkingCouponExchangeHistory) {
-            ParkingCouponExchangeHistory that = (ParkingCouponExchangeHistory) o;
-            return this.member.equals(that.member) && this.coupon.equals(that.coupon);
-        } else {
-            return false;
-        }
-    }
+	public void setCoupon(ParkingCoupon coupon) {
+		this.coupon = coupon;
+	}
 
-    @Override
-    public int hashCode() {
-        return member.hashCode() + coupon.hashCode();
-    }
+	@PrePersist
+	private void prePersist() {
+		this.createdTime = Calendar.getInstance();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o != null && o instanceof ParkingCouponExchangeHistory) {
+			ParkingCouponExchangeHistory that = (ParkingCouponExchangeHistory) o;
+			return this.member.equals(that.member) && this.coupon.equals(that.coupon);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return member.hashCode() + coupon.hashCode();
+	}
 }

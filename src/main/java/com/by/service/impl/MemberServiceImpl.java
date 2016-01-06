@@ -146,7 +146,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional(readOnly = true)
     public Member findOne(Long id) {
-        return repository.findOne(id);
+        Member member= repository.findOne(id);
+        member.getMemberDetail().getAddress();
+        return member;
     }
 
     @Override

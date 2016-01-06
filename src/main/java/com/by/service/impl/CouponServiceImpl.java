@@ -1,14 +1,14 @@
 package com.by.service.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
+import com.by.form.BaseCouponForm;
+import com.by.json.CouponJson;
+import com.by.model.*;
+import com.by.repository.GiftCouponMemberRepository;
+import com.by.repository.ShopCouponMemberRepository;
+import com.by.service.*;
+import com.by.typeEnum.CouponAdminStateEnum;
+import com.by.typeEnum.DuplicateEnum;
+import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,25 +17,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.by.form.BaseCouponForm;
-import com.by.json.CouponJson;
-import com.by.model.Coupon;
-import com.by.model.GiftCoupon;
-import com.by.model.GiftCouponMember;
-import com.by.model.Member;
-import com.by.model.ParkingCoupon;
-import com.by.model.ShopCoupon;
-import com.by.model.ShopCouponMember;
-import com.by.repository.GiftCouponMemberRepository;
-import com.by.repository.ShopCouponMemberRepository;
-import com.by.service.CouponService;
-import com.by.service.GiftCouponService;
-import com.by.service.MemberService;
-import com.by.service.ParkingCouponService;
-import com.by.service.ShopCouponService;
-import com.by.typeEnum.CouponAdminStateEnum;
-import com.by.typeEnum.DuplicateEnum;
-import com.by.typeEnum.ValidEnum;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponServiceImpl implements CouponService {
@@ -173,8 +161,8 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional(readOnly = true)
     public Page<CouponJson> findByMember(Member member, Pageable pageable) {
-        Page<GiftCouponMember> giftCouponList = giftCouponMemberRepository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable);
-        Page<ShopCouponMember> shopCouponMemberList = shopCouponMemberRepository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable);
+        Page<GiftCouponMember> giftCouponList = giftCouponMemberRepository.findByMemberAndValid(member, ValidEnum.VALID, Calendar.getInstance(), pageable);
+        Page<ShopCouponMember> shopCouponMemberList = shopCouponMemberRepository.findByMemberAndValid(member, ValidEnum.VALID, Calendar.getInstance(), pageable);
         List<CouponJson> results = new ArrayList<>();
         List<CouponJson> preferentialJson = giftCouponList.getContent().stream()
                 .map(i -> {

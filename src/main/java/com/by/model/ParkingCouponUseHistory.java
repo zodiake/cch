@@ -8,14 +8,15 @@ import java.util.Calendar;
  */
 @Entity
 @Table(name = "by_parking_coupon_use_history")
-@IdClass(MemberCouponId.class)
 public class ParkingCouponUseHistory {
-    @Id
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+
     @ManyToOne
     @JoinColumn(name = "parking_coupon_id")
     private ParkingCoupon coupon;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -31,13 +32,21 @@ public class ParkingCouponUseHistory {
     public ParkingCouponUseHistory() {
     }
 
-    public ParkingCouponUseHistory( Member member, int total, String license) {
+    public ParkingCouponUseHistory(Member member, int total, String license) {
         this.member = member;
         this.total = total;
         this.license = license;
     }
+    
+    public int getId() {
+		return id;
+	}
 
-    public ParkingCoupon getCoupon() {
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public ParkingCoupon getCoupon() {
         return coupon;
     }
 
@@ -77,16 +86,25 @@ public class ParkingCouponUseHistory {
         this.license = license;
     }
 
-    public boolean equals(Object o) {
-        if (o != null && o instanceof ParkingCouponUseHistory) {
-            ParkingCouponUseHistory that = (ParkingCouponUseHistory) o;
-            return this.member.equals(that.member) && this.coupon.equals(that.coupon);
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
 
-    public int hashCode() {
-        return member.hashCode() + coupon.hashCode();
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ParkingCouponUseHistory other = (ParkingCouponUseHistory) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 }

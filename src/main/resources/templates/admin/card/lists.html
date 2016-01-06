@@ -23,7 +23,7 @@
             <div class="group use-state">
                 <div class="group-list">
                     <label>状态</label>
-                    <div class="succees">{{:state}}</div>
+                    <div class="succees">{{if state=='VALID'}}有效{{else}}无效{{/if}}</div>
                 </div>
                 <div class="group-list">
                     <label>当前会员数</label>
@@ -39,7 +39,7 @@
                 <div class="group-list">
                     <label>背景图</label>
                     <div class="ml">
-                        <img src="img/1.png" width="300" height="210"/>
+                        <img src="{{:imgHref}}" width="300" height="210"/>
                     </div>
                 </div>
                 <div class="group-list">
@@ -143,7 +143,7 @@
             </div>
             <div class="list mem-list">
                 <ul class="clearfix">
-                    <li th:each="c:${valid}" th:attr="data-card-id=${c.id}">
+                    <li th:each="c:${valid.content}" th:attr="data-card-id=${c.id}">
                         <a>
                             <img th:src="${c.imgHref}" width="300" height="210"/>
                         </a>
@@ -155,7 +155,7 @@
             </div>
             <div class="list mem-list">
                 <ul class="clearfix">
-                    <li th:each="c:${inValid}" th:attr="data-card-id=${c.id}">
+                    <li th:each="c:${inValid.content}" th:attr="data-card-id=${c.id}">
                         <a>
                             <img src="/img/1.png" width="300" height="210"/>
                         </a>
