@@ -69,6 +69,7 @@
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</p>
                     </div>
                     <div class="form-group imgUp">
                         <label class="col-md-4 control-label">列表图：</label>
@@ -95,18 +96,21 @@
                         <div class="col-md-3">
                             <textarea class="form-control" rows="6" th:field="*{summary}"></textarea>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('summary')}" th:errors="*{summary}">Incorrect date</p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">卡券金额：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{amount}"/>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Incorrect date</p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">兑换积分：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{score}"/>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('score')}" th:errors="*{score}">Incorrect date</p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">生效时间：</label>
@@ -118,10 +122,12 @@
                             结束
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
                         </div>
+                        <p class="error" th:if="${#fields.hasErrors('beginTime')}" th:errors="*{beginTime}">Incorrect date</p>
+                        <p class="error" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}">Incorrect date</p>
                     </div>
                     <div class="group-ft col-xs-offset-4 mt50">
-                        <input type="submit" class="btn btn-default ml40" value="确认"/>
-                        <button type="button" class="btn btn-default ml40">取消</button>
+                        <a href="/admin/parkingCoupons"><button type="button" class="btn btn-default ml40">取消</button></a>
+                        <button type="submit" class="btn btn-success ml40">提交</button>
                     </div>
                 </form>
             </div>
