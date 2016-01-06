@@ -22,7 +22,9 @@ public interface ShopCouponMemberRepository extends PagingAndSortingRepository<S
     List<ShopCouponMember> findByCouponAndMember(ShopCoupon coupon, Member member);
 
     @Query("select sc from ShopCouponMember sc where sc.usedTime is null and sc.member=:member and sc.coupon.valid=:valid and sc.coupon.beginTime<:today and :today<sc.coupon.endTime order by sc.coupon.couponEndTime")
-    Page<ShopCouponMember> findByMember(@Param("member") Member member, @Param("valid") ValidEnum valid, @Param("today") Calendar today, Pageable pageable);
+    Page<ShopCouponMember> findByMemberAndValid(@Param("member") Member member, @Param("valid") ValidEnum valid, @Param("today") Calendar today, Pageable pageable);
+
+    Page<ShopCouponMember> findByMember(@Param("member") Member member, Pageable pageable);
 
     ShopCouponMember findByCode(String code);
 }

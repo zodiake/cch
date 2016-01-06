@@ -143,7 +143,56 @@
 			<ul class="pagination" id="parkingPage">
 			</ul>
 		</div>
-	</script>
+    </script>
+    <script id="shopCoupons-tmpl" type="text/x-jsrender">
+		<table class="table table-striped bg-white">
+			<thead>
+			<tr>
+				<th>获得时间</th>
+				<th>使用时间</th>
+				<th>店铺名称</th>
+				<th>卡券名称</th>
+			</tr>
+			</thead>
+			<tbody>
+			{{for content}}
+			<tr>
+				<td>2015年10月10号</td>
+				<td>2015年10月10号</td>
+				<td>普通卡券</td>
+			</tr>
+			{{/for}}
+			</tbody>
+		</table>
+		<div class="pagination-wrap">
+			<ul class="pagination" id="shopCouponPage">
+			</ul>
+		</div>
+    </script>
+    <script id="giftCoupons-tmpl" type="text/x-jsrender">
+		<table class="table table-striped bg-white">
+			<thead>
+			<tr>
+				<th>获得时间</th>
+				<th>使用时间</th>
+				<th>卡券名称</th>
+			</tr>
+			</thead>
+			<tbody>
+			{{for content}}
+			<tr>
+				<td>2015年10月10号</td>
+				<td>2015年10月10号</td>
+				<td>普通卡券</td>
+			</tr>
+			{{/for}}
+			</tbody>
+		</table>
+		<div class="pagination-wrap">
+			<ul class="pagination" id="giftCouponsPage">
+			</ul>
+		</div>
+    </script>
     <script id="parking-row" type="text/x-jsrender">
 		{{for content}}
 		<tr>
@@ -153,7 +202,8 @@
 			<td>100</td>
 		</tr>
 		{{/for}}
-	</script>
+
+    </script>
     <script id="page-row" type="text/x-jsrender">
 		<li>
 			<a  aria-label="Previous">
@@ -168,6 +218,7 @@
 				<span aria-hidden="true">»</span>
 			</a>
 		</li>
+
     </script>
     <script>
         $(function () {
@@ -181,14 +232,22 @@
                 tmpl: 'trading',
                 tabDetail: '#t3',
                 pageId: 'tradingPage'
-            },{
-            	tmpl:'score',
-            	tabDetail:'#t4',
-            	pageId:'scorePage'
-            },{
-            	tmpl:'parking',
-            	tabDetail:'#t5',
-            	pageId:'parkingPage'
+            }, {
+                tmpl: 'score',
+                tabDetail: '#t4',
+                pageId: 'scorePage'
+            }, {
+                tmpl: 'parking',
+                tabDetail: '#t5',
+                pageId: 'parkingPage'
+            }, {
+                tmpl: 'giftCoupons',
+                tabDetail: '#t6',
+                pageId: 'giftCouponsPage'
+            }, {
+                tmpl: 'shopCoupons',
+                tabDetail: '#t7',
+                pageId: 'shopCouponPage'
             }];
 
             function init(obj) {
@@ -197,19 +256,20 @@
                         cacheName = obj.tmpl,
                         suffix = '/' + obj.tmpl,
                         table = '#' + obj.tmpl + 'Table tbody';
+                if (consumeTmpl[cacheName] == null)
+                    consumeTmpl[cacheName] = $.templates(tmplName);
                 $(tab).click(function () {
                     var self = $(this);
                     var id = self.attr('data-id');
                     $.ajax({
                         url: '/admin/members/' + id + suffix,
                         success: function (data) {
-                            if (consumeTmpl[cacheName] == null)
-                                consumeTmpl[cacheName] = $.templates(tmplName);
                             var html = consumeTmpl[cacheName].render(data.obj);
+                            console.log(html);
                             $(obj.tabDetail).html(html);
                             if (obj.pageId != null) {
                                 $('#' + obj.pageId).pageable({
-                                    url: '/admin/members/' + id + '/'+obj.tmpl,
+                                    url: '/admin/members/' + id + '/' + obj.tmpl,
                                     parameter: function () {
                                         return {};
                                     },
@@ -266,32 +326,46 @@
                     </a>
                 </li>
                 <li class="default">
-                    <a data-toggle="tab" id="couponFlow" href="#t6" th:attr="data-id=${member.id}">卡券记录
+                    <a data-toggle="tab" id="giftCouponsFlow" href="#t6" th:attr="data-id=${member.id}">礼品券记录
+                    </a>
+                </li>
+                <li class="default">
+                    <a data-toggle="tab" id="shopCouponsFlow" href="#t7" th:attr="data-id=${member.id}">商铺券记录
+                    </a>
+                </li>
+                <li class="default">
+                    <a data-toggle="tab" id="parkingCouponsFlow" href="#t8" th:attr="data-id=${member.id}">停车券记录
                     </a>
                 </li>
             </ul>
             <div class="tab-content">
                 <div id="t1" class="tab-pane active">
-                    <form class="form-horizontal" >
+                    <form class="form-horizontal">
                         <div class="clearfix mr50">
                             <input id="validate" type="button" class="pull-right btn btn-danger" data-toggle="modal"
                                    data-target=".modal" value="加入黑名单" th:attr="member=${member.id}"/>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">姓名：</label>
-                            <div class="col-md-3 padd5 text-center" th:text="${member.memberDetail.realName}">Jessica Foster</div>
+                            <div class="col-md-3 padd5 text-center" th:text="${member.memberDetail.realName}">Jessica
+                                Foster
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">手机号：</label>
                             <div class="col-md-3 padd5 text-center" th:text="${member.name}">13454672334</div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label" >出生年月：</label>
-                            <div class="col-md-3 padd5 text-center" th:text="${#dates.format(member.memberDetail.birthday, 'yyyy-MM-dd')}">1992/01/01</div>
+                            <label class="col-md-3 control-label">出生年月：</label>
+                            <div class="col-md-3 padd5 text-center"
+                                 th:text="${#dates.format(member.memberDetail.birthday, 'yyyy-MM-dd')}">1992/01/01
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">详细地址：</label>
-                            <div class="col-md-3 padd5 text-center" th:text="${member.memberDetail.address}">上海市黄浦区建国西路</div>
+                            <div class="col-md-3 padd5 text-center" th:text="${member.memberDetail.address}">
+                                上海市黄浦区建国西路
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -304,6 +378,45 @@
                 <div id="t5" class="tab-pane">
                 </div>
                 <div id="t6" class="tab-pane">
+                </div>
+                <div id="t7" class="tab-pane">
+                    <table class="table table-striped bg-white">
+                        <thead>
+                        <tr>
+                            <th>获得时间</th>
+                            <th>使用时间</th>
+                            <th>卡券名称</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>2015年10月10号</td>
+                            <td>2015年10月10号</td>
+                            <td>普通卡券</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination-wrap">
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="t8" class="tab-pane">
                     <table class="table table-striped bg-white">
                         <thead>
                         <tr>
@@ -372,18 +485,18 @@
         </div>
     </div>
 </div>
-<div id="alert" th:if="${status}!=null" >
-	<div  class="success-modal">
-	    <div class="show-msg">
-	        <div class="alert alert-success" role="alert">
-	            设置成功
-	        </div>
-	        <div class="success-bg">
-	            <img src="/img/icon-success.jpg"/>
-	        </div>
-	    </div>
-	</div>
-	<div class="fixed"></div>
+<div id="alert" th:if="${status}!=null">
+    <div class="success-modal">
+        <div class="show-msg">
+            <div class="alert alert-success" role="alert">
+                设置成功
+            </div>
+            <div class="success-bg">
+                <img src="/img/icon-success.jpg"/>
+            </div>
+        </div>
+    </div>
+    <div class="fixed"></div>
 </div>
 <script type="text/javascript">
     $(function () {

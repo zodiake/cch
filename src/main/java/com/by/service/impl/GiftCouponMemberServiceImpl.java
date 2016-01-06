@@ -1,13 +1,18 @@
 package com.by.service.impl;
 
 import com.by.exception.*;
-import com.by.json.CouponJson;
-import com.by.model.*;
+import com.by.json.CouponMemberJson;
+import com.by.model.GiftCoupon;
+import com.by.model.GiftCouponMember;
+import com.by.model.Member;
+import com.by.model.Sequence;
 import com.by.repository.GiftCouponMemberRepository;
 import com.by.service.*;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,12 +98,30 @@ public class GiftCouponMemberServiceImpl implements GiftCouponMemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CouponJson> findByMember(Member member, Pageable pageable) {
-        return repository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable).getContent().stream()
-                .map(i -> {
-                    Coupon c = i.getCoupon();
-                    return new CouponJson(c);
-                }).collect(Collectors.toList());
+    public Page<CouponMemberJson> findByMemberAndValid(Member member, Pageable pageable) {
+        Page<GiftCouponMember> lists = repository.findByMemberAndValid(member, ValidEnum.VALID, Calendar.getInstance(),
+                pageable);
+        return new PageImpl<>(toJson(lists), pageable, lists.getTotalElements());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CouponMemberJson> findByMember(Member member, Pageable pageable) {
+        Page<GiftCouponMember> lists = repository.findByMember(member, pageable);
+        return new PageImpl<>(toJson(lists), pageable, lists.getTotalElements());
+    }
+
+    private List<CouponMemberJson> toJson(Page<GiftCouponMember> lists) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return lists.getContent().stream().map(i -> {
+            CouponMemberJson c = new CouponMemberJson();
+            c.setCode(i.getCode());
+            c.setExchangedTime(format.format(i.getExchangedTime().getTime()));
+            if (i.getUsedTime() != null)
+                c.setUsedTime(format.format(i.getUsedTime().getTime()));
+            c.setName(i.getCoupon().getName());
+            return c;
+        }).collect(Collectors.toList());
     }
 
     public GiftCouponMember save(GiftCouponMember pcm) {

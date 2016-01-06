@@ -34,7 +34,7 @@ import com.by.exception.NotFoundException;
 import com.by.exception.PasswordNotMatchException;
 import com.by.exception.Status;
 import com.by.exception.Success;
-import com.by.json.CouponJson;
+import com.by.json.CouponMemberJson;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
 import com.by.message.GiftCouponMessage;
@@ -137,7 +137,7 @@ public class GiftCouponController implements UtilContoller {
 		if (!isValidMember(member)) {
 			throw new MemberNotValidException();
 		}
-		List<CouponJson> jsonList = giftCouponMemberService.findByMember(member, pageable);
+		Page<CouponMemberJson> jsonList = giftCouponMemberService.findByMemberAndValid(member, pageable);
 		return new Success<>(jsonList);
 	}
 

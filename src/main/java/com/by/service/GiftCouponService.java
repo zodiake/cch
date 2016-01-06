@@ -3,6 +3,8 @@ package com.by.service;
 import com.by.form.BaseCouponForm;
 import com.by.json.GiftCouponJson;
 import com.by.model.GiftCoupon;
+import com.by.model.GiftCouponMember;
+import com.by.model.Member;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

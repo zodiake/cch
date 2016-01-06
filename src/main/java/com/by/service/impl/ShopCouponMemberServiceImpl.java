@@ -110,7 +110,7 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
 
     @Override
     public List<CouponJson> findByMember(Member member, Pageable pageable) {
-        return repository.findByMember(member, ValidEnum.VALID, Calendar.getInstance(), pageable)
+        return repository.findByMemberAndValid(member, ValidEnum.VALID, Calendar.getInstance(), pageable)
                 .getContent()
                 .stream()
                 .map(i -> {

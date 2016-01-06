@@ -242,7 +242,6 @@ CREATE TABLE by_gift_coupon_member (
   id             BIGINT AUTO_INCREMENT,
   member_id      BIGINT,
   coupon_id      INT,
-  total          INT,
   code           CHAR(17),
   state          SMALLINT,
   exchanged_time TIMESTAMP,

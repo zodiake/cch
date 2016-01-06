@@ -173,8 +173,8 @@ INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, v
 VALUES (7, 'p', '2015-12-1', '2016-12-30', 9, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon7');
 
 -- test preferentialCoupon
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, total) VALUES (1, 1, 3, 20);
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, total) VALUES (2, 1, 4, 20);
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id,exchanged_time) VALUES (1, 1, 3,'2012-12-12');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id,exchanged_time) VALUES (2, 1, 4,'2014-12-31');
 
 -- test shop coupon
 INSERT INTO by_shop_coupon_member (member_id, coupon_id) VALUES (1, 5);
