@@ -71,6 +71,6 @@ public class MemberHelperServiceImpl implements MemberHelperService {
 	public MemberHelp update(MemberHelp memberHelp) {
 		MemberHelp help = repository.findOne(memberHelp.getId());
 		help.setContent(memberHelp.getContent());
-		return help;
+		return repository.save(help);
 	}
 }

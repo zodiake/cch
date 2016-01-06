@@ -23,9 +23,9 @@ INSERT INTO by_menu (id, name, category_id, href) VALUES (7, '停车券', 3, '/a
 INSERT INTO by_menu (id, name, category_id, href) VALUES (8, '礼品券', 3, '/admin/giftCoupons');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (9, '店铺券', 3, '/admin/shopCoupons');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (10, '店铺管理', 4, '/admin/shops');
-INSERT INTO by_menu (id, name, category_id, href) VALUES (11, '注册协议', 5, '');
-INSERT INTO by_menu (id, name, category_id, href) VALUES (12, '会员卡使用帮助', 5, '');
-INSERT INTO by_menu (id, name, category_id, href) VALUES (13, '会员卡积分规则', 5, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (11, '注册协议', 5, '/admin/memberHelps/1');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (12, '会员卡使用帮助', 5, '/admin/memberHelps/2');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (13, '会员卡积分规则', 5, '/admin/memberHelps/3');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (14, '权限管理', 6, '/admin/authorities');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (15, '用户管理', 6, '/admin/users');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (16, '账户设置', 6, '');
@@ -127,15 +127,15 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, b
 VALUES (6, 2.0, 1, 2, 1, 100, 'rule6', 'c', NULL, NULL);
 
 -- test shop
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (1, 'shop1', 'abc1', 2);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (2, '光明', 'abc2', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (3, '哈根达斯', 'abc3', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (4, 'h&m', 'abc4', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (5, '索尼', 'abc5', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (6, '三星', 'abc6', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (7, 'java', 'abc7', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (8, 'scala', 'abc8', NULL);
-INSERT INTO by_shop (id, name, shop_key, user_id) VALUES (9, 'csharp', 'abc9', NULL);
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (1, 'shop1', 'abc1', 2,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (2, '光明', 'abc2', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (3, '哈根达斯', 'abc3', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (4, 'h&m', 'abc4', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (5, '索尼', 'abc5', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (6, '三星', 'abc6', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (7, 'java', 'abc7', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (8, 'scala', 'abc8', NULL,'2012-01-01');
+INSERT INTO by_shop (id, name, shop_key, user_id,updated_time) VALUES (9, 'csharp', 'abc9', NULL,'2012-01-01');
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
@@ -198,8 +198,12 @@ INSERT INTO by_member_license (member_id, license_id) VALUES (1, 1);
 INSERT INTO by_member_license (member_id, license_id) VALUES (1, 2);
 
 -- test help
-INSERT INTO by_content (id, summary) VALUES (1, 'ahahahahah');
-INSERT INTO by_member_help (content_id, title, id) VALUES (1, 'h', 1);
+INSERT INTO by_content (id, summary) VALUES (1, 'reg help');
+INSERT INTO by_member_help (content_id, title, id) VALUES (1, '注册协议', 1);
+INSERT INTO by_content (id, summary) VALUES (2, 'card help');
+INSERT INTO by_member_help (content_id, title, id) VALUES (2, '会员卡使用帮助', 2);
+INSERT INTO by_content (id, summary) VALUES (3, 'rule help');
+INSERT INTO by_member_help (content_id, title, id) VALUES (3, '会员卡积分规则', 3);
 
 -- test shop rule
 INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (1, 7);
