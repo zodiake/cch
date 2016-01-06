@@ -38,7 +38,7 @@
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
                         </div>
-                        <p class="error" th:each="err : ${#fields.errors('name')}" th:text="${err}"></p>
+                        <p th:each="err : ${#fields.errors('name')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">所属会员卡：</label>
@@ -48,7 +48,7 @@
                                 <option th:each="c : ${cards}" th:value="${c.id}" th:text="${c.name}">name</option>
                             </select>
                         </div>
-                        <p class="error" th:each="err : ${#fields.errors('card')}" th:text="${err}"></p>
+                        <p th:each="err : ${#fields.errors('card')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">积分类型：</label>
@@ -58,21 +58,19 @@
                                 <option th:each="c : ${category}" th:value="${c.id}" th:text="${c.name}">name</option>
                             </select>
                         </div>
-                       	<p class="error" th:each="err : ${#fields.errors('ruleCategory')}" th:text="${err}"></p>
+                        <p th:each="err : ${#fields.errors('ruleCategory')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">生效时间：</label>
                         <div class="col-md-3">
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{beginTime}"/>
                         </div>
-                        <p class="error" th:each="err : ${#fields.errors('beginTime')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">结束时间：</label>
                         <div class="col-md-3">
                             <input class="form-control datepicker " placeholder="" type="text" th:field="*{endTime}"/>
                         </div>
-                        <p class="error" th:each="err : ${#fields.errors('endTime')}" th:text="${err}"></p>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">额外积分：</label>
@@ -86,7 +84,7 @@
                             <input type="text" class="form-control" th:field="*{rate}"/>
                         </div>
                     </div>
-                    <div class="group-ft col-xs-offset-4 mt50">
+                    <div class="group-ft col-xs-offset-3 mt50">
                     	<a href="/admin/cardRules"><button type="button" class="btn btn-default">取消</button></a>
                         <button type="submit" class="btn btn-success col-xs-offset-1">提交</button>
                     </div>
@@ -95,5 +93,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/js/cardRule/edit.js">
+</script>
 </body>
 </html>
