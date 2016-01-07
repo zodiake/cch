@@ -1,5 +1,6 @@
 package com.by.service.impl;
 
+import com.by.json.AuthorityJson;
 import com.by.model.Authority;
 import com.by.repository.AuthorityRepository;
 import com.by.service.AuthorityService;
@@ -7,12 +8,14 @@ import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yagamai on 16-1-4.
@@ -45,7 +48,14 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    @Cacheable(value="auth")
+    public Page<AuthorityJson> toJson(Page<Authority> lists, Pageable pageable) {
+        List<Authority> authorities = lists.getContent();
+        List<AuthorityJson> json = authorities.stream().map(i -> new AuthorityJson(i)).collect(Collectors.toList());
+        return new PageImpl<>(json, pageable, lists.getTotalElements());
+    }
+
+    @Override
+    @Cacheable(value = "auth")
     public Authority save(Authority authority) {
         authority.setValid(ValidEnum.VALID);
         return repository.save(authority);

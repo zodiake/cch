@@ -1,9 +1,9 @@
 package com.by.controller;
 
-import com.by.model.Authority;
-import com.by.model.Menu;
-import com.by.service.AuthorityService;
-import com.by.service.MenuService;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -17,10 +17,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-import java.util.List;
+import com.by.exception.Success;
+import com.by.json.AuthorityJson;
+import com.by.model.Authority;
+import com.by.model.Menu;
+import com.by.service.AuthorityService;
+import com.by.service.MenuService;
 
 /**
  * Created by yagamai on 16-1-4.
@@ -53,6 +58,13 @@ public class AdminAuthController extends BaseController {
         uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
         addMenu(uiModel);
         return LIST;
+    }
+
+    @RequestMapping(value = "/json", method = RequestMethod.GET)
+    @ResponseBody
+    public Success<Page<AuthorityJson>> list(@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Authority> lists = service.findAll(pageable);
+        return new Success<>(service.toJson(lists, pageable));
     }
 
     @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)

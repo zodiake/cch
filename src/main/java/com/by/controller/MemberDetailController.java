@@ -45,4 +45,15 @@ public class MemberDetailController {
         MemberDetail detail = memberService.findOneCache(m.getId()).getMemberDetail();
         return new Success<>(new MemberDetailJson(detail));
     }
+
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
+    @ResponseBody
+    public Status updatePassword(@Valid @RequestBody MemberDetailJson detail, BindingResult result,
+                                 HttpServletRequest request) {
+        Member member = (Member) request.getAttribute("member");
+        if (result.hasErrors()) {
+            return FailBuilder.buildFail(result);
+        }
+        return new Success<>(new MemberDetailJson(service.updatePassword(member.getId(), detail)));
+    }
 }

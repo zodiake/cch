@@ -14,22 +14,22 @@
     <script type="text/javascript" src="/js/jquery-ui-1.10.3.min.js"></script>
     <script type="text/javascript" src="/js/template.js"></script>
     <script type="text/javascript" src="/js/fileUpload.js"></script>
+    <script type="text/javascript" th:src="@{/js/global.js}"></script>
     <script>
     $(function(){
-    	var url="http://cchdev.b0.upaiyun.com/test/";
     	$('div.imgUp').change(function (event) {
             var source = $(event.target);
             var id = source.attr('id');
             var img=source.parent().parent().find('img');
             var input=source.siblings().first();
             $.ajaxFileUpload({
-                    url: '/admin/upload',
+                    url: global.context+'/admin/upload',
                     secureuri: false,
                     fileElementId: source.attr('id'),
                     dataType: 'json',
                     success: function (data, status) {
                     	if(status=='success'){
-                    		img.attr('src',url+data.responseText);
+                    		img.attr('src',global.url+data.responseText);
                     		input.val(url+data.responseText);
                     	}
                     	console.log(data);

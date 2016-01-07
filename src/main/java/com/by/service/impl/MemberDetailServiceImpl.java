@@ -39,6 +39,14 @@ public class MemberDetailServiceImpl implements MemberDetailService {
         d.setAddress(detail.getAddress());
         d.setBirthday(detail.getBirthday());
         d.setRealName(detail.getRealName());
+        return member;
+    }
+
+    @Override
+    @CachePut(value = "member", key = "#memberId")
+    public Member updatePassword(Long memberId, MemberDetailJson detail) {
+        Member member = memberService.findOne(memberId);
+        MemberDetail d = member.getMemberDetail();
         String password = encoder.encodePassword(detail.getPassword(), null);
         d.setPassword(password);
         return member;

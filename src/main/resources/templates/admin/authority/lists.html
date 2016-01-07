@@ -20,9 +20,8 @@
 		{{for content}}
 		<tr>
 			<td><a>{{>name}}</a></td>
-			<td><a>{{>beginTime}}</a></td>
-			<td><a>{{>endTime}}</a></td>
             <td><a class="{{>cssClass}}">{{>state}}</a></td>
+			<td><a>{{>endTime}}</a></td>
 		</tr>
 		{{/for}}
     </script>
@@ -77,7 +76,7 @@
         };
 
         $('ul.pagination').pageable({
-            url: '/admin/parkingCoupons/json',
+            url: '/admin/authorities/json',
             parameter: parameterFn,
             fn: submitFn
         });

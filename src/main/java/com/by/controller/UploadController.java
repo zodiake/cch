@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +27,30 @@ public class UploadController {
 	@Autowired
 	private UpYun yun;
 
-	@RequestMapping(method = RequestMethod.POST,produces = "text/html")
+	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	@ResponseBody
 	public String upload(MultipartFile file) {
 		InputStream stream = null;
 		String fileName;
+		String serverFilePath;
 		try {
+			Calendar today = Calendar.getInstance();
+			int year = today.get(Calendar.YEAR);
+			int month = today.get(Calendar.MONTH);
+			Path dir = Paths.get("Pictures", year + "", month + "");
+			if (!Files.exists(dir)) {
+				Files.createDirectories(dir);
+			}
 			stream = file.getInputStream();
 			fileName = UUID.randomUUID() + "." + file.getOriginalFilename().split("\\.")[1];
-			Path filePath = Paths.get("/home/yagamai/Pictures/", fileName);
+			Path filePath = dir.resolve(fileName);
 			Files.copy(stream, filePath);
-			yun.writeFile("/test/" + fileName, new File(filePath.toString()), true);
+			serverFilePath = "/" + year + "/" + month + "/" + fileName;
+			yun.writeFile(serverFilePath, new File(filePath.toString()), true);
 		} catch (IOException e) {
 			return "fail";
 		}
-		return fileName;
+		return serverFilePath;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

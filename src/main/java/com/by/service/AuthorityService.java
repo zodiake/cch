@@ -1,5 +1,6 @@
 package com.by.service;
 
+import com.by.json.AuthorityJson;
 import com.by.model.Authority;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,6 @@ public interface AuthorityService {
     Authority save(Authority authority);
 
     List<Authority> findAll();
+
+    Page<AuthorityJson> toJson(Page<Authority> lists, Pageable pageable);
 }

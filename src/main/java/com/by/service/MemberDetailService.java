@@ -17,4 +17,5 @@ public interface MemberDetailService {
 
     List<MemberDetail> findAllAuditRevision(Long id);
 
+    Member updatePassword(Long memberId, MemberDetailJson detail);
 }

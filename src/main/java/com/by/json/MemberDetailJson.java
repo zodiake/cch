@@ -1,83 +1,96 @@
 package com.by.json;
 
+import com.by.model.Member;
+import com.by.model.MemberDetail;
+import org.hibernate.validator.constraints.Length;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.hibernate.validator.constraints.Length;
-
-import com.by.model.Member;
-import com.by.model.MemberDetail;
-
 public class MemberDetailJson {
-	@Length(max = 10)
-	private String realName;
+    @Length(max = 10)
+    private String realName;
 
-	@Length(max = 225)
-	private String address;
+    @Length(max = 225)
+    private String address;
 
-	private String password;
+    private String password;
 
-	private Calendar birthday;
+    private Calendar birthday;
 
-	private String birth;
+    private String birth;
 
-	public MemberDetailJson() {
-	}
+    private int hasPassword = 0;
 
-	public MemberDetailJson(MemberDetail detail) {
-		DateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
-		if (detail.getRealName() != null)
-			this.realName = detail.getRealName();
-		if (detail.getAddress() != null)
-			this.address = detail.getAddress();
-		if (detail.getBirthday() != null) {
-			this.birth = formate.format(detail.getBirthday().getTime());
-			this.birthday = detail.getBirthday();
-		}
-	}
-	
-	public MemberDetailJson(Member member){
-		this(member.getMemberDetail());
-	}
+    public MemberDetailJson() {
+    }
 
-	public String getRealName() {
-		return realName;
-	}
+    public MemberDetailJson(MemberDetail detail) {
+        DateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
+        if (detail.getRealName() != null)
+            this.realName = detail.getRealName();
+        if (detail.getAddress() != null)
+            this.address = detail.getAddress();
+        if (detail.getBirthday() != null) {
+            this.birth = formate.format(detail.getBirthday().getTime());
+            this.birthday = detail.getBirthday();
+        }
+        if (detail.getPassword() != null) {
+            this.password = detail.getPassword();
+            hasPassword = 1;
+        }
+    }
 
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
+    public MemberDetailJson(Member member) {
+        this(member.getMemberDetail());
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getRealName() {
+        return realName;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public Calendar getBirthday() {
-		return birthday;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setBirthday(Calendar birthday) {
-		this.birthday = birthday;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getBirth() {
-		return birth;
-	}
+    public Calendar getBirthday() {
+        return birthday;
+    }
 
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
+    public void setBirthday(Calendar birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public int getHasPassword() {
+        return hasPassword;
+    }
+
+    public void setHasPassword(int hasPassword) {
+        this.hasPassword = hasPassword;
+    }
 }
