@@ -25,6 +25,7 @@
 		</tr>
 		{{/for}}
 
+
     </script>
 </head>
 
@@ -106,13 +107,13 @@
         };
 
         $('ul.pagination').pageable({
-            url: '/admin/shopRules/json',
+            url: global.context + '/admin/shopRules/json',
             parameter: parameterFn,
             fn: submitFn
         });
 
         $('.datepicker').datepicker({
-        	dateFormat:'yy-mm-dd',
+            dateFormat: 'yy-mm-dd'
         });
     })
 </script>

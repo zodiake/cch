@@ -5,39 +5,42 @@
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
     <title>添加会员卡</title>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
-    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/js/template.js"></script>
-    <script type="text/javascript" src="/js/fileUpload.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-override.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui-1.10.3.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-ui-1.10.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/template.js}"></script>
+    <script type="text/javascript" th:src="@{/js/fileUpload.js}"></script>
+    <script type="text/javascript" th:src="@{/js/global.js}"></script>
     <script>
-    $(function(){
-    	var url="http://cchdev.b0.upaiyun.com/test/";
-    	$('div.col-md-5 input').change(function (event) {
-            var source = $(event.target);
-            var id = source.attr('id');
-            $.ajaxFileUpload({
-                    url: '/admin/upload',
-                    secureuri: false,
-                    fileElementId: source.attr('id'),
-                    dataType: 'json',
-                    success: function (data, status) {
-                    	if(status=='success'){
-                    		$('div.col-md-5 img').attr('src',url+data.responseText);
-                    		$('#imgHref').val(url+data.responseText);
-                    	}
-                    	console.log(data);
-                    },
-                    error: function (data, status, e) {
-                        alert(e);
-                    }
-                }
-            );
-            return false;
-        });
-    })
+        $(function () {
+            var url = "http://cchdev.b0.upaiyun.com/test/";
+            $('div.col-md-5 input').change(function (event) {
+                var source = $(event.target);
+                var id = source.attr('id');
+                $.ajaxFileUpload({
+                            url: global.context + '/admin/upload',
+                            secureuri: false,
+                            fileElementId: source.attr('id'),
+                            dataType: 'json',
+                            success: function (data, status) {
+                                if (status == 'success') {
+                                    $('div.col-md-5 img').attr('src', global.url + data.responseText);
+                                    $('#imgHref').val(global.url + data.responseText);
+                                }
+                                console.log(data);
+                            },
+                            error: function (data, status, e) {
+                                alert(e);
+                            }
+                        }
+                );
+                return false;
+            });
+        })
     </script>
 </head>
 
@@ -59,7 +62,7 @@
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
                         </div>
-						<p class="error" th:each="err : ${#fields.errors('name')}" th:text="${err}" />
+                        <p class="error" th:each="err : ${#fields.errors('name')}" th:text="${err}"/>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">背景图：</label>
@@ -72,9 +75,10 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">初始积分：</label>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" th:field="*{initScore}" onkeyup="value=value.replace(/[^\d.]/g,'')"/>
+                            <input type="text" class="form-control" th:field="*{initScore}"
+                                   onkeyup="value=value.replace(/[^\d.]/g,'')"/>
                         </div>
-                        <p class="error" th:each="err : ${#fields.errors('initScore')}" th:text="${err}" />
+                        <p class="error" th:each="err : ${#fields.errors('initScore')}" th:text="${err}"/>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">描述：</label>
@@ -83,8 +87,10 @@
                         </div>
                     </div>
                     <div class="group-ft col-xs-offset-3 mt50">
-                        <a th:href="@{/admin/cards}"><button class="btn btn-default" type="button">取消</button></a>
-                        <button type="submit" class="btn btn-success col-xs-offset-2" >确定</button>
+                        <a th:href="@{/admin/cards}">
+                            <button class="btn btn-default" type="button">取消</button>
+                        </a>
+                        <button type="submit" class="btn btn-success col-xs-offset-2">确定</button>
                     </div>
                 </form>
             </div>

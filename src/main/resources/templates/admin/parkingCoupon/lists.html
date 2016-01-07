@@ -14,7 +14,7 @@
     <script type="text/javascript" th:src="@{/js/jquery-ui-1.10.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/jsRender.js}"></script>
-    <script src="/js/page.js"></script>
+    <script type="text/javascript" th:src="@{/js/page.js}"></script>
     <script id="detail" type="text/x-jsrender">
 		{{for content}}
 		<tr>
@@ -104,7 +104,7 @@
         };
 
         $('ul.pagination').pageable({
-            url: '/admin/parkingCoupons/json',
+            url: global.context + '/admin/parkingCoupons/json',
             parameter: parameterFn,
             fn: submitFn
         });
