@@ -206,9 +206,9 @@
 			<tbody>
 			{{for content}}
 			<tr>
-				<td>2015年10月10号</td>
-				<td>2015年10月10号</td>
-				<td>普通卡券</td>
+				<td>{{:created}}</td>
+				<td>{{:total}}</td>
+				<td>{{:couponName}}</td>
 			</tr>
 			{{/for}}
 			</tbody>
@@ -273,7 +273,7 @@
                 pageId: 'shopCouponPage'
             }, {
                 tmpl: 'parkingCoupons',
-                tabDetail: '#t7',
+                tabDetail: '#t8',
                 pageId: 'parkingCouponPage'
             }];
 
@@ -292,7 +292,6 @@
                         url: '/admin/members/' + id + suffix,
                         success: function (data) {
                             var html = consumeTmpl[cacheName].render(data.obj);
-                            console.log(html);
                             $(obj.tabDetail).html(html);
                             if (obj.pageId != null) {
                                 $('#' + obj.pageId).pageable({

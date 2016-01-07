@@ -47,7 +47,7 @@ public class AdminMemberController extends BaseController {
     @Autowired
     private TradingService tradingService;
     @Autowired
-    private ScoreHistoryService scoreHisotryService;
+    private ScoreHistoryService scoreHistoryService;
     @Autowired
     private ParkingHistoryService parkingHistoryService;
     @Autowired
@@ -154,7 +154,7 @@ public class AdminMemberController extends BaseController {
     @ResponseBody
     public Status score(@PathVariable("id") Long id,
                         @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        return new Success<>(scoreHisotryService.findByMemberJson(new Member(id), pageable));
+        return new Success<>(scoreHistoryService.findByMemberJson(new Member(id), pageable));
     }
 
     @RequestMapping(value = "/{id}/parking", method = RequestMethod.GET)
@@ -182,7 +182,6 @@ public class AdminMemberController extends BaseController {
     @ResponseBody
     public Status parkingCoupons(@PathVariable("id") Long id,
                                  @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE) Pageable pageable) {
-
         return new Success<>(parkingCouponService.findByMemberHistory(new Member(id), pageable));
     }
 

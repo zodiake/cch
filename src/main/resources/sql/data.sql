@@ -226,8 +226,8 @@ INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (3, 7);
 
 INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-1', 2);
 INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-2', 3);
-INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-2', 3);
-INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-2', 3);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-3', 3);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-4', 3);
 
 INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
 VALUES (1, 1, '2016-1-2', 1);
