@@ -55,7 +55,7 @@ public class AdminParkingCouponController extends BaseController {
         }
         ParkingCoupon source = service.save(coupon);
         redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-        return REDIRECT + source.getId() + "?edit";
+        return REDIRECT + source.getId() ;
     }
 
     // 获取修改
@@ -82,7 +82,7 @@ public class AdminParkingCouponController extends BaseController {
         service.update(coupon);
         addMenu(uiModel);
         redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-        return REDIRECT + id + "?edit";
+        return REDIRECT + id ;
     }
 
     // 列表页
