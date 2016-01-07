@@ -25,6 +25,8 @@ public class CouponJson {
 
     private int total;
 
+    private String code;
+
     public CouponJson() {
     }
 
@@ -94,5 +96,13 @@ public class CouponJson {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -168,12 +168,14 @@ public class CouponServiceImpl implements CouponService {
                 .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setType("g");
+                    json.setCode(i.getCode());
                     return json;
                 }).collect(Collectors.toList());
         List<CouponJson> shopJson = shopCouponMemberList.getContent().stream()
                 .map(i -> {
                     CouponJson json = new CouponJson(i.getCoupon());
                     json.setType("s");
+                    json.setCode(i.getCode());
                     return json;
                 }).collect(Collectors.toList());
         results.addAll(preferentialJson);

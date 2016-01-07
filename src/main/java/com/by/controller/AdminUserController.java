@@ -42,7 +42,7 @@ public class AdminUserController extends BaseController {
 	private final String LISTS = "admin/user/lists";
 	private final String EDIT = "admin/user/edit";
 	private final String CREATE = "admin/user/create";
-	private final String REDIRECT = "redirect:/admin/user/";
+	private final String REDIRECT = "redirect:/admin/users/";
 	private final Menu subMenu = new Menu(15);
 	@Autowired
 	private UserService service;

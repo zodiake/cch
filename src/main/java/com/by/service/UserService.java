@@ -29,4 +29,6 @@ public interface UserService {
 	User validate(int id);
 
 	Page<UserJson> toJson(Page<User> user, Pageable pageable);
+
+	User updatePassword(User user);
 }

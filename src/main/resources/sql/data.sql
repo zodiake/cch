@@ -28,7 +28,7 @@ INSERT INTO by_menu (id, name, category_id, href) VALUES (12, '会员卡使用�
 INSERT INTO by_menu (id, name, category_id, href) VALUES (13, '会员卡积分规则', 5, '/admin/memberHelps/3');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (14, '权限管理', 6, '/admin/authorities');
 INSERT INTO by_menu (id, name, category_id, href) VALUES (15, '用户管理', 6, '/admin/users');
-INSERT INTO by_menu (id, name, category_id, href) VALUES (16, '账户设置', 6, '');
+INSERT INTO by_menu (id, name, category_id, href) VALUES (16, '账户设置', 6, '/admin/password');
 
 -- test authority
 INSERT INTO by_authority (id, name, valid) VALUES (1, '管理员', 1);
@@ -240,11 +240,13 @@ VALUES (22, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'gift
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
 VALUES (23, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
 -- test giftCoupon
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time) VALUES (1, 1, 3, '2012-12-12');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time) VALUES (2, 1, 4, '2014-12-31');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (1, 1, 3, '2012-12-12', '12344');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (2, 1, 4, '2014-12-31', '12355');
 
 -- test shop coupon
-INSERT INTO by_shop_coupon_member (member_id, coupon_id, exchanged_time) VALUES (1, 5, '2015-1-2');
+INSERT INTO by_shop_coupon_member (member_id, coupon_id, exchanged_time,code) VALUES (1, 5, '2015-1-2','aabce');
 
 -- test score_history
 INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
