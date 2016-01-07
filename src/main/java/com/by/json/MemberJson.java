@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
  * Created by yagamai on 15-12-7.
  */
 public class MemberJson {
-	private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	private Long id;
 	@NotNull
 	@Length(min = 11, max = 11)
@@ -29,6 +28,7 @@ public class MemberJson {
 	}
 
 	public MemberJson(Member member) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		this.id = member.getId();
 		this.mobile = member.getName();
 		this.score = member.getScore();
@@ -94,10 +94,6 @@ public class MemberJson {
 
 	public void setCreatedTime(String createdTime) {
 		this.createdTime = createdTime;
-	}
-
-	public SimpleDateFormat getFormat() {
-		return format;
 	}
 
 	public String getName() {

@@ -103,14 +103,13 @@ public class AdminMemberController extends BaseController {
 
     @RequestMapping(value = "/json", method = RequestMethod.GET)
     @ResponseBody
-    public Status list(AdminMemberForm form, Model uiModel,
+    public Status list(AdminMemberForm form,
                        @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<MemberJson> results = memberService.findAll(form, pageable, ValidEnum.VALID);
-        uiModel.addAttribute("results", results);
         return new Success<>(results);
     }
 
-    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}",  method = RequestMethod.GET)
     public String edit(@PathVariable("id") Long id, Model uiModel) {
         Member member = memberService.findOne(id);
         if (member == null)

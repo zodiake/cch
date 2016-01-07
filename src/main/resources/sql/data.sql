@@ -69,36 +69,49 @@ INSERT INTO by_card (id, name, valid, init_score, img_href) VALUES (1, 'low', 1,
 
 -- test member_detail
 INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (1, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (2, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (3, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (4, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (5, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (6, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (7, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (8, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (9, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (10, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (11, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (12, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (13, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
+INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (14, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
 
 -- test member
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
 VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12', 1);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (2, '13811738422', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (3, '13811738423', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (4, '13811738424', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (5, '13811738425', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (6, '13811738426', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (7, '13811738427', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (8, '13811738428', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (9, '13811738429', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (10, '13811738410', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (11, '13811738412', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (12, '13811738432', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (13, '13811738442', 1, 200, 1, 10, '2012-12-12');
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time)
-VALUES (14, '13811738452', 1, 200, 1, 10, '2012-12-12');
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (2, '13811738422', 1, 200, 1, 10, '2012-12-12', 2);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (3, '13811738423', 1, 200, 1, 10, '2012-12-12', 3);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (4, '13811738424', 1, 200, 1, 10, '2012-12-12', 4);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (5, '13811738425', 1, 200, 1, 10, '2012-12-12', 5);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (6, '13811738426', 1, 200, 1, 10, '2012-12-12', 6);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (7, '13811738427', 1, 200, 1, 10, '2012-12-12', 7);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (8, '13811738428', 1, 200, 1, 10, '2012-12-12', 8);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (9, '13811738429', 1, 200, 1, 10, '2012-12-12', 9);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (10, '13811738410', 1, 200, 1, 10, '2012-12-12', 10);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (11, '13811738412', 1, 200, 1, 10, '2012-12-12', 11);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (12, '13811738432', 1, 200, 1, 10, '2012-12-12', 12);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (13, '13811738442', 1, 200, 1, 10, '2012-12-12', 13);
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+VALUES (14, '13811738452', 1, 200, 1, 10, '2012-12-12', 14);
 
 -- test pay
 INSERT INTO by_pay (id, member_id, created_time, type, license, amount, parkingPayType)
@@ -125,6 +138,26 @@ INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, b
 VALUES (5, 2.0, 1, 2, 1, 100, 'rule5', 'c', '2016-12-10', '2016-12-20 23:59:59');
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
 VALUES (6, 2.0, 1, 2, 1, 100, 'rule6', 'c', NULL, NULL);
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (17, 2.0, 1, 2, 1, 100, 'rule17', 'c', '2015-12-01', '2016-1-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (8, 2.0, 1, 2, 1, 100, 'rule8', 'c', '2015-12-01', '2016-1-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (9, 2.0, 1, 2, 1, 100, 'rule9', 'c', '2015-12-01', '2016-2-21 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (10, 2.0, 1, 2, 1, 100, 'rule10', 'c', '2015-12-01', '2016-10-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (11, 2.0, 1, 2, 1, 100, 'rule11', 'c', '2016-10-01', '2016-12-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (12, 2.0, 1, 2, 1, 100, 'rule12', 'c', '2016-12-01', '2016-12-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (13, 2.0, 1, 2, 1, 100, 'rule13', 'c', '2016-12-01', '2016-12-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (14, 2.0, 1, 2, 1, 100, 'rule14', 'c', '2016-12-01', '2016-12-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (15, 2.0, 1, 2, 1, 100, 'rule15', 'c', '2016-12-01', '2016-12-31 23:59:59');
+INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
+VALUES (16, 2.0, 1, 2, 1, 100, 'rule16', 'c', '2015-12-01', '2016-12-31 23:59:59');
 
 -- test shop
 INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (1, 'shop1', 'abc1', 2, '2012-01-01');

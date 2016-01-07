@@ -24,6 +24,7 @@
             <td><a class="{{>cssClass}}">{{>state}}</a></td>
 		</tr>
 		{{/for}}
+
     </script>
 </head>
 
@@ -78,19 +79,7 @@
                 </tbody>
             </table>
             <div class="pagination-wrap">
-                <ul class="pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="i:${#numbers.sequence(1,last)}"><a th:text="${i}">1</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+                <div th:replace="admin/layout/page::page"></div>
             </div>
         </div>
     </div>
@@ -107,11 +96,11 @@
         var parameterFn = function () {
             var beginTime = $('#beginTime').val();
             var endTime = $('#endTime').val();
-            var state=$('#state').val();
+            var state = $('#state').val();
             return {
                 beginTime: beginTime,
                 endTime: endTime,
-                state:state
+                state: state
             }
         };
 
@@ -122,7 +111,7 @@
         });
 
         $('.datepicker').datepicker({
-        	dateFormat:'yy-mm-dd',
+            dateFormat: 'yy-mm-dd',
         });
     })
 </script>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
+    <script src="/javascript/jquery-1.11.3.min.js"></script>
+    <script src="/javascript/page.js"></script>
+</head>
+<body>
+<div th:fragment="page">
+    <ul class="pagination">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li th:each="i:${#numbers.sequence(1,last)}" th:class="${i==1}?'active'"><a th:text="${i}">1</a></li>
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
