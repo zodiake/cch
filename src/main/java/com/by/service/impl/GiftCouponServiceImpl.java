@@ -10,9 +10,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.by.model.GiftCouponMember;
-import com.by.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,6 +41,7 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 	private CouponService couponService;
 
 	@Override
+	@CachePut(value="coupon",key="#coupon.id")
 	public GiftCoupon save(GiftCoupon coupon) {
 		Calendar endTime = coupon.getEndTime();
 		Calendar couponEndTime = coupon.getCouponEndTime();
@@ -59,6 +59,7 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 	}
 
 	@Override
+	@CachePut(value="coupon",key="#coupon.id")
 	public GiftCoupon update(GiftCoupon coupon) {
 		GiftCoupon c = findOne(coupon.getId());
 		c.setAmount(coupon.getAmount());

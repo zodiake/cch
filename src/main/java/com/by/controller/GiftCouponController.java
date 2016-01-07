@@ -144,7 +144,7 @@ public class GiftCouponController implements UtilContoller {
 	// 详情
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Status detail(@PathVariable("id") int id) {
+	public Success<CouponTemplateJson> detail(@PathVariable("id") int id) {
 		GiftCoupon coupon = giftCouponService.findOneCache(id);
 		if (coupon == null)
 			throw new NotFoundException();
