@@ -35,7 +35,6 @@ public abstract class Rule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @NotNull(message = "rule.rate.notnull")
     private double rate;
 
     private String summary;
@@ -47,11 +46,9 @@ public abstract class Rule {
     private ValidEnum valid;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull(message="rule.beginTime.notnull")
     private Calendar beginTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull(message="rule.endTime.notnull")
     private Calendar endTime;
 
     @Temporal(TemporalType.TIMESTAMP)

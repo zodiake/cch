@@ -26,6 +26,7 @@
 			<td><a>{{>score}}</a></td>
 		</tr>
 		{{/for}}
+
     </script>
     <script>
         $(function () {
@@ -74,7 +75,7 @@
             <form class="form-inline" th:object="${form}">
                 <div class="form-group">
                     <label>会员卡类型</label>
-                    <select class="form-control w120" th:field="*{card}" >
+                    <select class="form-control w120" th:field="*{card}">
                         <option value="">全部</option>
                         <option th:each="c : ${cards}" th:value="${c.id}" th:text="${c.name}">name</option>
                     </select>
@@ -87,7 +88,7 @@
                 </div>
                 <div class="form-group">
                     <label>手机</label>
-                    <input class="form-control w200"  type="text" th:field="*{mobile}"/>
+                    <input class="form-control w200" type="text" th:field="*{mobile}"/>
                 </div>
                 <button class="btn btn-primary btn-xs" type="submit">查找</button>
             </form>
@@ -113,19 +114,7 @@
                 </tbody>
             </table>
             <div class="pagination-wrap">
-                <ul class="pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="i:${#numbers.sequence(1,last)}"><a th:text="${i}">1</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+                <div th:replace="admin/layout/page::page"></div>
             </div>
         </div>
     </div>
