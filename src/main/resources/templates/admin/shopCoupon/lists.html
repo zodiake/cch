@@ -20,10 +20,14 @@
     <script id="detail" type="text/x-jsrender">
 		{{for content}}
 		<tr>
-			<td><a>{{>name}}</a></td>
-			<td><a>{{>beginTime}}</a></td>
-			<td><a>{{>endTime}}</a></td>
-            <td><a class="{{>cssClass}}">{{>state}}</a></td>
+			<td><a >{{>name}}</a></td>
+			<td><a >{{>amount}}</a></td>
+			<td><a >{{>score}}</a></td>
+			<td><a >{{>beginTime}}</a></td>
+			<td><a >{{>endTime}}</a></td>
+			<td><a >{{>total}}</a></td>
+			<td><a >{{>shopName}}</a></td>
+			<td><a class="{{>cssClass}}">{{>state}}</a></td>
 		</tr>
 		{{/for}}
 
@@ -122,7 +126,7 @@
         };
 
         $('ul.pagination').pageable({
-            url: global.context + '/admin/parkingCoupons/json',
+            url: global.context + '/admin/shopCoupons/json',
             parameter: parameterFn,
             fn: submitFn
         });

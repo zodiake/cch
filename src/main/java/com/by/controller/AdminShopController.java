@@ -59,14 +59,6 @@ public class AdminShopController extends BaseController {
         return new Success<>(service.findAllJson());
     }
 
-    // 店铺列表json
-    @RequestMapping(value = "/json", method = RequestMethod.GET)
-    @ResponseBody
-    public Status list(
-            @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<ShopJson> pages = service.findAll(pageable);
-        return new Success<>(pages);
-    }
 
     // 店铺列表
     @RequestMapping(method = RequestMethod.GET)
@@ -115,6 +107,15 @@ public class AdminShopController extends BaseController {
         uiModel.addAttribute("shop", shop);
         addMenu(uiModel);
         return "admin/shop/edit";
+    }
+
+    // 店铺列表json
+    @RequestMapping(value = "/json", method = RequestMethod.GET)
+    @ResponseBody
+    public Status list(
+            @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<ShopJson> pages = service.findAll(pageable);
+        return new Success<>(pages);
     }
 
     // 修改店铺信息
