@@ -63,7 +63,7 @@
                   	<div class="form-group">
                   		<label class="col-md-4 control-label">Logo：</label>
                       	<div class="col-md-3">
-	                      	<img th:src="${shop.imgHref}" height="100" style="background:#FFF; width:100%;" />
+	                      	<img th:src="@{*{imgHref}}" height="100" style="background:#FFF; width:100%;" />
 	                      	<input type="hidden" th:field="*{imgHref}"/>
                       	</div>
                         <div class="col-md-2 mt40">
