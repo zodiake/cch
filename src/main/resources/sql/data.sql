@@ -219,6 +219,26 @@ VALUES (12, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shop
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
 VALUES (13, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shopCoupon13', 1);
 
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (14, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (15, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (16, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (17, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (18, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (19, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (20, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (21, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (22, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
+VALUES (23, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
 -- test giftCoupon
 INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time) VALUES (1, 1, 3, '2012-12-12');
 INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time) VALUES (2, 1, 4, '2014-12-31');

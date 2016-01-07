@@ -49,7 +49,7 @@ $(function ($) {
 
         var self = this;
 
-        var current;
+        var current=1;
 
         if (settings.totalPages) {
             this.children().remove();
@@ -82,7 +82,6 @@ $(function ($) {
                 settings.fn(data);
                 var pages = getPages(current, 7, data.obj.totalPages);
                 self.children().remove();
-                console.log(pages);
                 pages.forEach(function (e) {
                     var li = $('<li><a ></a></li>');
                     var a = li.find('a').html(e.text);

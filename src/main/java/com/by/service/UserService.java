@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.by.form.UserQueryForm;
+import com.by.json.UserJson;
 import com.by.model.Menu;
 import com.by.model.User;
 
@@ -26,4 +27,6 @@ public interface UserService {
 	Long countByName(String name);
 
 	User validate(int id);
+
+	Page<UserJson> toJson(Page<User> user, Pageable pageable);
 }

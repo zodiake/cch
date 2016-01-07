@@ -1,7 +1,6 @@
 package com.by.controller;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -27,9 +26,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.by.exception.Fail;
 import com.by.exception.Status;
 import com.by.exception.Success;
+import com.by.json.UserJson;
 import com.by.model.Authority;
 import com.by.model.Menu;
-import com.by.model.Message;
 import com.by.model.User;
 import com.by.service.AuthorityService;
 import com.by.service.UserService;
@@ -72,7 +71,7 @@ public class AdminUserController extends BaseController {
 	public String list(Model uiModel,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<User> lists = service.findAll(null, pageable);
-		uiModel.addAttribute("uses", lists);
+		uiModel.addAttribute("users", service.toJson(lists, pageable));
 		uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
 		addMenu(uiModel);
 		return LISTS;
@@ -102,10 +101,10 @@ public class AdminUserController extends BaseController {
 
 	@RequestMapping(value = "/json", method = RequestMethod.GET)
 	@ResponseBody
-	public Page<User> listJson(
+	public Success<Page<UserJson>> listJson(
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<User> users = service.findAll(null, pageable);
-		return users;
+		return new Success<>(service.toJson(users, pageable));
 	}
 
 	@RequestMapping(value = "/{id}/validate", method = RequestMethod.PUT)

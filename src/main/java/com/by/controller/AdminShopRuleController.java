@@ -1,12 +1,8 @@
 package com.by.controller;
 
-import com.by.form.BaseCouponForm;
-import com.by.json.RuleJson;
-import com.by.model.Menu;
-import com.by.model.Shop;
-import com.by.model.ShopRule;
-import com.by.service.ShopRuleService;
-import com.by.service.ShopService;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,10 +16,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
-import javax.validation.Valid;
+import com.by.exception.Success;
+import com.by.form.BaseCouponForm;
+import com.by.json.RuleJson;
+import com.by.model.Menu;
+import com.by.model.Shop;
+import com.by.model.ShopRule;
+import com.by.service.ShopRuleService;
+import com.by.service.ShopService;
 
 @Controller
 @RequestMapping("/admin/shopRules")
@@ -73,7 +75,7 @@ public class AdminShopRuleController extends BaseController {
 		return REDIRECT + r.getId() + "?edit";
 	}
 
-	@RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String edit(@PathVariable("id") int id, Model uiModel) {
 		ShopRule rule = service.findOne(id);
 		uiModel.addAttribute("rule", rule);
@@ -82,7 +84,7 @@ public class AdminShopRuleController extends BaseController {
 		return EDIT;
 	}
 
-	@RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public String update(@PathVariable("id") int id, @Valid @ModelAttribute("rule") ShopRule rule, BindingResult result,
 			Model uiModel) {
 		rule.setId(id);
@@ -93,6 +95,14 @@ public class AdminShopRuleController extends BaseController {
 		}
 		ShopRule r = service.update(rule);
 		return REDIRECT + r.getId() + "?edit";
+	}
+
+	@RequestMapping(value = "/json", method = RequestMethod.GET)
+	@ResponseBody
+	public Success<Page<RuleJson>> list(BaseCouponForm form,
+			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<RuleJson> lists = service.findAll(form, pageable);
+		return new Success<>(lists);
 	}
 
 	@Override

@@ -82,14 +82,31 @@
         </div>
     </div>
 </div>
+<script id="detail" type="text/x-jsrender">
+	{{for content}}
+	<tr>
+		<td><a href="/admin/giftCoupons/{{>id}}">{{>name}}</a></td>
+		<td><a>{{>amount}}</a></td>
+		<td><a>{{>score}}</a></td>
+		<td><a>{{>beginTime}}</a></td>
+		<td><a>{{>endTime}}</a></td>
+		<td><a>{{>total}}</a></td>
+		<td><a>{{>couponEndTime}}</a></td>
+		<td><a class="{{>cssClass}}">{{>state}}</a></td>
+	</tr>
+	{{/for}}
+</script>
 <script type="text/javascript">
     $(function () {
+		var tmpl = $.templates("#detail");
 
         var submitFn = function (data) {
-            var tmpl = $.templates("#detail");
-            var html = tmpl.render(data.obj);
-            $('table tbody').children().remove();
-            $('table tbody').html(html);
+        	if(data.obj.content.length>0){
+				var html = tmpl.render(data.obj);
+				console.log(html);
+				$('table tbody').children().remove();
+				$('table tbody').html(html);
+        	}
         };
 
         var parameterFn = function () {
@@ -104,7 +121,7 @@
         };
 
         $('ul.pagination').pageable({
-            url: '/admin/parkingCoupons/json',
+            url: '/admin/giftCoupons/json',
             parameter: parameterFn,
             fn: submitFn
         });

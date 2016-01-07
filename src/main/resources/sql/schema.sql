@@ -25,6 +25,10 @@ CREATE TABLE by_user (
   password       CHAR(64),
   valid          SMALLINT        DEFAULT 1,
   user_authority VARCHAR(10),
+  created_time   TIMESTAMP,
+  updated_time   TIMESTAMP,
+  updated_by     VARCHAR(20),
+  created_by     VARCHAR(20),
   PRIMARY KEY (id)
 );
 
@@ -252,7 +256,7 @@ CREATE TABLE by_gift_coupon_member (
 );
 
 CREATE TABLE by_parking_coupon_exchange_history (
-  id  int auto_increment,
+  id           INT AUTO_INCREMENT,
   member_id    BIGINT,
   coupon_id    INT,
   created_time TIMESTAMP,
@@ -264,7 +268,7 @@ CREATE TABLE by_parking_coupon_exchange_history (
 );
 
 CREATE TABLE by_parking_coupon_use_history (
-id int auto_increment,
+  id                INT AUTO_INCREMENT,
   member_id         BIGINT,
   parking_coupon_id INT,
   created_time      TIMESTAMP,

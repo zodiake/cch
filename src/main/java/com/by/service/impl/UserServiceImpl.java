@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.by.form.UserQueryForm;
+import com.by.json.UserJson;
 import com.by.model.Menu;
 import com.by.model.User;
 import com.by.repository.UserRepository;
@@ -57,6 +59,12 @@ public class UserServiceImpl implements UserService {
 			});
 		}
 		return menus;
+	}
+
+	@Override
+	public Page<UserJson> toJson(Page<User> user, Pageable pageable) {
+		List<UserJson> results = user.getContent().stream().map(i -> new UserJson(i)).collect(Collectors.toList());
+		return new PageImpl<>(results, pageable, user.getTotalElements());
 	}
 
 	@Override

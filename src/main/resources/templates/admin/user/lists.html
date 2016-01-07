@@ -20,9 +20,13 @@
 		{{for content}}
 		<tr>
 			<td><a>{{>name}}</a></td>
-			<td><a>{{>beginTime}}</a></td>
-			<td><a>{{>endTime}}</a></td>
-            <td><a class="{{>cssClass}}">{{>state}}</a></td>
+			{{if isValid=='VALID'}}
+			<td><a>使用中</a></td>
+			{{else}}
+			<td><a>无效</a></td>
+			{{/if}}
+			<td><a>{{>role}}</a></td>
+            <td><a>{{>updatedTime}}</a></td>
 		</tr>
 		{{/for}}
     </script>
@@ -51,29 +55,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><a>张三李四</a></td>
-                    <td><a>使用中</a></td>
-                    <td><a>admin</a></td>
-                    <td><a>2015年10月10号 10:00</a></td>
-                </tr>
-                <tr>
-                    <td><a>张三李四</a></td>
-                    <td><a>使用中</a></td>
-                    <td><a>admin</a></td>
-                    <td><a>2015年10月10号 10:00</a></td>
-                </tr>
-                <tr>
-                    <td><a>张三李四</a></td>
-                    <td><a>使用中</a></td>
-                    <td><a>admin</a></td>
-                    <td><a>2015年10月10号 10:00</a></td>
-                </tr>
-                <tr>
-                    <td><a>张三李四</a></td>
-                    <td><a>使用中</a></td>
-                    <td><a>admin</a></td>
-                    <td><a>2015年10月10号 10:00</a></td>
+                <tr th:each="u:${users}">
+                    <td><a th:text="${u.name}">张三李四</a></td>
+                    <td><a th:text="${u.isValid=='VALID'}?'使用中':'无效'">使用中</a></td>
+                    <td><a th:text="${u.role}">admin</a></td>
+                    <td><a th:text="${u.updatedTime}">2015年10月10号 10:00</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -86,6 +72,7 @@
 <script type="text/javascript">
     $(function () {
         var submitFn = function (data) {
+        	console.log(data.obj);
             var tmpl = $.templates("#detail");
             var html = tmpl.render(data.obj);
             $('table tbody').children().remove();
