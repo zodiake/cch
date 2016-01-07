@@ -114,7 +114,7 @@ public class AdminShopController extends BaseController {
             throw new NotFoundException();
         uiModel.addAttribute("shop", shop);
         addMenu(uiModel);
-        return "admin/shop/detail";
+        return "admin/shop/edit";
     }
 
     // 修改店铺信息
@@ -126,7 +126,7 @@ public class AdminShopController extends BaseController {
         if (result.hasErrors()) {
             uiModel.addAttribute("shop", shop);
             addMenu(uiModel);
-            return "admin/shop/detail";
+            return "admin/shop/edit";
         }
         shop.setId(id);
         shop.setUpdatedBy(userContext.getCurrentUser().getName());

@@ -15,6 +15,7 @@
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/jsRender.js}"></script>
     <script type="text/javascript" th:src="@{/js/page.js}"></script>
+    <script type="text/javascript" th:src="@{/js/global.js}"></script>
     <script id="detail" type="text/x-jsrender">
 		{{for content}}
 		<tr>
@@ -110,7 +111,7 @@
         });
 
         $('.datepicker').datepicker({
-            dateFormat: 'yy-mm-dd',
+            dateFormat: 'yy-mm-dd'
         });
     })
 </script>
