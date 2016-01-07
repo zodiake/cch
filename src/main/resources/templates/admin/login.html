@@ -2,36 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0" />
+    <meta name="viewport"
+          content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
     <title>登录</title>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/base.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/template.css"/>
-    <script src="/javascript/jquery-1.11.3.min.js"></script>
-    <script src="/javascript/pagePlugin.js"></script>
-    <script src="/javascript/page.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-override.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
 </head>
 <body>
 <div class="logo-wrap">
-	<h2 class="text-center">CCHCRM</h2>
-	<form th:action="@{/adminloginin}" th:object="${user}" method="post">
+    <h2 class="text-center">CCHCRM</h2>
+    <form th:action="@{/adminLoginin}" th:object="${user}" method="post">
         <div class="input-group">
-	        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-	        <input type="text" class="form-control" placeholder="用户名" th:field="*{name}"/>
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input type="text" class="form-control" placeholder="用户名" th:field="*{name}"/>
         </div>
         <div class="input-group">
-	        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-	        <input type="password" class="form-control" placeholder="密码" th:field="*{password}"/>
-        </div>
-		<div class="clearfix">
-	        <div class="pull-right">
-		        <a class="text-danger">忘记密码</a> 
-	        </div>
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input type="password" class="form-control" placeholder="密码" th:field="*{password}"/>
         </div>
         <div class="ft-btn">
-        	<button type="submit" class="btn btn-success">登录 
-        	</button>
+            <button type="submit" class="btn btn-success">登录
+            </button>
         </div>
     </form>
 </div>

@@ -5,28 +5,28 @@
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
     <title>添加会员卡</title>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-override.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/template.css"/>
-    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/js/template.js"></script>
-    <script type="text/javascript" src="/js/fileUpload.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-override.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/template.js}"></script>
+    <script type="text/javascript" th:src="@{/js/fileUpload.js}"></script>
+    <script type="text/javascript" th:src="@{/js/global.js}"></script>
     <script>
         $(function () {
-            var url = "http://cchdev.b0.upaiyun.com/test/";
             $('div.col-md-5 input').change(function (event) {
                 var source = $(event.target);
                 var id = source.attr('id');
                 $.ajaxFileUpload({
-                            url: '/admin/upload',
+                            url: global.context + '/admin/upload',
                             secureuri: false,
                             fileElementId: source.attr('id'),
                             dataType: 'json',
                             success: function (data, status) {
                                 if (status == 'success') {
-                                    $('div.col-md-5 img').attr('src', url + data.responseText);
-                                    $('#imgHref').val(url + data.responseText);
+                                    $('div.col-md-5 img').attr('src', global.url + data.responseText);
+                                    $('#imgHref').val(global.url + data.responseText);
                                 }
                                 console.log(data);
                             },

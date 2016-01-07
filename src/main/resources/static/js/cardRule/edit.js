@@ -7,7 +7,7 @@ $(function () {
         var self = $(this);
         var id = self.attr('member');
         $.ajax({
-            url: '/admin/member/' + id + '/validate',
+            url: global.context + '/admin/member/' + id + '/validate',
             method: 'put',
             success: function (data) {
                 if (data.status == 'success') {
@@ -29,8 +29,6 @@ $(function () {
         if (self.val() == 1) {
             tmp = $('#rate-div').children().remove();
         } else {
-            console.log($('#rate-div').children().size());
-            console.log(tmp);
             if ($('#rate-div').children().size() == 0 && tmp != null) {
                 $('#rate-div').append(tmp);
             }
@@ -50,7 +48,7 @@ $(function () {
                 },
                 "确认": function () {
                     $.ajax({
-                        url: '/admin/cardRules/' + id + '/valid',
+                        url: global.context + '/admin/cardRules/' + id + '/valid',
                         type: 'put',
                         success: function (data) {
                             if (data.status == 'success') {
@@ -64,7 +62,7 @@ $(function () {
     });
 
     $('.datepicker').datepicker({
-        dateFormat: 'yy-mm-dd',
+        dateFormat: 'yy-mm-dd'
     });
 
 });

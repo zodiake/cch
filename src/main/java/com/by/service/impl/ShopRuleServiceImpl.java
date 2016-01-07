@@ -44,7 +44,7 @@ public class ShopRuleServiceImpl implements ShopRuleService {
         Root<ShopRule> root = c.from(ShopRule.class);
         c.select(root);
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(GiftCoupon.class)));
+        cq.select(cb.count(cq.from(ShopRule.class)));
         List<Predicate> ls = ruleService.getPredicateList(form, root, cb);
         Predicate[] predicates = ls.toArray(new Predicate[0]);
         c.where(predicates);
