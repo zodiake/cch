@@ -10,9 +10,17 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui-1.10.3.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/quill.base.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-ui-1.10.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ckeditor/ckeditor.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ckeditor/adapters/jquery.js}"></script>
+    <script>
+    	$(function(){
+    		$('textarea').ckeditor();
+    	});
+    </script>
 </head>
 
 <body>
@@ -35,7 +43,7 @@
                       	</div>
                   	</div>               
                     <div class="col-xs-offset-4 mt50">
-                        <button type="submit" class="btn btn-success ml40">确认</button>
+                        <input type="submit" class="btn btn-success ml40" value="确认"/>
                     </div>
                </form>
            </div>

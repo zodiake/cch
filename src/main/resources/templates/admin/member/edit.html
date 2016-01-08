@@ -76,7 +76,6 @@
             <ul class="pagination" id="tradingPage">
             </ul>
         </div>
-
     </script>
     <script id="trading-row" type="text/x-jsrender">
         {{for content}}
@@ -117,8 +116,8 @@
         {{for content}}
             <tr>
                 <td>{{>createdTime}}</td>
-                <td>{{>shopName}}</td>
-                <td>{{>amount}}</td>
+                <td>{{>deposit}}</td>
+                <td>{{>reason}}</td>
             </tr>
         {{/for}}
 
@@ -137,9 +136,9 @@
 			{{for content}}
 			<tr>
 				<td>{{>startTime}}</td>
-				<td>{{>endTIme}}</td>
+				<td>{{>endTime}}</td>
 				<td>{{>license}}</td>
-				<td>100</td>
+				<td>{{>amount}}</td>
 			</tr>
 			{{/for}}
 			</tbody>
@@ -148,10 +147,9 @@
 			<ul class="pagination" id="parkingPage">
 			</ul>
 		</div>
-
     </script>
     <script id="shopCoupons-tmpl" type="text/x-jsrender">
-		<table class="table table-striped bg-white">
+		<table class="table table-striped bg-white" id="shopCouponsTable">
 			<thead>
 			<tr>
 				<th>获得时间</th>
@@ -172,13 +170,22 @@
 			</tbody>
 		</table>
 		<div class="pagination-wrap">
-			<ul class="pagination" id="shopCouponPage">
+			<ul class="pagination" id="shopCouponsPage">
 			</ul>
 		</div>
-
+    </script>
+    <script id="shopCoupons-row" type="text/x-jsrender">
+			{{for content}}
+			<tr>
+				<td>{{>exchangedTime}}</td>
+				<td>{{>usedTime}}</td>
+				<td>{{>shopName}}</td>
+				<td>{{>name}}</td>
+			</tr>
+			{{/for}}
     </script>
     <script id="giftCoupons-tmpl" type="text/x-jsrender">
-		<table class="table table-striped bg-white">
+		<table class="table table-striped bg-white" id="giftCouponsTable">
 			<thead>
 			<tr>
 				<th>获得时间</th>
@@ -189,9 +196,9 @@
 			<tbody>
 			{{for content}}
 			<tr>
-				<td>2015年10月10号</td>
-				<td>2015年10月10号</td>
-				<td>普通卡券</td>
+				<td>{{>exchangedTime}}</td>
+				<td>{{>usedTime}}</td>
+				<td>{{>name}}</td>
 			</tr>
 			{{/for}}
 			</tbody>
@@ -200,10 +207,18 @@
 			<ul class="pagination" id="giftCouponsPage">
 			</ul>
 		</div>
-
+    </script>
+    <script id="giftCoupons-row" type="text/x-jsrender">
+			{{for content}}
+			<tr>
+				<td>{{>exchangedTime}}</td>
+				<td>{{>usedTime}}</td>
+				<td>{{>name}}</td>
+			</tr>
+			{{/for}}
     </script>
     <script id="parkingCoupons-tmpl" type="text/x-jsrender">
-		<table class="table table-striped bg-white">
+		<table class="table table-striped bg-white" id="parkingCouponsTable">
 			<thead>
 			<tr>
 				<th>获得时间</th>
@@ -222,37 +237,28 @@
 			</tbody>
 		</table>
 		<div class="pagination-wrap">
-			<ul class="pagination" id="parkingCouponPage">
+			<ul class="pagination" id="parkingCouponsPage">
 			</ul>
 		</div>
-
+    </script>
+    <script id="parkingCoupons-row" type="text/x-jsrender">
+			{{for content}}
+			<tr>
+				<td>{{:created}}</td>
+				<td>{{:total}}</td>
+				<td>{{:couponName}}</td>
+			</tr>
+			{{/for}}
     </script>
     <script id="parking-row" type="text/x-jsrender">
 		{{for content}}
 		<tr>
-			<td>2015年10月10号</td>
-			<td>2015年10月10号</td>
-			<td>沪A25112</td>
-			<td>100</td>
+			<td>{{:startTime}}</td>
+			<td>{{:endTime}}</td>
+			<td>{{:license}}</td>
+			<td>{{:amount}}</td>
 		</tr>
 		{{/for}}
-
-    </script>
-    <script id="page-row" type="text/x-jsrender">
-		<li>
-			<a  aria-label="Previous">
-				<span aria-hidden="true">«</span>
-			</a>
-		</li>
-		{{for pages}}
-		<li ><a >{{:text}}</a></li>
-		{{/for}}
-		<li>
-			<a  aria-label="Next">
-				<span aria-hidden="true">»</span>
-			</a>
-		</li>
-
     </script>
     <script>
         $(function () {
@@ -281,11 +287,11 @@
             }, {
                 tmpl: 'shopCoupons',
                 tabDetail: '#t7',
-                pageId: 'shopCouponPage'
+                pageId: 'shopCouponsPage'
             }, {
                 tmpl: 'parkingCoupons',
                 tabDetail: '#t8',
-                pageId: 'parkingCouponPage'
+                pageId: 'parkingCouponsPage'
             }];
 
             function init(obj) {
@@ -293,12 +299,18 @@
                         tmplName = '#' + obj.tmpl + '-tmpl',
                         cacheName = obj.tmpl,
                         suffix = '/' + obj.tmpl,
-                        table = '#' + obj.tmpl + 'Table tbody';
-                if (consumeTmpl[cacheName] == null)
+                        table = '#' + obj.tmpl + 'Table tbody',
+                        row='#'+obj.tmpl+'-row';
+                if (consumeTmpl[cacheName] == null){
                     consumeTmpl[cacheName] = $.templates(tmplName);
+                }
+                if(consumeTmpl[row]==null){
+                	consumeTmpl[row]=$.templates(row);
+                }
                 $(tab).click(function () {
                     var self = $(this);
                     var id = self.attr('data-id');
+                    var row='#'+obj.tmpl+'-row';
                     $.ajax({
                         url: '/admin/members/' + id + suffix,
                         success: function (data) {
@@ -311,8 +323,7 @@
                                         return {};
                                     },
                                     fn: function (data) {
-                                        var detail = $.templates('#' + obj.tmpl + '-row');
-                                        var html = edit.render(data.obj);
+                                        var html = consumeTmpl[row].render(data.obj);
                                         $(table).children().remove();
                                         $(table).html(html);
                                     },

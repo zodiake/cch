@@ -124,11 +124,12 @@ INSERT INTO by_rule_category (id, name) VALUES (2, 'trading rule'); -- trading
 -- test rule
 -- 注册用规则
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
-VALUES (1, 2.0, 1, 1, 1, 100, 'rule1', 's', '2015-12-01 00:00:00', '2015-12-30 23:59:59');
+VALUES (1, 2.0, 1, 1, 1, 100, 'rule1', 'c', '2015-12-01 00:00:00', '2015-12-30 23:59:59');
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
-VALUES (2, 2.0, 1, 1, 1, 100, 'rule2', 's', '2015-12-01', '2015-12-30 23:59:59');
+VALUES (2, 2.0, 1, 1, 1, 100, 'rule2', 'c', '2015-12-01', '2015-12-30 23:59:59');
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
-VALUES (7, 2.0, 1, 1, 1, 100, 'rule3', 's', '2016-12-01', '2016-12-30 23:59:59');
+VALUES (7, 2.0, 1, 1, 1, 100, 'rule3', 'c', '2016-12-01', '2016-12-30 23:59:59');
+
 -- 交易用规则
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
 VALUES (3, 2.0, 1, 2, 1, 100, 'rule3', 'c', '2015-12-01', '2015-12-31 23:59:59');
@@ -173,8 +174,6 @@ INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (9, 'csha
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
 
--- test parking_coupon_use_history
-
 -- test score add
 INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (1, 1, 1, 'h');
 INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (2, 1, 2, 'h');
@@ -184,12 +183,37 @@ INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (5, 2, 1,
 INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (6, 2, 2, 'h');
 INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (7, 2, 3, 'h');
 INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (8, 2, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (9, 2, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (10, 2, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (11, 2, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (12, 2, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (13, 2, 4, 'h');
 
 -- test by_trading
 INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
-VALUES (1, 1, '321', 100, 1, '2015-12-25 12:34:22');
+VALUES (1, 1, 'a', 100, 1, '2015-12-25 12:34:22');
 INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
-VALUES (2, 1, '123', 100, 1, '2015-12-26 12:34:22');
+VALUES (2, 1, 'b', 100, 2, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (3, 1, 'c', 100, 3, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (4, 1, 'd', 100, 4, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (5, 1, 'e', 100, 5, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (6, 1, 'f', 100, 6, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (7, 1, 'g', 100, 7, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (8, 1, 'h', 100, 8, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (9, 1, 'i', 100, 9, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (10, 1, 'j', 100, 1, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (11, 1, 'k', 100, 2, '2015-12-26 12:34:22');
+INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
+VALUES (12, 1, 'l', 100, 3, '2015-12-26 12:34:22');
 
 -- test coupon
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
@@ -239,14 +263,56 @@ INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, v
 VALUES (22, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
 VALUES (23, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+
 -- test giftCoupon
 INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (1, 1, 3, '2012-12-12', '12344');
+VALUES (1, 1, 3, '2016-1-12', '12344');
 INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (2, 1, 4, '2014-12-31', '12355');
+VALUES (2, 1, 4, '2015-12-12', '12355');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (3, 1, 4, '2015-12-31', '12356');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (4, 1, 8, '2016-1-7', '12357');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (5, 1, 9, '2016-1-8', '12358');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (6, 1, 4, '2016-1-9', '12359');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (7, 1, 8, '2016-1-10', '12310');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (8, 1, 9, '2016-1-11', '12311');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (9, 1, 4, '2016-1-12', '12312');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (10, 1, 8, '2016-1-13', '12313');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (11, 1, 9, '2016-1-14', '12314');
+INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (12, 1, 4, '2016-1-15', '12315');
 
 -- test shop coupon
-INSERT INTO by_shop_coupon_member (member_id, coupon_id, exchanged_time,code) VALUES (1, 5, '2015-1-2','aabce');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (1, 1, 11, '2016-1-2', '1');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (2, 1, 12, '2016-1-3', '2');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (3, 1, 13, '2016-1-4', '3j');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (4, 1, 11, '2016-1-5', '4');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (5, 1, 12, '2016-1-6', '5');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (6, 1, 13, '2016-1-7', '6');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (7, 1, 11, '2016-1-8', '7');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (8, 1, 12, '2016-1-9', '8');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (9, 1, 13, '2016-1-10', '9');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (10, 1, 11, '2016-1-11', '10');
+INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
+VALUES (11, 1, 12, '2016-1-12', '11');
 
 -- test score_history
 INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
@@ -259,6 +325,28 @@ INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
 VALUES (4, 1, '2012-12-5 12:22:55', 10, 'hehe');
 INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
 VALUES (5, 1, '2012-12-6 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (6, 1, '2012-12-7 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (7, 1, '2012-12-8 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (8, 1, '2012-12-9 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (9, 1, '2012-12-10 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (10, 1, '2012-12-11 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (11, 1, '2012-12-6 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (12, 1, '2012-12-7 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (13, 1, '2012-12-8 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (14, 1, '2012-12-9 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (15, 1, '2012-12-6 12:22:55', 10, 'hehe');
+INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)
+VALUES (16, 1, '2012-12-7 12:22:55', 10, 'hehe');
 
 INSERT INTO by_sequence (id) VALUES (1001);
 
@@ -279,14 +367,84 @@ INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (1, 7);
 INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (2, 7);
 INSERT INTO by_shop_rule (shop_id, rule_id) VALUES (3, 7);
 
-INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-1', 2);
-INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-2', 3);
-INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-3', 3);
-INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total) VALUES (1, 1, '2016-1-4', 3);
+-- 停车券兑换历史
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-1 12:22:41', 2);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-2 11:22:54', 3);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-3 7:23:22', 4);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 8:20:23', 2);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-5 14:22:51', 1);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 15:31:31', 1);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 19:22:22', 6);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 18:15:22', 6);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 22:22:13', 2);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 10:45:34', 4);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 14:22:54', 1);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 16:17:19', 6);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 23:22:51', 5);
+INSERT INTO by_parking_coupon_exchange_history (member_id, coupon_id, created_time, total)
+VALUES (1, 1, '2015-12-4 16:22:31', 3);
 
+-- parking coupon use history
 INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
-VALUES (1, 1, '2016-1-2', 1);
+VALUES (1, 1, '2016-1-2 12:22:40', 1);
 INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
-VALUES (1, 1, '2016-1-3', 1);
+VALUES (1, 1, '2016-1-3 11:22:20', 2);
 INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
-VALUES (1, 1, '2016-1-4', 1);
+VALUES (1, 1, '2016-1-4 13:22:34', 3);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 15:21:44', 1);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 12:22:44', 10);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 12:45:12', 11);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 15:55:21', 1);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 17:22:22', 12);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 15:22:22', 1);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 15:22:11', 12);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 18:23:22', 1);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 19:22:20', 10);
+INSERT INTO by_parking_coupon_use_history (member_id, parking_coupon_id, created_time, total)
+VALUES (1, 1, '2016-1-4 20:22:22', 19);
+
+-- parking history
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-1 12:41:30', '2015-1-1 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-2 12:41:30', '2015-1-2 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-3 12:41:30', '2015-1-3 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-4 12:41:30', '2015-1-5 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-5 12:41:30', '2015-1-5 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-6 12:41:30', '2015-1-6 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-7 12:41:30', '2015-1-7 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-8 12:41:30', '2015-1-8 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-9 12:41:30', '2015-1-9 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-10 12:41:30', '2015-1-10 13:44:22');
+INSERT INTO by_parking_history (license, member_id, start_time, end_time)
+VALUES ('沪A123', 1, '2015-1-11 12:41:30', '2015-1-11 13:44:22');

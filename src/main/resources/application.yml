@@ -17,6 +17,7 @@ security:
   basic:
     enabled: false
 server:
+  port: 8090
   tomcat:
     uri-encoding: UTF-8
 

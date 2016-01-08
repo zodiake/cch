@@ -49,20 +49,30 @@ $(function ($) {
 
         var self = this;
 
-        var current=1;
+        var current = 1;
 
         if (settings.totalPages) {
             this.children().remove();
             var pages = getPages(1, 7, settings.totalPages);
-            var temp={};
-            temp.pages=pages;
-            var html = settings.tmpl.render(temp);
-            this.html(html);
+            var temp = {};
+            temp.pages = pages;
+            var previous = $('<li> <a  aria-label="Previous"> <span aria-hidden="true">«</span> </a> </li>');
+            var next = $('<li> <a  aria-label="Next"> <span aria-hidden="true">»</span> </a> </li>');
+            pages.forEach(function (e) {
+                var li = $('<li><a ></a></li>');
+                var a = li.find('a').html(e.text);
+                if (e.active) {
+                    li.addClass('active');
+                }
+                previous.after(li);
+            });
+            previous.after(next);
+            this.html(previous);
         }
 
         this.on('click', 'li a', function (e) {
             var source = $(e.target);
-            var page = Number(source.html()) ;
+            var page = Number(source.html());
             var parameter = settings.parameter();
             if (source.attr('aria-label') == 'Previous' && current != null) {
                 page = current - 1;
@@ -72,7 +82,7 @@ $(function ($) {
                 page = current + 1;
             }
 
-            parameter.page = page-1;
+            parameter.page = page - 1;
             current = page;
             parameter.size = 10;
             $.ajax({

@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-override.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui-1.10.3.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
-    <link rel="stylesheet" type="text/css" href="/css/template.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/jsRender.js}"></script>
@@ -79,7 +79,7 @@
                     <tr>
                         <td>{{>beginTime}}</td>
                         <td>{{>endTime}}</td>
-                        <td>{{>total}}</td>
+                        <td>{{>score}}</td>
                     </tr>
                     {{/for}}
                     </tbody>
