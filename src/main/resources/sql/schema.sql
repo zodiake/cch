@@ -187,9 +187,9 @@ CREATE TABLE by_member (
   invalid_by           VARCHAR(20),
   updated_time         TIMESTAMP,
   total_parking_coupon INT             DEFAULT 0,
-  member_id            BIGINT,
+  detail_id            BIGINT,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
-  FOREIGN KEY (member_id) REFERENCES by_member_detail (id),
+  FOREIGN KEY (detail_id) REFERENCES by_member_detail (id),
   PRIMARY KEY (id)
 );
 
@@ -409,8 +409,8 @@ CREATE TABLE by_parking_coupon_count (
   FOREIGN KEY (member_id) REFERENCES by_member (id)
 );
 
-CREATE UNIQUE INDEX ON by_trading (code);
-CREATE UNIQUE INDEX ON by_member (name);
-CREATE UNIQUE INDEX ON by_shop (shop_key);
-CREATE UNIQUE INDEX ON by_gift_coupon_member (code);
-CREATE INDEX ON by_trading (created_time);
+CREATE UNIQUE INDEX by_trading_code_unique ON by_trading (code);
+CREATE UNIQUE INDEX by_member_name_unique ON by_member (name);
+CREATE UNIQUE INDEX by_shop_shopkey_unique ON by_shop (shop_key);
+CREATE UNIQUE INDEX by_gift_coupon_member_code_unique ON by_gift_coupon_member (code);
+CREATE INDEX by_trading_createdTime_index ON by_trading (created_time);

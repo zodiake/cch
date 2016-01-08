@@ -121,7 +121,7 @@ VALUES (1, 1, '2015-11-25 13:14:22', 'p', '沪A54321', 15, 0);
 INSERT INTO by_rule_category (id, name) VALUES (1, 'register rule'); -- register
 INSERT INTO by_rule_category (id, name) VALUES (2, 'trading rule'); -- trading
 
--- test rule
+-- test card rule
 -- 注册用规则
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
 VALUES (1, 2.0, 1, 1, 1, 100, 'rule1', 'c', '2015-12-01 00:00:00', '2015-12-30 23:59:59');
@@ -170,6 +170,14 @@ INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (6, '三�
 INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (7, 'java', 'abc7', NULL, '2012-01-01');
 INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (8, 'scala', 'abc8', NULL, '2012-01-01');
 INSERT INTO by_shop (id, name, shop_key, user_id, updated_time) VALUES (9, 'csharp', 'abc9', NULL, '2012-01-01');
+
+-- test shop_rule
+INSERT INTO by_rule (id, rate, score, valid, beginTime, endTime, name, type)
+VALUES (20, 1, 100, 1, '2016-1-6', '2016-3-18', 'shoprule1', 's');
+INSERT INTO by_rule (id, rate, score, valid, beginTime, endTime, name, type)
+VALUES (18, 1, 100, 1, '2016-1-6', '2016-3-18', 'shoprule1', 's');
+INSERT INTO by_rule (id, rate, score, valid, beginTime, endTime, name, type)
+VALUES (19, 1, 100, 1, '2016-1-6', '2016-3-18', 'shoprule1', 's');
 
 -- test shop_menu
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
