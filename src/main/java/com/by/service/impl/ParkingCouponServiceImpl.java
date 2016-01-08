@@ -222,6 +222,6 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
             return -1;
         });
         Long max = Math.max(useHistory.getTotalElements(), exchangeHistory.getTotalElements());
-        return new PageImpl<>(results, pageable, max);
+        return new PageImpl<>(results.stream().limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, max);
     }
 }

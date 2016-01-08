@@ -194,6 +194,6 @@ public class CouponServiceImpl implements CouponService {
             results.add(0, json);
         }
         Long max = Math.max(shopCouponMemberList.getTotalElements(), giftCouponList.getTotalElements());
-        return new PageImpl<>(results.stream().limit(15).collect(Collectors.toList()), pageable, max);
+        return new PageImpl<>(results.stream().limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, max);
     }
 }
