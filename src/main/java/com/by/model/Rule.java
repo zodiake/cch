@@ -15,14 +15,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import com.by.typeEnum.ValidEnum;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.by.typeEnum.ValidEnum;
 
 
 @Entity
@@ -39,7 +37,7 @@ public abstract class Rule {
 
     private String summary;
 
-    @NotEmpty(message="rule.name.notnull")
+    @NotEmpty
     private String name;
 
     @Enumerated

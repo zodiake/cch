@@ -124,11 +124,12 @@ INSERT INTO by_rule_category (id, name) VALUES (2, 'trading rule'); -- trading
 -- test rule
 -- 注册用规则
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
-VALUES (1, 2.0, 1, 1, 1, 100, 'rule1', 's', '2015-12-01 00:00:00', '2015-12-30 23:59:59');
+VALUES (1, 2.0, 1, 1, 1, 100, 'rule1', 'c', '2015-12-01 00:00:00', '2015-12-30 23:59:59');
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
-VALUES (2, 2.0, 1, 1, 1, 100, 'rule2', 's', '2015-12-01', '2015-12-30 23:59:59');
+VALUES (2, 2.0, 1, 1, 1, 100, 'rule2', 'c', '2015-12-01', '2015-12-30 23:59:59');
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
-VALUES (7, 2.0, 1, 1, 1, 100, 'rule3', 's', '2016-12-01', '2016-12-30 23:59:59');
+VALUES (7, 2.0, 1, 1, 1, 100, 'rule3', 'c', '2016-12-01', '2016-12-30 23:59:59');
+
 -- 交易用规则
 INSERT INTO by_rule (id, rate, card_id, category_id, valid, score, name, type, beginTime, endTime)
 VALUES (3, 2.0, 1, 2, 1, 100, 'rule3', 'c', '2015-12-01', '2015-12-31 23:59:59');

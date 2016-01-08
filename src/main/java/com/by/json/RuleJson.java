@@ -9,8 +9,8 @@ import com.by.model.ShopRule;
 import com.by.typeEnum.ValidEnum;
 
 /**
-* Created by yagamai on 15-12-10.
-*/
+ * Created by yagamai on 15-12-10.
+ */
 public class RuleJson {
 	private int id;
 	private String beginTime;
@@ -20,6 +20,8 @@ public class RuleJson {
 	private String cssClass;
 	private String state;
 	private String name;
+	private double rate;
+	private int score;
 
 	public RuleJson() {
 	}
@@ -80,6 +82,8 @@ public class RuleJson {
 			this.state = "已关闭";
 		}
 		this.name = rule.getName();
+		this.rate = rule.getRate();
+		this.score = rule.getScore();
 	}
 
 	public int getId() {
@@ -145,5 +149,20 @@ public class RuleJson {
 	public void setName(String name) {
 		this.name = name;
 	}
-}
 
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+}
