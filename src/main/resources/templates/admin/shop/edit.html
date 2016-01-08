@@ -50,7 +50,10 @@
             		},
             		shopKey: {
             			required: true,
-            			maxlength:255
+            			maxlength:255,
+            			remote: { 
+            				url: '/admin/shops/duplicate'
+            				}
             		}
             	},messages: {
             		name: {
@@ -58,7 +61,8 @@
 	            		maxlength:"名称最长不能超过255"
             		},shopKey: {
             			required: "Pos-Key不能为空",
-            			maxlength:"Pos-Key最长不能超过255"
+            			maxlength:"Pos-Key最长不能超过255",
+            			remote: "Pos-Key已存在"
             		}
             	}
             });

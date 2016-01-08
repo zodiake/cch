@@ -51,9 +51,15 @@
             			maxlength:255,
             			remote: { 
             				url: '/admin/shops/duplicate',
-                            data: {name: $('#name').val()}
-            				}
+            				type: "post",
+            			    dataType: "json",
+            			    data: {
+            			    	shopKey: function(){
+            			    		return $("#shopKey").val();
+            			    	}
+            			    }
             			}
+            		}
             	},messages: {
             		name: {
 	            		required:"名称不能为空",

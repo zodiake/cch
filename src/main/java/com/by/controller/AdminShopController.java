@@ -12,6 +12,7 @@ import com.by.model.User;
 import com.by.security.UserContext;
 import com.by.service.MenuService;
 import com.by.service.ShopService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+
 import java.util.List;
 
 /**
@@ -143,6 +145,12 @@ public class AdminShopController extends BaseController {
                            @RequestBody ShopBindUserForm form) {
         form.setId(id);
         return new Success<>(service.bindUser(form));
+    }
+    
+    @RequestMapping(value = "/duplicate", method = RequestMethod.POST)
+    @ResponseBody
+    public String duplicate(@RequestParam("shopKey") String shopKey){
+    	return "true";
     }
 
     @Override
