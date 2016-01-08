@@ -14,9 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -34,7 +32,6 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty(message="card.name.notnull")
     private String name;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
@@ -44,7 +41,6 @@ public class Card {
     private ValidEnum valid;
 
     @Column(name = "init_score")
-    @NotNull(message = "card.initScore.notnull")
     private Integer initScore;
 
     private String summary;

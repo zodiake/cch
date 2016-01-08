@@ -89,6 +89,7 @@ public class MemberServiceImpl implements MemberService {
             score += ruleService.getMaxScore(rules);
         }
         member.setScore(score);
+        member.setValid(ValidEnum.VALID);
         Member source = repository.save(member);
         addScore(source, score, registerReason, ScoreHistoryEnum.SIGNUP);
         return source;
