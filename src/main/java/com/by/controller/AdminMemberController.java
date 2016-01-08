@@ -159,7 +159,7 @@ public class AdminMemberController extends BaseController {
     @RequestMapping(value = "/{id}/parking", method = RequestMethod.GET)
     @ResponseBody
     public Status parking(@PathVariable("id") Long id,
-                          @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+                          @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "startTime", direction = Sort.Direction.DESC) Pageable pageable) {
         return new Success<>(parkingHistoryService.findByMember(new Member(id), pageable));
     }
 

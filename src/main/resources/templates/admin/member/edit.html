@@ -76,7 +76,6 @@
             <ul class="pagination" id="tradingPage">
             </ul>
         </div>
-
     </script>
     <script id="trading-row" type="text/x-jsrender">
         {{for content}}
@@ -148,7 +147,6 @@
 			<ul class="pagination" id="parkingPage">
 			</ul>
 		</div>
-
     </script>
     <script id="shopCoupons-tmpl" type="text/x-jsrender">
 		<table class="table table-striped bg-white">
@@ -175,7 +173,6 @@
 			<ul class="pagination" id="shopCouponPage">
 			</ul>
 		</div>
-
     </script>
     <script id="giftCoupons-tmpl" type="text/x-jsrender">
 		<table class="table table-striped bg-white">
@@ -200,7 +197,6 @@
 			<ul class="pagination" id="giftCouponsPage">
 			</ul>
 		</div>
-
     </script>
     <script id="parkingCoupons-tmpl" type="text/x-jsrender">
 		<table class="table table-striped bg-white">
@@ -225,7 +221,6 @@
 			<ul class="pagination" id="parkingCouponPage">
 			</ul>
 		</div>
-
     </script>
     <script id="parking-row" type="text/x-jsrender">
 		{{for content}}
@@ -236,23 +231,6 @@
 			<td>100</td>
 		</tr>
 		{{/for}}
-
-    </script>
-    <script id="page-row" type="text/x-jsrender">
-		<li>
-			<a  aria-label="Previous">
-				<span aria-hidden="true">«</span>
-			</a>
-		</li>
-		{{for pages}}
-		<li ><a >{{:text}}</a></li>
-		{{/for}}
-		<li>
-			<a  aria-label="Next">
-				<span aria-hidden="true">»</span>
-			</a>
-		</li>
-
     </script>
     <script>
         $(function () {
@@ -293,12 +271,18 @@
                         tmplName = '#' + obj.tmpl + '-tmpl',
                         cacheName = obj.tmpl,
                         suffix = '/' + obj.tmpl,
-                        table = '#' + obj.tmpl + 'Table tbody';
-                if (consumeTmpl[cacheName] == null)
+                        table = '#' + obj.tmpl + 'Table tbody',
+                        row='#'+obj.tmpl+'-row';
+                if (consumeTmpl[cacheName] == null){
                     consumeTmpl[cacheName] = $.templates(tmplName);
+                }
+                if(consumeTmpl[row]==null){
+                	consumeTmpl[row]=$.templates(row);
+                }
                 $(tab).click(function () {
                     var self = $(this);
                     var id = self.attr('data-id');
+                    var row='#'+obj.tmpl+'-row';
                     $.ajax({
                         url: '/admin/members/' + id + suffix,
                         success: function (data) {
@@ -311,8 +295,7 @@
                                         return {};
                                     },
                                     fn: function (data) {
-                                        var detail = $.templates('#' + obj.tmpl + '-row');
-                                        var html = edit.render(data.obj);
+                                        var html = consumeTmpl[row].render(data.obj);
                                         $(table).children().remove();
                                         $(table).html(html);
                                     },
