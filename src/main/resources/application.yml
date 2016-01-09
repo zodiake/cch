@@ -20,6 +20,10 @@ server:
   port: 8090
   tomcat:
     uri-encoding: UTF-8
+coupon:
+  amount: 10
+member:
+  invalid: 用户无效
 
 ---
 spring:
@@ -35,7 +39,7 @@ logging:
     org.springframework.security: INFO
     org.springframework.web: INFO
     org.hibernate.type: trace
-coupon:
-  amount: 10
-member:
-  invalid: 用户无效
+
+---
+spring:
+ profiles: prod
