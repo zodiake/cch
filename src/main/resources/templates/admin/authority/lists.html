@@ -37,7 +37,7 @@
         <div class="power-wrap container">
             <div class="hd clearfix">
                 <div class="bar base-bar short-bar pull-left">权限管理</div>
-                <a href="/admin/authorities?form" class="btn btn-info">添加</a>
+                <button type="button" class="btn btn-info">添加</button>
             </div>
             <table class="table table-striped bg-white mt20">
                 <thead>
@@ -49,7 +49,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="a:${lists.content}">
-                    <td><a th:text="${a.name}" th:href="@{/admin/authorities/__${a.id}__?edit}">2016元旦</a></td>
+                    <td><a th:text="${a.name}">2016元旦</a></td>
                     <td><a th:text="${a.valid.toString()=='VALID'?'使用中':'无效'}">使用中</a></td>
                     <td><a th:text="${a.updatedTime}">2015年10月10号 10:00</a></td>
                 </tr>

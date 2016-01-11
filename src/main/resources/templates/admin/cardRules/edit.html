@@ -114,8 +114,8 @@
                         <p class="error" th:if="${#fields.hasErrors('rate')}" th:errors="*{rate}">Incorrect date</p>
                     </div>
                     <div class="group-ft col-xs-offset-4 mt50">
-                    	<a href="/admin/cardRules" class="btn btn-default">返回</a>
-                        <input type="submit" class="btn btn-success col-xs-offset-1" th:if="${message.canUpdate}" value="确认"/>
+                    	<a th:href="@{/admin/cardRules}"><button class="btn btn-default" type="button">取消</button></a>
+                        <button type="submit" class="btn btn-success col-xs-offset-1" th:if="${message.canUpdate}">提交</button>
                     </div>
                 </form>
             </div>
