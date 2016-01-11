@@ -83,6 +83,7 @@ public class AdminMemberController extends BaseController {
 		member.setCard(new Card(cardId));
 		member.setMemberDetail(new MemberDetail());
 		uiModel.addAttribute("member", member);
+		addMenu(uiModel);
 		return CREATE;
 	}
 
