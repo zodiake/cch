@@ -422,9 +422,9 @@
                 <div id="t1" class="tab-pane active">
                     <form class="form-horizontal">
                         <div class="clearfix mr50">
-                            <input id="validate" type="button" class="pull-right btn btn-danger" data-toggle="modal"
+                            <input id="valid" type="button" class="pull-right btn btn-danger" data-toggle="modal"
                                    data-target=".modal" value="加入黑名单" th:attr="member=${member.id}" th:if="${member.valid.toString()=='VALID'}"/>
-                            <input id="validate" type="button" class="pull-right btn btn-danger" data-toggle="modal"
+                            <input id="valid" type="button" class="pull-right btn btn-danger" data-toggle="modal"
                                    data-target=".modal" value="从黑名单移出" th:attr="member=${member.id}" th:if="${member.valid.toString()=='INVALID'}"/>
                         </div>
                         <div class="form-group">
@@ -569,8 +569,6 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        // $('.modal-one').on('hide.bs.modal', function () {
-        //   alert(111);})
         $('.modal-footer .confirm').click(function () {
             $('.success-modal,.fixed').show().delay(2000).fadeOut(500);
         })

@@ -1,10 +1,8 @@
 package com.by.service.impl;
 
-import com.by.json.AuthorityJson;
-import com.by.model.Authority;
-import com.by.repository.AuthorityRepository;
-import com.by.service.AuthorityService;
-import com.by.typeEnum.ValidEnum;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -14,8 +12,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.json.AuthorityJson;
+import com.by.model.Authority;
+import com.by.repository.AuthorityRepository;
+import com.by.service.AuthorityService;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 16-1-4.
@@ -60,4 +61,13 @@ public class AuthorityServiceImpl implements AuthorityService {
         authority.setValid(ValidEnum.VALID);
         return repository.save(authority);
     }
+
+	@Override
+	public Authority update(Authority authority) {
+		Authority source=repository.findOne(authority.getId());
+		source.setUpdatedBy(authority.getUpdatedBy());
+		source.setName(authority.getName());
+		source.setMenus(authority.getMenus());
+		return source;
+	}
 }

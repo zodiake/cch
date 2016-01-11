@@ -17,6 +17,7 @@ import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -143,6 +144,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     }
 
     @Override
+    @CachePut(value="coupon",key="#coupon.id")
     public ParkingCoupon validOrInValid(ParkingCoupon coupon) {
         ParkingCoupon c = repository.findOne(coupon.getId());
         if (c.getValid().equals(ValidEnum.VALID))

@@ -67,7 +67,7 @@ public class AdminMemberController extends BaseController {
 
 	// 列表界面
 	@RequestMapping(method = RequestMethod.GET)
-	public String firstPage(AdminMemberForm form, Model uiModel,
+	public String firstPage(@ModelAttribute("form")AdminMemberForm form, Model uiModel,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<MemberJson> members = memberService.findAll(form, pageable, ValidEnum.VALID);
 		uiModel.addAttribute("lists", members);

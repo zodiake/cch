@@ -51,6 +51,7 @@ public class AdminParkingCouponController extends BaseController {
                          RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             uiModel.addAttribute("coupon", coupon);
+            addMenu(uiModel);
             return CREATE;
         }
         ParkingCoupon source = service.save(coupon);

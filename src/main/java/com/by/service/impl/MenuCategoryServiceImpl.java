@@ -6,6 +6,7 @@ import com.by.model.User;
 import com.by.service.MenuCategoryService;
 import com.by.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class MenuCategoryServiceImpl implements MenuCategoryService {
 	private UserService userService;
 
 	@Override
-	@Cacheable(value = "menu", key = "#user.id")
+	@Cacheable(value = "userMenu",key="#user.id")
 	public Map<MenuCategory, List<Menu>> getCategoryAndMenu(User user) {
 		Set<Menu> sets = userService.getMenus(user);
 		Map<MenuCategory, List<Menu>> results = new HashMap<>();
@@ -36,5 +37,10 @@ public class MenuCategoryServiceImpl implements MenuCategoryService {
 			}
 		});
 		return results;
+	}
+
+	@CacheEvict(value = "userMenu",allEntries=true)
+	public void refreshCache() {
+
 	}
 }
