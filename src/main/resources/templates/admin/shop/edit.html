@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-ui-1.10.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/fileUpload.js}"></script>
     <script type="text/javascript" th:src="@{/js/global.js}"></script>
@@ -40,6 +41,31 @@
                 );
                 return false;
             });
+            $('#form').validate({
+            	onkeyup: false, 
+            	rules: {
+            		name: {
+            			required: true,
+            			maxlength:10
+            		},
+            		shopKey: {
+            			required: true,
+            			maxlength:255,
+            			remote: { 
+            				url: '/admin/shops/duplicate'
+            				}
+            		}
+            	},messages: {
+            		name: {
+	            		required:"名称不能为空",
+	            		maxlength:"名称最长不能超过255"
+            		},shopKey: {
+            			required: "Pos-Key不能为空",
+            			maxlength:"Pos-Key最长不能超过255",
+            			remote: "Pos-Key已存在"
+            		}
+            	}
+            });
         })
     </script>
 </head>
@@ -55,7 +81,7 @@
                 <div class="bar edit-bar">店铺设置</div>
             </div>
             <div class="row">
-                <form class="form-horizontal pt50" th:object="${shop}" th:method="put">
+                <form class="form-horizontal pt50" id="form" th:object="${shop}" th:method="put">
                     <div class="form-group">
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
@@ -81,10 +107,8 @@
                         </div>
                     </div>
                     <div class="group-ft col-xs-offset-4 mt50">
-                        <a th:href="@{/admin/shops}">
-                            <button type="button" class="btn btn-default ml40">取消</button>
-                        </a>
-                        <button type="submit" class="btn btn-success ml40">确认</button>
+                        <a href="/admin/shops" class="btn btn-default ml40">返回</a>
+                        <input type="submit" class="btn btn-success ml40" value="确认"/>
                     </div>
                 </form>
             </div>

@@ -50,7 +50,7 @@
     <div class="mainpanel">
         <div class="add－cart-wrap">
             <div class="hd">
-                <div class="bar add-bar">添加会员卡</div>
+                <div class="bar edit-bar">设置会员卡</div>
             </div>
             <div th:if="${message!=null}" th:class="${message.status}" th:text="${message.message}"></div>
             <div class="row">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="group-ft col-xs-offset-3 mt50">
-                        <button class="btn btn-default" type="reset">取消</button>
+                        <a href="/admin/cards" class="btn btn-default">返回</a>
                         <input type="submit" class="btn btn-success col-xs-offset-2" value="确定"/>
                     </div>
                 </form>

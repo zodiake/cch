@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width,  initial-scale=1.0, user-scalable=0, minimum-scale=1.0,  maximum-scale=1.0"/>
-    <title>添加店铺券</title>
+    <title>修改店铺券</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-override.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui-1.10.3.css}"/>
@@ -60,7 +60,7 @@
     <div class="mainpanel">
         <div class="add-shopquan-wrap">
             <div class="hd">
-                <div class="bar add-bar">添加店铺券</div>
+                <div class="bar edit-bar">修改店铺券</div>
             </div>
             <div class="row">
                 <form class="form-horizontal pt50" th:method="put" th:object="${coupon}">
@@ -153,7 +153,7 @@
                         </div>
                     </div>
                     <div class="group-ft col-xs-offset-4 mt50">
-                        <button type="button" class="btn btn-default ml40">取消</button>
+                        <a href="/admin/shopCoupons" class="btn btn-default ml40">返回</a>
                         <input type="submit" class="btn btn-success ml40" value="确认"/>
                     </div>
                 </form>
