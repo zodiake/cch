@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev1
   data:
     jpa:
       repositories:
@@ -42,4 +42,18 @@ logging:
 
 ---
 spring:
- profiles: prod
+  profiles: dev1
+  thymeleaf:
+    cache: false
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.137:3307/cch
+    username: root
+    password: 1234
+    initialize: false
+    testOnBorrow: true
+    validationQuery: SELECT 1
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.web: INFO

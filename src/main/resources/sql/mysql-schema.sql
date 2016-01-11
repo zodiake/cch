@@ -1,12 +1,12 @@
 CREATE TABLE by_menu_category (
   id   INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(20),
+  name VARCHAR(20) character set gb2312,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE by_menu (
   id          INT NOT NULL AUTO_INCREMENT,
-  name        VARCHAR(20),
+  name        VARCHAR(20) character set gb2312,
   category_id INT,
   href        VARCHAR(50),
   FOREIGN KEY (category_id) REFERENCES by_menu_category (id),
@@ -15,18 +15,18 @@ CREATE TABLE by_menu (
 
 CREATE TABLE by_license (
   id   BIGINT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(20),
+  name VARCHAR(20) character set gb2312,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE by_user (
-  id             BIGINT    NOT NULL AUTO_INCREMENT,
+  id             BIGINT NOT NULL AUTO_INCREMENT,
   name           VARCHAR(20),
   password       CHAR(64),
-  valid          SMALLINT           DEFAULT 1,
+  valid          SMALLINT        DEFAULT 1,
   user_authority VARCHAR(10),
-  created_time   TIMESTAMP NULL,
-  updated_time   TIMESTAMP NULL,
+  created_time   TIMESTAMP null,
+  updated_time   TIMESTAMP null,
   updated_by     VARCHAR(20),
   created_by     VARCHAR(20),
   PRIMARY KEY (id)
@@ -34,11 +34,11 @@ CREATE TABLE by_user (
 
 CREATE TABLE by_shop (
   id           INT NOT NULL AUTO_INCREMENT,
-  name         VARCHAR(225),
+  name         VARCHAR(225) character set gb2312,
   user_id      BIGINT,
   created_by   VARCHAR(20),
   updated_by   VARCHAR(20),
-  created_time TIMESTAMP NULL ,
+  created_time TIMESTAMP null,
   updated_time TIMESTAMP null,
   shop_key     VARCHAR(225),
   img_href     VARCHAR(77),
@@ -48,7 +48,7 @@ CREATE TABLE by_shop (
 
 CREATE TABLE by_authority (
   id           INT NOT NULL AUTO_INCREMENT,
-  name         VARCHAR(30),
+  name         VARCHAR(30) character set gb2312,
   created_by   VARCHAR(20),
   updated_by   VARCHAR(20),
   created_time TIMESTAMP null,
@@ -75,7 +75,7 @@ CREATE TABLE by_auth_menu (
 
 CREATE TABLE by_rule_category (
   id   INT         NOT NULL AUTO_INCREMENT,
-  name VARCHAR(20) NOT NULL,
+  name VARCHAR(20) character set gb2312 NOT NULL ,
   PRIMARY KEY (id)
 );
 
@@ -122,8 +122,8 @@ CREATE TABLE by_rule_aud (
   category_id  INT,
   name         VARCHAR(20),
   type         CHAR(1),
-  created_time TIMESTAMP,
-  updated_time TIMESTAMP,
+  created_time TIMESTAMP null,
+  updated_time TIMESTAMP null,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
@@ -140,13 +140,13 @@ CREATE TABLE by_rule (
   card_id      INT,
   summary      VARCHAR(50),
   valid        SMALLINT        DEFAULT 1,
-  beginTime    TIMESTAMP,
-  endTime      TIMESTAMP,
+  beginTime    TIMESTAMP null,
+  endTime      TIMESTAMP null,
   category_id  INT,
   name         VARCHAR(20),
   type         CHAR(1),
-  created_time TIMESTAMP,
-  updated_time TIMESTAMP,
+  created_time TIMESTAMP null,
+  updated_time TIMESTAMP null,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
@@ -167,9 +167,9 @@ CREATE TABLE by_member_detail (
   real_name    VARCHAR(10),
   address      VARCHAR(225),
   password     CHAR(64),
-  birthday     TIMESTAMP,
-  created_time TIMESTAMP,
-  updated_time TIMESTAMP,
+  birthday     TIMESTAMP null,
+  created_time TIMESTAMP null,
+  updated_time TIMESTAMP null,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   PRIMARY KEY (id)
@@ -181,11 +181,11 @@ CREATE TABLE by_member (
   card_id              INT,
   score                INT,
   sumScore             INT,
-  created_time         TIMESTAMP,
+  created_time         TIMESTAMP null,
   valid                SMALLINT        DEFAULT 1,
-  invalid_time         TIMESTAMP,
+  invalid_time         TIMESTAMP null,
   invalid_by           VARCHAR(20),
-  updated_time         TIMESTAMP,
+  updated_time         TIMESTAMP null,
   total_parking_coupon INT             DEFAULT 0,
   detail_id            BIGINT,
   FOREIGN KEY (card_id) REFERENCES by_card (id),
@@ -199,10 +199,10 @@ CREATE TABLE by_member_detail_aud (
   real_name    VARCHAR(10),
   address      VARCHAR(225),
   password     CHAR(64),
-  birthday     TIMESTAMP,
+  birthday     TIMESTAMP null,
   detail_id    BIGINT,
-  created_time TIMESTAMP,
-  updated_time TIMESTAMP,
+  created_time TIMESTAMP null,
+  updated_time TIMESTAMP null,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   REV          INTEGER NOT NULL,
@@ -223,12 +223,12 @@ CREATE TABLE by_coupon (
   id              INT NOT NULL AUTO_INCREMENT,
   type            CHAR(1),
   name            VARCHAR(50),
-  begin_time      TIMESTAMP,
-  end_time        TIMESTAMP,
-  created_time    TIMESTAMP,
+  begin_time      TIMESTAMP null,
+  end_time        TIMESTAMP null,
+  created_time    TIMESTAMP null,
   created_by      VARCHAR(20),
   score           INT          DEFAULT 0,
-  coupon_end_time TIMESTAMP,
+  coupon_end_time TIMESTAMP null,
   valid           SMALLINT     DEFAULT 1,
   total           SMALLINT     DEFAULT 0,
   duplicate       SMALLINT     DEFAULT 1,
@@ -248,7 +248,7 @@ CREATE TABLE by_gift_coupon_member (
   coupon_id      INT,
   code           CHAR(17),
   state          SMALLINT,
-  exchanged_time TIMESTAMP,
+  exchanged_time TIMESTAMP null,
   used_time      TIMESTAMP NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
@@ -259,7 +259,7 @@ CREATE TABLE by_parking_coupon_exchange_history (
   id           INT AUTO_INCREMENT,
   member_id    BIGINT,
   coupon_id    INT,
-  created_time TIMESTAMP,
+  created_time TIMESTAMP null,
   created_by   VARCHAR(20),
   total        INT,
   PRIMARY KEY (id),
@@ -271,7 +271,7 @@ CREATE TABLE by_parking_coupon_use_history (
   id                INT AUTO_INCREMENT,
   member_id         BIGINT,
   parking_coupon_id INT,
-  created_time      TIMESTAMP,
+  created_time      TIMESTAMP null,
   total             INT,
   license           VARCHAR(10),
   PRIMARY KEY (id),
@@ -282,7 +282,7 @@ CREATE TABLE by_parking_coupon_use_history (
 CREATE TABLE by_score_history (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   member_id    BIGINT,
-  created_time TIMESTAMP,
+  created_time TIMESTAMP null,
   deposit      INT,
   reason       VARCHAR(20),
   type         SMALLINT,
@@ -307,7 +307,7 @@ CREATE TABLE by_shop_menu (
 CREATE TABLE by_score_add_history (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   member_id    BIGINT,
-  created_time TIMESTAMP,
+  created_time TIMESTAMP null,
   total        INT,
   reason       VARCHAR(20),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
@@ -318,8 +318,8 @@ CREATE TABLE by_parking_history (
   id         BIGINT NOT NULL AUTO_INCREMENT,
   license    VARCHAR(20),
   member_id  BIGINT,
-  start_time TIMESTAMP,
-  end_time   TIMESTAMP,
+  start_time TIMESTAMP null,
+  end_time   TIMESTAMP null,
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)
 );
@@ -327,15 +327,15 @@ CREATE TABLE by_parking_history (
 CREATE TABLE by_parking_withnomember_history (
   id         BIGINT NOT NULL AUTO_INCREMENT,
   license    VARCHAR(20),
-  start_time TIMESTAMP,
-  end_time   TIMESTAMP,
+  start_time TIMESTAMP null,
+  end_time   TIMESTAMP null,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE by_pay (
   id             BIGINT NOT NULL AUTO_INCREMENT,
   member_id      BIGINT,
-  created_time   TIMESTAMP,
+  created_time   TIMESTAMP null,
   type           CHAR(1),
   license        VARCHAR(20),
   amount         INT,
@@ -347,7 +347,7 @@ CREATE TABLE by_pay (
 CREATE TABLE by_consumption_history (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   member_id    BIGINT,
-  created_time TIMESTAMP,
+  created_time TIMESTAMP null,
   amount       DOUBLE,
   shop         VARCHAR(100),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
@@ -358,7 +358,7 @@ CREATE TABLE by_trading (
   id           BIGINT NOT NULL AUTO_INCREMENT,
   shop_id      INT,
   member_id    BIGINT,
-  created_time TIMESTAMP,
+  created_time TIMESTAMP null,
   amount       DOUBLE,
   code         CHAR(10),
   FOREIGN KEY (shop_id) REFERENCES by_shop (id),
@@ -375,7 +375,7 @@ CREATE TABLE by_shop_coupon_member (
   id             BIGINT    NOT NULL AUTO_INCREMENT,
   member_id      BIGINT,
   coupon_id      INT,
-  exchanged_time TIMESTAMP,
+  exchanged_time TIMESTAMP null,
   used_time      TIMESTAMP NULL,
   code           CHAR(17),
   FOREIGN KEY (member_id) REFERENCES by_member (id),
@@ -393,8 +393,8 @@ CREATE TABLE by_member_help (
   id           INT NOT NULL AUTO_INCREMENT,
   content_id   INT,
   title        VARCHAR(50),
-  created_time TIMESTAMP,
-  updated_time TIMESTAMP,
+  created_time TIMESTAMP null,
+  updated_time TIMESTAMP null,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   PRIMARY KEY (id),
