@@ -88,8 +88,8 @@
                         <p class="error" th:each="err : ${#fields.errors('rate')}" th:text="${err}"></p>
                     </div>
                     <div class="group-ft col-xs-offset-4 mt50">
-                    	<a href="/admin/cardRules" class="btn btn-default">返回</a>
-                        <input type="submit" class="btn btn-success col-xs-offset-1" value="确认"/>
+                    	<a th:href="@{/admin/cardRules}" class="btn btn-default">取消</a>
+                        <button type="submit" class="btn btn-success col-xs-offset-1">提交</button>
                     </div>
                 </form>
             </div>

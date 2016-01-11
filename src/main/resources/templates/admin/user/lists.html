@@ -19,7 +19,7 @@
     <script id="detail" type="text/x-jsrender">
 		{{for content}}
 		<tr>
-			<td><a href="/admin/users/{{>id}}">{{>name}}</a></td>
+			<td><a>{{>name}}</a></td>
 			{{if isValid=='VALID'}}
 			<td><a>使用中</a></td>
 			{{else}}
@@ -43,7 +43,7 @@
         <div class="user-wrap container">
             <div class="hd clearfix">
                 <div class="bar base-bar short-bar pull-left">用户管理</div>
-                <a href="/admin/users?form" class="btn btn-info">添加</a>
+                <a th:href="@{/admin/users?form}" class="btn btn-info">添加</a>
             </div>
             <table class="table table-striped bg-white mt20">
                 <thead>
@@ -56,7 +56,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="u:${users}">
-                    <td><a th:text="${u.name}" th:href="@{/admin/users/__${u.id}__}">张三李四</a></td>
+                    <td><a th:text="${u.name}">张三李四</a></td>
                     <td><a th:text="${u.isValid=='VALID'}?'使用中':'无效'">使用中</a></td>
                     <td><a th:text="${u.role}">admin</a></td>
                     <td><a th:text="${u.updatedTime}">2015年10月10号 10:00</a></td>
