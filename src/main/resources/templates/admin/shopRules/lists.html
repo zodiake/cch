@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui-1.10.3.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui.theme.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-ui-1.10.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
@@ -39,7 +40,7 @@
         <div class="member-jfe-wrap container">
             <div class="hd clearfix">
                 <div class="bar base-bar short-bar pull-left">店铺积分规则</div>
-                <a class="btn btn-info" href="/admin/shopRules?form">添加</a>
+                <a class="btn btn-info" th:href="@{/admin/shopRules?form}">添加</a>
             </div>
             <form class="form-inline" th:object="${form}">
                 <div class="form-group">

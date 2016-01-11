@@ -4,7 +4,6 @@ $(function () {
     }).mouseout(function () {
         $(this).find('a i').removeClass('active')
     })
-    /*侧边栏切换*/
     $('.sidebar-toggle').click(function () {
         $(this).find('i.icon-toggle').toggleClass('active');
         $('.aside').toggleClass('aside-small');

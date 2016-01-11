@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Calendar;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Shop {
     private int id;
 
     @NotNull
-	@Length(max = 225, min = 1)
+    @NotEmpty(message="{NotEmpty.shop.name}")
     private String name;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -31,7 +32,6 @@ public class Shop {
     private List<Menu> menus;
 
     @NotNull
-    @Length(max = 225, min = 1)
     @Column(name="shop_key")
     private String shopKey;
 

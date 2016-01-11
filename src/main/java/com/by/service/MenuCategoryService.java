@@ -11,5 +11,7 @@ import java.util.Map;
  * Created by yagamai on 15-12-22.
  */
 public interface MenuCategoryService {
-    Map<MenuCategory, List<Menu>> getCategoryAndMenu(User user);
+	Map<MenuCategory, List<Menu>> getCategoryAndMenu(User user);
+
+	void refreshCache();
 }

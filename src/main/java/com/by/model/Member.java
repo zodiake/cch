@@ -32,7 +32,7 @@ public class Member {
 	private Card card;
 
 	@OneToOne( fetch = FetchType.LAZY,cascade={CascadeType.PERSIST})
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "detail_id")
 	private MemberDetail memberDetail;
 
 	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev1
   data:
     jpa:
       repositories:
@@ -20,6 +20,10 @@ server:
   port: 8090
   tomcat:
     uri-encoding: UTF-8
+coupon:
+  amount: 10
+member:
+  invalid: 用户无效
 
 ---
 spring:
@@ -35,7 +39,25 @@ logging:
     org.springframework.security: INFO
     org.springframework.web: INFO
     org.hibernate.type: trace
-coupon:
-  amount: 10
-member:
-  invalid: 用户无效
+
+---
+spring:
+  profiles: dev1
+  thymeleaf:
+    cache: false
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.137:3307/cch
+    username: root
+    password: 1234
+    initialize: false
+    testOnBorrow: true
+    validationQuery: SELECT 1
+  jpa:
+     properties:
+       hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.web: INFO

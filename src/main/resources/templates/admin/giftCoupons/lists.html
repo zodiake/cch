@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui-1.10.3.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui.theme.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap-timepicker.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-ui-1.10.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/jsRender.js}"></script>
@@ -65,7 +65,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="r:${lists.content}">
-                    <td><a th:text="${r.name}">名称</a></td>
+                    <td><a th:text="${r.name}" th:href="@{/admin/giftCoupons/__${r.id}__}">名称</a></td>
                     <td><a th:text="${r.amount}">金额</a></td>
                     <td><a th:text="${r.score}">积分</a></td>
                     <td><a th:text="${r.beginTime}">发行时间</a></td>

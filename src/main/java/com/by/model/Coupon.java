@@ -34,17 +34,14 @@ public abstract class Coupon {
 	// 有效期开始
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "begin_time")
-	@NotNull(message = "coupon.beginTime.notnull")
 	private Calendar beginTime;
 
 	// 有效期结束
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "end_time")
-	@NotNull(message = "coupon.endTime.notnull")
 	private Calendar endTime;
 
 	// 需要的积分
-	@NotNull(message = "coupon.score.notnull")
 	private Integer score;
 
 	// 生成的卡券的截止日期
@@ -52,11 +49,10 @@ public abstract class Coupon {
 	private Calendar couponEndTime;
 
 	// 对应的金额
-	@NotNull(message = "coupon.amount.notnull")
 	private Double amount;
 
 	// 名称
-	@NotEmpty(message = "coupon.name.notEmpty")
+	@NotEmpty(message = "{NotEmpty.coupon.name}")
 	private String name;
 
 	// 是否有效
@@ -74,7 +70,6 @@ public abstract class Coupon {
 	@Column(name = "content_img")
 	private String contentImg;
 
-	@NotEmpty(message = "coupon.summary.notEmpty")
 	private String summary;
 
 	@Temporal(TemporalType.TIMESTAMP)

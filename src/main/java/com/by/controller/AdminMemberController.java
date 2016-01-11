@@ -67,7 +67,7 @@ public class AdminMemberController extends BaseController {
 
 	// 列表界面
 	@RequestMapping(method = RequestMethod.GET)
-	public String firstPage(AdminMemberForm form, Model uiModel,
+	public String firstPage(@ModelAttribute("form")AdminMemberForm form, Model uiModel,
 			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<MemberJson> members = memberService.findAll(form, pageable, ValidEnum.VALID);
 		uiModel.addAttribute("lists", members);
@@ -120,12 +120,20 @@ public class AdminMemberController extends BaseController {
 		return EDIT;
 	}
 
-	@RequestMapping(value = "/score", method = RequestMethod.PUT)
+	@RequestMapping(value = "/score/add", method = RequestMethod.PUT)
 	@ResponseBody
-	public Status updateScore(@RequestBody UpdateScoreJson json) {
+	public Status scoreAdd(@RequestBody UpdateScoreJson json) {
 		Member member = memberService.addScore(new Member(json.getId()), json.getScore(), "admin",
 				ScoreHistoryEnum.ADMIN);
-		return new Success<>(member);
+		return new Success<>(member.getScore());
+	}
+
+	@RequestMapping(value = "/score/minus", method = RequestMethod.PUT)
+	@ResponseBody
+	public Status scoreMinus(@RequestBody UpdateScoreJson json) {
+		Member member = memberService.minusScore(new Member(json.getId()), json.getScore(), "admin",
+				ScoreHistoryEnum.ADMIN);
+		return new Success<>(member.getScore());
 	}
 
 	@RequestMapping(value = "/{id}/validate", method = RequestMethod.PUT)

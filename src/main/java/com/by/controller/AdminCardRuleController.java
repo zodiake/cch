@@ -79,6 +79,7 @@ public class AdminCardRuleController extends BaseController {
             uiModel.addAttribute("message", new Message("fail", messageSource.getMessage("save.fail", new Object[]{}, Locale.CHINESE)));
             return CREATE;
         }
+        rule.setCreatedBy(userContext.getCurrentUser().getName());
         CardRule r = service.save(rule);
         redirectAttributes.addFlashAttribute("message", new Message("fail", messageSource.getMessage("save.fail", new Object[]{}, Locale.CHINESE)));
         return REDIRECT + r.getId();
@@ -94,12 +95,14 @@ public class AdminCardRuleController extends BaseController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public String update(@PathVariable("id") Long id, @Valid @ModelAttribute("rule") CardRule rule,
+    public String update(@PathVariable("id") int id, @Valid @ModelAttribute("rule") CardRule rule,
                          BindingResult result, Model uiModel) {
+        rule.setId(id);
         if (result.hasErrors()) {
             uiModel.addAttribute("rule", rule);
             return EDIT;
         }
+        rule.setUpdatedBy(userContext.getCurrentUser().getName());
         CardRule r = service.update(rule);
         return REDIRECT + r.getId();
     }

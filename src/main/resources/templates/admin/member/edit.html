@@ -13,7 +13,8 @@
     <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/jsRender.js}"></script>
-    <script th:src="@{/js/page.js}"></script>
+    <script type="text/javascript" th:src="@{/js/page.js}"></script>
+    <script type="text/javascript" th:src="@{/js/global.js}"></script>
     <script id="use-tmpl" type="text/x-jsrender">
         <form class="form-horizontal">
             <div class="form-group">
@@ -43,7 +44,7 @@
                     <a class="minus">
                         <i class="icon icon-miuns" data-toggle="modal" data-target=".modal-jf-miuns"></i>
                     </a>
-                    <input type="text" value="{{:availableScore}}"/>
+                    <input type="text" id="availableScore" value="{{:availableScore}}"/>
                     <a class="plus">
                         <i class="icon icon-plus" data-toggle="modal" data-target=".modal-jf-plus"></i>
                     </a>
@@ -51,7 +52,6 @@
                 </div>
             </div>
         </form>
-
     </script>
     <script id="trading-tmpl" type="text/x-jsrender">
         <table class="table table-striped bg-white" id='tradingTable'>
@@ -85,7 +85,6 @@
                 <td>{{>amount}}</td>
             </tr>
         {{/for}}
-
     </script>
     <script id="score-tmpl" type="text/x-jsrender">
 		<table class="table table-striped bg-white" id="scoreTable">
@@ -110,7 +109,6 @@
 			<ul class="pagination" id='scorePage'>
 			</ul>
 		</div>
-
     </script>
     <script id="score-row" type="text/x-jsrender">
         {{for content}}
@@ -120,7 +118,6 @@
                 <td>{{>reason}}</td>
             </tr>
         {{/for}}
-
     </script>
     <script id="parking-tmpl" type="text/x-jsrender">
 		<table class="table table-striped bg-white" id="parkingTable">
@@ -300,19 +297,19 @@
                         cacheName = obj.tmpl,
                         suffix = '/' + obj.tmpl,
                         table = '#' + obj.tmpl + 'Table tbody',
-                        row='#'+obj.tmpl+'-row';
-                if (consumeTmpl[cacheName] == null){
+                        row = '#' + obj.tmpl + '-row';
+                if (consumeTmpl[cacheName] == null) {
                     consumeTmpl[cacheName] = $.templates(tmplName);
                 }
-                if(consumeTmpl[row]==null){
-                	consumeTmpl[row]=$.templates(row);
+                if (consumeTmpl[row] == null) {
+                    consumeTmpl[row] = $.templates(row);
                 }
                 $(tab).click(function () {
                     var self = $(this);
                     var id = self.attr('data-id');
-                    var row='#'+obj.tmpl+'-row';
+                    var row = '#' + obj.tmpl + '-row';
                     $.ajax({
-                        url: '/admin/members/' + id + suffix,
+                        url: global.context+'/admin/members/' + id + suffix,
                         success: function (data) {
                             var html = consumeTmpl[cacheName].render(data.obj);
                             $(obj.tabDetail).html(html);
@@ -341,49 +338,35 @@
             });
 
             $("#btn-miuns").click(function () {
-                var miuns_value = $("#miuns-val").val();
-                if (miuns_value == null || miuns_value.trim() == "")
-                    return;
-                var id = $(this).attr("member");
+                var score = $('#minus-val').val();
+                var id = $(this).attr('member');
                 $.ajax({
-                    url: "/admin/members/score",
-                    type: 'POST',
-                    data: {
-                        'id': id,
-                        'score': "-" + miuns_value
-                    },
+                    url: global.context+'/admin/members/score/minus',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: 'put',
+                    data: JSON.stringify({id: id, score: score}),
                     success: function (data) {
-                        var tmpl = $.templates("#use-tmpl");
-                        var html = tmpl.render(data.obj);
-                        $("#t2").children().remove();
-                        $("#t2").html(html);
-                    }, error: function (data) {
-                        console.log(data);
+                        $('#minus-val').val(0);
+                        $('#availableScore').val(data.obj);
                     }
-                });
+                })
             });
 
-            $("#btn-plus").click(function () {
-                var plus_value = $("#plus-val").val();
-                if (plus_value == null || plus_value.trim() == "")
-                    return;
-                var id = $(this).attr("member");
+            $("#btn-plus").click(function (e) {
+                var score = $('#plus-val').val();
+                var id = $(this).attr('member');
                 $.ajax({
-                    url: "/admin/members/score",
-                    type: 'POST',
-                    data: {
-                        'id': id,
-                        'score': plus_value
-                    },
+                    url: global.context+'/admin/members/score/add',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    type: 'put',
+                    data: JSON.stringify({id: id, score: score}),
                     success: function (data) {
-                        var tmpl = $.templates("#use-tmpl");
-                        var html = tmpl.render(data.obj);
-                        $("#t2").children().remove();
-                        $("#t2").html(html);
-                    }, error: function (data) {
-                        console.log(data);
+                        $('#plus-val').val(0);
+                        $('#availableScore').val(data.obj);
                     }
-                });
+                })
             });
         });
     </script>
@@ -436,8 +419,12 @@
                 <div id="t1" class="tab-pane active">
                     <form class="form-horizontal">
                         <div class="clearfix mr50">
-                            <input id="validate" type="button" class="pull-right btn btn-danger" data-toggle="modal"
-                                   data-target=".modal-md" value="加入黑名单" th:attr="member=${member.id}"/>
+                            <input id="valid" type="button" class="pull-right btn btn-danger" data-toggle="modal"
+                                   data-target=".modal" value="加入黑名单" th:attr="member=${member.id}"
+                                   th:if="${member.valid.toString()=='VALID'}"/>
+                            <input id="valid" type="button" class="pull-right btn btn-danger" data-toggle="modal"
+                                   data-target=".modal" value="从黑名单移出" th:attr="member=${member.id}"
+                                   th:if="${member.valid.toString()=='INVALID'}"/>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">姓名：</label>
@@ -549,7 +536,7 @@
                                 请输入您需要扣除的积分数。
                             </div>
                             <div class="nums-input">
-                                <input type="text" id="miuns-val" placeholder="0"/>
+                                <input type="text" id="minus-val" placeholder="0"/>
                             </div>
                         </div>
                         <div class="modal-footer" style="text-align:center">
@@ -581,8 +568,6 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        // $('.modal-one').on('hide.bs.modal', function () {
-        //   alert(111);})
         $('.modal-footer .confirm').click(function () {
             $('.success-modal,.fixed').show().delay(2000).fadeOut(500);
         })

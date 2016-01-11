@@ -1,29 +1,5 @@
 package com.by.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.json.CardJson;
@@ -37,6 +13,23 @@ import com.by.service.CardRuleService;
 import com.by.service.CardService;
 import com.by.service.MemberService;
 import com.by.typeEnum.ValidEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/cards")
@@ -97,7 +90,7 @@ public class AdminCardController extends BaseController {
         return new Success<>(json);
     }
 
-    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String getOne(@PathVariable("id") Integer id, Model uiModel) {
         Card card = service.findOne(id);
         uiModel.addAttribute("card", card);
@@ -105,7 +98,7 @@ public class AdminCardController extends BaseController {
         return EDIT;
     }
 
-    @RequestMapping(value = "/{id}", params = "edit", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String update(@PathVariable("id") Integer id, Model uiModel, @Valid @ModelAttribute Card card,
                          BindingResult result, RedirectAttributes redirectAttributes) {
         card.setId(id);
@@ -117,8 +110,9 @@ public class AdminCardController extends BaseController {
             return EDIT;
         }
         redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+        card.setUpdatedBy(userContext.getCurrentUser().getUpdatedBy());
         Card source = service.update(card);
-        return REDIRECT + source.getId() + "?edit";
+        return REDIRECT + source.getId();
     }
 
     @RequestMapping(params = "form", method = RequestMethod.POST)
@@ -131,9 +125,10 @@ public class AdminCardController extends BaseController {
             addMenu(uiModel);
             return CREATE;
         }
+        card.setCreatedBy(userContext.getCurrentUser().getCreatedBy());
         Card source = service.save(card);
         redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-        return REDIRECT + source.getId() + "?edit";
+        return REDIRECT + source.getId();
     }
 
     @RequestMapping(params = "form", method = RequestMethod.GET)

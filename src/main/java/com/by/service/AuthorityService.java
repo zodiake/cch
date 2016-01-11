@@ -16,6 +16,8 @@ public interface AuthorityService {
     Authority findOne(int id);
 
     Authority save(Authority authority);
+    
+    Authority update(Authority authority);
 
     List<Authority> findAll();
 
