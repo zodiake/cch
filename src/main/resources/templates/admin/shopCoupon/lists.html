@@ -30,7 +30,6 @@
 			<td><a class="{{>cssClass}}">{{>state}}</a></td>
 		</tr>
 		{{/for}}
-
     </script>
 </head>
 
@@ -45,7 +44,7 @@
         <div class="shop-wrap container">
             <div class="hd clearfix">
                 <div class="bar base-bar short-bar pull-left">礼品券</div>
-                <button type="button" class="btn btn-info">添加</button>
+                <a class="btn btn-info" th:href="@{/admin/shopCoupons?form}">添加</a>
             </div>
             <form class="form-inline" th:object="${form}">
                 <div class="form-group">

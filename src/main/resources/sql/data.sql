@@ -87,7 +87,7 @@ INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (14, '张
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12', 1);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
-VALUES (2, '13811738422', 1, 200, 1, 10, '2012-12-12', 2);
+VALUES (2, '13811738422', 1, 200, 0, 10, '2012-12-12', 2);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (3, '13811738423', 1, 200, 1, 10, '2012-12-12', 3);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)

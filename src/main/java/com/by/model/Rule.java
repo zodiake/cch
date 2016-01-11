@@ -37,7 +37,7 @@ public abstract class Rule {
 
     private String summary;
 
-    @NotEmpty
+    @NotEmpty(message="{NotEmpty.rule.name}")
     private String name;
 
     @Enumerated

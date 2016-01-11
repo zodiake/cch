@@ -43,7 +43,7 @@
                     <a class="minus">
                         <i class="icon icon-miuns" data-toggle="modal" data-target=".modal-jf-miuns"></i>
                     </a>
-                    <input type="text" value="{{:availableScore}}"/>
+                    <input type="text" id="availableScore" value="{{:availableScore}}"/>
                     <a class="plus">
                         <i class="icon icon-plus" data-toggle="modal" data-target=".modal-jf-plus"></i>
                     </a>
@@ -341,49 +341,35 @@
             });
 
             $("#btn-miuns").click(function () {
-                var miuns_value = $("#miuns-val").val();
-                if (miuns_value == null || miuns_value.trim() == "")
-                    return;
-                var id = $(this).attr("member");
-                $.ajax({
-                    url: "/admin/members/score",
-                    type: 'POST',
-                    data: {
-                        'id': id,
-                        'score': "-" + miuns_value
-                    },
-                    success: function (data) {
-                        var tmpl = $.templates("#use-tmpl");
-                        var html = tmpl.render(data.obj);
-                        $("#t2").children().remove();
-                        $("#t2").html(html);
-                    }, error: function (data) {
-                        console.log(data);
-                    }
-                });
+            	var score=$('#minus-val').val();
+            	var id=$(this).attr('member');
+            	$.ajax({
+            		url:'/admin/members/score/minus',
+            		contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+            		type:'put',
+            		data:JSON.stringify({id:id,score:score}),
+            		success:function(data){
+            			$('#minus-val').val(0);
+            			$('#availableScore').val(data.obj);
+            		}
+            	})
             });
 
-            $("#btn-plus").click(function () {
-                var plus_value = $("#plus-val").val();
-                if (plus_value == null || plus_value.trim() == "")
-                    return;
-                var id = $(this).attr("member");
-                $.ajax({
-                    url: "/admin/members/score",
-                    type: 'POST',
-                    data: {
-                        'id': id,
-                        'score': plus_value
-                    },
-                    success: function (data) {
-                        var tmpl = $.templates("#use-tmpl");
-                        var html = tmpl.render(data.obj);
-                        $("#t2").children().remove();
-                        $("#t2").html(html);
-                    }, error: function (data) {
-                        console.log(data);
-                    }
-                });
+            $("#btn-plus").click(function (e) {
+            	var score=$('#plus-val').val();
+            	var id=$(this).attr('member');
+            	$.ajax({
+            		url:'/admin/members/score/add',
+            		contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+            		type:'put',
+            		data:JSON.stringify({id:id,score:score}),
+            		success:function(data){
+            			$('#plus-val').val(0);
+            			$('#availableScore').val(data.obj);
+            		}
+            	})
             });
         });
     </script>
@@ -437,7 +423,9 @@
                     <form class="form-horizontal">
                         <div class="clearfix mr50">
                             <input id="validate" type="button" class="pull-right btn btn-danger" data-toggle="modal"
-                                   data-target=".modal" value="加入黑名单" th:attr="member=${member.id}"/>
+                                   data-target=".modal" value="加入黑名单" th:attr="member=${member.id}" th:if="${member.valid.toString()=='VALID'}"/>
+                            <input id="validate" type="button" class="pull-right btn btn-danger" data-toggle="modal"
+                                   data-target=".modal" value="从黑名单移出" th:attr="member=${member.id}" th:if="${member.valid.toString()=='INVALID'}"/>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">姓名：</label>
@@ -549,7 +537,7 @@
                                 请输入您需要扣除的积分数。
                             </div>
                             <div class="nums-input">
-                                <input type="text" id="miuns-val" placeholder="0"/>
+                                <input type="text" id="minus-val" placeholder="0"/>
                             </div>
                         </div>
                         <div class="modal-footer" style="text-align:center">

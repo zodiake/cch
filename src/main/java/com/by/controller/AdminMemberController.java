@@ -119,12 +119,20 @@ public class AdminMemberController extends BaseController {
 		return EDIT;
 	}
 
-	@RequestMapping(value = "/score", method = RequestMethod.PUT)
+	@RequestMapping(value = "/score/add", method = RequestMethod.PUT)
 	@ResponseBody
-	public Status updateScore(@RequestBody UpdateScoreJson json) {
+	public Status scoreAdd(@RequestBody UpdateScoreJson json) {
 		Member member = memberService.addScore(new Member(json.getId()), json.getScore(), "admin",
 				ScoreHistoryEnum.ADMIN);
-		return new Success<>(member);
+		return new Success<>(member.getScore());
+	}
+
+	@RequestMapping(value = "/score/minus", method = RequestMethod.PUT)
+	@ResponseBody
+	public Status scoreMinus(@RequestBody UpdateScoreJson json) {
+		Member member = memberService.minusScore(new Member(json.getId()), json.getScore(), "admin",
+				ScoreHistoryEnum.ADMIN);
+		return new Success<>(member.getScore());
 	}
 
 	@RequestMapping(value = "/{id}/validate", method = RequestMethod.PUT)
