@@ -75,6 +75,7 @@ public class AdminShopCouponController extends BaseController {
             addMenu(uiModel);
             return CREATE;
         }
+        shopCoupon.setCreatedBy(userContext.getCurrentUser().getName());
         ShopCoupon coupon = service.save(shopCoupon);
         return REDIRECT + coupon.getId();
     }
@@ -98,6 +99,7 @@ public class AdminShopCouponController extends BaseController {
             addMenu(uiModel);
             return EDIT;
         }
+        shopCoupon.setUpdatedBy(userContext.getCurrentUser().getName());
         ShopCoupon coupon = service.update(shopCoupon);
         addMenu(uiModel);
         return REDIRECT + coupon.getId();

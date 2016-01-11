@@ -33,13 +33,13 @@ CREATE TABLE by_user (
 );
 
 CREATE TABLE by_shop (
-  id           INT NOT NULL AUTO_INCREMENT,
+  id           INT       NOT NULL AUTO_INCREMENT,
   name         VARCHAR(225),
   user_id      BIGINT,
   created_by   VARCHAR(20),
   updated_by   VARCHAR(20),
-  created_time TIMESTAMP NULL ,
-  updated_time TIMESTAMP null,
+  created_time TIMESTAMP NULL,
+  updated_time TIMESTAMP NULL,
   shop_key     VARCHAR(225),
   img_href     VARCHAR(77),
   FOREIGN KEY (user_id) REFERENCES by_user (id),
@@ -47,13 +47,13 @@ CREATE TABLE by_shop (
 );
 
 CREATE TABLE by_authority (
-  id           INT NOT NULL AUTO_INCREMENT,
+  id           INT       NOT NULL AUTO_INCREMENT,
   name         VARCHAR(30),
   created_by   VARCHAR(20),
   updated_by   VARCHAR(20),
-  created_time TIMESTAMP null,
-  updated_time TIMESTAMP null,
-  valid        SMALLINT     DEFAULT 1,
+  created_time TIMESTAMP NULL,
+  updated_time TIMESTAMP NULL,
+  valid        SMALLINT           DEFAULT 1,
   PRIMARY KEY (id)
 );
 
@@ -81,13 +81,13 @@ CREATE TABLE by_rule_category (
 
 
 CREATE TABLE by_card (
-  id           INT NOT NULL AUTO_INCREMENT,
+  id           INT       NOT NULL AUTO_INCREMENT,
   name         VARCHAR(50),
-  valid        SMALLINT     DEFAULT 1,
+  valid        SMALLINT           DEFAULT 1,
   img_href     VARCHAR(77),
-  init_score   INT          DEFAULT 0,
-  created_time TIMESTAMP null,
-  updated_time TIMESTAMP null,
+  init_score   INT                DEFAULT 0,
+  created_time TIMESTAMP NULL,
+  updated_time TIMESTAMP NULL,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   summary      VARCHAR(500),
@@ -95,30 +95,30 @@ CREATE TABLE by_card (
 );
 
 CREATE TABLE by_card_aud (
-  id           BIGINT  NOT NULL AUTO_INCREMENT,
+  id           BIGINT    NOT NULL AUTO_INCREMENT,
   name         VARCHAR(50),
   valid        SMALLINT,
   img_href     VARCHAR(77),
-  init_score   INT              DEFAULT 0,
-  created_time TIMESTAMP null,
-  updated_time TIMESTAMP null,
+  init_score   INT                DEFAULT 0,
+  created_time TIMESTAMP NULL,
+  updated_time TIMESTAMP NULL,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   summary      VARCHAR(500),
-  REV          INTEGER NOT NULL,
+  REV          INTEGER   NOT NULL,
   REVTYPE      TINYINT,
   PRIMARY KEY (id, REV)
 );
 
 CREATE TABLE by_rule_aud (
-  id           BIGINT  NOT NULL AUTO_INCREMENT,
+  id           BIGINT    NOT NULL AUTO_INCREMENT,
   rate         DOUBLE,
-  score        INT              DEFAULT 0,
+  score        INT                DEFAULT 0,
   card_id      INT,
   summary      VARCHAR(50),
-  valid        SMALLINT         DEFAULT 1,
-  beginTime    TIMESTAMP null,
-  endTime      TIMESTAMP null,
+  valid        SMALLINT           DEFAULT 1,
+  beginTime    TIMESTAMP NULL,
+  endTime      TIMESTAMP NULL,
   category_id  INT,
   name         VARCHAR(20),
   type         CHAR(1),
@@ -128,7 +128,7 @@ CREATE TABLE by_rule_aud (
   created_by   VARCHAR(20),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   FOREIGN KEY (category_id) REFERENCES by_rule_category (id),
-  REV          INTEGER NOT NULL,
+  REV          INTEGER   NOT NULL,
   REVTYPE      TINYINT,
   PRIMARY KEY (id, REV)
 );
@@ -188,6 +188,8 @@ CREATE TABLE by_member (
   updated_time         TIMESTAMP,
   total_parking_coupon INT             DEFAULT 0,
   detail_id            BIGINT,
+  created_by           VARCHAR(20),
+  updated_by           VARCHAR(20),
   FOREIGN KEY (card_id) REFERENCES by_card (id),
   FOREIGN KEY (detail_id) REFERENCES by_member_detail (id),
   PRIMARY KEY (id)
@@ -227,6 +229,8 @@ CREATE TABLE by_coupon (
   end_time        TIMESTAMP,
   created_time    TIMESTAMP,
   created_by      VARCHAR(20),
+  updated_time    TIMESTAMP,
+  updated_by      VARCHAR(20),
   score           INT          DEFAULT 0,
   coupon_end_time TIMESTAMP,
   valid           SMALLINT     DEFAULT 1,

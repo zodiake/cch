@@ -54,13 +54,14 @@ public class AdminParkingCouponController extends BaseController {
             addMenu(uiModel);
             return CREATE;
         }
+        coupon.setCreatedBy(userContext.getCurrentUser().getName());
         ParkingCoupon source = service.save(coupon);
         redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-        return REDIRECT + source.getId() ;
+        return REDIRECT + source.getId();
     }
 
     // 获取修改
-    @RequestMapping(value = "/{id}",  method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable("id") int id, Model uiModel) {
         ParkingCoupon coupon = service.findOne(id);
         if (coupon == null)
@@ -71,7 +72,7 @@ public class AdminParkingCouponController extends BaseController {
     }
 
     // 处理修改
-    @RequestMapping(value = "/{id}",  method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String edit(@PathVariable("id") Long id, Model uiModel, @Valid ParkingCoupon coupon, BindingResult result,
                        RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -80,10 +81,11 @@ public class AdminParkingCouponController extends BaseController {
             addMenu(uiModel);
             return EDIT;
         }
+        coupon.setUpdatedBy(userContext.getCurrentUser().getName());
         service.update(coupon);
         addMenu(uiModel);
         redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-        return REDIRECT + id ;
+        return REDIRECT + id;
     }
 
     // 列表页

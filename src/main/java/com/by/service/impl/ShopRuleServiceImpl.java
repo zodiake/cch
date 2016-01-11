@@ -72,6 +72,7 @@ public class ShopRuleServiceImpl implements ShopRuleService {
         rule.setRate(r.getRate());
         rule.setScore(r.getScore());
         rule.setShops(r.getShops());
+        rule.setUpdatedBy(r.getUpdatedBy());
         return rule;
     }
 

@@ -9,10 +9,8 @@ import com.by.message.SuccessMessage;
 import com.by.model.Menu;
 import com.by.model.Shop;
 import com.by.model.User;
-import com.by.security.UserContext;
 import com.by.service.MenuService;
 import com.by.service.ShopService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
 /**
@@ -41,8 +38,6 @@ public class AdminShopController extends BaseController {
     private ShopService service;
     @Autowired
     private MenuService menuService;
-    @Autowired
-    private UserContext userContext;
     @Autowired
     @Qualifier("shopKeyUniqueValidator")
     private Validator shopKeyUniqueValidator;
@@ -69,7 +64,6 @@ public class AdminShopController extends BaseController {
         uiModel.addAttribute("lists", pages);
         uiModel.addAttribute("last", computeLastPage(pages.getTotalPages()));
         addMenu(uiModel);
-
         return "admin/shop/list";
     }
 
@@ -123,8 +117,7 @@ public class AdminShopController extends BaseController {
     // 修改店铺信息
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String edit(@Valid @ModelAttribute("shop") Shop shop,
-                       BindingResult result, Model uiModel, @PathVariable("id") int id
-            , RedirectAttributes redirectAttributes) {
+                       BindingResult result, Model uiModel, @PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         shopKeyValidator.validate(shop, result);
         if (result.hasErrors()) {
             uiModel.addAttribute("shop", shop);
@@ -146,11 +139,11 @@ public class AdminShopController extends BaseController {
         form.setId(id);
         return new Success<>(service.bindUser(form));
     }
-    
+
     @RequestMapping(value = "/duplicate", method = RequestMethod.POST)
     @ResponseBody
-    public String duplicate(@RequestParam("shopKey") String shopKey){
-    	return "true";
+    public String duplicate(@RequestParam("shopKey") String shopKey) {
+        return "true";
     }
 
     @Override
