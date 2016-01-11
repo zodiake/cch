@@ -13,29 +13,31 @@ import java.util.List;
  * Created by yagamai on 15-12-1.
  */
 public interface ShopService {
-    Shop findByKey(String code);
+	Shop findByKey(String code);
 
-    Page<Shop> findAll(String name, Pageable pageable);
-    
-    Page<ShopJson> findAll(Pageable pageable);
+	Page<Shop> findAll(String name, Pageable pageable);
 
-    Page<Shop> findFirstPage(int size);
+	Page<ShopJson> findAll(Pageable pageable);
 
-    Shop save(Shop shop);
+	Page<Shop> findFirstPage(int size);
 
-    Shop save(ShopJson shop);
+	Shop save(Shop shop);
 
-    Shop findOne(int id);
+	Shop save(ShopJson shop);
 
-    Shop update(ShopJson shop);
+	Shop findOne(int id);
 
-    Shop update(Shop shop);
+	Shop update(ShopJson shop);
 
-    Shop bindUser(ShopBindUserForm form);
+	Shop update(Shop shop);
 
-    List<ShopJson> findAllJson();
+	Shop bindUser(ShopBindUserForm form);
 
-    List<Shop> findAll(Sort sort);
-    
-    Shop findByPos(String code);
+	List<ShopJson> findAllJson();
+
+	List<Shop> findAll(Sort sort);
+
+	Long countByName(String name);
+
+	Long countByShopKey(String key);
 }

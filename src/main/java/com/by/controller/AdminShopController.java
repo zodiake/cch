@@ -140,9 +140,21 @@ public class AdminShopController extends BaseController {
         return new Success<>(service.bindUser(form));
     }
 
-    @RequestMapping(value = "/duplicate", method = RequestMethod.POST)
+    @RequestMapping(value = "/key/duplicate", method = RequestMethod.GET)
     @ResponseBody
     public String duplicate(@RequestParam("shopKey") String shopKey) {
+        Long count = service.countByShopKey(shopKey);
+        if (count > 0)
+            return "false";
+        return "true";
+    }
+
+    @RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
+    @ResponseBody
+    public String nameDuplicate(@RequestParam("name") String name) {
+        Long count = service.countByName(name);
+        if (count > 0)
+            return "false";
         return "true";
     }
 

@@ -10,7 +10,6 @@ import com.by.repository.ShopRepository;
 import com.by.service.ShopService;
 import com.by.service.UserService;
 import com.google.common.collect.Lists;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
@@ -23,7 +22,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -72,17 +70,17 @@ public class ShopServiceImpl implements ShopService {
         Long count = em.createQuery(cq).getSingleResult();
         return new PageImpl<>(lists, pageable, count);
     }
-    
+
     @Override
-	@Transactional(readOnly = true)
-	public Page<ShopJson> findAll(Pageable pageable) {
-		Page<Shop> pages = repository.findAll(pageable);
-		List<ShopJson> jsons = new ArrayList<ShopJson>();
-		for (Shop shop : pages.getContent()) {
-			jsons.add(new ShopJson(shop));
-		}
-		return new PageImpl<>(jsons,pageable,pages.getTotalElements());
-	}
+    @Transactional(readOnly = true)
+    public Page<ShopJson> findAll(Pageable pageable) {
+        Page<Shop> pages = repository.findAll(pageable);
+        List<ShopJson> jsons = new ArrayList<ShopJson>();
+        for (Shop shop : pages.getContent()) {
+            jsons.add(new ShopJson(shop));
+        }
+        return new PageImpl<>(jsons, pageable, pages.getTotalElements());
+    }
 
 
     public Page<Shop> findFirstPage(int size) {
@@ -91,8 +89,8 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public Shop save(Shop shop) {
-    	shop.setCreatedTime(Calendar.getInstance());
-    	shop.setUpdatedTime(Calendar.getInstance());
+        shop.setCreatedTime(Calendar.getInstance());
+        shop.setUpdatedTime(Calendar.getInstance());
         return repository.save(shop);
     }
 
@@ -153,9 +151,14 @@ public class ShopServiceImpl implements ShopService {
         return repository.save(source);
     }
 
-	@Override
-	@Transactional
-	public Shop findByPos(String code) {
-		return repository.findByShopKey(code);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public Long countByName(String name) {
+        return repository.countByName(name);
+    }
+
+    @Override
+    public Long countByShopKey(String key) {
+        return repository.countByShopKey(key);
+    }
 }

@@ -46,23 +46,29 @@
             	rules: {
             		name: {
             			required: true,
-            			maxlength:10
+            			maxlength:10,
+            			remote:{
+                            url: global.context+'/admin/shops/name/duplicate',
+                            data: {name: $('#name').val()}
+            			}
             		},
             		shopKey: {
             			required: true,
             			maxlength:255,
             			remote: { 
-            				url: '/admin/shops/duplicate'
-            				}
+            				url: global.context+'/admin/shops/key/duplicate',
+            				data:{shopKey:$('#shopKey').val()}
+            			}
             		}
             	},messages: {
             		name: {
-	            		required:"名称不能为空",
-	            		maxlength:"名称最长不能超过255"
+	            		required:'名称不能为空',
+	            		maxlength:'名称最长不能超过10',
+	            		remote:'名称重复'
             		},shopKey: {
-            			required: "Pos-Key不能为空",
-            			maxlength:"Pos-Key最长不能超过255",
-            			remote: "Pos-Key已存在"
+            			required: 'Pos-Key不能为空',
+            			maxlength:'Pos-Key最长不能超过255',
+            			remote: 'Pos-Key已存在'
             		}
             	}
             });

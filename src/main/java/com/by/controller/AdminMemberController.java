@@ -198,11 +198,9 @@ public class AdminMemberController extends BaseController {
     @ResponseBody
     public String duplicate(@RequestParam("name") String name) {
         Long count = memberService.countByName(name);
-        if (count > 0) {
+        if (count > 0)
             return "false";
-        } else {
-            return "true";
-        }
+        return "true";
     }
 
     @Override
