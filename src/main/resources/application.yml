@@ -53,6 +53,10 @@ spring:
     initialize: false
     testOnBorrow: true
     validationQuery: SELECT 1
+  jpa:
+     properties:
+       hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
 logging:
   level:
     org.springframework.security: INFO
