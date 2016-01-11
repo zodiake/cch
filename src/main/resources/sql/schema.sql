@@ -200,14 +200,14 @@ CREATE TABLE by_member_detail_aud (
   address      VARCHAR(225),
   password     CHAR(64),
   birthday     TIMESTAMP,
-  member_id    BIGINT,
+  detail_id    BIGINT,
   created_time TIMESTAMP,
   updated_time TIMESTAMP,
   updated_by   VARCHAR(20),
   created_by   VARCHAR(20),
   REV          INTEGER NOT NULL,
   REVTYPE      TINYINT,
-  FOREIGN KEY (member_id) REFERENCES by_member (id),
+  FOREIGN KEY (detail_id) REFERENCES by_member (id),
   PRIMARY KEY (id, REV)
 );
 

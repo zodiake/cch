@@ -84,33 +84,33 @@ INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (13, '张
 INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (14, '张三', '上海市长宁区万航渡路2170号A1室', '1990-01-01');
 
 -- test member
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12', 1);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (2, '13811738422', 1, 200, 1, 10, '2012-12-12', 2);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (3, '13811738423', 1, 200, 1, 10, '2012-12-12', 3);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (4, '13811738424', 1, 200, 1, 10, '2012-12-12', 4);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (5, '13811738425', 1, 200, 1, 10, '2012-12-12', 5);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (6, '13811738426', 1, 200, 1, 10, '2012-12-12', 6);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (7, '13811738427', 1, 200, 1, 10, '2012-12-12', 7);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (8, '13811738428', 1, 200, 1, 10, '2012-12-12', 8);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (9, '13811738429', 1, 200, 1, 10, '2012-12-12', 9);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (10, '13811738410', 1, 200, 1, 10, '2012-12-12', 10);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (11, '13811738412', 1, 200, 1, 10, '2012-12-12', 11);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (12, '13811738432', 1, 200, 1, 10, '2012-12-12', 12);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (13, '13811738442', 1, 200, 1, 10, '2012-12-12', 13);
-INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, member_id)
+INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (14, '13811738452', 1, 200, 1, 10, '2012-12-12', 14);
 
 -- test pay
