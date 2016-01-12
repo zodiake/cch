@@ -106,4 +106,9 @@ public class CardServiceImpl implements CardService {
 		return cards;
 	}
 
+	@Override
+	public Long countByName(String name) {
+		return repository.countByName(name);
+	}
+
 }
