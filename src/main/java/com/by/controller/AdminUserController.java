@@ -32,92 +32,101 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/admin/users")
 public class AdminUserController extends BaseController {
-    private final String LISTS = "admin/user/lists";
-    private final String EDIT = "admin/user/edit";
-    private final String CREATE = "admin/user/create";
-    private final String REDIRECT = "redirect:/admin/users/";
-    private final Menu subMenu = new Menu(15);
-    @Autowired
-    private UserService service;
-    @Autowired
-    private AuthorityService authorityService;
-    @Autowired
-    private MessageSource messageSource;
-    @Autowired
-    @Qualifier("userNameValidator")
-    private Validator validator;
+	private final String LISTS = "admin/user/lists";
+	private final String EDIT = "admin/user/edit";
+	private final String CREATE = "admin/user/create";
+	private final String REDIRECT = "redirect:/admin/users/";
+	private final Menu subMenu = new Menu(15);
+	@Autowired
+	private UserService service;
+	@Autowired
+	private AuthorityService authorityService;
+	@Autowired
+	private MessageSource messageSource;
+	@Autowired
+	@Qualifier("userNameValidator")
+	private Validator validator;
 
-    @ModelAttribute("authorities")
-    public List<Authority> authorities() {
-        return authorityService.findAll();
-    }
+	@ModelAttribute("authorities")
+	public List<Authority> authorities() {
+		return authorityService.findAll();
+	}
 
-    @RequestMapping(value = "/duplicate", method = RequestMethod.GET)
-    @ResponseBody
-    public Status duplicate(@RequestParam("name") String name) {
-        if (service.countByName(name) > 0)
-            return new Fail("fail");
-        return new Success<String>("success");
-    }
+	@RequestMapping(value = "/duplicate", method = RequestMethod.GET)
+	@ResponseBody
+	public Status duplicate(@RequestParam("name") String name) {
+		if (service.countByName(name) > 0)
+			return new Fail("fail");
+		return new Success<String>("success");
+	}
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String list(Model uiModel,
-                       @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<User> lists = service.findAll(null, pageable);
-        uiModel.addAttribute("users", service.toJson(lists, pageable));
-        uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
-        addMenu(uiModel);
-        return LISTS;
-    }
+	@RequestMapping(method = RequestMethod.GET)
+	public String list(Model uiModel,
+			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<User> lists = service.findAll(null, pageable);
+		uiModel.addAttribute("users", service.toJson(lists, pageable));
+		uiModel.addAttribute("last", computeLastPage(lists.getTotalPages()));
+		addMenu(uiModel);
+		return LISTS;
+	}
 
-    @RequestMapping(params = "form", method = RequestMethod.GET)
-    public String form(Model uiModel) {
-        uiModel.addAttribute("user", new User());
-        addMenu(uiModel);
-        return CREATE;
-    }
+	@RequestMapping(params = "form", method = RequestMethod.GET)
+	public String form(Model uiModel) {
+		uiModel.addAttribute("user", new User());
+		addMenu(uiModel);
+		return CREATE;
+	}
 
-    @RequestMapping(params = "form", method = RequestMethod.POST)
-    public String save(@Valid @ModelAttribute("user") User user, BindingResult result, Model uiModel,
-                       RedirectAttributes redirectAttributes) {
-        validator.validate(user, result);
-        if (result.hasErrors()) {
-            uiModel.addAttribute("user", user);
-            addMenu(uiModel);
-            uiModel.addAttribute("message", failMessage(messageSource));
-            return CREATE;
-        }
-        user.setCreatedBy(userContext.getCurrentUser().getName());
-        User u = service.save(user);
-        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-        return REDIRECT + u.getId();
-    }
+	@RequestMapping(params = "form", method = RequestMethod.POST)
+	public String save(@Valid @ModelAttribute("user") User user, BindingResult result, Model uiModel,
+			RedirectAttributes redirectAttributes) {
+		validator.validate(user, result);
+		if (result.hasErrors()) {
+			uiModel.addAttribute("user", user);
+			addMenu(uiModel);
+			uiModel.addAttribute("message", failMessage(messageSource));
+			return CREATE;
+		}
+		user.setCreatedBy(userContext.getCurrentUser().getName());
+		User u = service.save(user);
+		redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+		return REDIRECT + u.getId();
+	}
 
-    @RequestMapping(value = "/json", method = RequestMethod.GET)
-    @ResponseBody
-    public Success<Page<UserJson>> listJson(
-            @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<User> users = service.findAll(null, pageable);
-        return new Success<>(service.toJson(users, pageable));
-    }
+	@RequestMapping(value = "/json", method = RequestMethod.GET)
+	@ResponseBody
+	public Success<Page<UserJson>> listJson(
+			@PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<User> users = service.findAll(null, pageable);
+		return new Success<>(service.toJson(users, pageable));
+	}
 
-    @RequestMapping(value = "/{id}/validate", method = RequestMethod.PUT)
-    @ResponseBody
-    public Status validate(@PathVariable("id") int id) {
-        service.validate(id);
-        return new Success<String>("asdf");
-    }
+	@RequestMapping(value = "/{id}/validate", method = RequestMethod.PUT)
+	@ResponseBody
+	public Status validate(@PathVariable("id") int id) {
+		service.validate(id);
+		return new Success<String>("asdf");
+	}
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable("id") int id, Model uiModel) {
-        User user = service.findOne(id);
-        uiModel.addAttribute("user", user);
-        addMenu(uiModel);
-        return EDIT;
-    }
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String edit(@PathVariable("id") int id, Model uiModel) {
+		User user = service.findOne(id);
+		uiModel.addAttribute("user", user);
+		addMenu(uiModel);
+		return EDIT;
+	}
 
-    @Override
-    public Menu getSubMenu() {
-        return subMenu;
-    }
+	@RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
+	@ResponseBody
+	public String nameDuplicate(@RequestParam("name") String name) {
+		Long count = service.countByName(name);
+		if (count > 0)
+			return "false";
+		return "true";
+	}
+
+	@Override
+	public Menu getSubMenu() {
+		return subMenu;
+	}
 }

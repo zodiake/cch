@@ -10,30 +10,10 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/global.js}"></script>
-    <script>
-    	$(function(){
-    		$('#name').blur(function(){
-    			var self=$(this);
-    			$.ajax({
-    				url:global.context+'/admin/user/duplicate',
-    				data:{
-    					name:self.val()
-    				},
-    				success:function(data){
-    					if(data.status=='fail'){
-    						self.after('<div>用户名重复</div>');	
-    						$('input[type="submit"]').attr('disabled',true);
-    					}else{
-    						self.siblings().remove();
-    						$('input[type="submit"]').attr('disabled',false);
-    					}
-    				}
-    			});
-    		});
-    	});
-    </script>
+    <script type="text/javascript" th:src="@{/js/user/create.js}"></script>
 </head>
 
 <body>
@@ -49,7 +29,7 @@
                 <div class="bar add-bar">添加用户</div>
             </div>
             <div class="show-msg">
-                <form class="form-horizontal pt50" th:object="${user}" th:method="post">
+                <form class="form-horizontal pt50" id="form" th:object="${user}" th:method="post">
                     <div class="form-group">
                         <label class="col-md-4 control-label">用户名：</label>
                         <div class="col-md-3">

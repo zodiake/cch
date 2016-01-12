@@ -423,4 +423,5 @@ CREATE UNIQUE INDEX by_trading_code_unique ON by_trading (code);
 CREATE UNIQUE INDEX by_member_name_unique ON by_member (name);
 CREATE UNIQUE INDEX by_shop_shopkey_unique ON by_shop (shop_key);
 CREATE UNIQUE INDEX by_gift_coupon_member_code_unique ON by_gift_coupon_member (code);
+CREATE UNIQUE INDEX by_user_unique ON by_user (name);
 CREATE INDEX by_trading_createdTime_index ON by_trading (created_time);
