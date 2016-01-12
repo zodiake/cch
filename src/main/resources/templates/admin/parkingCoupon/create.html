@@ -38,8 +38,8 @@
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
                             <input type="text" class="form-control" th:field="*{name}"/>
+	                        <label class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</label>
                         </div>
-                        <label class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect date</label>
                     </div>
                     <div class="form-group imgUp">
                         <label class="col-md-4 control-label">列表图：</label>
