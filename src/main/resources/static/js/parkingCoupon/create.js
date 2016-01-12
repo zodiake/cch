@@ -35,12 +35,21 @@ $(function () {
         onkeyup: false,
         rules: {
             name: {
-                required: true
+                required: true,
+                remote: {
+                    url: global.context + '/admin/parkingCoupons/name/duplicate',
+                    data: {
+                        name: function () {
+                            return $('#name').val();
+                        }
+                    }
+                }
             }
         },
         messages: {
             name: {
-                required: '名称不能为空'
+                required: '名称不能为空',
+                remote:'名称不能为空'
             }
         }
     });

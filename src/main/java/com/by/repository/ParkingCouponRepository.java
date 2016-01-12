@@ -18,4 +18,6 @@ public interface ParkingCouponRepository extends CrudRepository<ParkingCoupon, I
 	Page<ParkingCoupon> findAll(Pageable pageable);
 	
 	List<ParkingCoupon> findAll();
+
+	Long countByName(String name);
 }

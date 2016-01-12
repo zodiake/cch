@@ -144,7 +144,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
     }
 
     @Override
-    @CachePut(value="coupon",key="#coupon.id")
+    @CachePut(value = "coupon", key = "#coupon.id")
     public ParkingCoupon validOrInValid(ParkingCoupon coupon) {
         ParkingCoupon c = repository.findOne(coupon.getId());
         if (c.getValid().equals(ValidEnum.VALID))
@@ -225,5 +225,10 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
         });
         Long max = Math.max(useHistory.getTotalElements(), exchangeHistory.getTotalElements());
         return new PageImpl<>(results.stream().limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, max);
+    }
+
+    @Override
+    public Long countByName(String name) {
+        return repository.countByName(name);
     }
 }
