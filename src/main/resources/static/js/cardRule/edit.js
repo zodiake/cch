@@ -2,7 +2,7 @@ $(function () {
     $('button.confirm').click(function () {
         $('.success-modal,.fixed').show().delay(2000).fadeOut(500);
     })
-
+    
     $('#validate').click(function () {
         var self = $(this);
         var id = self.attr('member');
