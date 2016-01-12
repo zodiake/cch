@@ -420,10 +420,10 @@
                     <form class="form-horizontal">
                         <div class="clearfix mr50">
                             <input id="valid" type="button" class="pull-right btn btn-danger" data-toggle="modal"
-                                   data-target=".modal" value="加入黑名单" th:attr="member=${member.id}"
+                                   data-target=".modal-md" value="加入黑名单" th:attr="member=${member.id}"
                                    th:if="${member.valid.toString()=='VALID'}"/>
                             <input id="valid" type="button" class="pull-right btn btn-danger" data-toggle="modal"
-                                   data-target=".modal" value="从黑名单移出" th:attr="member=${member.id}"
+                                   data-target=".modal-md" value="从黑名单移出" th:attr="member=${member.id}"
                                    th:if="${member.valid.toString()=='INVALID'}"/>
                         </div>
                         <div class="form-group">
@@ -468,7 +468,7 @@
 
             <!--modal start-->
 
-            <div class="modal fade bs-example-modal-sm modal-md" tabindex="-1" role="dialog"
+            <div class="modal modal-md fade bs-example-modal-sm modal-md" tabindex="-1" role="dialog"
                  aria-labelledby="mySmallModalLabel">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
