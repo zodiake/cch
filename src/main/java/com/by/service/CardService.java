@@ -29,4 +29,6 @@ public interface CardService {
     Page<Card> findByValid(ValidEnum valid, Pageable pageable);
 
     List<Card> findAllCache();
+    
+    Long countByName(String name);
 }

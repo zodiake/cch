@@ -9,12 +9,14 @@ public class ParkingHistoryJson {
 	private String startTime;
 	private String endTime;
 	private String license;
+	private float amount;
 
 	public ParkingHistoryJson(ParkingHistory history) {
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.startTime = format.format(history.getStartTime().getTime());
 		this.endTime = format.format(history.getEndTIme().getTime());
 		this.license = history.getLicense();
+		this.amount = history.getAmount();
 	}
 
 	public String getStartTime() {
@@ -41,4 +43,11 @@ public class ParkingHistoryJson {
 		this.license = license;
 	}
 
+	public float getAmount() {
+		return amount;
+	}
+
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
 }

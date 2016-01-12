@@ -2,9 +2,6 @@ package com.by.model;
 
 import com.by.json.MemberRequestJson;
 import com.by.typeEnum.ValidEnum;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -14,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "by_member")
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +22,6 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id")
-    @JsonManagedReference
     private Card card;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})

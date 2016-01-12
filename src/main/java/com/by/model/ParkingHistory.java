@@ -28,6 +28,8 @@ public class ParkingHistory {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_time")
     private Calendar endTIme;
+    
+    private float amount;
 
     public ParkingHistory() {
     }
@@ -77,8 +79,16 @@ public class ParkingHistory {
     public void setEndTIme(Calendar endTIme) {
         this.endTIme = endTIme;
     }
+    
+    public float getAmount() {
+		return amount;
+	}
 
-    @Override
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

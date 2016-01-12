@@ -1,17 +1,18 @@
 package com.by.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.by.exception.Success;
 import com.by.json.PasswordJson;
 import com.by.model.Menu;
 import com.by.model.User;
 import com.by.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by yagamai on 16-1-7.
@@ -26,9 +27,10 @@ public class AdminPasswordController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.PUT)
 	@ResponseBody
-	public Success<String> update(@ModelAttribute PasswordJson json) {
+	public Success<String> update(@RequestBody PasswordJson json) {
 		User user = userContext.getCurrentUser();
 		user.setPassword(json.getPassword());
+		System.out.println(json.getPassword());
 		service.updatePassword(user);
 		return new Success<>("success");
 	}

@@ -104,7 +104,7 @@ public class AdminParkingCouponController extends BaseController {
     @RequestMapping(value = "/json", method = RequestMethod.GET)
     @ResponseBody
     public Status list(BaseCouponForm form,
-                       @PageableDefault(page = 0, size = 10, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
+                       @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "beginTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CouponTemplateJson> json = service.findAll(form, pageable);
         return new Success<>(json);
     }
@@ -115,6 +115,16 @@ public class AdminParkingCouponController extends BaseController {
     public Status validOrNotValid(@PathVariable("id") int id) {
         ParkingCoupon coupon = new ParkingCoupon(id);
         return new Success<CouponJson>(new CouponJson(service.validOrInValid(coupon)));
+    }
+
+    // 新增名称是否重复
+    @RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
+    @ResponseBody
+    public String nameDuplicate(@RequestParam("name") String name) {
+        Long count = service.countByName(name);
+        if (count > 0)
+            return "false";
+        return "true";
     }
 
     @Override

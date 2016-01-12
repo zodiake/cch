@@ -1,10 +1,8 @@
 package com.by.json;
 
-import com.by.model.Card;
-import com.by.model.CardRule;
-
 import java.util.List;
-import java.util.stream.Collectors;
+
+import com.by.model.Card;
 
 /**
  * Created by yagamai on 15-12-23.
