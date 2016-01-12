@@ -1,5 +1,7 @@
 package com.by.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.by.model.Shop;
@@ -13,4 +15,6 @@ public interface ShopRepository extends PagingAndSortingRepository<Shop, Integer
 	Long countByShopKey(String code);
 
 	Long countByName(String name);
+
+	List<Shop> findAll();
 }

@@ -7,6 +7,7 @@ import com.by.json.RuleJson;
 import com.by.model.*;
 import com.by.service.CardRuleService;
 import com.by.service.CardService;
+import com.by.service.CouponService;
 import com.by.typeEnum.ValidEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -43,6 +44,8 @@ public class AdminCardRuleController extends BaseController {
 	private CardService cardService;
 	@Autowired
 	private MessageSource messageSource;
+	@Autowired
+	private CouponService couponService;
 
 	@ModelAttribute("cards")
 	public List<Card> findAllCard() {

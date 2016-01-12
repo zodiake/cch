@@ -1,12 +1,15 @@
 package com.by.service.impl;
 
-import com.by.form.ShopCouponForm;
-import com.by.json.ShopCouponJson;
-import com.by.model.ShopCoupon;
-import com.by.repository.ShopCouponRepository;
-import com.by.service.CouponService;
-import com.by.service.ShopCouponService;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -15,14 +18,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.exception.Fail;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.form.ShopCouponForm;
+import com.by.json.ShopCouponJson;
+import com.by.model.ShopCoupon;
+import com.by.repository.ShopCouponRepository;
+import com.by.service.CouponService;
+import com.by.service.ShopCouponService;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-8.
@@ -103,4 +108,20 @@ public class ShopCouponServiceImpl implements ShopCouponService {
     public Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable) {
         return repository.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
     }
+
+	@Override
+	public Status valid(int id) {
+		ShopCoupon r = repository.findOne(id);
+		Calendar today = Calendar.getInstance();
+		if (r.getBeginTime() != null) {
+			if (r.getEndTime().before(today))
+				return new Fail("not within valid data");
+		}
+		if (r.getValid().equals(ValidEnum.INVALID)) {
+			r.setValid(ValidEnum.VALID);
+		} else {
+			r.setValid(ValidEnum.INVALID);
+		}
+		return new Success<String>("success");
+	}
 }

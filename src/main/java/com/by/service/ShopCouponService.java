@@ -1,13 +1,15 @@
 package com.by.service;
 
+import java.util.Calendar;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.by.exception.Status;
 import com.by.form.ShopCouponForm;
 import com.by.json.ShopCouponJson;
 import com.by.model.ShopCoupon;
 import com.by.typeEnum.ValidEnum;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import java.util.Calendar;
 
 /**
  * Created by yagamai on 15-12-8.
@@ -26,4 +28,6 @@ public interface ShopCouponService {
     Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable);
 
     Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable);
+
+	Status valid(int id);
 }

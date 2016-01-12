@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.by.exception.Status;
 import com.by.form.BaseCouponForm;
 import com.by.json.CouponJson;
 import com.by.model.Coupon;

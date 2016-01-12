@@ -52,6 +52,7 @@ public abstract class BaseController implements UtilContoller {
 	}
 
 	protected void addClass(Rule rule, Model uiModel) {
+		System.out.println(rule.getValid()+"base controller");
 		Calendar today = Calendar.getInstance();
 		CouponStatusMessage message = null;
 		if (rule.getBeginTime() == null && rule.getEndTime() == null) {

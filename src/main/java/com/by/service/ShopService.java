@@ -33,11 +33,11 @@ public interface ShopService {
 
 	Shop bindUser(ShopBindUserForm form);
 
-	List<ShopJson> findAllJson();
-
 	List<Shop> findAll(Sort sort);
 
 	Long countByName(String name);
 
 	Long countByShopKey(String key);
+
+	List<ShopJson> toJson(List<Shop> shops);
 }

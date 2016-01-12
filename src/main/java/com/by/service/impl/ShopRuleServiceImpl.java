@@ -1,13 +1,14 @@
 package com.by.service.impl;
 
-import com.by.form.BaseCouponForm;
-import com.by.json.RuleJson;
-import com.by.model.GiftCoupon;
-import com.by.model.ShopRule;
-import com.by.repository.ShopRuleRepository;
-import com.by.service.RuleService;
-import com.by.service.ShopRuleService;
-import com.by.typeEnum.ValidEnum;
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,13 +17,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.by.exception.Fail;
+import com.by.exception.Status;
+import com.by.exception.Success;
+import com.by.form.BaseCouponForm;
+import com.by.json.RuleJson;
+import com.by.model.ShopRule;
+import com.by.repository.ShopRuleRepository;
+import com.by.service.RuleService;
+import com.by.service.ShopRuleService;
+import com.by.typeEnum.ValidEnum;
 
 /**
  * Created by yagamai on 15-12-22.
@@ -81,4 +85,15 @@ public class ShopRuleServiceImpl implements ShopRuleService {
     	r.setValid(ValidEnum.VALID);
         return repository.save(r);
     }
+
+	@Override
+	public Status valid(int id) {
+		ShopRule r = repository.findOne(id);
+		Calendar today = Calendar.getInstance();
+		if (r.getValid().equals(ValidEnum.INVALID))
+			r.setValid(ValidEnum.VALID);
+		else
+			r.setValid(ValidEnum.INVALID);
+		return new Success<String>("success");
+	}
 }

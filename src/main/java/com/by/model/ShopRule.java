@@ -7,8 +7,8 @@ import javax.persistence.*;
 @Entity
 @DiscriminatorValue("s")
 public class ShopRule extends Rule {
-	@ManyToMany
-	@JoinTable(name = "by_shop_rule", joinColumns = @JoinColumn(name = "rule_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"))
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "by_shop_rule", joinColumns = @JoinColumn(name = "rule_id") , inverseJoinColumns = @JoinColumn(name = "shop_id") )
 	private List<Shop> shops;
 
 	public List<Shop> getShops() {
