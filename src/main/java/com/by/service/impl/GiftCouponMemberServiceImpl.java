@@ -112,7 +112,7 @@ public class GiftCouponMemberServiceImpl implements GiftCouponMemberService {
     }
 
     private List<CouponMemberJson> toJson(Page<GiftCouponMember> lists) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return lists.getContent().stream().map(i -> {
             CouponMemberJson c = new CouponMemberJson();
             c.setCode(i.getCode());

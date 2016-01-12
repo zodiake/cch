@@ -8,7 +8,7 @@ CREATE TABLE by_menu_category (
 CREATE TABLE by_menu (
   id          INT NOT NULL AUTO_INCREMENT,
   name        VARCHAR(20)
-              CHARACTER SET gb2312,
+              CHARACTER SET gb2312 UNIQUE,
   category_id INT,
   href        VARCHAR(50),
   FOREIGN KEY (category_id) REFERENCES by_menu_category (id),
@@ -88,7 +88,7 @@ CREATE TABLE by_rule_category (
 
 CREATE TABLE by_card (
   id           INT       NOT NULL AUTO_INCREMENT,
-  name         VARCHAR(50),
+  name         VARCHAR(50) UNIQUE,
   valid        SMALLINT           DEFAULT 1,
   img_href     VARCHAR(77),
   init_score   INT                DEFAULT 0,
@@ -330,6 +330,7 @@ CREATE TABLE by_parking_history (
   member_id  BIGINT,
   start_time TIMESTAMP NULL,
   end_time   TIMESTAMP NULL,
+  amount     FLOAT,
   FOREIGN KEY (member_id) REFERENCES by_member (id),
   PRIMARY KEY (id)
 );

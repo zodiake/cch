@@ -17,7 +17,7 @@ public class ParkingCouponHistoryJson {
     private String couponName;
 
     public ParkingCouponHistoryJson(ParkingCouponExchangeHistory history) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.createdTime = history.getCreatedTime();
         this.created = dateFormat.format(this.createdTime.getTime());
         this.total = history.getTotal();

@@ -135,7 +135,7 @@ public class ShopCouponMemberServiceImpl implements ShopCouponMemberService {
 	}
 
 	private List<ShopCouponMemberJson> toJson(Page<ShopCouponMember> lists) {
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return lists.getContent().stream().map(i -> {
 			ShopCouponMemberJson c = new ShopCouponMemberJson();
 			c.setCode(i.getCode());
