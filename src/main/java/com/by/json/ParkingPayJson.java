@@ -1,7 +1,5 @@
 package com.by.json;
 
-import com.by.model.Member;
-
 import java.util.Calendar;
 
 /**

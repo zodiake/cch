@@ -59,6 +59,6 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 logging:
   level:
-    org.springframework.security: DEBUG
+    org.springframework.security: INFO
     org.springframework.web: INFO
     org.hibernate.type: trace

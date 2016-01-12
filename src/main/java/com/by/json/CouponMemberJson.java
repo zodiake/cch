@@ -1,10 +1,5 @@
 package com.by.json;
 
-import com.by.model.GiftCouponMember;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 /**
  * Created by yagamai on 16-1-6.
  */
