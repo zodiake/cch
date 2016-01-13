@@ -168,4 +168,14 @@ public class ShopServiceImpl implements ShopService {
 		return repository.countByShopKey(key);
 	}
 
+	@Override
+	public Shop findByName(String name) {
+		return repository.findByName( name);
+	}
+
+	@Override
+	public Shop findByShopKey(String name) {
+		return repository.findByShopKey( name);
+	}
+
 }

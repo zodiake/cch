@@ -148,20 +148,28 @@ public class AdminShopController extends BaseController {
 
 	@RequestMapping(value = "/key/duplicate", method = RequestMethod.GET)
 	@ResponseBody
-	public String duplicate(@RequestParam("shopKey") String shopKey) {
-		Long count = service.countByShopKey(shopKey);
-		if (count > 0)
-			return "false";
-		return "true";
+	public boolean duplicate(@RequestParam("shopKey") String shopKey, @RequestParam("id") Integer id) {
+		long count;
+		if (id == null) {
+			count = service.countByShopKey(shopKey);
+			return count > 0 ? false : true;
+		} else {
+			Shop shop = service.findByShopKey(shopKey);
+			return !id.equals(shop.getId()) ? false : true;
+		}
 	}
 
 	@RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
 	@ResponseBody
-	public String nameDuplicate(@RequestParam("name") String name) {
-		Long count = service.countByName(name);
-		if (count > 0)
-			return "false";
-		return "true";
+	public boolean nameDuplicate(@RequestParam("name") String name, @RequestParam("id") Integer id) {
+		Long count;
+		if (id == null) {
+			count = service.countByName(name);
+			return count > 0 ? false : true;
+		} else {
+			Shop shop = service.findByName(name);
+			return !id.equals(shop.getId()) ? false : true;
+		}
 	}
 
 	@Override

@@ -49,7 +49,7 @@
             			maxlength:10,
             			remote:{
                             url: global.context+'/admin/shops/name/duplicate',
-                            data: {name: $('#name').val()}
+                            data: {name:function(){ return $('#name').val()},id:$('#form').attr('data-id')}
             			}
             		},
             		shopKey: {
@@ -57,7 +57,7 @@
             			maxlength:255,
             			remote: { 
             				url: global.context+'/admin/shops/key/duplicate',
-            				data:{shopKey:$('#shopKey').val()}
+            				data:{shopKey:function(){return $('#shopKey').val()},id:$('#form').attr('data-id')}
             			}
             		}
             	},messages: {
@@ -87,7 +87,7 @@
                 <div class="bar edit-bar">店铺设置</div>
             </div>
             <div class="row">
-                <form class="form-horizontal pt50" id="form" th:object="${shop}" th:method="put">
+                <form class="form-horizontal pt50" id="form" th:object="${shop}" th:method="put" th:attr="data-id=${shop.id}">
                     <div class="form-group">
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">

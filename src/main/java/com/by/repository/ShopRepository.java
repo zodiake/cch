@@ -14,7 +14,11 @@ public interface ShopRepository extends PagingAndSortingRepository<Shop, Integer
 
 	Long countByShopKey(String code);
 
+	Long countByIdAndShopKey(int id, String code);
+
 	Long countByName(String name);
+
+	Shop findByName(String name);
 
 	List<Shop> findAll();
 }

@@ -37,7 +37,11 @@ public interface ShopService {
 
 	Long countByName(String name);
 
+	Shop findByName(String name);
+
 	Long countByShopKey(String key);
+
+	Shop findByShopKey(String name);
 
 	List<ShopJson> toJson(List<Shop> shops);
 }
