@@ -111,4 +111,9 @@ public class CardServiceImpl implements CardService {
 		return repository.countByName(name);
 	}
 
+	@Override
+	public Card findByName(String name) {
+		return repository.findByName(name);
+	}
+
 }

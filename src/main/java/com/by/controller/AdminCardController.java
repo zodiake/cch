@@ -140,11 +140,16 @@ public class AdminCardController extends BaseController {
 
 	@RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
 	@ResponseBody
-	public String nameDuplicate(@RequestParam("name") String name) {
-		Long count = service.countByName(name);
-		if (count > 0)
-			return "false";
-		return "true";
+	public boolean nameDuplicate(@RequestParam("name") String name, @RequestParam("id") Integer id) {
+		if (id == null) {
+			Long count = service.countByName(name);
+			return count > 0 ? false : true;
+		} else {
+			Card card = service.findByName(name);
+			if (card != null)
+				return id.equals(card.getId()) ? true : false;
+			return true;
+		}
 	}
 
 	@Override

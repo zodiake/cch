@@ -155,7 +155,9 @@ public class AdminShopController extends BaseController {
 			return count > 0 ? false : true;
 		} else {
 			Shop shop = service.findByShopKey(shopKey);
-			return !id.equals(shop.getId()) ? false : true;
+			if (shop != null)
+				return !id.equals(shop.getId()) ? false : true;
+			return true;
 		}
 	}
 
@@ -168,7 +170,9 @@ public class AdminShopController extends BaseController {
 			return count > 0 ? false : true;
 		} else {
 			Shop shop = service.findByName(name);
-			return !id.equals(shop.getId()) ? false : true;
+			if (shop != null)
+				return !id.equals(shop.getId()) ? false : true;
+			return true;
 		}
 	}
 
