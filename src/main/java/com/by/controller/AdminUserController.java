@@ -118,11 +118,17 @@ public class AdminUserController extends BaseController {
 
 	@RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
 	@ResponseBody
-	public String nameDuplicate(@RequestParam("name") String name) {
-		Long count = service.countByName(name);
-		if (count > 0)
-			return "false";
-		return "true";
+	public boolean nameDuplicate(@RequestParam("name") String name,
+			@RequestParam(value = "id", required = false) Integer id) {
+		if (id == null) {
+			Long count = service.countByName(name);
+			return count > 0 ? false : true;
+		} else {
+			User user = service.findByName(name);
+			if (user != null)
+				return user.getId() == id ? true : false;
+			return true;
+		}
 	}
 
 	@Override
