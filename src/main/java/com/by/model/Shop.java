@@ -1,13 +1,27 @@
 package com.by.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.util.Calendar;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Created by yagamai on 15-11-23.
@@ -15,155 +29,155 @@ import java.util.List;
 @Entity
 @Table(name = "by_shop")
 public class Shop {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @NotNull
-    @NotEmpty(message="{NotEmpty.shop.name}")
-    private String name;
+	@NotNull
+	@NotEmpty(message = "{NotEmpty.shop.name}")
+	private String name;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
-    private List<Menu> menus;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "by_shop_menu", joinColumns = @JoinColumn(name = "shop_id") , inverseJoinColumns = @JoinColumn(name = "menu_id") )
+	private List<Menu> menus;
 
-    @NotNull
-    @Column(name="shop_key")
-    private String shopKey;
+	@NotNull
+	@Column(name = "shop_key")
+	private String shopKey;
 
-    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
-    private List<ShopCoupon> coupons;
+	@OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+	private List<ShopCoupon> coupons;
 
-    @ManyToMany(mappedBy = "shops")
-    private List<ShopRule> rules;
+	@ManyToMany(mappedBy = "shops", fetch = FetchType.LAZY)
+	private List<ShopRule> rules;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_time")
-    private Calendar createdTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_time")
+	private Calendar createdTime;
 
-    @Column(name = "created_by")
-    private String createdBy;
+	@Column(name = "created_by")
+	private String createdBy;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_time")
-    private Calendar updatedTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_time")
+	private Calendar updatedTime;
 
-    @Column(name = "updated_by")
-    private String updatedBy;
-    
-    @Column(name="img_href")
-    private String imgHref;
+	@Column(name = "updated_by")
+	private String updatedBy;
 
-    public Shop() {
-    }
+	@Column(name = "img_href")
+	private String imgHref;
 
-    public Shop(int id) {
-        this.id = id;
-    }
+	public Shop() {
+	}
 
-    public int getId() {
-        return id;
-    }
+	public Shop(int id) {
+		this.id = id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public List<Menu> getMenus() {
-        return menus;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public void setMenus(List<Menu> menus) {
-        this.menus = menus;
-    }
+	public List<Menu> getMenus() {
+		return menus;
+	}
 
-    public String getShopKey() {
-        return shopKey;
-    }
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
 
-    public void setShopKey(String shopKey) {
-        this.shopKey = shopKey;
-    }
+	public String getShopKey() {
+		return shopKey;
+	}
 
-    public List<ShopCoupon> getCoupons() {
-        return coupons;
-    }
+	public void setShopKey(String shopKey) {
+		this.shopKey = shopKey;
+	}
 
-    public void setCoupons(List<ShopCoupon> coupons) {
-        this.coupons = coupons;
-    }
+	public List<ShopCoupon> getCoupons() {
+		return coupons;
+	}
 
-    public Calendar getCreatedTime() {
-        return createdTime;
-    }
+	public void setCoupons(List<ShopCoupon> coupons) {
+		this.coupons = coupons;
+	}
 
-    public void setCreatedTime(Calendar createdTime) {
-        this.createdTime = createdTime;
-    }
+	public Calendar getCreatedTime() {
+		return createdTime;
+	}
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+	public void setCreatedTime(Calendar createdTime) {
+		this.createdTime = createdTime;
+	}
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+	public String getCreatedBy() {
+		return createdBy;
+	}
 
-    public Calendar getUpdatedTime() {
-        return updatedTime;
-    }
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
-    public void setUpdatedTime(Calendar updatedTime) {
-        this.updatedTime = updatedTime;
-    }
+	public Calendar getUpdatedTime() {
+		return updatedTime;
+	}
 
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
+	public void setUpdatedTime(Calendar updatedTime) {
+		this.updatedTime = updatedTime;
+	}
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
 
-    public List<ShopRule> getRules() {
-        return rules;
-    }
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
-    public void setRules(List<ShopRule> rules) {
-        this.rules = rules;
-    }
+	public List<ShopRule> getRules() {
+		return rules;
+	}
 
-    @PrePersist
-    private void prePersist(){
-        this.createdTime=Calendar.getInstance();
-    }
+	public void setRules(List<ShopRule> rules) {
+		this.rules = rules;
+	}
 
-    @PreUpdate
-    private void preUpdate(){
-        this.updatedTime=Calendar.getInstance();
-    }
+	@PrePersist
+	private void prePersist() {
+		this.createdTime = Calendar.getInstance();
+	}
 
-    public String getImgHref() {
+	@PreUpdate
+	private void preUpdate() {
+		this.updatedTime = Calendar.getInstance();
+	}
+
+	public String getImgHref() {
 		return imgHref;
 	}
 
@@ -172,18 +186,20 @@ public class Shop {
 	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        Shop shop = (Shop) o;
+		Shop shop = (Shop) o;
 
-        return id == shop.id;
+		return id == shop.id;
 
-    }
+	}
 
-    @Override
-    public int hashCode() {
-        return id;
-    }
+	@Override
+	public int hashCode() {
+		return id;
+	}
 }

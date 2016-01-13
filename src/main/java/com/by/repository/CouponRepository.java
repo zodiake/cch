@@ -6,6 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface CouponRepository extends PagingAndSortingRepository<Coupon, Long> {
+public interface CouponRepository extends PagingAndSortingRepository<Coupon, Integer> {
     Page<Coupon> findByValid(ValidEnum valid,Pageable pageable);
 }

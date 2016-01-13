@@ -66,6 +66,7 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 		c.setContentImg(coupon.getContentImg());
 		c.setCoverImg(coupon.getCoverImg());
 		c.setName(coupon.getName());
+		c.setSummary(coupon.getSummary());
 		return c;
 	}
 

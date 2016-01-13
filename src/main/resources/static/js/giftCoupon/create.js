@@ -40,4 +40,6 @@ $(function() {
 			}
 		}
 	});
+	
+	$('textarea').ckeditor();
 });
