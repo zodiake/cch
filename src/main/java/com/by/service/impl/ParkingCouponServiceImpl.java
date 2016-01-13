@@ -235,4 +235,9 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 	public Long countByName(String name) {
 		return repository.countByName(name);
 	}
+
+	@Override
+	public ParkingCoupon findByName(String name) {
+		return repository.findByName(name);
+	}
 }
