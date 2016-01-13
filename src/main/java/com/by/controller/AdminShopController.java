@@ -107,6 +107,7 @@ public class AdminShopController extends BaseController {
 		Shop shop = service.findOne(id);
 		if (shop == null)
 			throw new NotFoundException();
+		System.out.println(shop.getImgHref());
 		uiModel.addAttribute("shop", shop);
 		addMenu(uiModel);
 		return "admin/shop/edit";
@@ -133,7 +134,8 @@ public class AdminShopController extends BaseController {
 		}
 		shop.setId(id);
 		shop.setUpdatedBy(userContext.getCurrentUser().getName());
-		service.update(shop);
+		Shop s = service.update(shop);
+		System.out.println("img:"+s.getImgHref());
 		redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
 		return "redirect:/admin/shops/" + id;
 	}

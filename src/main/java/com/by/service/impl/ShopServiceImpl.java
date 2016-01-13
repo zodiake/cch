@@ -13,6 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -108,7 +109,7 @@ public class ShopServiceImpl implements ShopService {
 
 	@Override
 	@Transactional(readOnly = true)
-	@Cacheable(value = "shop")
+	@Cacheable(value = "shop", key = "#id")
 	public Shop findOne(int id) {
 		return repository.findOne(id);
 	}
@@ -148,6 +149,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
+	@CachePut(value = "shop", key= "#shop.id")
 	public Shop update(Shop shop) {
 		Shop source = findOne(shop.getId());
 		source.setName(shop.getName());
