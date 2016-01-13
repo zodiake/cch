@@ -14,7 +14,6 @@ $(function() {
 					img.attr('src', global.url + data.responseText);
 					input.val(global.url + data.responseText);
 				}
-				console.log(data);
 			},
 			error : function(data, status, e) {
 				alert(e);
@@ -27,17 +26,22 @@ $(function() {
 		dateFormat : 'yy-mm-dd'
 	});
 
+	$('textarea').ckeditor();
+
 	$('#form').validate({
 		onkeyup : false,
 		rules : {
 			name : {
-				required : true
-			},
-			remote : {
-				url : global.context + '/admin/giftCoupons/name/duplicate',
-				data : {
-					name : function() {
-						return $('#name').val();
+				required : true,
+				remote:{
+					url:global.context+'/admin/giftCoupons/name/duplicate',
+					data:{
+						name:function(){
+							return $('#name').val();
+						},
+						id:function(){
+							return $('#form').attr('data-id');
+						}
 					}
 				}
 			}
@@ -45,10 +49,8 @@ $(function() {
 		messages : {
 			name : {
 				required : '名称不能为空',
-				remote : '名称不能重复'
+				remote:'名称不能重复'
 			}
 		}
 	});
-
-	$('textarea').ckeditor();
-});
+})

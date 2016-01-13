@@ -29,4 +29,8 @@ public interface GiftCouponService {
     Page<GiftCouponJson> findAll(BaseCouponForm form, Pageable pageable);
 
     Page<GiftCoupon> findAllByValidAndDateBetween(ValidEnum VALID, Calendar calendar, Pageable pageable);
+    
+    Long countByName(String name);
+    
+    GiftCoupon findByName(String name);
 }
