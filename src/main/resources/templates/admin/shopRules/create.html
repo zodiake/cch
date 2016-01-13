@@ -82,12 +82,17 @@
                     </div>
                     <div class="group-ft col-xs-offset-3 mt50">
                     	<a th:href="@{/admin/shopRules}" class="btn btn-default ml40">返回</a>
-                        <button type="submit" class="btn btn-success col-xs-offset-1">提交</button>
+                        <input type="submit" class="btn btn-success col-xs-offset-1" value="确认"/>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$('.datepicker').datepicker({
+    dateFormat: 'yy-mm-dd'
+});
+</script>
 </body>
 </html>

@@ -5,7 +5,6 @@ import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.form.ShopBindUserForm;
 import com.by.json.ShopJson;
-import com.by.message.SuccessMessage;
 import com.by.model.Menu;
 import com.by.model.Shop;
 import com.by.model.User;
@@ -13,6 +12,7 @@ import com.by.service.MenuService;
 import com.by.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -44,6 +44,8 @@ public class AdminShopController extends BaseController {
     @Autowired
     @Qualifier("shopKeyValidator")
     private Validator shopKeyValidator;
+    @Autowired
+    private MessageSource messageSource;
 
     @ModelAttribute("menus")
     public List<Menu> menus() {
@@ -82,6 +84,7 @@ public class AdminShopController extends BaseController {
         shopKeyUniqueValidator.validate(shop, result);
         if (result.hasErrors()) {
             uiModel.addAttribute("shop", shop);
+            uiModel.addAttribute("message", failMessage(messageSource));
             addMenu(uiModel);
             return "admin/shop/create";
         }
@@ -89,7 +92,7 @@ public class AdminShopController extends BaseController {
         shop.setCreatedBy(user.getName());
         shop.setUpdatedBy(user.getName());
         Shop s = service.save(shop);
-        redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
         return "redirect:/admin/shops/" + s.getId();
     }
 
@@ -108,7 +111,7 @@ public class AdminShopController extends BaseController {
     @RequestMapping(value = "/json", method = RequestMethod.GET)
     @ResponseBody
     public Status list(
-            @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(page = INIT_PAGE, size = PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<ShopJson> pages = service.findAll(pageable);
         return new Success<>(pages);
     }
@@ -120,13 +123,14 @@ public class AdminShopController extends BaseController {
         shopKeyValidator.validate(shop, result);
         if (result.hasErrors()) {
             uiModel.addAttribute("shop", shop);
+            uiModel.addAttribute("message", failMessage(messageSource));
             addMenu(uiModel);
             return "admin/shop/edit";
         }
         shop.setId(id);
         shop.setUpdatedBy(userContext.getCurrentUser().getName());
         service.update(shop);
-        redirectAttributes.addFlashAttribute("status", new SuccessMessage(SUCCESS));
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
         return "redirect:/admin/shops/" + id;
     }
 
