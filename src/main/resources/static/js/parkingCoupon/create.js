@@ -2,6 +2,7 @@
  * Created by yagamai on 16-1-12.
  */
 $(function () {
+	$('textarea').ckeditor();
     $('div.imgUp').change(function (event) {
         var source = $(event.target);
         var id = source.attr('id');
