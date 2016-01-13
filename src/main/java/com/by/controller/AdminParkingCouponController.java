@@ -120,7 +120,7 @@ public class AdminParkingCouponController extends BaseController {
 	// 新增名称是否重复
 	@RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
 	@ResponseBody
-	public boolean nameDuplicate(@RequestParam("name") String name, @RequestParam("id") Integer id) {
+	public boolean nameDuplicate(@RequestParam("name") String name, @RequestParam(value="id",required = false) Integer id) {
 		if (id == null) {
 			Long count = service.countByName(name);
 			return count > 0 ? false : true;

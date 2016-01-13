@@ -12,45 +12,13 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/template.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-ui-1.10.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/template.js}"></script>
     <script type="text/javascript" th:src="@{/js/fileUpload.js}"></script>
     <script type="text/javascript" th:src="@{/js/global.js}"></script>
     <script type="text/javascript" th:src="@{/js/ckeditor/ckeditor.js}"></script>
     <script type="text/javascript" th:src="@{/js/ckeditor/adapters/jquery.js}"></script>
-    <script>
-        $(function () {
-            $('div.imgUp').change(function (event) {
-                var source = $(event.target);
-                var id = source.attr('id');
-                var img = source.parent().parent().find('img');
-                var input = source.siblings().first();
-                $.ajaxFileUpload({
-                            url: global.context + '/admin/upload',
-                            secureuri: false,
-                            fileElementId: source.attr('id'),
-                            dataType: 'json',
-                            success: function (data, status) {
-                                if (status == 'success') {
-                                    img.attr('src', global.url + data.responseText);
-                                    input.val(global.url + data.responseText);
-                                }
-                                console.log(data);
-                            },
-                            error: function (data, status, e) {
-                                alert(e);
-                            }
-                        }
-                );
-                return false;
-            });
-
-            $('.datepicker').datepicker({
-                dateFormat: 'yy-mm-dd'
-            });
-
-            $('textarea').ckeditor();
-        })
-    </script>
+    <script type="text/javascript" th:src="@{/js/shopCoupon/edit.js}"></script>
 </head>
 
 <body>
@@ -66,7 +34,7 @@
                 <div class="bar edit-bar">修改店铺券</div>
             </div>
             <div class="row">
-                <form class="form-horizontal pt50" th:method="put" th:object="${coupon}">
+                <form class="form-horizontal pt50" id="form" th:attr="data-id=${coupon.id}" th:method="put" th:object="${coupon}">
                     <div class="form-group">
                         <label class="col-md-4 control-label">名称：</label>
                         <div class="col-md-3">
