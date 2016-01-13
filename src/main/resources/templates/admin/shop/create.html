@@ -59,8 +59,10 @@
             			maxlength:255,
             			remote: { 
             				url: global.context+'/admin/shops/key/duplicate',
-            				data:function(){
-            					return $('#shopKey').val();
+            				data:{
+            					shopKey: function(){
+            						return $('#shopKey').val();
+            					}
             				}
             			}
             		}
@@ -118,7 +120,7 @@
                     </div>
                     <div class="group-ft col-xs-offset-4 mt50">
                         <a th:href="@{/admin/shops}" class="btn btn-default ml40">返回</a>
-                        <button type="submit" class="btn btn-success ml40">确认</button>
+                        <input type="submit" class="btn btn-success ml40" value="确认"/>
                     </div>
                 </form>
             </div>
