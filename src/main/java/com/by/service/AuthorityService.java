@@ -22,4 +22,8 @@ public interface AuthorityService {
     List<Authority> findAll();
 
     Page<AuthorityJson> toJson(Page<Authority> lists, Pageable pageable);
+    
+    Long countByName(String name);
+    
+    Authority findByName(String name);
 }

@@ -70,4 +70,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 		source.setMenus(authority.getMenus());
 		return source;
 	}
+
+	@Override
+	public Long countByName(String name) {
+		return repository.countByName(name);
+	}
+
+	@Override
+	public Authority findByName(String name) {
+		return repository.findByName(name);
+	}
 }

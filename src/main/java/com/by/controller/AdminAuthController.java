@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -118,6 +119,21 @@ public class AdminAuthController extends BaseController {
 		redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
 		addMenu(uiModel);
 		return REDIRECT + auth.getId();
+	}
+	
+	@RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
+	@ResponseBody
+	public boolean nameDuplicate(@RequestParam("name") String name,
+			@RequestParam(value = "id", required = false) Integer id) {
+		if (id == null) {
+			Long count = service.countByName(name);
+			return count > 0 ? false : true;
+		} else {
+			Authority shopCoupon = service.findByName(name);
+			if (shopCoupon != null)
+				return shopCoupon.getId() == id ? true : false;
+			return true;
+		}
 	}
 
 	@Override
