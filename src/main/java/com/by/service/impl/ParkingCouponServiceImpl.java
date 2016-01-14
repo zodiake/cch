@@ -24,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.by.exception.NotEnoughScoreException;
 import com.by.exception.NotFoundException;
 import com.by.exception.NotValidException;
 import com.by.exception.OutOfStorageException;
@@ -214,6 +215,8 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 
 		if (sourceCoupon == null)
 			throw new NotFoundException();
+		if (m.getScore() < total * sourceCoupon.getScore())
+			throw new NotEnoughScoreException();
 		if (couponService.isValidCoupon(sourceCoupon)) {
 			memberService.minusScore(m, sourceCoupon.getScore() * total, "", ScoreHistoryEnum.COUPONEXCHANGE);
 			exchangeHistoryService.save(m, sourceCoupon, total);

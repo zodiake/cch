@@ -85,7 +85,7 @@ INSERT INTO by_member_detail (id, real_name, address, birthday) VALUES (14, '张
 
 -- test member
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
-VALUES (1, '13611738422', 1, 100, 1, 10, '2012-12-12', 1);
+VALUES (1, '13611738422', 1, 50, 1, 10, '2012-12-12', 1);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
 VALUES (2, '13811738422', 1, 200, 0, 10, '2012-12-12', 2);
 INSERT INTO by_member (id, name, card_id, score, valid, sumScore, created_time, detail_id)
@@ -183,19 +183,11 @@ VALUES (19, 1, 100, 1, '2016-1-6', '2016-3-18', 'shoprule1', 's');
 INSERT INTO by_shop_menu (shop_id, menu_id) VALUES (1, 1);
 
 -- test score add
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (1, 1, 1, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (2, 1, 2, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (3, 1, 3, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (4, 1, 4, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (5, 2, 1, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (6, 2, 2, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (7, 2, 3, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (8, 2, 4, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (9, 2, 4, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (10, 2, 4, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (11, 2, 4, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (12, 2, 4, 'h');
-INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (13, 2, 4, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (1, 1, 10, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (2, 1, 10, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (3, 1, 10, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (4, 1, 10, 'h');
+INSERT INTO by_score_add_history (id, member_id, total, reason) VALUES (5, 1, 10, 'h');
 
 -- test by_trading
 INSERT INTO by_trading (id, member_id, code, amount, shop_id, created_time)
@@ -225,9 +217,9 @@ VALUES (12, 1, 'l', 100, 3, '2015-12-26 12:34:22');
 
 -- test coupon
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (1, 'p', '2015-12-1', '2016-12-30', 11, '2016-1-1', 1, 100, 1, 20, 'parkingCoupon1');
+VALUES (1, 'p', '2015-12-1', '2016-12-30', 1, '2016-1-1', 1, 100, 1, 20, 'parkingCoupon1');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (2, 'p', '2014-12-1', '2016-12-30', 10, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon2');
+VALUES (2, 'p', '2014-12-1', '2016-12-30', 50, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon2');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
 VALUES (3, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon3');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
