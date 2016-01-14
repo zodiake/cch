@@ -221,23 +221,23 @@ VALUES (1, 'p', '2015-12-1', '2016-12-30', 1, '2016-1-1', 1, 100, 1, 20, 'parkin
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
 VALUES (2, 'p', '2014-12-1', '2016-12-30', 50, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon2');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (3, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon3');
+VALUES (3, 'g', '2015-12-1', '2016-12-30', 1, '2016-1-2', 1, 100, 1, 20, 'giftCoupon3');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (4, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-4', 1, 100, 0, 20, 'giftCoupon4');
+VALUES (4, 'g', '2015-12-1', '2016-12-30', 5, '2016-1-4', 1, 100, 0, 20, 'giftCoupon4');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
-VALUES (5, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shopCoupon5', 1);
+VALUES (5, 's', '2015-12-1', '2016-12-30', 1, '2016-1-5', 1, 100, 1, 20, 'shopCoupon5', 1);
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
-VALUES (6, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 0, 20, 'shopCoupon6', 1);
+VALUES (6, 's', '2015-12-1', '2016-12-30', 5, '2016-1-5', 1, 100, 0, 20, 'shopCoupon6', 1);
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
 VALUES (7, 'p', '2015-12-1', '2016-12-30', 9, '2016-1-3', 1, 100, 0, 20, 'parkingCoupon7');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
-VALUES (8, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
+VALUES (8, 'g', '2015-12-1', '2016-12-30', 100, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
 VALUES (9, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon9');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name)
 VALUES (10, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon10');
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
-VALUES (11, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shopCoupon11', 1);
+VALUES (11, 's', '2015-12-1', '2016-12-30', 1000, '2016-1-5', 1, 100, 1, 20, 'shopCoupon11', 1);
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
 VALUES (12, 's', '2015-12-1', '2016-12-30', 10, '2016-1-5', 1, 100, 1, 20, 'shopCoupon12', 1);
 INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, valid, total, duplicate, amount, name, shop_id)
@@ -265,54 +265,8 @@ INSERT INTO by_coupon (id, type, begin_time, end_time, score, coupon_end_time, v
 VALUES (23, 'g', '2015-12-1', '2016-12-30', 10, '2016-1-2', 1, 100, 1, 20, 'giftCoupon8');
 
 -- test giftCoupon
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (1, 1, 3, '2016-1-12', '12344');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (2, 1, 4, '2015-12-12', '12355');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (3, 1, 4, '2015-12-31', '12356');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (4, 1, 8, '2016-1-7', '12357');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (5, 1, 9, '2016-1-8', '12358');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (6, 1, 4, '2016-1-9', '12359');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (7, 1, 8, '2016-1-10', '12310');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (8, 1, 9, '2016-1-11', '12311');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (9, 1, 4, '2016-1-12', '12312');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (10, 1, 8, '2016-1-13', '12313');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (11, 1, 9, '2016-1-14', '12314');
-INSERT INTO by_gift_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (12, 1, 4, '2016-1-15', '12315');
 
 -- test shop coupon
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (1, 1, 11, '2016-1-2', '1');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (2, 1, 12, '2016-1-3', '2');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (3, 1, 13, '2016-1-4', '3j');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (4, 1, 11, '2016-1-5', '4');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (5, 1, 12, '2016-1-6', '5');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (6, 1, 13, '2016-1-7', '6');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (7, 1, 11, '2016-1-8', '7');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (8, 1, 12, '2016-1-9', '8');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (9, 1, 13, '2016-1-10', '9');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (10, 1, 11, '2016-1-11', '10');
-INSERT INTO by_shop_coupon_member (id, member_id, coupon_id, exchanged_time, code)
-VALUES (11, 1, 12, '2016-1-12', '11');
 
 -- test score_history
 INSERT INTO by_score_history (id, member_id, created_time, deposit, reason)

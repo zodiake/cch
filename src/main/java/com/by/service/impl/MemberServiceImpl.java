@@ -115,9 +115,7 @@ public class MemberServiceImpl implements MemberService {
 		List<ScoreAddHistory> historyList = scoreAddHistoryService.findByMember(member);
 		// 如果需要扣除的积分大于用户现有积分，则将用户积分扣为零
 		if (source.getScore() < total) {
-			for (ScoreAddHistory h : historyList)
-				scoreAddHistoryService.delete(h.getId());
-			source.setScore(0);
+			throw new NotEnoughScoreException();
 		}
 		List<ScoreAddHistory> results = extractScoreHistory(historyList, total);
 		if (total > 0) {

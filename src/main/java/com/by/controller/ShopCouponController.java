@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -78,7 +78,7 @@ public class ShopCouponController implements UtilContoller {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public Status list(HttpServletRequest request,
-			@PageableDefault(page = 0, size = 10, sort = "sortOrder", direction = Sort.Direction.DESC) Pageable pageable) {
+			@PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Direction.DESC) Pageable pageable) {
 		Member m = (Member) request.getAttribute("member");
 		Member member = memberService.findOneCache(m.getId());
 		if (!isValidMember(member)) {
@@ -97,7 +97,7 @@ public class ShopCouponController implements UtilContoller {
 	@RequestMapping(value = "/member", method = RequestMethod.GET)
 	@ResponseBody
 	public Status couponList(HttpServletRequest request,
-			@PageableDefault(page = 0, size = 10, sort = "exchangedTime", direction = Sort.Direction.DESC) Pageable pageable) {
+			@PageableDefault(page = 0, size = 10, sort = "exchangedTime", direction = Direction.DESC) Pageable pageable) {
 		Member member = (Member) request.getAttribute("member");
 		Member m = memberService.findOneCache(member.getId());
 		if (!isValidMember(m)) {
