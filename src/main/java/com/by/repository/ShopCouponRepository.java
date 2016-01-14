@@ -14,13 +14,17 @@ import java.util.Calendar;
  * Created by yagamai on 15-12-8.
  */
 public interface ShopCouponRepository extends CrudRepository<ShopCoupon, Integer> {
-	Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
+    Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-	@Query("select g from ShopCoupon g where g.valid=:valid and g.beginTime<:today and :today<g.endTime ")
-	Page<ShopCoupon> findAllByValidAndDateBetween(@Param("valid") ValidEnum valid, @Param("today") Calendar today,
-			Pageable pageable);
+    @Query("select g from ShopCoupon g where g.valid=:valid and g.beginTime<:today and :today<g.endTime ")
+    Page<ShopCoupon> findAllByValidAndDateBetween(@Param("valid") ValidEnum valid, @Param("today") Calendar today,
+                                                  Pageable pageable);
 
-	Long countByName(String name);
+    @Query("select g from ShopCoupon g where g.valid=:valid and g.beginTime<:today and :today<g.endTime and g.name like CONCAT('%',:name,'%')")
+    Page<ShopCoupon> findAllByValidAndDateBetweenAndNameLike(@Param("valid") ValidEnum valid, @Param("name") String name, @Param("today") Calendar today,
+                                                             Pageable pageable);
 
-	ShopCoupon findByName(String name);
+    Long countByName(String name);
+
+    ShopCoupon findByName(String name);
 }

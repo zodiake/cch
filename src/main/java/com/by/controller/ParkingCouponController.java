@@ -64,9 +64,6 @@ public class ParkingCouponController implements UtilContoller {
                                         BindingResult result) {
         Member m = (Member) request.getAttribute("member");
         Member member = memberService.findOneCache(m.getId());
-        if (result.hasErrors()) {
-            return FailBuilder.buildFail(result);
-        }
         if (!isValidMember(member)) {
             throw new MemberNotValidException();
         }
@@ -75,6 +72,9 @@ public class ParkingCouponController implements UtilContoller {
                     .equals(member.getMemberDetail().getPassword())) {
                 result.addError(new FieldError("member", "password", PASSWORD_ERROR_MESSAGE));
             }
+        }
+        if (result.hasErrors()) {
+            return FailBuilder.buildFail(result);
         }
         ParkingCoupon coupon = new ParkingCoupon(json.getId());
         service.exchangeCoupon(member, coupon, json.getTotal());

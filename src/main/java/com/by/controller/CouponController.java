@@ -14,8 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,32 +28,37 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value = "/api/coupons")
 public class CouponController {
-    @Autowired
-    private CouponService couponService;
-    @Autowired
-    private MemberService memberService;
+	@Autowired
+	private CouponService couponService;
+	@Autowired
+	private MemberService memberService;
 
-    // 可以兑换的优惠券
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public Success<Page<CouponJson>> couponList(HttpServletRequest request,
-                                                @PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Member member = (Member) request.getAttribute("member");
-        Member m = memberService.findOne(member.getId());
-        if (m.getValid().equals(ValidEnum.INVALID))
-            throw new NotValidException();
-        return new Success<>(couponService.findAll(pageable));
-    }
+	// 可以兑换的优惠券
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public Success<Page<CouponJson>> list(HttpServletRequest request,
+			@RequestParam(value = "name", required = false) String name,
+			@PageableDefault(page = 0, size = 10, sort = "couponEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Member member = (Member) request.getAttribute("member");
+		Member m = memberService.findOne(member.getId());
+		if (m.getValid().equals(ValidEnum.INVALID))
+			throw new NotValidException();
+		if (!StringUtils.isEmpty(name))
+			return new Success<>(couponService.findByNameLike(name, pageable));
+		else
 
-    // 兑换到的优惠券
-    @RequestMapping(value = "/member", method = RequestMethod.GET)
-    @ResponseBody
-    public Status list(HttpServletRequest request,
-                       @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
-        Member member = (Member) request.getAttribute("member");
-        Member m = memberService.findOne(member.getId());
-        if (m.getValid().equals(ValidEnum.INVALID))
-            throw new NotValidException();
-        return new Success<>(couponService.findByMember(m, pageable));
-    }
+			return new Success<>(couponService.findAll(pageable));
+	}
+
+	// 兑换到的优惠券
+	@RequestMapping(value = "/member", method = RequestMethod.GET)
+	@ResponseBody
+	public Status list(HttpServletRequest request,
+			@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable pageable) {
+		Member member = (Member) request.getAttribute("member");
+		Member m = memberService.findOne(member.getId());
+		if (m.getValid().equals(ValidEnum.INVALID))
+			throw new NotValidException();
+		return new Success<>(couponService.findByMember(m, pageable));
+	}
 }

@@ -1,37 +1,38 @@
 package com.by.service;
 
-import java.util.Calendar;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.by.exception.Status;
 import com.by.form.ShopCouponForm;
 import com.by.json.ShopCouponJson;
 import com.by.model.ShopCoupon;
 import com.by.typeEnum.ValidEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Calendar;
 
 /**
  * Created by yagamai on 15-12-8.
  */
 public interface ShopCouponService {
-	ShopCoupon save(ShopCoupon coupon);
+    ShopCoupon save(ShopCoupon coupon);
 
-	ShopCoupon update(ShopCoupon coupon);
+    ShopCoupon update(ShopCoupon coupon);
 
-	ShopCoupon findOne(int id);
+    ShopCoupon findOne(int id);
 
-	ShopCoupon findOneCache(int id);
+    ShopCoupon findOneCache(int id);
 
-	Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
+    Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-	Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable);
+    Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable);
 
-	Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable);
+    Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable);
 
-	Status valid(int id);
+    Page<ShopCoupon> findAllByValidAndDateBetweenAndNameLike(ValidEnum valid, Calendar calendar, String name, Pageable pageable);
 
-	Long countByName(String name);
+    Status valid(int id);
 
-	ShopCoupon findByName(String name);
+    Long countByName(String name);
+
+    ShopCoupon findByName(String name);
 }

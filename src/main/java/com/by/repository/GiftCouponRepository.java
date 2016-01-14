@@ -14,15 +14,19 @@ import java.util.Calendar;
  * Created by yagamai on 15-12-3.
  */
 public interface GiftCouponRepository extends PagingAndSortingRepository<GiftCoupon, Integer> {
-	GiftCoupon findByIdAndValid(int id, ValidEnum valid);
+    GiftCoupon findByIdAndValid(int id, ValidEnum valid);
 
-	Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable);
+    Page<GiftCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-	@Query("select g from GiftCoupon g where g.valid=:valid and g.beginTime<:today and :today<g.endTime")
-	Page<GiftCoupon> findAllByValidAndDateBetween(@Param("valid") ValidEnum VALID, @Param("today") Calendar calendar,
-			Pageable pageable);
+    @Query("select g from GiftCoupon g where g.valid=:valid and g.beginTime<:today and :today<g.endTime")
+    Page<GiftCoupon> findAllByValidAndDateBetween(@Param("valid") ValidEnum VALID, @Param("today") Calendar calendar,
+                                                  Pageable pageable);
 
-	GiftCoupon findByName(String name);
+    @Query("select g from GiftCoupon g where g.valid=:valid and g.beginTime<:today and :today<g.endTime and g.name like CONCAT('%',:name,'%') ")
+    Page<GiftCoupon> findAllByValidAndDateBetweenAndNameLike(@Param("valid") ValidEnum VALID, @Param("name") String name, @Param("today") Calendar calendar,
+                                                             Pageable pageable);
 
-	Long countByName(String name);
+    GiftCoupon findByName(String name);
+
+    Long countByName(String name);
 }
