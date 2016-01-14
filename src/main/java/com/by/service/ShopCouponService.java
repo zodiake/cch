@@ -15,19 +15,23 @@ import com.by.typeEnum.ValidEnum;
  * Created by yagamai on 15-12-8.
  */
 public interface ShopCouponService {
-    ShopCoupon save(ShopCoupon coupon);
+	ShopCoupon save(ShopCoupon coupon);
 
-    ShopCoupon update(ShopCoupon coupon);
+	ShopCoupon update(ShopCoupon coupon);
 
-    ShopCoupon findOne(int id);
+	ShopCoupon findOne(int id);
 
-    ShopCoupon findOneCache(int id);
+	ShopCoupon findOneCache(int id);
 
-    Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
+	Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable);
 
-    Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable);
+	Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable);
 
-    Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable);
+	Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable);
 
 	Status valid(int id);
+
+	Long countByName(String name);
+
+	ShopCoupon findByName(String name);
 }

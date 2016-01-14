@@ -118,4 +118,14 @@ public class GiftCouponServiceImpl implements GiftCouponService {
 		List<GiftCouponJson> results = lists.stream().map(i -> new GiftCouponJson(i)).collect(Collectors.toList());
 		return new PageImpl<>(results, pageable, count);
 	}
+
+	@Override
+	public Long countByName(String name) {
+		return repository.countByName(name);
+	}
+
+	@Override
+	public GiftCoupon findByName(String name) {
+		return repository.findByName(name);
+	}
 }

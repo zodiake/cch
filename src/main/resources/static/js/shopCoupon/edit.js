@@ -27,17 +27,22 @@ $(function() {
 		dateFormat : 'yy-mm-dd'
 	});
 
+	$('textarea').ckeditor();
+
 	$('#form').validate({
 		onkeyup : false,
 		rules : {
 			name : {
-				required : true
-			},
-			remote : {
-				url : global.context + '/admin/giftCoupons/name/duplicate',
-				data : {
-					name : function() {
-						return $('#name').val();
+				required : true,
+				remote : {
+					url : global.context + '/admin/shopCoupons/name/duplicate',
+					data : {
+						name : function() {
+							return $('#name').val();
+						},
+						id : function() {
+							return $('#form').attr('data-id');
+						}
 					}
 				}
 			}
@@ -49,6 +54,4 @@ $(function() {
 			}
 		}
 	});
-
-	$('textarea').ckeditor();
-});
+})

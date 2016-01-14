@@ -34,121 +34,126 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/cards")
 public class AdminCardController extends BaseController {
-	private final String CREATE = "admin/card/create";
-	private final String REDIRECT = "redirect:/admin/cards/";
-	private final String EDIT = "admin/card/edit";
-	private final String LISTS = "admin/card/lists";
-	private final RuleCategory SIGNUP_CATEGORY = new RuleCategory(1);
-	private final RuleCategory TRADING_CATEGORY = new RuleCategory(2);
-	private final Menu subMenu = new Menu(1);
-	@Autowired
-	private CardService service;
-	@Autowired
-	private MemberService memberService;
-	@Autowired
-	private CardRuleService cardRuleService;
-	@Autowired
-	@Qualifier("cardNameValidator")
-	private Validator cardNameValidator;
-	@Autowired
-	@Qualifier("cardNameUniqueValidator")
-	private Validator cardNameUniqueValidator;
-	@Autowired
-	private MessageSource messageSource;
+    private final String CREATE = "admin/card/create";
+    private final String REDIRECT = "redirect:/admin/cards/";
+    private final String EDIT = "admin/card/edit";
+    private final String LISTS = "admin/card/lists";
+    private final RuleCategory SIGNUP_CATEGORY = new RuleCategory(1);
+    private final RuleCategory TRADING_CATEGORY = new RuleCategory(2);
+    private final Menu subMenu = new Menu(1);
+    @Autowired
+    private CardService service;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private CardRuleService cardRuleService;
+    @Autowired
+    @Qualifier("cardNameValidator")
+    private Validator cardNameValidator;
+    @Autowired
+    @Qualifier("cardNameUniqueValidator")
+    private Validator cardNameUniqueValidator;
+    @Autowired
+    private MessageSource messageSource;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model uiModel,
-			@PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<Card> validLists = service.findByValid(ValidEnum.VALID, pageable);
-		Page<Card> inValidLists = service.findByValid(ValidEnum.INVALID, pageable);
-		uiModel.addAttribute("valid", validLists);
-		uiModel.addAttribute("inValid", inValidLists);
-		addMenu(uiModel);
-		return LISTS;
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public String list(Model uiModel,
+                       @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Card> validLists = service.findByValid(ValidEnum.VALID, pageable);
+        Page<Card> inValidLists = service.findByValid(ValidEnum.INVALID, pageable);
+        uiModel.addAttribute("valid", validLists);
+        uiModel.addAttribute("inValid", inValidLists);
+        addMenu(uiModel);
+        return LISTS;
+    }
 
-	@RequestMapping(value = "/json", method = RequestMethod.GET)
-	@ResponseBody
-	public List<CardJson> list(@RequestParam("valid") String valid,
-			@PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		ValidEnum validEnum = ValidEnum.fromString(valid);
-		List<CardJson> cards = service.findByValid(validEnum, pageable).getContent().stream().map(CardJson::new)
-				.collect(Collectors.toList());
-		return cards;
-	}
+    @RequestMapping(value = "/json", method = RequestMethod.GET)
+    @ResponseBody
+    public List<CardJson> list(@RequestParam("valid") String valid,
+                               @PageableDefault(page = 0, size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        ValidEnum validEnum = ValidEnum.fromString(valid);
+        List<CardJson> cards = service.findByValid(validEnum, pageable).getContent().stream().map(CardJson::new)
+                .collect(Collectors.toList());
+        return cards;
+    }
 
-	@RequestMapping(value = "/{id}/json", method = RequestMethod.GET)
-	@ResponseBody
-	public Status get(@PathVariable("id") Integer id) {
-		Card card = service.findOne(id);
-		Long count = memberService.countByCard(new Card(id));
-		List<CardRule> signUpRules = cardRuleService.findByRuleCategoryAndCard(SIGNUP_CATEGORY, card);
-		List<CardRule> tradingRules = cardRuleService.findByRuleCategoryAndCard(TRADING_CATEGORY, card);
-		CardTemplateJson json = new CardTemplateJson(card, count.intValue());
-		json.setRegister(signUpRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
-		json.setTrading(tradingRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
-		return new Success<>(json);
-	}
+    @RequestMapping(value = "/{id}/json", method = RequestMethod.GET)
+    @ResponseBody
+    public Status get(@PathVariable("id") Integer id) {
+        Card card = service.findOne(id);
+        Long count = memberService.countByCard(new Card(id));
+        List<CardRule> signUpRules = cardRuleService.findByRuleCategoryAndCard(SIGNUP_CATEGORY, card);
+        List<CardRule> tradingRules = cardRuleService.findByRuleCategoryAndCard(TRADING_CATEGORY, card);
+        CardTemplateJson json = new CardTemplateJson(card, count.intValue());
+        json.setRegister(signUpRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
+        json.setTrading(tradingRules.stream().map(r -> new RuleJson(r)).collect(Collectors.toList()));
+        return new Success<>(json);
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String getOne(@PathVariable("id") Integer id, Model uiModel) {
-		Card card = service.findOne(id);
-		uiModel.addAttribute("card", card);
-		addMenu(uiModel);
-		return EDIT;
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getOne(@PathVariable("id") Integer id, Model uiModel) {
+        Card card = service.findOne(id);
+        uiModel.addAttribute("card", card);
+        addMenu(uiModel);
+        return EDIT;
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public String update(@PathVariable("id") Integer id, Model uiModel, @Valid @ModelAttribute Card card,
-			BindingResult result, RedirectAttributes redirectAttributes) {
-		card.setId(id);
-		cardNameValidator.validate(card, result);
-		if (result.hasErrors()) {
-			uiModel.addAttribute("card", card);
-			uiModel.addAttribute("message", failMessage(messageSource));
-			addMenu(uiModel);
-			return EDIT;
-		}
-		redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-		card.setUpdatedBy(userContext.getCurrentUser().getUpdatedBy());
-		Card source = service.update(card);
-		return REDIRECT + source.getId();
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public String update(@PathVariable("id") Integer id, Model uiModel, @Valid @ModelAttribute Card card,
+                         BindingResult result, RedirectAttributes redirectAttributes) {
+        card.setId(id);
+        cardNameValidator.validate(card, result);
+        if (result.hasErrors()) {
+            uiModel.addAttribute("card", card);
+            uiModel.addAttribute("message", failMessage(messageSource));
+            addMenu(uiModel);
+            return EDIT;
+        }
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+        card.setUpdatedBy(userContext.getCurrentUser().getUpdatedBy());
+        Card source = service.update(card);
+        return REDIRECT + source.getId();
+    }
 
-	@RequestMapping(params = "form", method = RequestMethod.POST)
-	public String save(@Valid @ModelAttribute("card") Card card, BindingResult result, Model uiModel,
-			RedirectAttributes redirectAttributes) {
-		cardNameUniqueValidator.validate(card, result);
-		if (result.hasErrors()) {
-			uiModel.addAttribute("card", card);
-			uiModel.addAttribute("message", failMessage(messageSource));
-			addMenu(uiModel);
-			return CREATE;
-		}
-		card.setCreatedBy(userContext.getCurrentUser().getCreatedBy());
-		Card source = service.save(card);
-		redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
-		return REDIRECT + source.getId();
-	}
+    @RequestMapping(params = "form", method = RequestMethod.POST)
+    public String save(@Valid @ModelAttribute("card") Card card, BindingResult result, Model uiModel,
+                       RedirectAttributes redirectAttributes) {
+        cardNameUniqueValidator.validate(card, result);
+        if (result.hasErrors()) {
+            uiModel.addAttribute("card", card);
+            uiModel.addAttribute("message", failMessage(messageSource));
+            addMenu(uiModel);
+            return CREATE;
+        }
+        card.setCreatedBy(userContext.getCurrentUser().getCreatedBy());
+        Card source = service.save(card);
+        redirectAttributes.addFlashAttribute("message", successMessage(messageSource));
+        return REDIRECT + source.getId();
+    }
 
-	@RequestMapping(params = "form", method = RequestMethod.GET)
-	public String save(Model uiModel) {
-		uiModel.addAttribute("card", new Card());
-		addMenu(uiModel);
-		return CREATE;
-	}
+    @RequestMapping(params = "form", method = RequestMethod.GET)
+    public String save(Model uiModel) {
+        uiModel.addAttribute("card", new Card());
+        addMenu(uiModel);
+        return CREATE;
+    }
 
-	@RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
-	@ResponseBody
-	public String nameDuplicate(@RequestParam("name") String name) {
-		Long count = service.countByName(name);
-		if (count > 0)
-			return "false";
-		return "true";
-	}
+    @RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean nameDuplicate(@RequestParam("name") String name, @RequestParam(value = "id", required = false) Integer id) {
+        if (id == null) {
+            Long count = service.countByName(name);
+            return count > 0 ? false : true;
+        } else {
+            Card card = service.findByName(name);
+            if (card != null)
+                return id.equals(card.getId()) ? true : false;
+            return true;
+        }
+    }
 
-	@Override
-	public Menu getSubMenu() {
-		return subMenu;
-	}
+    @Override
+    public Menu getSubMenu() {
+        return subMenu;
+    }
 }

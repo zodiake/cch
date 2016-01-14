@@ -35,79 +35,78 @@ import com.by.typeEnum.ValidEnum;
 @Service
 @Transactional
 public class ShopCouponServiceImpl implements ShopCouponService {
-    @Autowired
-    private ShopCouponRepository repository;
-    @Autowired
-    private EntityManager em;
-    @Autowired
-    private CouponService couponService;
+	@Autowired
+	private ShopCouponRepository repository;
+	@Autowired
+	private EntityManager em;
+	@Autowired
+	private CouponService couponService;
 
-    @Override
-    public ShopCoupon save(ShopCoupon coupon) {
-        return repository.save(coupon);
-    }
+	@Override
+	public ShopCoupon save(ShopCoupon coupon) {
+		return repository.save(coupon);
+	}
 
-    @Override
-    public ShopCoupon update(ShopCoupon coupon) {
-        ShopCoupon s = findOne(coupon.getId());
-        s.setName(coupon.getName());
-        s.setShop(coupon.getShop());
-        s.setAmount(coupon.getAmount());
-        s.setContentImg(coupon.getContentImg());
-        s.setCoverImg(coupon.getCoverImg());
-        return s;
-    }
+	@Override
+	public ShopCoupon update(ShopCoupon coupon) {
+		ShopCoupon s = findOne(coupon.getId());
+		s.setName(coupon.getName());
+		s.setShop(coupon.getShop());
+		s.setAmount(coupon.getAmount());
+		s.setContentImg(coupon.getContentImg());
+		s.setCoverImg(coupon.getCoverImg());
+		return s;
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public ShopCoupon findOne(int id) {
-        return repository.findOne(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public ShopCoupon findOne(int id) {
+		return repository.findOne(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    @Cacheable("coupon")
-    public ShopCoupon findOneCache(int id) {
-        return repository.findOne(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	@Cacheable("coupon")
+	public ShopCoupon findOneCache(int id) {
+		return repository.findOne(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable) {
-        Page<ShopCoupon> coupons = repository.findByValid(valid, pageable);
-        coupons.getContent().forEach(i -> i.getShop());
-        return coupons;
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public Page<ShopCoupon> findByValid(ValidEnum valid, Pageable pageable) {
+		Page<ShopCoupon> coupons = repository.findByValid(valid, pageable);
+		coupons.getContent().forEach(i -> i.getShop());
+		return coupons;
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ShopCoupon> c = cb.createQuery(ShopCoupon.class);
-        Root<ShopCoupon> root = c.from(ShopCoupon.class);
-        c.select(root);
-        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(ShopCoupon.class)));
-        List<Predicate> predicates = couponService.getPredicateList(form, root, cb);
-        if (form.getShop() != null) {
-            predicates.add(cb.equal(root.get("shop"), form.getShop()));
-        }
-        Predicate[] array = predicates.toArray(new Predicate[0]);
-        c.where(array);
-        cq.where(array);
+	@Override
+	@Transactional(readOnly = true)
+	public Page<ShopCouponJson> findAll(ShopCouponForm form, Pageable pageable) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<ShopCoupon> c = cb.createQuery(ShopCoupon.class);
+		Root<ShopCoupon> root = c.from(ShopCoupon.class);
+		c.select(root);
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		cq.select(cb.count(cq.from(ShopCoupon.class)));
+		List<Predicate> predicates = couponService.getPredicateList(form, root, cb);
+		if (form.getShop() != null) {
+			predicates.add(cb.equal(root.get("shop"), form.getShop()));
+		}
+		Predicate[] array = predicates.toArray(new Predicate[0]);
+		c.where(array);
+		cq.where(array);
 
-        List<ShopCoupon> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
-                .setMaxResults(pageable.getPageSize()).getResultList();
-        Long count = em.createQuery(cq).getSingleResult();
-        List<ShopCouponJson> results = lists.stream().map(i -> new ShopCouponJson(i))
-                .collect(Collectors.toList());
-        return new PageImpl<>(results, pageable, count);
-    }
+		List<ShopCoupon> lists = em.createQuery(c).setFirstResult((pageable.getPageNumber()) * pageable.getPageSize())
+				.setMaxResults(pageable.getPageSize()).getResultList();
+		Long count = em.createQuery(cq).getSingleResult();
+		List<ShopCouponJson> results = lists.stream().map(i -> new ShopCouponJson(i)).collect(Collectors.toList());
+		return new PageImpl<>(results, pageable, count);
+	}
 
-    @Override
-    public Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable) {
-        return repository.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
-    }
+	@Override
+	public Page<ShopCoupon> findAllByValidAndDateBetween(ValidEnum valid, Calendar calendar, Pageable pageable) {
+		return repository.findAllByValidAndDateBetween(ValidEnum.VALID, Calendar.getInstance(), pageable);
+	}
 
 	@Override
 	public Status valid(int id) {
@@ -123,5 +122,17 @@ public class ShopCouponServiceImpl implements ShopCouponService {
 			r.setValid(ValidEnum.INVALID);
 		}
 		return new Success<String>("success");
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Long countByName(String name) {
+		return repository.countByName(name);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ShopCoupon findByName(String name) {
+		return repository.findByName(name);
 	}
 }

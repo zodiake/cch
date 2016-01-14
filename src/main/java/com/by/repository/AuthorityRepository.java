@@ -12,7 +12,11 @@ import java.util.List;
  * Created by yagamai on 15-11-23.
  */
 public interface AuthorityRepository extends CrudRepository<Authority, Integer> {
-    Page<Authority> findAll(Pageable pageable);
+	Page<Authority> findAll(Pageable pageable);
 
-    List<Authority> findAll(Sort sort);
+	List<Authority> findAll(Sort sort);
+
+	Long countByName(String name);
+
+	Authority findByName(String name);
 }

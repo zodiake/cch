@@ -31,4 +31,6 @@ public interface CardService {
     List<Card> findAllCache();
     
     Long countByName(String name);
+    
+    Card findByName(String name);
 }

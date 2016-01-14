@@ -114,6 +114,20 @@ public class AdminGiftCouponController extends BaseController {
         return new Success<>(service.findAll(form, pageable));
     }
 
+    @RequestMapping(value = "/name/duplicate", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean nameDuplicate(@RequestParam("name") String name, @RequestParam(value = "id", required = false) Integer id) {
+        if (id == null) {
+            Long count = service.countByName(name);
+            return count > 0 ? false : true;
+        } else {
+            GiftCoupon coupon = service.findByName(name);
+            if (coupon != null)
+                return id == coupon.getId() ? true : false;
+            return true;
+        }
+    }
+
     @Override
     public Menu getSubMenu() {
         return subMenu;

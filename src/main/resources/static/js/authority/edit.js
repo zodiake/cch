@@ -9,6 +9,9 @@ $(function() {
 					data : {
 						name : function() {
 							return $('#name').val();
+						},
+						id:function(){
+							return $('#form').attr('data-id');
 						}
 					}
 				}
@@ -21,4 +24,4 @@ $(function() {
 			}
 		}
 	});
-})
+});

@@ -45,4 +45,6 @@ public interface ParkingCouponService {
 	Page<ParkingCouponHistoryJson> findByMemberHistory(Member member, Pageable pageable);
 
 	Long countByName(String name);
+	
+	ParkingCoupon findByName(String name);
 }
