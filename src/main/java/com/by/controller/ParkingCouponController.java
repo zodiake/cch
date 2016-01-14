@@ -1,27 +1,40 @@
 package com.by.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.by.exception.MemberNotValidException;
 import com.by.exception.NotFoundException;
 import com.by.exception.Status;
 import com.by.exception.Success;
 import com.by.json.CouponTemplateJson;
 import com.by.json.ExchangeCouponJson;
+import com.by.json.ParkingCouponMemberJson;
 import com.by.json.UseCouponJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
 import com.by.service.MemberService;
+import com.by.service.ParkingCouponMemberService;
 import com.by.service.ParkingCouponService;
 import com.by.utils.FailBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 /**
  * Created by yagamai on 15-12-3.
@@ -33,12 +46,15 @@ public class ParkingCouponController implements UtilContoller {
     private ParkingCouponService service;
     private MemberService memberService;
     private ShaPasswordEncoder passwordEncoder;
+    private ParkingCouponMemberService parkingCouponMemberService;
 
     @Autowired
-    public ParkingCouponController(ParkingCouponService parkingCouponService, ShaPasswordEncoder passwordEncoder, MemberService memberService) {
+    public ParkingCouponController(ParkingCouponService parkingCouponService, ShaPasswordEncoder passwordEncoder,
+                                   MemberService memberService, ParkingCouponMemberService parkingCouponMemberService) {
         this.service = parkingCouponService;
         this.memberService = memberService;
         this.passwordEncoder = passwordEncoder;
+        this.parkingCouponMemberService = parkingCouponMemberService;
     }
 
     // 兑换停车券
@@ -78,7 +94,7 @@ public class ParkingCouponController implements UtilContoller {
         if (result.hasErrors()) {
             return FailBuilder.buildFail(result);
         }
-        service.useCoupon(member, json.getTotal(), json.getLicense());
+        service.useCoupon(member, new ParkingCoupon(json.getCouponId()), json.getTotal(), json.getLicense());
         return new Status("success");
     }
 
@@ -104,7 +120,9 @@ public class ParkingCouponController implements UtilContoller {
         if (!isValidMember(member)) {
             throw new MemberNotValidException();
         }
-        return new Success<>(member.getTotalParkingCoupon());
+        List<ParkingCouponMember> list = parkingCouponMemberService.findByMember(member,new Sort(Direction.DESC,"total"));
+        List<ParkingCouponMemberJson> results = list.stream().map(i -> new ParkingCouponMemberJson(i)).collect(Collectors.toList());
+        return new Success<>(results);
     }
 
     // 停车券详情

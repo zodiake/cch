@@ -4,20 +4,20 @@ package com.by.json;
  * Created by yagamai on 15-12-11.
  */
 public class UseCouponJson {
-    private Long couponId;
+    private int couponId;
     private int total;
     private String password;
     private String license;
 
-    public Long getCouponId() {
-        return couponId;
-    }
+    public int getCouponId() {
+		return couponId;
+	}
 
-    public void setCouponId(Long couponId) {
-        this.couponId = couponId;
-    }
+	public void setCouponId(int couponId) {
+		this.couponId = couponId;
+	}
 
-    public int getTotal() {
+	public int getTotal() {
         return total;
     }
 

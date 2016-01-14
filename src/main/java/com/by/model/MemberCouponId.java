@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class MemberCouponId implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long member;
-	private Long coupon;
+	private Integer coupon;
 
 	public Long getMember() {
 		return member;
@@ -16,11 +16,11 @@ public class MemberCouponId implements Serializable {
 		this.member = member;
 	}
 
-	public Long getCoupon() {
+	public Integer getCoupon() {
 		return coupon;
 	}
 
-	public void setCoupon(Long coupon) {
+	public void setCoupon(Integer coupon) {
 		this.coupon = coupon;
 	}
 

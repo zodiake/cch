@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +26,14 @@ import com.by.model.GiftCoupon;
 import com.by.model.GiftCouponMember;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
+import com.by.model.ParkingCouponMember;
 import com.by.model.ShopCoupon;
 import com.by.model.ShopCouponMember;
-import com.by.repository.CouponRepository;
 import com.by.repository.GiftCouponMemberRepository;
 import com.by.repository.ShopCouponMemberRepository;
 import com.by.service.CouponService;
 import com.by.service.GiftCouponService;
-import com.by.service.MemberService;
+import com.by.service.ParkingCouponMemberService;
 import com.by.service.ParkingCouponService;
 import com.by.service.ShopCouponService;
 import com.by.typeEnum.CouponAdminStateEnum;
@@ -51,9 +53,7 @@ public class CouponServiceImpl implements CouponService {
 	@Autowired
 	private ShopCouponService shopCouponService;
 	@Autowired
-	private MemberService memberService;
-	@Autowired
-	private CouponRepository repository;
+	private ParkingCouponMemberService parkingCouponMemberService;
 
 	@Override
 	public boolean isValidCoupon(Coupon coupon) {
@@ -203,12 +203,19 @@ public class CouponServiceImpl implements CouponService {
 			return -1;
 		});
 		if (pageable.getPageNumber() == 0) {
-			Member m = memberService.findOne(member.getId());
-			int total = m.getTotalParkingCoupon();
-			CouponJson json = new CouponJson();
-			json.setTotal(total);
-			json.setType("p");
-			results.add(0, json);
+			List<ParkingCouponMember> lists = parkingCouponMemberService.findByMember(member,new Sort(Direction.DESC,"total"));
+			List<CouponJson> json = lists.stream().map(i -> {
+				CouponJson j = new CouponJson();
+				j.setId(i.getCoupon().getId());
+				j.setTotal(i.getTotal());
+				j.setName(i.getCoupon().getName());
+				j.setCoverImg(i.getCoupon().getCoverImg());
+				return j;
+			}).collect(Collectors.toList());
+			for (int i = 0; i < json.size(); i++) {
+				results.add(0, json.get(i));
+			}
+			results.addAll(json);
 		}
 		Long max = Math.max(shopCouponMemberList.getTotalElements(), giftCouponList.getTotalElements());
 		return new PageImpl<>(results.stream().limit(pageable.getPageSize()).collect(Collectors.toList()), pageable,

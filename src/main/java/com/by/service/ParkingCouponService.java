@@ -38,7 +38,7 @@ public interface ParkingCouponService {
 
 	void exchangeCoupon(Member member, ParkingCoupon coupon, int total);
 
-	Member useCoupon(Member member, int total, String license);
+    Member useCoupon(Member member,ParkingCoupon coupon, int total, String license);
 
 	ParkingCoupon findActivate();
 

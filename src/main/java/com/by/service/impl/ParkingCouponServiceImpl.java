@@ -1,5 +1,29 @@
 package com.by.service.impl;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.by.exception.NotFoundException;
 import com.by.exception.NotValidException;
 import com.by.exception.OutOfStorageException;
@@ -9,30 +33,19 @@ import com.by.json.ParkingCouponHistoryJson;
 import com.by.model.Member;
 import com.by.model.ParkingCoupon;
 import com.by.model.ParkingCouponExchangeHistory;
+import com.by.model.ParkingCouponMember;
 import com.by.model.ParkingCouponUseHistory;
 import com.by.repository.ParkingCouponRepository;
-import com.by.service.*;
+import com.by.service.CouponService;
+import com.by.service.LicenseService;
+import com.by.service.MemberService;
+import com.by.service.ParkingCouponExchangeHistoryService;
+import com.by.service.ParkingCouponMemberService;
+import com.by.service.ParkingCouponService;
+import com.by.service.ParkingCouponUseHistoryService;
 import com.by.typeEnum.ScoreHistoryEnum;
 import com.by.typeEnum.ValidEnum;
 import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -49,6 +62,8 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 	private ParkingCouponUseHistoryService useHistoryService;
 	@Autowired
 	private ParkingCouponExchangeHistoryService exchangeHistoryService;
+	@Autowired
+	private ParkingCouponMemberService parkingCouponMemberService;
 	@Autowired
 	private EntityManager em;
 	@Value(value = "${coupon.amount}")
@@ -155,14 +170,16 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 	}
 
 	@Override
-	public Member useCoupon(Member member, int total, String license) {
+	public Member useCoupon(Member member, ParkingCoupon coupon, int total, String license) {
 		Member m = memberService.findOne(member.getId());
-		int sourceTotal = m.getTotalParkingCoupon();
+		ParkingCouponMember pcm = parkingCouponMemberService.findByMemberAndCoupon(member, coupon);
+		// todo
+		int sourceTotal = pcm.getTotal();
 		if (sourceTotal < total)
 			throw new OutOfStorageException();
 		licenseService.save(m, license);
 		useHistoryService.save(m, total, license);
-		m.setTotalParkingCoupon(m.getTotalParkingCoupon() - total);
+		pcm.setTotal(sourceTotal - total);
 		return m;
 	}
 
@@ -200,7 +217,7 @@ public class ParkingCouponServiceImpl implements ParkingCouponService {
 		if (couponService.isValidCoupon(sourceCoupon)) {
 			memberService.minusScore(m, sourceCoupon.getScore() * total, "", ScoreHistoryEnum.COUPONEXCHANGE);
 			exchangeHistoryService.save(m, sourceCoupon, total);
-			m.setTotalParkingCoupon(m.getTotalParkingCoupon() + total);
+			parkingCouponMemberService.save(m, sourceCoupon, total);
 		} else {
 			throw new NotValidException();
 		}
