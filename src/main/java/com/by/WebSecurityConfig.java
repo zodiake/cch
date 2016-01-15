@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and().formLogin()
                 .defaultSuccessUrl("/admin/index").loginProcessingUrl("/adminLoginin").usernameParameter("name")
-                .passwordParameter("password").loginPage("/adminLogin").failureUrl("/login?error").and().logout()
+                .passwordParameter("password").loginPage("/").failureUrl("/login?error").and().logout()
                 .logoutUrl("/logout").invalidateHttpSession(true).logoutSuccessUrl("/index").permitAll().and().headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN));
     }

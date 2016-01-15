@@ -9,7 +9,7 @@ import com.by.model.User;
 
 @Controller
 public class AdminLoginController {
-    @RequestMapping(value = "/adminLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String login(Model uiModel) {
         uiModel.addAttribute("user", new User());
         return "admin/login";
